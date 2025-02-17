@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "Um site para a melhor organização de conselhos do SENAI",
 };
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -14,11 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt">
-      <body
-        className=""
-      >
-        {children}
-      </body>
+        <body
+          className=""
+          >
+          {children}
+        </body>
     </html>
   );
 }
