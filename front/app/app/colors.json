@@ -1,0 +1,42 @@
+{
+    "blue": {
+        "primary": "#0050AC",
+        "secondary": "#459DEB",
+        "terciary": "#E2EEFC"
+    },
+    "green": {
+        "primary": "#3B5A1A",
+        "secondary": "#7ABA28",
+        "terciary": "#D3EFA7"
+    },
+    "gray": {
+        "primary": "#3B5A1A",
+        "secondary": "#7ABA28",
+        "terciary": "#D3EFA7"
+    },
+    "pink": {
+        "primary": "#3B5A1A",
+        "secondary": "#7ABA28",
+        "terciary": "#D3EFA7"
+    },
+    "yellow": {
+        "primary": "#3B5A1A",
+        "secondary": "#7ABA28",
+        "terciary": "#D3EFA7"
+    },
+    "red": {
+        "primary": "#3B5A1A",
+        "secondary": "#7ABA28",
+        "terciary": "#D3EFA7"
+    },
+    "purple": {
+        "primary": "#3B5A1A",
+        "secondary": "#7ABA28",
+        "terciary": "#D3EFA7"
+    },
+    "orange": {
+        "primary": "#3B5A1A",
+        "secondary": "#7ABA28",
+        "terciary": "#D3EFA7"
+    }
+}
