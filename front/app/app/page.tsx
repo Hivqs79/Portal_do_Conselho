@@ -1,22 +1,20 @@
 "use client"
-import { Container, Box, Button, TextField, Switch, FormControlLabel } from "@mui/material";
+import { Container, Box, Button, TextField, Switch, FormControlLabel, Theme } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import BrandColors from "./BrandColors";
 import ThemeSettings from "./ThemeSettings";
+import {useThemeContext} from "../hooks/useTheme";
 
+interface ChildComponentProps {
+  setTheme: Dispatch<SetStateAction<Theme>>;
+}
 
-export default function Home() {
-  const [mode, setMode] = useState(ThemeSettings.getThemeMode());
-  const [pallete, setPallete] = useState("blue");
-  const [theme, setTheme] = useState(ThemeSettings.createThemePallete());
+const Home: FC<ChildComponentProps> = ({setTheme}) => {
+  const {mode, setMode, pallete, setPallete} = useThemeContext();
+  
 
-  useEffect(() => {
-    setTheme(createTheme(ThemeSettings.createThemePallete()));
-  }, [mode, pallete])
-
-  return (
-    <ThemeProvider theme={theme}>
+  return (    
       <Container maxWidth={"lg"} className="flex flex-col gap-8 justify-center items-center min-h-screen bg-[#f0f0f0] dark:bg-[#333]">
         <Box className="flex flex-row gap-8 justify-center items-center">        
           <Box className="flex flex-col gap-4">
@@ -24,7 +22,7 @@ export default function Home() {
               variant="contained" 
               color="primary"
               sx={{width: 300}}
-              onClick={() => {BrandColors.changePallete("blue"); setPallete("blue"); console.log(BrandColors.primary_color)}}
+              onClick={() => {BrandColors.changePallete("blue"); setTheme(ThemeSettings.createThemePallete()); console.log(BrandColors.primary_color)}}
               >
               Teste Primary
             </Button>
@@ -32,7 +30,7 @@ export default function Home() {
               variant="contained" 
               color="secondary"
               sx={{width: 300}}
-              onClick={() => {BrandColors.changePallete("green"); setPallete("green"); console.log(BrandColors.primary_color)}}
+              onClick={() => {BrandColors.changePallete("green"); setTheme(ThemeSettings.createThemePallete()); console.log(BrandColors.primary_color)}}
               >
               Teste Secondary
             </Button>
@@ -63,7 +61,8 @@ export default function Home() {
             
           />
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Container>    
   );
 }
+
+export default Home;
