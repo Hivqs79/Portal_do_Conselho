@@ -1,30 +1,46 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from "react";
+import { createTheme, Theme } from "@mui/material/styles";
+import ThemeSettings from "../app/ThemeSettings";
+import BrandColors from "../app/BrandColors";
 
-interface ThemeContextValue {
-    mode: "light" | "dark";
-    setMode: React.Dispatch<React.SetStateAction<"light" | "dark">>;
-    pallete: string;
-    setPallete: React.Dispatch<React.SetStateAction<string>>;
+interface ThemeContextType {
+  theme: Theme;
+  setTheme: Dispatch<SetStateAction<Theme>>;
+  reloadTheme: () => void;
+  changeThemeMode: () => void;
+  changePallete: (color: "gray" | "blue" | "pink" | "yellow" | "red" | "green" | "purple" | "orange") => void;
 }
-  
-const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-  
-export const ThemeProviderContext = ({children}: Readonly<{children: React.ReactNode}>) => {
-    const [mode, setMode] = useState<"light" | "dark">("light");
-    const [pallete, setPallete] = useState<string>("blue");
-    return (
-      <ThemeContext.Provider value={{mode, setMode, pallete, setPallete}}>
-        {children}
-      </ThemeContext.Provider>
-    );
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
+  const [theme, setTheme] = useState(ThemeSettings.createThemePallete());
+
+  const reloadTheme = () => {
+    setTheme(ThemeSettings.createThemePallete());
   };
 
-  
-export const useThemeContext = () => {
-    const themeContext = useContext(ThemeContext);
-    if (themeContext === undefined) {
-      throw new Error('useThemeContext must be inside a ThemeProvider');
-    }
-    return themeContext;
+  const changeThemeMode = () => {
+    ThemeSettings.changeThemeMode();
+    reloadTheme();
   };
+
+  const changePallete = (color: "gray" | "blue" | "pink" | "yellow" | "red" | "green" | "purple" | "orange") => {
+    BrandColors.changePallete(color);
+    reloadTheme();
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme, reloadTheme, changeThemeMode, changePallete }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+export const useThemeContext = (): ThemeContextType => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useThemeContext must be used within a ThemeProviderContext");
+  }
+  return context;
+};

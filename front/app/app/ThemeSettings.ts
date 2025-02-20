@@ -9,10 +9,9 @@ export default class ThemeSettings {
     return isDarkMode ? 'dark' : 'light';
   };
 
-  public static changeThemeMode(setMode: Dispatch<SetStateAction<"dark" | "light">>, mode: "dark" | "light") {
+  public static changeThemeMode() {
     document.documentElement.classList.toggle('dark'); 
-    setMode(mode === 'dark' ? 'light' : 'dark'); 
-    console.log(this.getThemeMode());
+    console.log(this.getThemeMode());  
   }
 
   public static createThemePallete() {

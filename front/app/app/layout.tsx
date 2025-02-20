@@ -1,46 +1,31 @@
-"use client"
-// import type { Metadata } from "next";
+"use client";
 import "./globals.css";
-import { createTheme, Theme, ThemeProvider } from "@mui/material/styles";
-import { cloneElement, ReactNode, useState, Dispatch, SetStateAction, ReactElement } from "react";
-import ThemeSettings from "./ThemeSettings";
-import {ThemeProviderContext} from "../hooks/useTheme";
-
-// export const metadata: Metadata = {
-//   title: "Portal do Conselho",
-//   description: "Um site para a melhor organização de conselhos do SENAI",
-// };
-
-interface LayoutProps {
-  children: ReactElement;
-  setTheme: Dispatch<SetStateAction<Theme>>;
-}
+import { ThemeProvider } from "@mui/material/styles";
+import { ReactElement } from "react";
+import { ThemeProviderContext, useThemeContext } from "../hooks/useTheme";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactElement;
-}>) {   
-  // const [mode, setMode] = useState(ThemeSettings.getThemeMode());
-  // const [pallete, setPallete] = useState("blue");
-  const [theme, setTheme] = useState(ThemeSettings.createThemePallete());
-  const childrenWithProps = cloneElement(children, { setTheme });
-  // useEffect(() => {
-  //   setTheme(ThemeSettings.createThemePallete());
-  // })
-
-
+}>) {
   return (
     <html lang="pt" className="dark">
-      <ThemeProviderContext>        
-        <ThemeProvider theme={theme}>
-          <body
-            className=""
-            >
-            {children}
-          </body>
-        </ThemeProvider>
+      <ThemeProviderContext>
+        <InnerLayout>{children}</InnerLayout>
       </ThemeProviderContext>
     </html>
+  );
+}
+
+function InnerLayout({ children }: { children: ReactElement }) {
+  const { theme } = useThemeContext();
+
+  return (
+    <ThemeProvider theme={theme}>
+      <body className="bg-[#f0f0f0] dark:bg-[#333]">
+        {children}
+      </body>
+    </ThemeProvider>
   );
 }
