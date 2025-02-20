@@ -1,6 +1,11 @@
-import { Dispatch, SetStateAction} from "react";
 import { lighten, darken, createTheme, getContrastRatio } from "@mui/material/styles";
 import BrandColors from "./BrandColors";
+
+declare module '@mui/material/Button' {
+  interface ButtonPropsColorOverrides {
+    terciary: true;
+  }
+}
 
 export default class ThemeSettings {
 

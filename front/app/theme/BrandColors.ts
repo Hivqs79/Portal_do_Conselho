@@ -1,5 +1,3 @@
-import colors from "./colors.json";
-
 export default class BrandColors {
     private static _primary_color: string = "#0050AC";
     private static _secondary_color: string = "#459DEB";
@@ -27,5 +25,48 @@ export default class BrandColors {
         BrandColors._primary_color = colors[color].primary;
         BrandColors._secondary_color = colors[color].secondary;
         BrandColors._terciary_color = colors[color].terciary;
+    }
+}
+
+const colors = {
+    "blue": {
+        "primary": "#0050AC",
+        "secondary": "#459DEB",
+        "terciary": "#E2EEFC"
+    },
+    "green": {
+        "primary": "#3B5A1A",
+        "secondary": "#7ABA28",
+        "terciary": "#D3EFA7"
+    },
+    "gray": {
+        "primary": "#535353",
+        "secondary": "#B0B0B0",
+        "terciary": "#E7E7E7"
+    },
+    "pink": {
+        "primary": "#DD1155",
+        "secondary": "#FF879C",
+        "terciary": "#FFE3E8"
+    },
+    "yellow": {
+        "primary": "#814E12",
+        "secondary": "#F3C91C",
+        "terciary": "#FAEE8E"
+    },
+    "red": {
+        "primary": "#A41010",
+        "secondary": "#FF757A",
+        "terciary": "#FFC5C5"
+    },
+    "purple": {
+        "primary": "#5E0BCC",
+        "secondary": "#AF92FF",
+        "terciary": "#DBD0FF"
+    },
+    "orange": {
+        "primary": "#8D3A0B",
+        "secondary": "#FF9D33",
+        "terciary": "#FFDCA6"
     }
 }

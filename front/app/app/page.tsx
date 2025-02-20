@@ -1,7 +1,5 @@
 "use client";
 import { Container, Box, Button, TextField, Switch, FormControlLabel } from "@mui/material";
-import BrandColors from "./BrandColors";
-import ThemeSettings from "./ThemeSettings";
 import { useThemeContext } from "@/hooks/useTheme";
 
 export default function Home() {
@@ -15,7 +13,7 @@ export default function Home() {
             variant="contained"
             color="primary"
             sx={{ width: 300 }}
-            onClick={() => { changePallete("blue"); console.log(BrandColors.primary_color); }}
+            onClick={() => changePallete("blue")}
           >
             Teste Primary
           </Button>
@@ -23,7 +21,7 @@ export default function Home() {
             variant="contained"
             color="secondary"
             sx={{ width: 300 }}
-            onClick={() => { changePallete("green"); console.log(BrandColors.primary_color); }}
+            onClick={() => changePallete("green")}
           >
             Teste Secondary
           </Button>
@@ -31,7 +29,7 @@ export default function Home() {
             variant="contained"
             color="terciary"
             sx={{ width: 300 }}
-            onClick={() => { changePallete("red"); console.log(BrandColors.primary_color); }}
+            onClick={() => changePallete("red")}
           >
             Teste Terciary
           </Button>
