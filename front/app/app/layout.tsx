@@ -1,8 +1,8 @@
 "use client";
-import "./globals.css";
 import { ThemeProvider } from "@mui/material/styles";
 import { ReactElement } from "react";
 import { ThemeProviderContext, useThemeContext } from "../hooks/useTheme";
+import "./globals.css";
 
 export default function RootLayout({
   children,
@@ -10,7 +10,7 @@ export default function RootLayout({
   children: React.ReactElement;
 }>) {
   return (
-    <html lang="pt" className="dark">
+    <html lang="pt">
       <ThemeProviderContext>
         <InnerLayout>{children}</InnerLayout>
       </ThemeProviderContext>
@@ -23,7 +23,7 @@ function InnerLayout({ children }: { children: ReactElement }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <body className="bg-[#f0f0f0] dark:bg-[#333]">
+      <body className="bg-[#f5f5f5] dark:bg-[#333]">
         {children}
       </body>
     </ThemeProvider>

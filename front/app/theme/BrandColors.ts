@@ -1,4 +1,4 @@
-export default class BrandColors {
+export class BrandColors {
     private static _primary_color: string = "#0050AC";
     private static _secondary_color: string = "#459DEB";
     private static _terciary_color: string = "#E2EEFC";
@@ -28,7 +28,7 @@ export default class BrandColors {
     }
 }
 
-const colors = {
+export const colors = {
     "blue": {
         "primary": "#0050AC",
         "secondary": "#459DEB",

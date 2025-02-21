@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from "react";
 import { createTheme, Theme } from "@mui/material/styles";
 import ThemeSettings from "../theme/ThemeSettings";
-import BrandColors from "../theme/BrandColors";
+import {BrandColors} from "../theme/BrandColors";
 
 interface ThemeContextType {
   theme: Theme;
