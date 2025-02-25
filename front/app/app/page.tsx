@@ -1,7 +1,6 @@
 "use client";
 import { Container , Box, Button, TextField, Switch, FormControlLabel, RadioGroup, Radio, Typography } from "@mui/material";
 import { useThemeContext } from "@/hooks/useTheme";
-import { colors } from "@/theme/BrandColors";
 import { useState } from "react";
 
 export default function Home() {
@@ -69,11 +68,10 @@ export default function Home() {
         <RadioGroup value={color} defaultValue="" onChange={handleChangeColor} row>
           {new Array("blue","green","red","orange","pink","purple","yellow","gray").map((color, index) => {
               return <FormControlLabel          
-                label 
+                label={color} 
                 value={color}   
                 key={index}         
-                control={<Radio 
-                  className={`!text-${color}Primary`}/>}
+                control={<Radio />}
               />
           })}          
         </RadioGroup>
