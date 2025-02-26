@@ -68,7 +68,7 @@ export default function Home() {
         <RadioGroup value={color} defaultValue="" onChange={handleChangeColor} row>
           {new Array("blue","green","red","orange","pink","purple","yellow","gray").map((color, index) => {
               return <FormControlLabel          
-                label={color} 
+                label={<Typography variant="lg_text_regular">{color}</Typography>} 
                 value={color}   
                 key={index}         
                 control={<Radio />}

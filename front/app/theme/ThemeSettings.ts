@@ -51,7 +51,6 @@ export default class ThemeSettings {
 
   public static changeThemeMode() {
     document.documentElement.classList.toggle('dark'); 
-    console.log(this.getThemeMode());  
   };
 
   public static getContrastThemeColor() {  
@@ -91,129 +90,153 @@ export default class ThemeSettings {
           contrastText: this.getBetterContrast(secondary_color),
         },
         terciary: themeBase.palette.augmentColor({
+          name: 'terciary',
           color: {
             main: terciary_color,
             light: lighten(terciary_color, 0.2),
             dark: darken(terciary_color, 0.2),
             contrastText: this.getBetterContrast(terciary_color),
           },
-          name: 'terciary',
         }),
       },
       typography: {
         h1_title: {
           fontSize: "3.5rem",
-          fontFamily: 'Lora'
+          fontFamily: 'Lora',
+          color: this.getContrastThemeColor()
         },
         h2_title: {
           fontSize: "3rem",
-          fontFamily: 'Lora'
+          fontFamily: 'Lora',
+          color: this.getContrastThemeColor()
         },
         h3_title: {
           fontSize: "2.5rem",
-          fontFamily: 'Lora'
+          fontFamily: 'Lora',
+          color: this.getContrastThemeColor()
         },
         h4_title: {
           fontSize: "2.25rem",
-          fontFamily: 'Lora'
+          fontFamily: 'Lora',
+          color: this.getContrastThemeColor()
         },
         h5_title: {
           fontSize: "1.875rem",
-          fontFamily: 'Lora'
+          fontFamily: 'Lora',
+          color: this.getContrastThemeColor()
         },
         h6_title: {
           fontSize: "1.5rem",
-          fontFamily: 'Lora'
+          fontFamily: 'Lora',
+          color: this.getContrastThemeColor()
         },        
         xl_text_light: {
           fontSize: "1.25rem",
           fontWeight: 300,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         xl_text_regular: {
           fontSize: "1.25rem",
           fontWeight: 400,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         xl_text_bold: {
           fontSize: "1.25rem",
           fontWeight: 700,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         lg_text_light: {
           fontSize: "1.125rem",
           fontWeight: 300,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         lg_text_regular: {
           fontSize: "1.125rem",
           fontWeight: 400,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         lg_text_bold: {
           fontSize: "1.125rem",
           fontWeight: 700,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         md_text_light: {
           fontSize: "1rem",
           fontWeight: 300,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         md_text_regular: {
           fontSize: "1rem",
           fontWeight: 400,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         md_text_bold: {
           fontSize: "1rem",
           fontWeight: 700,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         sm_text_light: {
           fontSize: "0.875rem",
           fontWeight: 300,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         sm_text_regular: {
           fontSize: "0.875rem",
           fontWeight: 400,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         sm_text_bold: {
           fontSize: "0.875rem",
           fontWeight: 700,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         xs_text_light: {
           fontSize: "0.75rem",
           fontWeight: 300,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         xs_text_regular: {
           fontSize: "0.75rem",
           fontWeight: 400,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         xs_text_bold: {
           fontSize: "0.75rem",
           fontWeight: 700,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         tn_text_light: {
           fontSize: "0.625rem",
           fontWeight: 300,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         tn_text_regular: {
           fontSize: "0.625rem",
           fontWeight: 400,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         },
         tn_text_bold: {
           fontSize: "0.625rem",
           fontWeight: 700,
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          color: this.getContrastThemeColor()
         }
       },
       components: {   
