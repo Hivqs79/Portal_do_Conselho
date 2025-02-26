@@ -64,7 +64,7 @@ export default function Home() {
         />
       </Box>
       <Box>
-        <Typography variant="subtitle1">Pallete changer</Typography>
+        <Typography variant="xl_text_bold">Pallete changer</Typography>
         <RadioGroup value={color} defaultValue="" onChange={handleChangeColor} row>
           {new Array("blue","green","red","orange","pink","purple","yellow","gray").map((color, index) => {
               return <FormControlLabel          
@@ -75,6 +75,46 @@ export default function Home() {
               />
           })}          
         </RadioGroup>
+      </Box>
+      <Box className="!flex !flex-row !gap-8 items-center">
+        <Typography variant="h1_title">h1_title</Typography>
+        <Typography variant="h2_title">h2_title</Typography>
+        <Typography variant="h3_title">h3_title</Typography>
+        <Typography variant="h4_title">h4_title</Typography>
+        <Typography variant="h5_title">h5_title</Typography>
+        <Typography variant="h6_title">h6_title</Typography>
+      </Box>
+      <Box className="!flex !flex-row !gap-8 items-center">
+        <Box className="!flex !flex-col">
+          <Typography variant="xl_text_bold">xl_text_bold</Typography>
+          <Typography variant="xl_text_regular">xl_text_regular</Typography>
+          <Typography variant="xl_text_light">xl_text_light</Typography>
+        </Box>
+        <Box className="!flex !flex-col">
+          <Typography variant="lg_text_bold">lg_text_bold</Typography>
+          <Typography variant="lg_text_regular">lg_text_regular</Typography>
+          <Typography variant="lg_text_light">lg_text_light</Typography>
+        </Box>
+        <Box className="!flex !flex-col">
+          <Typography variant="md_text_bold">md_text_bold</Typography>
+          <Typography variant="md_text_regular">md_text_regular</Typography>
+          <Typography variant="md_text_light">md_text_light</Typography>
+        </Box>
+        <Box className="!flex !flex-col">
+          <Typography variant="sm_text_bold">sm_text_bold</Typography>
+          <Typography variant="sm_text_regular">sm_text_regular</Typography>
+          <Typography variant="sm_text_light">sm_text_light</Typography>
+        </Box>
+        <Box className="!flex !flex-col">
+          <Typography variant="xs_text_bold">xs_text_bold</Typography>
+          <Typography variant="xs_text_regular">xs_text_regular</Typography>
+          <Typography variant="xs_text_light">xs_text_light</Typography>
+        </Box>
+        <Box className="!flex !flex-col">
+          <Typography variant="tn_text_bold">tn_text_bold</Typography>
+          <Typography variant="tn_text_regular">tn_text_regular</Typography>
+          <Typography variant="tn_text_light">tn_text_light</Typography>
+        </Box>
       </Box>
     </Container>
   );
