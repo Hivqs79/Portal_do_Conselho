@@ -19,13 +19,14 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState(ThemeSettings.createThemePallete());
   const [themeColor, setThemeColor] = useState("");
+  const [themeMode, setThemeMode] = useState("light");
 
   const reloadTheme = () => {
     setTheme(ThemeSettings.createThemePallete());
   };
 
   const changeThemeMode = () => {
-    ThemeSettings.changeThemeMode();
+    console.log(ThemeSettings.changeThemeMode());
     reloadTheme();
   };
 

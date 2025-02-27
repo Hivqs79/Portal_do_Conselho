@@ -18,6 +18,7 @@ import { SiGoogleclassroom } from "react-icons/si";
 import { CgFileDocument } from "react-icons/cg";
 import { TbReport } from "react-icons/tb";
 import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward, IoIosArrowRoundBack, IoIosArrowRoundForward, IoIosArrowUp } from "react-icons/io";
+import Icon from "@/components/Icon";
 
 export default function Home() {
   const [ color, setColor ] = useState("");
@@ -133,6 +134,7 @@ export default function Home() {
         </Box>
       </Box>
       <Box className="!flex !flex-row">
+        <Icon IconPassed={IoFolderOpenOutline}/>
         <IoFolderOpenOutline className="h-6 w-6"/>
         <BsHouse className="h-6 w-6"/>
         <LuPencilLine className="h-6 w-6"/>
