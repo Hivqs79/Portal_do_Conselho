@@ -12,7 +12,7 @@ const options = {
     },
   ],
   chart: {
-    height: "100%",
+    height: "300px",
     maxWidth: "100%",
     type: "area",
     fontFamily: "Inter, sans-serif",
