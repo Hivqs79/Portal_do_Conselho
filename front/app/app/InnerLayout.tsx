@@ -19,7 +19,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
     return (
       <ThemeProvider theme={theme}>
         <body style={{backgroundColor: backgroundColor}}>
-          <Header />
+          <Header variant="pedagogic"/>
           {children}
           <DevPalleteChangerMenu />
         </body>
