@@ -19,6 +19,9 @@ import { CgFileDocument } from "react-icons/cg";
 import { TbReport } from "react-icons/tb";
 import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward, IoIosArrowRoundBack, IoIosArrowRoundForward, IoIosArrowUp } from "react-icons/io";
 import Icon from "@/components/Icon";
+import { BrandColors } from "@/theme/BrandColors";
+import ThemeSettings from "@/theme/ThemeSettings";
+import DevPalleteChangerMenu from "@/components/DevPalleteChangerMenu";
 
 export default function Home() {
   const [ color, setColor ] = useState("");
@@ -29,6 +32,12 @@ export default function Home() {
     setColor(colorChosen);
     changePallete(colorChosen);
   };
+
+  const primaryColor = BrandColors.primary_color;
+  const secondaryColor = BrandColors.secondary_color;
+  const terciaryColor = BrandColors.terciary_color;
+
+  const constrastColor = ThemeSettings.getContrastThemeColor();
 
   return (
     <Container maxWidth={"lg"} className="flex flex-col gap-8 justify-center items-center min-h-screen">
@@ -70,28 +79,11 @@ export default function Home() {
             color="primary"
           />
         </Box>
-      </Box>
-      <Box>
-        <FormControlLabel
-          control={<Switch
-            defaultChecked
-            onChange={() => changeThemeMode()}
-          />}
-          label="Dark mode"
-        />
-      </Box>
-      <Box>
-        <Typography variant="xl_text_bold">Pallete changer</Typography>
-        <RadioGroup value={color} defaultValue="" onChange={handleChangeColor} row>
-          {new Array("blue","green","red","orange","pink","purple","yellow","gray").map((color, index) => {
-              return <FormControlLabel          
-                label={<Typography variant="lg_text_regular">{color}</Typography>} 
-                value={color}   
-                key={index}         
-                control={<Radio />}
-              />
-          })}          
-        </RadioGroup>
+      </Box>     
+      <Box className="!flex !flex-row !gap-8">
+        <Box style={{ backgroundColor: primaryColor, borderColor: constrastColor}} className="border-2 rounded-lg w-16 h-16"></Box>
+        <Box style={{ backgroundColor: secondaryColor, borderColor: constrastColor}} className="border-2 rounded-lg w-16 h-16"></Box>
+        <Box style={{ backgroundColor: terciaryColor, borderColor: constrastColor}} className="border-2 rounded-lg w-16 h-16"></Box>
       </Box>
       <Box className="!flex !flex-row !gap-8 items-center">
         <Typography variant="h1_title" component="h1">h1_title</Typography>
@@ -180,7 +172,8 @@ export default function Home() {
         <Icon IconPassed={FaRegEye}/>
         <Icon IconPassed={FaRegEyeSlash}/>
         <Icon IconPassed={IoCopyOutline}/>
-      </Box>
+      </Box>      
+      <DevPalleteChangerMenu />
     </Container>
   );
 }
