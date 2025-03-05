@@ -1,4 +1,6 @@
 "use client"
+import DevPalleteChangerMenu from "@/components/DevPalleteChangerMenu";
+import Header from "@/components/Header";
 import { ThemeProviderContext, useThemeContext } from "@/hooks/useTheme";
 import { ThemeProvider } from "@mui/material";
 import { ReactElement } from "react";
@@ -12,12 +14,14 @@ export default function InnerLayout({ children }: { children: ReactElement }) {
 }
 
 function CoreLayout({ children }: { children: ReactElement }) {
-    const { theme } = useThemeContext();
+    const { theme, backgroundColor } = useThemeContext();
   
     return (
       <ThemeProvider theme={theme}>
-        <body className="bg-[#f5f5f5] dark:bg-[#333]">
+        <body style={{backgroundColor: backgroundColor}}>
+          <Header />
           {children}
+          <DevPalleteChangerMenu />
         </body>
       </ThemeProvider>
     );
