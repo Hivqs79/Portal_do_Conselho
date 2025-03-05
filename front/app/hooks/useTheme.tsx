@@ -1,7 +1,7 @@
-import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from "react";
+import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from "react";
 import { Theme } from "@mui/material/styles";
 import ThemeSettings from "../theme/ThemeSettings";
-import {BrandColors} from "../theme/BrandColors";
+import {BrandColors, colors} from "../theme/BrandColors";
 
 type PossibleColors = "gray" | "blue" | "pink" | "yellow" | "red" | "green" | "purple" | "orange";
 
@@ -11,6 +11,13 @@ interface ThemeContextType {
   reloadTheme: () => void;
   changeThemeMode: () => void;
   changePallete: (color: PossibleColors) => void;
+  primaryColor: string;
+  secondaryColor: string;
+  terciaryColor: string;
+  constrastColor: string;
+  backgroundColor: string;
+  whiteColor: string;
+  blackColor: string;
 }
 
 
@@ -19,14 +26,20 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState(ThemeSettings.createThemePallete());
   const [themeColor, setThemeColor] = useState("");
-  const [themeMode, setThemeMode] = useState("light");
+  const primaryColor = BrandColors.primary_color;
+  const secondaryColor = BrandColors.secondary_color;
+  const terciaryColor = BrandColors.terciary_color;
+  const constrastColor = ThemeSettings.getContrastThemeColor();
+  const backgroundColor = ThemeSettings.getBackgroundThemeColor();
+  const whiteColor = colors.whiteColor;
+  const blackColor = colors.blackColor;
 
   const reloadTheme = () => {
     setTheme(ThemeSettings.createThemePallete());
   };
 
   const changeThemeMode = () => {
-    console.log(ThemeSettings.changeThemeMode());
+    ThemeSettings.changeThemeMode();
     reloadTheme();
   };
 
@@ -37,18 +50,31 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
     reloadTheme();
   };
 
-  let color: any = localStorage.getItem("theme");
+  const color: string | null = localStorage.getItem("theme");
 
   if (color === null) {
     localStorage.setItem("theme", "blue");
     setThemeColor("blue");    
-  } else if (themeColor != color) {
-    changePallete(color);
+  } else if (themeColor !== color) {
+    changePallete(color as PossibleColors);
   }
 
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, reloadTheme, changeThemeMode, changePallete }}>
+    <ThemeContext.Provider value={{ 
+      theme, 
+      setTheme, 
+      reloadTheme, 
+      changeThemeMode, 
+      changePallete, 
+      primaryColor, 
+      secondaryColor, 
+      terciaryColor, 
+      constrastColor, 
+      backgroundColor, 
+      whiteColor, 
+      blackColor 
+    }}>
       {children}
     </ThemeContext.Provider>
   );

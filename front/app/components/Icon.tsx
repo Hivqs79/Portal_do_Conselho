@@ -1,35 +1,19 @@
-import React, { useEffect, useState } from "react";
-import ThemeSettings from "@/theme/ThemeSettings";
+import React from "react";
 import { IconType } from "react-icons";
+import { useThemeContext } from "@/hooks/useTheme";
 
 interface IconProps {
     IconPassed: IconType;
     color?: string;
+    className?: string;
 }
 
-export default function Icon({ IconPassed, color }: IconProps) {
-    const [defaultColor, setDefaultColor] = useState(ThemeSettings.getContrastThemeColor());
+export default function Icon({ IconPassed, color, className = "w-6 h-6" }: IconProps) {
+    const { constrastColor } = useThemeContext();
 
-    useEffect(() => {
-        const htmlElement = document.documentElement;
-
-        const observer = new MutationObserver(() => {
-            setDefaultColor(ThemeSettings.getContrastThemeColor());
-        });
-
-        observer.observe(htmlElement, {
-            attributes: true,
-            attributeFilter: ["class"],
-        });
-
-        return () => {
-            observer.disconnect();
-        };
-    }, []);
-
-    const inlineStyle = { color: color || defaultColor };
+    const inlineStyle = { color: color || constrastColor };
 
     return (
-        <IconPassed style={inlineStyle} className="w-6 h-6" />
+        <IconPassed style={inlineStyle} className={"cursor-pointer " + className} />
     );
 }
