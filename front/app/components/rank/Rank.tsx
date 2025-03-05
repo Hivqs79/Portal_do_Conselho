@@ -15,8 +15,8 @@ export default function Rank({ type, outline }: RankProps) {
   const primaryColor = BrandColors.primary_color;
   const terciaryColor = BrandColors.terciary_color;
 
-  const className = `text-4xl ${
-    outline ? "border-4 p-1 text-5xl rounded-normal" : ""
+  const className = `text-4xl p-1 ${
+    outline ? "border-[2px] p-1 text-4xl rounded-normal" : ""
   }`;
 
   const rank = {

@@ -4,7 +4,7 @@ import Table from "@/components/table/Table";
 export default function TestingComponents() {
   return (
     <>
-      <Table />
+      {/* <Table /> */}
       <Rank type="otimo" outline={true} />
       <Rank type="bom" outline={true} />
       <Rank type="mediano" outline={true} />
