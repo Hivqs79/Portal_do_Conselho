@@ -1,16 +1,21 @@
-import { lighten, darken, createTheme, getContrastRatio } from "@mui/material/styles";
-import {BrandColors} from "./BrandColors";
+import {
+  lighten,
+  darken,
+  createTheme,
+  getContrastRatio,
+} from "@mui/material/styles";
+import { BrandColors } from "./BrandColors";
 import "@fontsource/lora";
 import "@fontsource/poppins";
 import "@fontsource/poppins/300.css";
 
-declare module '@mui/material/Button' {
+declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
     terciary: true;
   }
 }
 
-declare module '@mui/material/Typography' {
+declare module "@mui/material/Typography" {
   interface TypographyPropsVariantOverrides {
     h1_title: true;
     h2_title: true;
@@ -43,39 +48,40 @@ const whiteColor = "#f5f5f5";
 const blackColor = "#333333";
 
 export default class ThemeSettings {
-
   public static getThemeMode(): "dark" | "light" {
-    const isDarkMode = document.documentElement.classList.contains('dark');
-    return isDarkMode ? 'dark' : 'light';
-  };
-
-  public static changeThemeMode() {
-    document.documentElement.classList.toggle('dark'); 
-  };
-
-  public static getContrastThemeColor() {  
-    let mode = this.getThemeMode();  
-    return (mode == 'dark' ? whiteColor : blackColor);
+    const isDarkMode = document.documentElement.classList.contains("dark");
+    return isDarkMode ? "dark" : "light";
   }
 
-  public static getBackgroundThemeColor() {    
-    let mode = this.getThemeMode();  
-    return (mode == 'dark' ? blackColor : whiteColor);
+  public static changeThemeMode() {
+    document.documentElement.classList.toggle("dark");
+  }
+
+  public static getContrastThemeColor() {
+    let mode = this.getThemeMode();
+    return mode == "dark" ? whiteColor : blackColor;
+  }
+
+  public static getBackgroundThemeColor() {
+    let mode = this.getThemeMode();
+    return mode == "dark" ? blackColor : whiteColor;
   }
 
   public static getBetterContrast(color: string) {
-    return getContrastRatio(color, whiteColor) > getContrastRatio(color, blackColor) ? whiteColor : blackColor;
+    return getContrastRatio(color, whiteColor) >
+      getContrastRatio(color, blackColor)
+      ? whiteColor
+      : blackColor;
   }
 
   public static createThemePallete() {
-    let themeBase = createTheme({});    
+    let themeBase = createTheme({});
     let mode = this.getThemeMode();
     const primary_color = BrandColors.primary_color;
     const secondary_color = BrandColors.secondary_color;
     const terciary_color = BrandColors.terciary_color;
 
-    return createTheme (themeBase,
-      {
+    return createTheme(themeBase, {
       palette: {
         primary: {
           main: primary_color,
@@ -90,7 +96,7 @@ export default class ThemeSettings {
           contrastText: this.getBetterContrast(secondary_color),
         },
         terciary: themeBase.palette.augmentColor({
-          name: 'terciary',
+          name: "terciary",
           color: {
             main: terciary_color,
             light: lighten(terciary_color, 0.2),
@@ -102,178 +108,179 @@ export default class ThemeSettings {
       typography: {
         h1_title: {
           fontSize: "3.5rem",
-          fontFamily: 'Lora',
-          color: this.getContrastThemeColor()
+          fontFamily: "Lora",
+          color: this.getContrastThemeColor(),
         },
         h2_title: {
           fontSize: "3rem",
-          fontFamily: 'Lora',
-          color: this.getContrastThemeColor()
+          fontFamily: "Lora",
+          color: this.getContrastThemeColor(),
         },
         h3_title: {
           fontSize: "2.5rem",
-          fontFamily: 'Lora',
-          color: this.getContrastThemeColor()
+          fontFamily: "Lora",
+          color: this.getContrastThemeColor(),
         },
         h4_title: {
           fontSize: "2.25rem",
-          fontFamily: 'Lora',
-          color: this.getContrastThemeColor()
+          fontFamily: "Lora",
+          color: this.getContrastThemeColor(),
         },
         h5_title: {
           fontSize: "1.875rem",
-          fontFamily: 'Lora',
-          color: this.getContrastThemeColor()
+          fontFamily: "Lora",
+          color: this.getContrastThemeColor(),
         },
         h6_title: {
           fontSize: "1.5rem",
-          fontFamily: 'Lora',
-          color: this.getContrastThemeColor()
-        },        
+          fontFamily: "Lora",
+          color: this.getContrastThemeColor(),
+        },
         xl_text_light: {
           fontSize: "1.25rem",
           fontWeight: 300,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         xl_text_regular: {
           fontSize: "1.25rem",
           fontWeight: 400,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         xl_text_bold: {
           fontSize: "1.25rem",
           fontWeight: 700,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         lg_text_light: {
           fontSize: "1.125rem",
           fontWeight: 300,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         lg_text_regular: {
           fontSize: "1.125rem",
           fontWeight: 400,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         lg_text_bold: {
           fontSize: "1.125rem",
           fontWeight: 700,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         md_text_light: {
           fontSize: "1rem",
           fontWeight: 300,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         md_text_regular: {
           fontSize: "1rem",
           fontWeight: 400,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         md_text_bold: {
           fontSize: "1rem",
           fontWeight: 700,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         sm_text_light: {
           fontSize: "0.875rem",
           fontWeight: 300,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         sm_text_regular: {
           fontSize: "0.875rem",
           fontWeight: 400,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         sm_text_bold: {
           fontSize: "0.875rem",
           fontWeight: 700,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         xs_text_light: {
           fontSize: "0.75rem",
           fontWeight: 300,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         xs_text_regular: {
           fontSize: "0.75rem",
           fontWeight: 400,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         xs_text_bold: {
           fontSize: "0.75rem",
           fontWeight: 700,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         tn_text_light: {
           fontSize: "0.625rem",
           fontWeight: 300,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         tn_text_regular: {
           fontSize: "0.625rem",
           fontWeight: 400,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
         },
         tn_text_bold: {
           fontSize: "0.625rem",
           fontWeight: 700,
-          fontFamily: 'Poppins',
-          color: this.getContrastThemeColor()
-        }
+          fontFamily: "Poppins",
+          color: this.getContrastThemeColor(),
+        },
       },
-      components: {   
+      components: {
         MuiInputLabel: {
           styleOverrides: {
             root: {
               color: this.getContrastThemeColor(),
-              '&.Mui-focused': {
-                color: (mode == "light" ? primary_color : terciary_color),
+              "&.Mui-focused": {
+                color: mode == "light" ? primary_color : terciary_color,
               },
             },
           },
         },
         MuiOutlinedInput: {
-          styleOverrides: {   
-            root: {              
-              '&:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline': {
-                borderColor: (mode == "light" ? primary_color : terciary_color),
+          styleOverrides: {
+            root: {
+              "&:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline": {
+                borderColor: mode == "light" ? primary_color : terciary_color,
                 borderWidth: "2px",
                 color: this.getContrastThemeColor(),
               },
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: (mode == "light" ? primary_color : terciary_color),
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: mode == "light" ? primary_color : terciary_color,
                 borderWidth: "2px",
-                boxShadow: '2px 2px 4px 1px' + (mode == "light" ? primary_color : terciary_color) + '77',
+                boxShadow:
+                  "2px 2px 4px 1px" +
+                  (mode == "light" ? primary_color : terciary_color) +
+                  "77",
               },
               color: this.getContrastThemeColor(),
-            },         
+            },
             notchedOutline: {
-              borderColor: (mode == "light" ? primary_color : terciary_color),
+              borderColor: mode == "light" ? primary_color : terciary_color,
               borderWidth: "2px",
             },
           },
-        },              
+        },
       },
     });
   }
-
-  
 }

@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  darkMode: 'class',
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -18,6 +18,13 @@ export default {
         redPrimary: "#A41010",
         purplePrimary: "#5E0BCC",
         orangePrimary: "#8D3A0B",
+      },
+      borderRadius: {
+        square: "0px",
+        small: "4px",
+        normal: "8px",
+        big: "16px",
+        specific: "full",
       },
     },
   },
