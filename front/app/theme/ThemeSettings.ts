@@ -50,7 +50,7 @@ export default class ThemeSettings {
   };
 
   public static changeThemeMode() {
-    document.documentElement.classList.toggle('dark'); 
+    return document.documentElement.classList.toggle('dark'); 
   };
 
   public static getContrastThemeColor() {  
