@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import Rank from "../rank/Rank";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Button, Typography } from "@mui/material";
+import { Button, IconButton, Typography } from "@mui/material";
 import Icon from "../Icon";
 import { FaRegEye } from "react-icons/fa6";
 import { TableRowProps } from "@/interfaces/TableRowProps";
+import hexToRGBA from "@/hooks/hexToRGBA";
 
 export default function TableRow({
   variant,
@@ -16,7 +17,7 @@ export default function TableRow({
   className,
 }: TableRowProps) {
   const [selectedRank, setSelectedRank] = useState(rank);
-  const { backgroundColor } = useThemeContext();
+  const { backgroundColor, primaryColor, constrastColor } = useThemeContext();
 
   useEffect(() => {
     setSelectedRank(rank);
@@ -26,13 +27,18 @@ export default function TableRow({
     return (
       <div
         style={{
-          backgroundColor: backgroundColor,
+          backgroundColor: hexToRGBA(constrastColor, 0.01),
+          borderColor: primaryColor,
         }}
         className={`${className} flex flex-row gap-4 justify-between items-center p-4 w-screen max-w-[100%]`}
       >
-        <p>Turma 1</p>
-        <p className="hidden md:block">00/00/0000</p>
-        <p className="hidden lg:block">00:00</p>
+        <p style={{ color: constrastColor }}>Turma 1</p>
+        <p style={{ color: constrastColor }} className="hidden md:block">
+          00/00/0000
+        </p>
+        <p style={{ color: constrastColor }} className="hidden lg:block big:mr-6">
+          00:00
+        </p>
         <div className="flex justify-center items-center gap-4">
           <span className="hidden small:flex justify-center items-center">
             {selectedRank && (
