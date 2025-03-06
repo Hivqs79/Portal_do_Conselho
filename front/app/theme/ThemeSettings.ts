@@ -288,6 +288,27 @@ export default class ThemeSettings {
             },
           },
         },
+        MuiMenu: {
+          styleOverrides: {
+            paper: {
+              backgroundColor: primary_color,
+              color: whiteColor,
+              left: "0px !important",
+              borderRadius: "0px 0px 4px 4px",              
+              boxShadow: '2px 2px 8px 0px' + primary_color + '77',
+            },
+            list: {
+              padding: "16px 0px",
+            }
+          },        
+        }, 
+        MuiMenuItem: {
+          styleOverrides: {
+            root: {
+              padding: "8px 24px",
+            },
+          },
+        },             
       },
     });
   }

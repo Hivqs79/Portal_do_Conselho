@@ -27,7 +27,7 @@ import {
   FaRegEyeSlash,
 } from "react-icons/fa";
 import { BiCheckDouble, BiSolidFilePdf, BiSupport } from "react-icons/bi";
-import { PiBooksLight, PiStudentBold, PiUserBold } from "react-icons/pi";
+import { PiBooks, PiStudentBold, PiUserBold } from "react-icons/pi";
 import { GoGraph, GoPeople } from "react-icons/go";
 import { MdOutlineChat } from "react-icons/md";
 import { HiOutlineFilter, HiOutlineKey } from "react-icons/hi";
@@ -186,7 +186,7 @@ export default function Components() {
         <Icon IconPassed={RiCalendarScheduleLine} />
         <Icon IconPassed={SiGoogleclassroom} />
         <Icon IconPassed={LuTrophy} />
-        <Icon IconPassed={PiBooksLight} />
+        <Icon IconPassed={PiBooks} />
         <Icon IconPassed={PiStudentBold} />
         <Icon IconPassed={CgFileDocument} />
         <Icon IconPassed={BsPin} />
