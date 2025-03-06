@@ -26,7 +26,7 @@ import {
   FaRegClock,
   FaRegEyeSlash,
 } from "react-icons/fa";
-import { BiCheckDouble, BiSolidFilePdf, BiSupport } from "react-icons/bi";
+import { BiCheckDouble, BiSupport } from "react-icons/bi";
 import { PiBooks, PiStudentBold, PiUserBold } from "react-icons/pi";
 import { GoGraph, GoPeople } from "react-icons/go";
 import { MdOutlineChat } from "react-icons/md";
@@ -46,7 +46,7 @@ import {
 } from "react-icons/io";
 import Icon from "@/components/Icon";
 import Rank from "@/components/rank/Rank";
-import { FaRegEye } from "react-icons/fa6";
+import { FaRegEye, FaRegFilePdf } from "react-icons/fa6";
 import Table from "@/components/table/Table";
 
 export default function Components() {
@@ -200,7 +200,7 @@ export default function Components() {
         <Icon IconPassed={IoIosArrowBack} />
         <Icon IconPassed={IoIosArrowRoundForward} />
         <Icon IconPassed={IoIosArrowRoundBack} />
-        <Icon IconPassed={BiSolidFilePdf} />
+        <Icon IconPassed={FaRegFilePdf} />
         <Icon IconPassed={FaRegEye} />
         <Icon IconPassed={FaRegEyeSlash} />
         <Icon IconPassed={IoCopyOutline} />
