@@ -42,12 +42,12 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
-        <Box className="flex flex-row">
-            <Box className="w-1/2 h-screen relative">
+        <Box className="flex flex-row justify-center">
+            <Box className="hidden lg:block w-1/2 h-screen relative">
                 <Image src={loginImage} alt="Happy students looking forward to camera" fill objectFit="cover" className="w-[50%]" />
-                <div style={{ backgroundColor: colors.pallete.blue.primary }} className="absolute top-0 left-0 w-1/2"/>
+                <div style={{ backgroundColor: colors.pallete.blue.primary + '8C' }} className="absolute top-0 left-0 w-full h-screen"/>
             </Box>
-            <Box className="relative w-1/2 my-36 top-0 right-0 flex flex-col justify-center items-center">
+            <Box className="relative lg:w-1/2 my-36 top-0 right-0 flex flex-col justify-center items-center">
                 <Box className="flex flex-row items-center mb-24">
                     <LogoIcon color={colors.pallete.blue.primary} className="w-44 h-44"/>
                     <Typography variant="xl_text_bold" color={colors.pallete.blue.primary} className="!ml-9 !text-5xl">Portal do <br/>Conselho</Typography>
@@ -60,6 +60,7 @@ export default function Login() {
                         type={showPassword ? 'text' : 'password'}  
                         variant="outlined" 
                         className="w-full !mb-14"
+                        style={{borderColor : (mode == "light" ? colors.pallete.blue.primary : colors.pallete.blue.terciary) }}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="end">
@@ -68,7 +69,7 @@ export default function Login() {
                             onClick={() => setShowPassword(!showPassword)}
                             edge="end"
                             >
-                            <Icon IconPassed={showPassword ? FaRegEyeSlash : FaRegEye} />
+                            <Icon color={(mode == "light" ? colors.pallete.blue.primary : colors.pallete.blue.terciary)}  IconPassed={showPassword ? FaRegEyeSlash : FaRegEye} />
                             </IconButton>
                             </InputAdornment>
                           )                        
