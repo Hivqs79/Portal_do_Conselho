@@ -39,7 +39,8 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   };
 
   const changeThemeMode = () => {
-    ThemeSettings.changeThemeMode();
+    const mode = ThemeSettings.changeThemeMode();
+    localStorage.setItem("mode", mode ? "dark" : "light");
     reloadTheme();
   };
 

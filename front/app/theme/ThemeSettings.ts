@@ -44,7 +44,16 @@ const blackColor = colors.blackColor;
 export default class ThemeSettings {
 
   public static getThemeMode(): "dark" | "light" {
+    const mode = localStorage.getItem("mode");
     const isDarkMode = document.documentElement.classList.contains('dark');
+    if (mode === "dark" && !isDarkMode) {
+      this.changeThemeMode();
+      return 'dark';
+    }
+    if (mode === "light" && isDarkMode) {
+      this.changeThemeMode();
+      return 'light';
+    }
     return isDarkMode ? 'dark' : 'light';
   };
 
