@@ -18,7 +18,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <body style={{ backgroundColor: backgroundColor }}>
+      <body style={{ backgroundColor: backgroundColor, overflowX: "hidden" }}>
         <Header />
         {children}
         <DevPalleteChangerMenu />
