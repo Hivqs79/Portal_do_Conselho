@@ -14,6 +14,7 @@ export default function TableRow({
   user,
   rank,
   frequencia,
+  turmaNome,
   className,
 }: TableRowProps) {
   const [selectedRank, setSelectedRank] = useState(rank);
@@ -32,11 +33,14 @@ export default function TableRow({
         }}
         className={`${className} flex flex-row gap-4 justify-between items-center p-4 w-screen max-w-[100%]`}
       >
-        <p style={{ color: constrastColor }}>Turma 1</p>
+        <p style={{ color: constrastColor }}>{turmaNome}</p>
         <p style={{ color: constrastColor }} className="hidden md:block">
           00/00/0000
         </p>
-        <p style={{ color: constrastColor }} className="hidden lg:block big:mr-6">
+        <p
+          style={{ color: constrastColor }}
+          className="hidden lg:block big:mr-6"
+        >
           00:00
         </p>
         <div className="flex justify-center items-center gap-4">
