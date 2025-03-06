@@ -1,70 +1,14 @@
-import { useThemeContext } from "@/hooks/useTheme";
-import {
-  Button,
-  styled,
-  TextField,
-  TextFieldProps,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { HiOutlineFilter } from "react-icons/hi";
 import Icon from "../Icon";
 import { IoSearch } from "react-icons/io5";
 import { VscSettings } from "react-icons/vsc";
+import { useThemeContext } from "@/hooks/useTheme";
+import { useState } from "react";
 
 export default function TableHeader() {
   const { primaryColor, secondaryColor } = useThemeContext();
-  const theme = useTheme(); // Acessa o tema do Material-UI
-
-  // Defina suas cores personalizadas
-  const colors = {
-    pallete: {
-      blue: {
-        primary: "#1976d2", // Exemplo de cor primária
-        terciary: "#90caf9", // Exemplo de cor terciária
-      },
-    },
-  };
-
-  // Acessa o modo (light/dark) do tema
-  const mode = theme.palette.mode;
-
-  const BlueTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor:
-          mode === "light"
-            ? colors.pallete.blue.primary
-            : colors.pallete.blue.terciary,
-      },
-      "&:hover fieldset": {
-        borderColor:
-          mode === "light"
-            ? colors.pallete.blue.primary
-            : colors.pallete.blue.terciary,
-      },
-      "&.Mui-focused fieldset": {
-        borderColor:
-          mode === "light"
-            ? colors.pallete.blue.primary
-            : colors.pallete.blue.terciary,
-        boxShadow:
-          "2px 2px 4px 1px" +
-          (mode === "light"
-            ? colors.pallete.blue.primary
-            : colors.pallete.blue.terciary) +
-          "77",
-      },
-    },
-    "& .MuiInputLabel-root": {
-      "&.Mui-focused": {
-        color:
-          mode === "light"
-            ? colors.pallete.blue.primary
-            : colors.pallete.blue.terciary,
-      },
-    },
-  }));
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
     <>
@@ -76,29 +20,63 @@ export default function TableHeader() {
           <Typography variant="sm_text_bold" color="white">
             Conselho
           </Typography>
+          <div className="hidden md:flex ml-[100px] lg:ml-[15%] gap-[12rem] big:ml-[11%] big:gap-[12.5rem]">
+            <span className="hidden md:block ">
+              <Typography variant="sm_text_bold" color="white">
+                Data
+              </Typography>
+            </span>
+            <span className="hidden lg:block ">
+              <Typography variant="sm_text_bold" color="white">
+                Horario
+              </Typography>
+            </span>
+          </div>
           <div className="flex gap-2">
-            <Button variant="contained" color="secondary">
+            <button
+              style={{ backgroundColor: secondaryColor }}
+              className="text-black rounded-small w-[36px] md:w-[53px] h-[36px] flex justify-center items-center"
+            >
               <Icon IconPassed={HiOutlineFilter} color="black" />
-            </Button>
-            <span className="hidden small:block">
-              <Button variant="contained" color="secondary">
+            </button>
+            <span className="block">
+              <button
+                style={{ backgroundColor: secondaryColor }}
+                className="text-black rounded-small w-[36px] h-[36px] flex justify-center items-center"
+              >
                 <Icon IconPassed={VscSettings} color="black" />
-              </Button>
+              </button>
             </span>
             <span className="md:hidden">
-              <Button variant="contained" color="secondary">
+              <button
+                style={{ backgroundColor: secondaryColor }}
+                className="text-black rounded-small w-[36px] h-[36px] flex justify-center items-center"
+              >
                 <Icon IconPassed={IoSearch} color="black" />
-              </Button>
+              </button>
             </span>
-            <span className="hidden md:block">
-              <BlueTextField
-                id="outlined-search"
-                label="Pesquisa"
-                type="search"
-                color="primary"
-                sx={{ width: 200 }}
+            <div className="hidden md:block relative w-full max-w-xs">
+              <label
+                className={`absolute left-4 text-white font-semibold transition-all ${
+                  isFocused
+                    ? "top-[-8px] font-normal text-xs"
+                    : "top-[10px] -translate-y-[5px] text-base"
+                }`}
+              >
+                Pesquisa
+              </label>
+              <input
+                type="text"
+                style={{ borderColor: secondaryColor }}
+                className="w-full big:w-full pl-4 pr-10 h-[36px] text-white text-sm font-semibold border-2 rounded-md bg-transparent focus:outline-none"
+                onFocus={() => setIsFocused(true)}
+                onBlur={(e) => setIsFocused(e.target.value !== "")}
               />
-            </span>
+              <IoSearch
+                color={secondaryColor}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl"
+              />
+            </div>
           </div>
         </div>
       </div>
