@@ -4,7 +4,7 @@ import {
   createTheme,
   getContrastRatio,
 } from "@mui/material/styles";
-import { BrandColors } from "./BrandColors";
+import { BrandColors, colors } from "./BrandColors";
 import "@fontsource/lora";
 import "@fontsource/poppins";
 import "@fontsource/poppins/300.css";
@@ -43,9 +43,8 @@ declare module "@mui/material/Typography" {
     tn_text_bold: true;
   }
 }
-
-const whiteColor = "#f5f5f5";
-const blackColor = "#333333";
+const whiteColor = colors.whiteColor;
+const blackColor = colors.blackColor;
 
 export default class ThemeSettings {
   public static getThemeMode(): "dark" | "light" {
@@ -54,16 +53,16 @@ export default class ThemeSettings {
   }
 
   public static changeThemeMode() {
-    document.documentElement.classList.toggle("dark");
+    return document.documentElement.classList.toggle("dark");
   }
 
   public static getContrastThemeColor() {
-    let mode = this.getThemeMode();
+    const mode = this.getThemeMode();
     return mode == "dark" ? whiteColor : blackColor;
   }
 
   public static getBackgroundThemeColor() {
-    let mode = this.getThemeMode();
+    const mode = this.getThemeMode();
     return mode == "dark" ? blackColor : whiteColor;
   }
 
@@ -75,13 +74,22 @@ export default class ThemeSettings {
   }
 
   public static createThemePallete() {
-    let themeBase = createTheme({});
-    let mode = this.getThemeMode();
+    const themeBase = createTheme({});
+    const mode = this.getThemeMode();
     const primary_color = BrandColors.primary_color;
     const secondary_color = BrandColors.secondary_color;
     const terciary_color = BrandColors.terciary_color;
 
     return createTheme(themeBase, {
+      breakpoints: {
+        values: {
+          xs: 0,
+          sm: 640,
+          md: 768,
+          lg: 1024,
+          xl: 1280,
+        },
+      },
       palette: {
         primary: {
           main: primary_color,

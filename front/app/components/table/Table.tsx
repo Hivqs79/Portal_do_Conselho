@@ -1,24 +1,57 @@
-import { Button } from "@mui/material";
+// import { Button } from "@mui/material";
+
+import { Box } from "@mui/material";
 import TableRow from "./TableRow";
-import { FaRegFaceFrown, FaRegFaceLaugh, FaRegFaceMeh, FaRegFaceSmile } from "react-icons/fa6";
+import { useThemeContext } from "@/hooks/useTheme";
+import { TableRowProps } from "@/interfaces/TableRowProps";
+import TableHeader from "./TableHeader";
 
-export default function Table() {
-  const rank = {
-    otimo: <FaRegFaceLaugh className="text-2xl"/>,
-    bom: <FaRegFaceSmile className="text-2xl"/>,
-    mediano: <FaRegFaceMeh className="text-2xl"/>,
-    critico: <FaRegFaceFrown className="text-2xl"/>,
-  };
+interface TableProps {
+  variant: "primary" | "secondary";
+}
 
-  return (
-    <>
-      <div>
-        {/* <Button variant="contained" color="primary" sx={{ width: 200 }}>
-          Testando MUI
-        </Button> */}
-        {/* <TableRow variant="primary" user="Aluno 1" rank={rank.critico} /> */}
-        
-      </div>
-    </>
-  );
+export default function Table({ variant }: TableProps) {
+  const { primaryColor } = useThemeContext();
+
+  const tableRows: TableRowProps[] = [
+    { variant: "primary", user: "class", rank: "otimo" },
+    { variant: "primary", user: "class", rank: "bom" },
+    { variant: "primary", user: "class", rank: "mediano" },
+    { variant: "primary", user: "class", rank: "critico" },
+    { variant: "primary", user: "class", rank: "bom" },
+    { variant: "primary", user: "class", rank: "critico" },
+    { variant: "primary", user: "class", rank: "bom" },
+    { variant: "primary", user: "class", rank: "bom" },
+    { variant: "primary", user: "class", rank: "mediano" },
+  ];
+
+  if (variant === "primary") {
+    return (
+      <>
+        <div className="w-screen flex justify-center items-center">
+          <Box
+            style={{ borderColor: primaryColor }}
+            className="flex justify-center items-center flex-col border-[1px] overflow-hidden rounded-big max-w-[1024px] mx-10"
+          >
+            <TableHeader />
+            {tableRows.map((row, index) => (
+              <TableRow
+                key={index}
+                variant={row.variant}
+                user={row.user}
+                rank={row.rank}
+                className={`${
+                  index === 0
+                    ? "border-b-2"
+                    : index === tableRows.length - 1
+                    ? "rounded-b-big border-b-0"
+                    : "border-b-2"
+                }`}
+              />
+            ))}
+          </Box>
+        </div>
+      </>
+    );
+  }
 }

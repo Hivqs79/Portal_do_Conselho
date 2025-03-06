@@ -1,25 +1,28 @@
-"use client"
+"use client";
+import DevPalleteChangerMenu from "@/components/DevPalleteChangerMenu";
+import Header from "@/components/Header";
 import { ThemeProviderContext, useThemeContext } from "@/hooks/useTheme";
 import { ThemeProvider } from "@mui/material";
 import { ReactElement } from "react";
 
 export default function InnerLayout({ children }: { children: ReactElement }) {
-    return  (
-        <ThemeProviderContext>
-            <CoreLayout>{children}</CoreLayout>
-        </ThemeProviderContext>
-    )
+  return (
+    <ThemeProviderContext>
+      <CoreLayout>{children}</CoreLayout>
+    </ThemeProviderContext>
+  );
 }
 
 function CoreLayout({ children }: { children: ReactElement }) {
-    const { theme } = useThemeContext();
-  
-    return (
-      <ThemeProvider theme={theme}>
-        <body className="bg-[#f5f5f5] dark:bg-[#333]">
-          {children}
-        </body>
-      </ThemeProvider>
-    );
+  const { theme, backgroundColor } = useThemeContext();
+
+  return (
+    <ThemeProvider theme={theme}>
+      <body style={{ backgroundColor: backgroundColor }}>
+        <Header />
+        {children}
+        <DevPalleteChangerMenu />
+      </body>
+    </ThemeProvider>
+  );
 }
-  

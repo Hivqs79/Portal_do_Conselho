@@ -1,13 +1,13 @@
 "use client";
-import { BrandColors } from "@/theme/BrandColors";
 import {
   FaRegFaceFrown,
   FaRegFaceLaugh,
   FaRegFaceMeh,
   FaRegFaceSmile,
 } from "react-icons/fa6";
-import { Popover } from "@mui/material";
+import { Popover, Typography } from "@mui/material";
 import { useState } from "react";
+import { useThemeContext } from "@/hooks/useTheme";
 
 interface RankProps {
   type: "otimo" | "bom" | "mediano" | "critico";
@@ -16,8 +16,7 @@ interface RankProps {
 }
 
 export default function Rank({ type, outline, popover }: RankProps) {
-  const primaryColor = BrandColors.primary_color;
-  const terciaryColor = BrandColors.terciary_color;
+  const { primaryGrayColor, constrastColor } = useThemeContext();
 
   const [selectedRank, setSelectedRank] = useState(type);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -49,7 +48,10 @@ export default function Rank({ type, outline, popover }: RankProps) {
         className={`${className} text-[#549600]`}
         style={
           outline
-            ? { backgroundColor: terciaryColor, borderColor: primaryColor }
+            ? {
+                // backgroundColor: secondaryGrayColor,
+                borderColor: primaryGrayColor,
+              }
             : {}
         }
       />
@@ -59,7 +61,10 @@ export default function Rank({ type, outline, popover }: RankProps) {
         className={`${className} text-[#7ABA28]`}
         style={
           outline
-            ? { backgroundColor: terciaryColor, borderColor: primaryColor }
+            ? {
+                // backgroundColor: secondaryGrayColor,
+                borderColor: primaryGrayColor,
+              }
             : {}
         }
       />
@@ -69,7 +74,10 @@ export default function Rank({ type, outline, popover }: RankProps) {
         className={`${className} text-[#F3C91C]`}
         style={
           outline
-            ? { backgroundColor: terciaryColor, borderColor: primaryColor }
+            ? {
+                // backgroundColor: secondaryGrayColor,
+                borderColor: primaryGrayColor,
+              }
             : {}
         }
       />
@@ -79,22 +87,51 @@ export default function Rank({ type, outline, popover }: RankProps) {
         className={`${className} text-[#FE3535]`}
         style={
           outline
-            ? { backgroundColor: terciaryColor, borderColor: primaryColor }
+            ? {
+                // backgroundColor: secondaryGrayColor,
+                borderColor: primaryGrayColor,
+              }
             : {}
         }
       />
     ),
   };
 
+  const rankLabels = {
+    otimo: "Ótimo",
+    bom: "Bom",
+    mediano: "Mediano",
+    critico: "Crítico",
+  };
+
+  if (popover && outline) {
+    console.error("O popover não pode usar a função outline (marque como false)");
+    return (
+      <p className="text-red-500">
+        O popover não pode usar a função outline (marque como false)
+      </p>
+    );
+  }
+
   if (popover) {
     return (
       <>
-        <div
-          className="inline-flex justify-center items-center gap-5 cursor-pointer"
-          onClick={handleClick}
-        >
-          <span>Rank:</span>
-          <span>{rank[selectedRank]}</span>
+        <div className="inline-flex justify-center items-center gap-3">
+          <Typography variant="lg_text_bold" style={{ color: constrastColor }}>
+            Rank:
+          </Typography>
+          <span
+            style={{
+              borderColor: primaryGrayColor,
+              // backgroundColor: secondaryGrayColor,
+              color: constrastColor,
+            }}
+            className="cursor-pointer flex items-center justify-start gap-1 border-[2px] rounded-normal w-[120px]"
+            onClick={handleClick}
+          >
+            {rank[selectedRank]}
+            <span className="capitalize">{rankLabels[selectedRank]}</span>
+          </span>
         </div>
         <Popover
           id={id}
@@ -113,7 +150,10 @@ export default function Rank({ type, outline, popover }: RankProps) {
                   handleSelect(key as "otimo" | "bom" | "mediano" | "critico")
                 }
               >
-                {icon} <span className="capitalize">{key}</span>
+                {icon}{" "}
+                <span className="capitalize">
+                  {rankLabels[key as keyof typeof rankLabels]}
+                </span>
               </div>
             ))}
           </div>
@@ -122,5 +162,7 @@ export default function Rank({ type, outline, popover }: RankProps) {
     );
   }
 
-  return rank[selectedRank];
+  return (
+    <div className="inline-flex items-center gap-2">{rank[selectedRank]}</div>
+  );
 }

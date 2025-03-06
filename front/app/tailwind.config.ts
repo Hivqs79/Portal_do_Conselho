@@ -17,6 +17,10 @@ export default {
         big: "16px",
         specific: "full",
       },
+      screens: {
+        extraSmall: "375px",
+        small: "450px",
+      },
     },
   },
   plugins: [],
