@@ -4,7 +4,7 @@ import Icon from './Icon';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { BsHouse } from 'react-icons/bs';
 import { MdOutlineChat } from 'react-icons/md';
-import { BiSolidFilePdf, BiSupport } from 'react-icons/bi';
+import { BiSupport } from 'react-icons/bi';
 import { LuPencilLine } from 'react-icons/lu';
 import { FaRegClock } from 'react-icons/fa';
 import { PiBooks } from 'react-icons/pi';
@@ -12,6 +12,7 @@ import { CgFileDocument } from 'react-icons/cg';
 import { TbReport } from 'react-icons/tb';
 import { SiGoogleclassroom } from 'react-icons/si';
 import { GoGraph, GoPeople } from 'react-icons/go';
+import { FaRegFilePdf } from 'react-icons/fa6';
 
 interface MenuHeaderProps {
     anchorEl: null | HTMLElement;
@@ -83,7 +84,7 @@ export default function MenuHeader({ anchorEl, open, onClose, variant }: MenuHea
                             <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Dashboard</Typography>                    
                         </MenuItem>
                         <MenuItem onClick={onClose} className="flex flex-row">                    
-                            <Icon IconPassed={BiSolidFilePdf} color={whiteColor} />                            
+                            <Icon IconPassed={FaRegFilePdf} color={whiteColor} />                            
                             <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Relatórios</Typography>                    
                         </MenuItem>
                     </>
