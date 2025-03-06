@@ -1,5 +1,3 @@
-// import { Button } from "@mui/material";
-
 import { Box } from "@mui/material";
 import TableRow from "./TableRow";
 import { useThemeContext } from "@/hooks/useTheme";
@@ -31,7 +29,7 @@ export default function Table({ variant }: TableProps) {
         <div className="w-screen flex justify-center items-center">
           <Box
             style={{ borderColor: primaryColor }}
-            className="flex justify-center items-center flex-col border-[1px] overflow-hidden rounded-big max-w-[1024px] mx-10"
+            className="flex justify-center items-center flex-col border-[2px] overflow-hidden rounded-big max-w-[1024px] mx-10"
           >
             <TableHeader />
             {tableRows.map((row, index) => (
