@@ -56,7 +56,7 @@ export default function Components() {
   return (
     <Container
       maxWidth={"lg"}
-      className="flex flex-col gap-8 justify-center items-center min-h-screen"
+      className="flex flex-col gap-8 justify-start items-center min-h-screen"
     >
       <Box className="flex flex-row gap-8 justify-center items-center">
         <Box className="flex flex-col gap-4">
