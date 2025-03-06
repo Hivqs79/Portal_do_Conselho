@@ -60,17 +60,19 @@ export default function Login() {
                         type={showPassword ? 'text' : 'password'}  
                         variant="outlined" 
                         className="w-full !mb-14"
-                        endAdornment={
+                        InputProps={{
+                          endAdornment: (
                             <InputAdornment position="end">
-                              <IconButton
-                                aria-label={showPassword ? 'hide the password' : 'display the password'}
-                                onClick={() => setShowPassword(!showPassword)}
-                                edge="end"
-                              >
-                                <Icon IconPassed={showPassword ? FaRegEyeSlash : FaRegEye} />
-                              </IconButton>
+                            <IconButton
+                            aria-label={showPassword ? 'hide the password' : 'display the password'}
+                            onClick={() => setShowPassword(!showPassword)}
+                            edge="end"
+                            >
+                            <Icon IconPassed={showPassword ? FaRegEyeSlash : FaRegEye} />
+                            </IconButton>
                             </InputAdornment>
-                          }                        
+                          )                        
+                        }}
                     />
                     <BlueButton variant="contained" className="!mb-12 !px-24">Entrar</BlueButton>
                     <Typography variant="md_text_regular" className="!mb-4">
