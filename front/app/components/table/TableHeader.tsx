@@ -4,11 +4,12 @@ import Icon from "../Icon";
 import { IoSearch } from "react-icons/io5";
 import { VscSettings } from "react-icons/vsc";
 import { useThemeContext } from "@/hooks/useTheme";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function TableHeader() {
   const { primaryColor, secondaryColor } = useThemeContext();
   const [isFocused, setIsFocused] = useState(false);
+  const inputRef = useRef(null);
 
   return (
     <>
@@ -55,9 +56,14 @@ export default function TableHeader() {
                 <Icon IconPassed={IoSearch} color="black" />
               </button>
             </span>
-            <div className="hidden md:block relative w-full max-w-xs">
+            <div
+              className="hidden md:block relative w-full max-w-xs cursor-text"
+              onClick={() => inputRef.current}
+            >
               <label
-                className={`absolute left-4 text-white font-semibold transition-all ${
+                htmlFor="search"
+                style={{ backgroundColor: primaryColor }}
+                className={`cursor-text absolute left-4 text-white font-semibold transition-all ${
                   isFocused
                     ? "top-[-8px] font-normal text-xs"
                     : "top-[10px] -translate-y-[5px] text-base"
@@ -66,15 +72,17 @@ export default function TableHeader() {
                 Pesquisa
               </label>
               <input
+                id="search"
+                ref={inputRef}
                 type="text"
                 style={{ borderColor: secondaryColor }}
-                className="w-full big:w-full pl-4 pr-10 h-[36px] text-white text-sm font-semibold border-2 rounded-md bg-transparent focus:outline-none"
+                className="w-full pl-4 pr-10 h-[36px] text-white text-sm font-semibold border-2 rounded-md bg-transparent focus:outline-none"
                 onFocus={() => setIsFocused(true)}
                 onBlur={(e) => setIsFocused(e.target.value !== "")}
               />
               <IoSearch
                 color={secondaryColor}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl pointer-events-none"
               />
             </div>
           </div>
