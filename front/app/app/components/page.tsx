@@ -48,10 +48,43 @@ import Icon from "@/components/Icon";
 import Rank from "@/components/rank/Rank";
 import { FaRegEye, FaRegFilePdf } from "react-icons/fa6";
 import Table from "@/components/table/Table";
+import Encryptor from "@/encryption/Encryptor";
+import Decryptor from "@/encryption/Decryptor";
 
 export default function Components() {
   const { primaryColor, secondaryColor, terciaryColor, constrastColor } =
     useThemeContext();
+
+  const usersJSON = {
+    users: [
+      {
+        id: 1,
+        nome: "Pedro Henrique Panstein",
+        frequencia: 95,
+        rank: "Ótimo",
+        pontos_positivos: "Participativo e proativo nas atividades.",
+        pontos_a_melhorar: "Precisa melhorar a pontualidade.",
+      },
+      {
+        id: 2,
+        nome: "Mateus Henrique Bosqquetti",
+        frequencia: 80,
+        rank: "Bom",
+        pontos_positivos: "Bom desempenho nas entregas.",
+        pontos_a_melhorar: "Poderia se comunicar mais com a equipe.",
+      },
+    ],
+  };
+
+  function mostrarCriptografia() {
+    const jsonEmbaralhado = Encryptor(usersJSON); //embaralha o json
+    console.log("Json embaralhado:");
+    console.log(jsonEmbaralhado);
+
+    const jsonDesembaralhado = Decryptor(jsonEmbaralhado); //desembaralha o json
+    console.log("Json Desembaralhado:");
+    console.log(jsonDesembaralhado);
+  }
 
   return (
     <Container
@@ -220,7 +253,15 @@ export default function Components() {
         <Rank type="critico" outline={false} popover={false} />
       </Box>
 
-      <Table variant="primary"/>
+      <Table variant="primary" />
+
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => mostrarCriptografia()}
+      >
+        Mostrar Criptografia
+      </Button>
     </Container>
   );
 }
