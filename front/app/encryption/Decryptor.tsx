@@ -1,4 +1,4 @@
-export function desembraçarJSON(jsonComChave: string): object {
+export default function Decryptor(jsonComChave: string): object {
   const [jsonEmbaralhado, chaveString] = jsonComChave.split("&&"); // Separa os dois elementos
   if (!jsonEmbaralhado || !chaveString)
     throw new Error("Formato inválido para decodificação!");
