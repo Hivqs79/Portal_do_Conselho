@@ -81,5 +81,3 @@ export default function Header({variant}: HeaderProps) {
         </Box>
     );
 }
-
-oi
