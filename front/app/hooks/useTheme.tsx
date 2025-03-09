@@ -5,6 +5,7 @@ import {
   ReactNode,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
 import { Theme } from "@mui/material/styles";
 import ThemeSettings from "../theme/ThemeSettings";
@@ -68,14 +69,17 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
     reloadTheme();
   };
 
-  const color: string | null = localStorage.getItem("theme");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedColor = localStorage.getItem("theme");
 
-  if (color === null) {
-    localStorage.setItem("theme", "blue");
-    setThemeColor("blue");
-  } else if (themeColor !== color) {
-    changePallete(color as PossibleColors);
-  }
+      const color: PossibleColors = (storedColor as PossibleColors) || "blue";
+
+      if (themeColor !== color) {
+        changePallete(color);
+      }
+    }
+  }, []);
 
   return (
     <ThemeContext.Provider
