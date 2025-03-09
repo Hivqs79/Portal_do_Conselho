@@ -48,6 +48,7 @@ import Icon from "@/components/Icon";
 import Rank from "@/components/rank/Rank";
 import { FaRegEye, FaRegFilePdf } from "react-icons/fa6";
 import Table from "@/components/table/Table";
+import StudentCouncilForm from "@/components/StudentCouncilForm";
 
 export default function Components() {
   const { primaryColor, secondaryColor, terciaryColor, constrastColor } =
@@ -56,9 +57,9 @@ export default function Components() {
   return (
     <Container
       maxWidth={"lg"}
-      className="flex flex-col gap-8 justify-start items-center min-h-screen"
+      className="flex flex-col gap-8 justify-center items-center min-h-screen" //change to center after 
     >
-      <Box className="flex flex-row gap-8 justify-center items-center">
+      {/* <Box className="flex flex-row gap-8 justify-center items-center">
         <Box className="flex flex-col gap-4">
           <Button variant="contained" color="primary" sx={{ width: 300 }}>
             Teste Primary
@@ -220,7 +221,8 @@ export default function Components() {
         <Rank type="critico" outline={false} popover={false} />
       </Box>
 
-      <Table variant="primary"/>
+      <Table variant="primary"/> */}
+      <StudentCouncilForm/>
     </Container>
   );
 }
