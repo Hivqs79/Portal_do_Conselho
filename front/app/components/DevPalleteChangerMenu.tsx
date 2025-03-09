@@ -6,10 +6,11 @@ import Icon from "./Icon";
 import { IoIosArrowUp } from "react-icons/io";
 
 export default function DevPalleteChangerMenu() {
+    const {backgroundColor, constrastColor, primaryColor, changeThemeMode, changePallete, getThemeMode } = useThemeContext();
     const defaultPallete = localStorage.getItem("theme") || "blue";
     const [color, setColor] = useState(defaultPallete);
+    const [isDarkMode, setIsDarkMode] = useState(getThemeMode() === "dark");
     const [open, setOpen] = useState(false);
-    const {backgroundColor, constrastColor, primaryColor, changeThemeMode, changePallete } = useThemeContext();
 
     useEffect(() => {
         setColor(defaultPallete);
@@ -41,6 +42,7 @@ export default function DevPalleteChangerMenu() {
                     <FormControlLabel
                         control={<Switch                    
                             onChange={() => changeThemeMode()}
+                            defaultChecked={isDarkMode}
                         />}
                         className="!m-0 !mt-4"
                         label={<Typography variant="sm_text_regular">Dark mode</Typography>}
