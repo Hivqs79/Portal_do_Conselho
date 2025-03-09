@@ -10,74 +10,134 @@ import { useEffect, useRef, useState } from "react";
 import Menu from "./Menu";
 
 interface HeaderProps {
-    variant?: string;
+  variant?: string;
 }
 
-export default function Header({variant}: HeaderProps) {
-    const { primaryColor, whiteColor } = useThemeContext();
-    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 640);
-    const [openMenu, setOpenMenu] = useState(false);
-    const boxRef = useRef<HTMLElement>(null);
+export default function Header({ variant }: HeaderProps) {
+  const { primaryColor, whiteColor } = useThemeContext();
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
+  const boxRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 640);
-    };
+    // Garantir que o código de acesso ao window só rode no cliente
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setIsSmallScreen(window.innerWidth < 640);
+      };
 
-        window.addEventListener("resize", handleResize);
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
-    }, []);
+      // Inicializa com o tamanho da tela atual
+      handleResize();
 
-    const handleMenuOpen = () => {
-        setOpenMenu(true);
-    };
+      // Adiciona o listener para redimensionamento da janela
+      window.addEventListener("resize", handleResize);
 
-    const handleMenuClose = () => {
-        setOpenMenu(false);
-    };
+      // Limpeza do listener ao desmontar o componente
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+  }, []); // Só executa uma vez quando o componente for montado
 
-    return (
-        <Box style={{ backgroundColor: primaryColor }} className="py-5 px-6 flex flex-row items-center justify-between">
-            <Box className="flex flex-row items-center">
-                {variant === "admin" ? (
-                    <>
-                        <Icon IconPassed={IoSettingsOutline} color={whiteColor} className="w-8 h-8" />
-                    </>
-                ) : (
-                    <>
-                        <div onClick={handleMenuOpen}>
-                            <Icon IconPassed={IoMenu} color={whiteColor} className="w-10 h-10" />
-                        </div>
-                        <Menu variant={variant} anchorEl={boxRef.current} open={openMenu} onClose={handleMenuClose} />
-                    </>
-                )}
-                <div style={{ backgroundColor: whiteColor }} className="hidden sm:block w-[1px] h-[30px] mx-4" />
-                <LogoIcon color={whiteColor} className="hidden sm:block w-8 h-8" />
-                <Typography variant="xl_text_bold" style={{ color: whiteColor }} className="hidden sm:block !ml-2">
-                    Portal do Conselho
-                </Typography>
-            </Box>
-            <Box className="flex flex-row-reverse sm:flex-row items-center">
-                {/* TODO: substitute for a component of UserImage */}
-                <div style={{ backgroundColor: whiteColor }} className="w-12 h-12 flex justify-center items-center rounded-full">
-                    <Icon IconPassed={PiUserBold} color={primaryColor} className="w-10 h-10" />
-                </div>
-                <Box className="flex flex-col justify-center items-end sm:items-start mr-2 sm:mr-0 sm:ml-2">
-                    <Typography variant={isSmallScreen ? "md_text_regular" : "xl_text_regular"} style={{ color: whiteColor }}>
-                        Usuário
-                    </Typography>
-                    <Box className="flex flex-row items-center cursor-pointer">
-                        <Icon IconPassed={LuLogOut} color={whiteColor} className="w-4 h-4 mr-1" />
-                        <Typography variant={isSmallScreen ? "xs_text_regular" : "sm_text_regular"} style={{ color: whiteColor, lineHeight: "0px", textDecoration: "underline" }}>
-                            Sair
-                        </Typography>
-                    </Box>
-                </Box>
-                <div style={{ backgroundColor: whiteColor }} className="hidden sm:block w-[1px] h-[30px] mx-4" />
-                <Icon IconPassed={VscBell} color={whiteColor} className="hidden sm:block w-8 h-8" />
-            </Box>
+  const handleMenuOpen = () => {
+    setOpenMenu(true);
+  };
+
+  const handleMenuClose = () => {
+    setOpenMenu(false);
+  };
+
+  return (
+    <Box
+      style={{ backgroundColor: primaryColor }}
+      className="py-5 px-6 flex flex-row items-center justify-between"
+    >
+      <Box className="flex flex-row items-center">
+        {variant === "admin" ? (
+          <>
+            <Icon
+              IconPassed={IoSettingsOutline}
+              color={whiteColor}
+              className="w-8 h-8"
+            />
+          </>
+        ) : (
+          <>
+            <div onClick={handleMenuOpen}>
+              <Icon
+                IconPassed={IoMenu}
+                color={whiteColor}
+                className="w-10 h-10"
+              />
+            </div>
+            <Menu
+              variant={variant}
+              anchorEl={boxRef.current}
+              open={openMenu}
+              onClose={handleMenuClose}
+            />
+          </>
+        )}
+        <div
+          style={{ backgroundColor: whiteColor }}
+          className="hidden sm:block w-[1px] h-[30px] mx-4"
+        />
+        <LogoIcon color={whiteColor} className="hidden sm:block w-8 h-8" />
+        <Typography
+          variant="xl_text_bold"
+          style={{ color: whiteColor }}
+          className="hidden sm:block !ml-2"
+        >
+          Portal do Conselho
+        </Typography>
+      </Box>
+      <Box className="flex flex-row-reverse sm:flex-row items-center">
+        {/* TODO: substitute for a component of UserImage */}
+        <div
+          style={{ backgroundColor: whiteColor }}
+          className="w-12 h-12 flex justify-center items-center rounded-full"
+        >
+          <Icon
+            IconPassed={PiUserBold}
+            color={primaryColor}
+            className="w-10 h-10"
+          />
+        </div>
+        <Box className="flex flex-col justify-center items-end sm:items-start mr-2 sm:mr-0 sm:ml-2">
+          <Typography
+            variant={isSmallScreen ? "md_text_regular" : "xl_text_regular"}
+            style={{ color: whiteColor }}
+          >
+            Usuário
+          </Typography>
+          <Box className="flex flex-row items-center cursor-pointer">
+            <Icon
+              IconPassed={LuLogOut}
+              color={whiteColor}
+              className="w-4 h-4 mr-1"
+            />
+            <Typography
+              variant={isSmallScreen ? "xs_text_regular" : "sm_text_regular"}
+              style={{
+                color: whiteColor,
+                lineHeight: "0px",
+                textDecoration: "underline",
+              }}
+            >
+              Sair
+            </Typography>
+          </Box>
         </Box>
-    );
+        <div
+          style={{ backgroundColor: whiteColor }}
+          className="hidden sm:block w-[1px] h-[30px] mx-4"
+        />
+        <Icon
+          IconPassed={VscBell}
+          color={whiteColor}
+          className="hidden sm:block w-8 h-8"
+        />
+      </Box>
+    </Box>
+  );
 }
