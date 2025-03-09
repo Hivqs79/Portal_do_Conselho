@@ -18,6 +18,13 @@ interface ThemeContextType {
   backgroundColor: string;
   whiteColor: string;
   blackColor: string;
+  colorByMode: string;
+  colorByModeSecondary: string;
+  lighterColor: (string: string) => string;
+  darkerColor: (string: string) => string;
+  lightGrayColor: string;
+  darkGrayColor: string;
+  getThemeMode: () => "dark" | "light";
 }
 
 
@@ -33,6 +40,13 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const backgroundColor = ThemeSettings.getBackgroundThemeColor();
   const whiteColor = colors.whiteColor;
   const blackColor = colors.blackColor;
+  const colorByMode = ThemeSettings.getColorByMode();
+  const colorByModeSecondary = ThemeSettings.getColorByModeSecondary();
+  const lighterColor = ThemeSettings.lighterColor;
+  const darkerColor = ThemeSettings.darkerColor;
+  const lightGrayColor = ThemeSettings.lightGrayColor();
+  const darkGrayColor = ThemeSettings.darkGrayColor();
+  const getThemeMode = () => ThemeSettings.getThemeMode();
 
   const reloadTheme = () => {
     setTheme(ThemeSettings.createThemePallete());
@@ -74,7 +88,14 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
       constrastColor, 
       backgroundColor, 
       whiteColor, 
-      blackColor 
+      blackColor,
+      colorByMode,
+      colorByModeSecondary,
+      lighterColor,
+      darkerColor,
+      lightGrayColor,
+      darkGrayColor,
+      getThemeMode,
     }}>
       {children}
     </ThemeContext.Provider>
