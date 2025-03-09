@@ -48,8 +48,12 @@ const blackColor = colors.blackColor;
 
 export default class ThemeSettings {
   public static getThemeMode(): "dark" | "light" {
-    const isDarkMode = document.documentElement.classList.contains("dark");
-    return isDarkMode ? "dark" : "light";
+    if (typeof document !== "undefined") {
+      const isDarkMode = document.documentElement.classList.contains("dark");
+      return isDarkMode ? "dark" : "light";
+    }
+
+    return "light";
   }
 
   public static changeThemeMode() {
@@ -294,21 +298,21 @@ export default class ThemeSettings {
               backgroundColor: primary_color,
               color: whiteColor,
               left: "0px !important",
-              borderRadius: "0px 0px 4px 4px",              
-              boxShadow: '2px 2px 8px 0px' + primary_color + '77',
+              borderRadius: "0px 0px 4px 4px",
+              boxShadow: "2px 2px 8px 0px" + primary_color + "77",
             },
             list: {
               padding: "16px 0px",
-            }
-          },        
-        }, 
+            },
+          },
+        },
         MuiMenuItem: {
           styleOverrides: {
             root: {
               padding: "8px 24px",
             },
           },
-        },             
+        },
       },
     });
   }
