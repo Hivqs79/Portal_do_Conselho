@@ -17,7 +17,7 @@ export default function InnerLayout({ children }: { children: ReactElement }) {
 function CoreLayout({ children }: { children: ReactElement }) {
     const { theme, backgroundColor } = useThemeContext();
     const pathname = usePathname();
-    const isLoginPage = pathname === "/login";
+    const isLoginPage = pathname?.includes("/login");
 
     return (
         <ThemeProvider theme={theme}>
