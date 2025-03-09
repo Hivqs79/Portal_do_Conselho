@@ -16,27 +16,31 @@ export default function TableHeader({ setSearchTerm }: TableHeaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="w-full flex justify-center items-center">
-      <div
-        style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
-        className="w-full max-w-[1024px] p-3 flex justify-between items-center"
-      >
-        <Typography variant="sm_text_bold" color="white">
-          Conselho
-        </Typography>
-        <div className="hidden md:flex ml-[85px] lg:ml-[13%] gap-[11.5rem] big:ml-[9.5%] big:gap-[12.8rem]">
-          <span className="hidden md:block ">
+    <thead
+      style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
+      className="max-w-[1024px]"
+    >
+      <tr className="w-full flex justify-between items-center p-3">
+        <th className="flex w-full md:w-[250px] p-0">
+          <Typography variant="sm_text_bold" color="white">
+            Turma
+          </Typography>
+        </th>
+        <th className="hidden md:flex">
+          <span className="w-[100px] p-0">
             <Typography variant="sm_text_bold" color="white">
               Data
             </Typography>
           </span>
-          <span className="hidden lg:block ">
+        </th>
+        <th className="hidden lg:flex text-center">
+          <span className="w-[100px] hidden lg:block p-0">
             <Typography variant="sm_text_bold" color="white">
               Horario
             </Typography>
           </span>
-        </div>
-        <div className="flex gap-2">
+        </th>
+        <th className="flex gap-2 md:w-[300px] justify-end">
           <button
             style={{ backgroundColor: secondaryColor }}
             className="text-black rounded-small w-[36px] md:w-[53px] h-[36px] flex justify-center items-center"
@@ -80,15 +84,15 @@ export default function TableHeader({ setSearchTerm }: TableHeaderProps) {
               className="w-full pl-4 pr-10 h-[36px] text-white text-sm font-semibold border-2 rounded-md bg-transparent focus:outline-none"
               onFocus={() => setIsFocused(true)}
               onBlur={(e) => setIsFocused(e.target.value !== "")}
-              onChange={(e) => setSearchTerm(e.target.value)} // Atualiza a pesquisa
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <IoSearch
               color={secondaryColor}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl pointer-events-none"
             />
           </div>
-        </div>
-      </div>
-    </div>
+        </th>
+      </tr>
+    </thead>
   );
 }

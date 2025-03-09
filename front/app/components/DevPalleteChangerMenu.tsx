@@ -14,8 +14,7 @@ import Icon from "./Icon";
 import { IoIosArrowUp } from "react-icons/io";
 
 export default function DevPalleteChangerMenu() {
-  const defaultPallete = localStorage.getItem("theme") || "blue";
-  const [color, setColor] = useState(defaultPallete);
+  const [color, setColor] = useState("blue");
   const [open, setOpen] = useState(false);
   const {
     backgroundColor,
@@ -26,8 +25,11 @@ export default function DevPalleteChangerMenu() {
   } = useThemeContext();
 
   useEffect(() => {
-    setColor(defaultPallete);
-  }, [defaultPallete]);
+    if (typeof window !== "undefined") {
+      const storedColor = localStorage.getItem("theme") || "blue";
+      setColor(storedColor);
+    }
+  }, []);
 
   const handleChangeColor = (event: React.ChangeEvent<HTMLInputElement>) => {
     const colorChosen = (event.target as HTMLInputElement).value as
@@ -41,6 +43,7 @@ export default function DevPalleteChangerMenu() {
       | "orange";
     setColor(colorChosen);
     changePallete(colorChosen);
+    localStorage.setItem("theme", colorChosen);
   };
 
   return (
