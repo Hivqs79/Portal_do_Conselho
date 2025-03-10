@@ -49,26 +49,30 @@ const blackColor = colors.blackColor;
 export default class ThemeSettings {
   public static getThemeMode(): "dark" | "light" {
     const mode = localStorage.getItem("mode");
-    const isDarkMode = document.documentElement.classList.contains('dark');
+    const isDarkMode = document.documentElement.classList.contains("dark");
     if (mode === "dark" && !isDarkMode) {
       this.changeThemeMode();
-      return 'dark';
+      return "dark";
     }
     if (mode === "light" && isDarkMode) {
       this.changeThemeMode();
-      return 'light';
+      return "light";
     }
-    return isDarkMode ? 'dark' : 'light';
-  };
+    return isDarkMode ? "dark" : "light";
+  }
 
   public static getColorByMode() {
     const mode = this.getThemeMode();
-    return (mode == 'light' ? BrandColors.primary_color : BrandColors.terciary_color);
+    return mode == "light"
+      ? BrandColors.primary_color
+      : BrandColors.terciary_color;
   }
 
   public static getColorByModeSecondary() {
     const mode = this.getThemeMode();
-    return (mode == 'light' ? BrandColors.primary_color : BrandColors.secondary_color);
+    return mode == "light"
+      ? BrandColors.primary_color
+      : BrandColors.secondary_color;
   }
 
   public static lightGrayColor() {
@@ -79,6 +83,10 @@ export default class ThemeSettings {
     return this.lighterColor(blackColor);
   }
 
+  public static textBlackolor() {
+    return this.darkerColor(blackColor);
+  }
+
   public static darkerColor(color: string) {
     return darken(color, 0.2);
   }
@@ -87,9 +95,9 @@ export default class ThemeSettings {
     return lighten(color, 0.2);
   }
 
-  public static getContrastThemeColor() {  
-    const mode = this.getThemeMode();  
-    return (mode == 'dark' ? whiteColor : blackColor);
+  public static getContrastThemeColor() {
+    const mode = this.getThemeMode();
+    return mode == "dark" ? whiteColor : blackColor;
   }
 
   public static changeThemeMode() {
@@ -109,7 +117,7 @@ export default class ThemeSettings {
   }
 
   public static createThemePallete() {
-    const themeBase = createTheme({});    
+    const themeBase = createTheme({});
     const primary_color = BrandColors.primary_color;
     const secondary_color = BrandColors.secondary_color;
     const terciary_color = BrandColors.terciary_color;
@@ -293,24 +301,24 @@ export default class ThemeSettings {
           styleOverrides: {
             root: {
               color: this.getContrastThemeColor(),
-              '&.Mui-focused': {
+              "&.Mui-focused": {
                 color: colorByMode,
               },
             },
           },
         },
         MuiOutlinedInput: {
-          styleOverrides: {   
-            root: {              
-              '&:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline': {
+          styleOverrides: {
+            root: {
+              "&:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline": {
                 borderColor: colorByMode,
                 borderWidth: "2px",
                 color: this.getContrastThemeColor(),
               },
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                 borderColor: colorByMode,
                 borderWidth: "2px",
-                boxShadow: '2px 2px 4px 1px' + colorByMode + '77',
+                boxShadow: "2px 2px 4px 1px" + colorByMode + "77",
               },
               color: this.getContrastThemeColor(),
             },
@@ -340,7 +348,7 @@ export default class ThemeSettings {
               padding: "8px 24px",
             },
           },
-        }, 
+        },
       },
     });
   }

@@ -3,32 +3,31 @@
 @tailwind utilities;
 
 :root {
-    --primary-color: #0050AC;
-    --background: #f5f5f5;
+  --primary-color: #0050ac;
+  --background: #f5f5f5;
 }
 
 /* Estiliza a barra de rolagem */
 ::-webkit-scrollbar {
-    width: 8px; /* Largura da barra vertical */
-    height: 8px; /* Altura da barra horizontal */
-  }
-  
-  /* Fundo da barra de rolagem */
-  ::-webkit-scrollbar-track {
-    background: var(--contrast-color); /* Fundo da barra de rolagem */
-    border-radius: 8px;
-    margin-top: 0; /* Remover margem do topo, se necessário */
-    margin-bottom: 0; /* Remover margem da parte inferior */
-  }
-  
-  /* Cor da barra de rolagem */
-  ::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 8px;
-  }
-  
-  /* Quando passa o mouse */
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-color);
-  }
-  
+  width: 8px; /* Largura da barra vertical */
+  height: 8px; /* Altura da barra horizontal */
+}
+
+/* Fundo da barra de rolagem */
+::-webkit-scrollbar-track {
+  background: var(--contrast-color); /* Fundo da barra de rolagem */
+  border-radius: 8px;
+  margin-top: 0; /* Remover margem do topo, se necessário */
+  margin-bottom: 0; /* Remover margem da parte inferior */
+}
+
+/* Cor da barra de rolagem */
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 8px;
+}
+
+/* Quando passa o mouse */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}

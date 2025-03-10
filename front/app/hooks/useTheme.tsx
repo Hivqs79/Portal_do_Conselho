@@ -40,8 +40,10 @@ interface ThemeContextType {
   colorByModeSecondary: string;
   lighterColor: (string: string) => string;
   darkerColor: (string: string) => string;
+  textBlackolor: string;
   lightGrayColor: string;
   darkGrayColor: string;
+  textDarkColor: string;
   getThemeMode: () => "dark" | "light";
 }
 
@@ -63,6 +65,8 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const colorByMode = ThemeSettings.getColorByMode();
   const colorByModeSecondary = ThemeSettings.getColorByModeSecondary();
   const darkerColor = ThemeSettings.darkerColor;
+  const textBlackolor = ThemeSettings.textBlackolor();
+  const textDarkColor = colors.textDarkColor;
   const lightGrayColor = ThemeSettings.lightGrayColor();
   const darkGrayColor = ThemeSettings.darkGrayColor();
   const getThemeMode = () => ThemeSettings.getThemeMode();
@@ -110,6 +114,7 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
         constrastColor,
         backgroundColor,
         whiteColor,
+        textDarkColor,
         blackColor,
         primaryGrayColor,
         secondaryGrayColor,
@@ -117,6 +122,7 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
         colorByModeSecondary,
         lighterColor,
         darkerColor,
+        textBlackolor,
         lightGrayColor,
         darkGrayColor,
         getThemeMode,

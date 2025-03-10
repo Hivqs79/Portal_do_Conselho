@@ -77,7 +77,7 @@ export default function Table({ variant }: TableProps) {
         >
           <div className="w-full overflow-x-auto">
             <table className="w-full max-w-[1024px]">
-              <TableHeader setSearchTerm={setSearchTerm} />
+              <TableHeader variant="Table" setSearchTerm={setSearchTerm} />
               <tbody>
                 {filteredRows.length > 0 ? (
                   filteredRows.map((row, index) => (

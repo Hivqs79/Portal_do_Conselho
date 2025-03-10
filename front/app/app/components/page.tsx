@@ -208,18 +208,20 @@ export default function Components() {
       </Box>
 
       <Box className="flex gap-4">
-        <Rank type="excellent" outline={false} popover={true} />
+        <Rank variant="default" type="excellent" outline={false} popover={true} />
 
-        <Rank type="excellent" outline={true} popover={false} />
-        <Rank type="good" outline={true} popover={false} />
-        <Rank type="average" outline={true} popover={false} />
-        <Rank type="critical" outline={true} popover={false} />
+        <Rank variant="default" type="excellent" outline={true} popover={false} />
+        <Rank variant="default" type="good" outline={true} popover={false} />
+        <Rank variant="default" type="average" outline={true} popover={false} />
+        <Rank variant="default" type="critical" outline={true} popover={false} />
 
-        <Rank type="excellent" outline={false} popover={false} />
-        <Rank type="good" outline={false} popover={false} />
-        <Rank type="average" outline={false} popover={false} />
-        <Rank type="critical" outline={false} popover={false} />
+        <Rank variant="default" type="excellent" outline={false} popover={false} />
+        <Rank variant="default" type="good" outline={false} popover={false} />
+        <Rank variant="default" type="average" outline={false} popover={false} />
+        <Rank variant="default" type="critical" outline={false} popover={false} />
       </Box>
+
+      <Table variant="primary"/>
 
       <TextareaComponent whriteOnly={false} title="Pontos Positivos" />
       <TextareaComponent whriteOnly={true} title="Pontos Positivos" content="teste" />
