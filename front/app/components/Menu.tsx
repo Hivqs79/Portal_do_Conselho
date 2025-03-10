@@ -13,6 +13,7 @@ import { TbReport } from 'react-icons/tb';
 import { SiGoogleclassroom } from 'react-icons/si';
 import { GoGraph, GoPeople } from 'react-icons/go';
 import { FaRegFilePdf } from 'react-icons/fa6';
+import Link from 'next/link';
 
 interface MenuHeaderProps {
     anchorEl: null | HTMLElement;
@@ -30,74 +31,102 @@ export default function MenuHeader({ anchorEl, open, onClose, variant }: MenuHea
             open={open}
             onClose={onClose}                        
         >
-            <Box className="">                
-                <MenuItem onClick={onClose} className="flex flex-row">                    
+            <Box className="">
+                <Link href="/">
+                    <MenuItem onClick={onClose} className="flex flex-row">                    
                         <Icon IconPassed={BsHouse} color={whiteColor} />
                         <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Principal</Typography>                    
-                </MenuItem>
-                <MenuItem onClick={onClose} className="flex flex-row">                    
+                    </MenuItem>
+                </Link>
+                <Link href="/chat">
+                    <MenuItem onClick={onClose} className="flex flex-row">                    
                         <Icon IconPassed={MdOutlineChat} color={whiteColor} />
                         <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Chat</Typography>                    
-                </MenuItem>
-                {variant === "leader" && (
-                    <MenuItem onClick={onClose} className="flex flex-row">                    
-                        <Icon IconPassed={LuPencilLine} color={whiteColor} />
-                        <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Pré-conselho</Typography>                    
                     </MenuItem>
+                </Link>
+                {variant === "leader" && (
+                    <Link href="/fill-out-pre-council">
+                        <MenuItem onClick={onClose} className="flex flex-row">                    
+                            <Icon IconPassed={LuPencilLine} color={whiteColor} />
+                            <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Pré-conselho</Typography>                    
+                        </MenuItem>
+                    </Link>
                 )}
                 {variant === "teacher" && (
-                    <MenuItem onClick={onClose} className="flex flex-row">                    
-                        <Icon IconPassed={LuPencilLine} color={whiteColor} />
-                        <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Anotações</Typography>                    
-                    </MenuItem>
+                    <Link href="/annotations">
+                        <MenuItem onClick={onClose} className="flex flex-row">                    
+                            <Icon IconPassed={LuPencilLine} color={whiteColor} />
+                            <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Anotações</Typography>                    
+                        </MenuItem>
+                    </Link>
                 )}
                 {(variant === "teacher" || variant === "pedagogic" || variant === "supervisior") && (
-                    <MenuItem onClick={onClose} className="flex flex-row">                    
-                        <Icon IconPassed={FaRegClock} color={whiteColor} />
-                        <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Histórico de conselhos</Typography>                    
-                    </MenuItem>
+                    <Link href="/council-historic">
+                        <MenuItem onClick={onClose} className="flex flex-row">                    
+                            <Icon IconPassed={FaRegClock} color={whiteColor} />
+                            <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Histórico de conselhos</Typography>                    
+                        </MenuItem>
+                    </Link>
                 )}
                 {variant === "pedagogic" && (
                     <>
-                        <MenuItem onClick={onClose} className="flex flex-row">                    
-                            <Icon IconPassed={CgFileDocument} color={whiteColor} />
-                            <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Conselho</Typography>                    
-                        </MenuItem>
-                        <MenuItem onClick={onClose} className="flex flex-row">                    
-                            <Icon IconPassed={PiBooks} color={whiteColor} />
-                            <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Pré-conselho</Typography>                    
-                        </MenuItem>
-                        <MenuItem onClick={onClose} className="flex flex-row">                    
-                            <Icon IconPassed={TbReport} color={whiteColor} />                            
-                            <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Liberação de conselho</Typography>                    
-                        </MenuItem>
-                        <MenuItem onClick={onClose} className="flex flex-row">                    
-                            <Icon IconPassed={SiGoogleclassroom} color={whiteColor} />                            
-                            <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Gerenciamento de turmas</Typography>                    
-                        </MenuItem>
-                        <MenuItem onClick={onClose} className="flex flex-row">                    
-                            <Icon IconPassed={GoPeople} color={whiteColor} />                            
-                            <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Gerenciamento de usuários</Typography>                    
-                        </MenuItem>
-                        <MenuItem onClick={onClose} className="flex flex-row">                    
-                            <Icon IconPassed={GoGraph} color={whiteColor} />                            
-                            <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Dashboard</Typography>                    
-                        </MenuItem>
-                        <MenuItem onClick={onClose} className="flex flex-row">                    
-                            <Icon IconPassed={FaRegFilePdf} color={whiteColor} />                            
-                            <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Relatórios</Typography>                    
-                        </MenuItem>
+                        <Link href="/council">
+                            <MenuItem onClick={onClose} className="flex flex-row">                    
+                                <Icon IconPassed={CgFileDocument} color={whiteColor} />
+                                <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Conselho</Typography>                    
+                            </MenuItem>
+                        </Link>
+                        <Link href="/pre-council">
+                            <MenuItem onClick={onClose} className="flex flex-row">                    
+                                <Icon IconPassed={PiBooks} color={whiteColor} />
+                                <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Pré-conselho</Typography>                    
+                            </MenuItem>
+                        </Link>
+                        <Link href="/release-council">
+                            <MenuItem onClick={onClose} className="flex flex-row">                    
+                                <Icon IconPassed={TbReport} color={whiteColor} />                            
+                                <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Liberação de conselho</Typography>                    
+                            </MenuItem>
+                        </Link>
+                        <Link href="/class-management">
+                            <MenuItem onClick={onClose} className="flex flex-row">                    
+                                <Icon IconPassed={SiGoogleclassroom} color={whiteColor} />                            
+                                <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Gerenciamento de turmas</Typography>                    
+                            </MenuItem>
+                        </Link>
+                        <Link href="/user-management">
+                            <MenuItem onClick={onClose} className="flex flex-row">                    
+                                <Icon IconPassed={GoPeople} color={whiteColor} />                            
+                                <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Gerenciamento de usuários</Typography>                    
+                            </MenuItem>
+                        </Link>
+                        <Link href="/dashboard">
+                            <MenuItem onClick={onClose} className="flex flex-row">                    
+                                <Icon IconPassed={GoGraph} color={whiteColor} />                            
+                                <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Dashboard</Typography>                    
+                            </MenuItem>
+                        </Link>
+                        <Link href="/reports">
+                            <MenuItem onClick={onClose} className="flex flex-row">                    
+                                <Icon IconPassed={FaRegFilePdf} color={whiteColor} />                            
+                                <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Relatórios</Typography>                    
+                            </MenuItem>
+                        </Link>
                     </>
                 )}
                 <div style={{ backgroundColor: whiteColor }} className="w-full h-[1px] my-4" />
-                <MenuItem onClick={onClose} className="flex flex-row">                    
+                <Link href="/support">
+                    <MenuItem onClick={onClose} className="flex flex-row">                    
                         <Icon IconPassed={BiSupport} color={whiteColor} />
                         <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Suporte</Typography>                    
-                </MenuItem>
-                <MenuItem onClick={onClose} className="flex flex-row">                    
+                    </MenuItem>
+                </Link>
+                <Link href="/configurations">
+                    <MenuItem onClick={onClose} className="flex flex-row">                    
                         <Icon IconPassed={IoSettingsOutline} color={whiteColor} />
                         <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Configurações</Typography>                    
-                </MenuItem>
+                    </MenuItem>
+                </Link>
             </Box>
         </Menu>
     );

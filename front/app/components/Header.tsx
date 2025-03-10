@@ -8,6 +8,7 @@ import { LuLogOut } from "react-icons/lu";
 import { VscBell } from "react-icons/vsc";
 import { useEffect, useRef, useState } from "react";
 import Menu from "./Menu";
+import Link from "next/link";
 
 interface HeaderProps {
   variant?: string;
@@ -82,14 +83,16 @@ export default function Header({ variant }: HeaderProps) {
           style={{ backgroundColor: whiteColor }}
           className="hidden sm:block w-[1px] h-[30px] mx-4"
         />
-        <LogoIcon color={whiteColor} className="hidden sm:block w-8 h-8" />
-        <Typography
-          variant="xl_text_bold"
-          style={{ color: whiteColor }}
-          className="hidden sm:block !ml-2"
-        >
-          Portal do Conselho
-        </Typography>
+        <Link href="/" className="flex flex-row justify-center items-center">
+          <LogoIcon color={whiteColor} className="hidden sm:block w-8 h-8" />
+          <Typography
+            variant="xl_text_bold"
+            style={{ color: whiteColor }}
+            className="hidden sm:block !ml-2"
+          >
+            Portal do Conselho
+          </Typography>
+        </Link>
       </Box>
       <Box className="flex flex-row-reverse sm:flex-row items-center">
         {/* TODO: substitute for a component of UserImage */}
