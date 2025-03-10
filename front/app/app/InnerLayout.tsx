@@ -1,30 +1,40 @@
 "use client";
 import DevPalleteChangerMenu from "@/components/DevPalleteChangerMenu";
 import Header from "@/components/Header";
+import { RoleProvider, useRoleContext } from "@/hooks/useRole";
 import { ThemeProviderContext, useThemeContext } from "@/hooks/useTheme";
 import { Box, ThemeProvider } from "@mui/material";
 import { usePathname } from "next/navigation";
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 
 export default function InnerLayout({ children }: { children: ReactElement }) {
     return  (
         <ThemeProviderContext>
-            <CoreLayout>{children}</CoreLayout>
+            <RoleProvider>
+                <CoreLayout>{children}</CoreLayout>
+            </RoleProvider>
         </ThemeProviderContext>
     );
 }
 
 function CoreLayout({ children }: { children: ReactElement }) {
     const { theme, backgroundColor } = useThemeContext();
+    const {role, setRole} = useRoleContext();
     const pathname = usePathname();
     const isLoginPage = pathname?.includes("/login");
     
+    useEffect(() => {
+      if (role === "") {
+        setRole("student");
+      }
+    }, []);
+
     return (
       <ThemeProvider theme={theme}>
         <body style={{backgroundColor: backgroundColor, overflowX: "hidden" }}>
         {!isLoginPage ? 
           <>
-            <Header variant="pedagogic" />
+            <Header variant={role} />
             <Box className="flex flex-col min-h-screen mx-[15%]">
               {children}
             </Box>
