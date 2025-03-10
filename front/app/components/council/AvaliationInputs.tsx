@@ -2,7 +2,17 @@
 import { useThemeContext } from "@/hooks/useTheme";
 import TextareaComponent from "../input/TextareaComponent";
 
-export default function AvaliationInputs() {
+interface AvaliationInputsProps {
+  wrtiteOnly: boolean;
+  Positivecontent?: string;
+  Negativecontent?: string;
+}
+
+export default function AvaliationInputs({
+  wrtiteOnly,
+  Positivecontent,
+  Negativecontent,
+}: AvaliationInputsProps) {
   const { primaryColor } = useThemeContext();
   return (
     <>
@@ -12,8 +22,8 @@ export default function AvaliationInputs() {
       >
         <TextareaComponent
           title="Pontos Positivos"
-          content="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, itaque! Exercitationem, dolore consectetur cupiditate ab maiores impedit facere ad tempore quod, odit rerum consequatur perferendis."
-          whriteOnly={false}
+          content={Positivecontent}
+          whriteOnly={wrtiteOnly}
         />
         <div
           style={{ backgroundColor: primaryColor }}
@@ -21,8 +31,8 @@ export default function AvaliationInputs() {
         ></div>
         <TextareaComponent
           title="Pontos a melhorar"
-          content="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, itaque! Exercitationem, dolore consectetur cupiditate ab maiores impedit facere ad tempore quod, odit rerum consequatur perferendis."
-          whriteOnly={false}
+          content={Negativecontent}
+          whriteOnly={wrtiteOnly}
         />
       </div>
     </>
