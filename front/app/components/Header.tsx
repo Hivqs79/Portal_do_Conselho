@@ -52,6 +52,7 @@ export default function Header({ variant }: HeaderProps) {
     <Box
       style={{ backgroundColor: primaryColor }}
       className="py-5 px-6 flex flex-row items-center justify-between"
+      ref={boxRef}
     >
       <Box className="flex flex-row items-center">
         {variant === "admin" ? (
