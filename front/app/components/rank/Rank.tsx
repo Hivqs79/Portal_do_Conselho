@@ -100,7 +100,7 @@ export default function Rank({
             transformOrigin={{ vertical: "top", horizontal: "center" }}
           >
             <div
-              className="p-4 flex flex-col space-y-2"
+              className="p-4 flex flex-col space-y-2 z-40"
               style={{ backgroundColor: hexToRGBA(secondaryColor, 0.2) }}
             >
               {(["excellent", "good", "average", "critical"] as const).map(
@@ -153,7 +153,7 @@ export default function Rank({
             transformOrigin={{ vertical: "top", horizontal: "center" }}
           >
             <div
-              className="p-4 flex flex-col space-y-2"
+              className="p-4 flex flex-col space-y-2 z-40"
               style={{ backgroundColor: hexToRGBA(secondaryColor, 0.2) }}
             >
               {(["excellent", "good", "average", "critical"] as const).map(
