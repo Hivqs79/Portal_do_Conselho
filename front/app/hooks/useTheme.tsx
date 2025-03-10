@@ -67,7 +67,9 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const darkGrayColor = ThemeSettings.darkGrayColor();
   const getThemeMode = () => ThemeSettings.getThemeMode();
 
-  const reloadTheme = () => {};
+  const reloadTheme = () => {
+    setTheme(ThemeSettings.createThemePallete());
+  };
 
   const changeThemeMode = () => {
     const mode = ThemeSettings.changeThemeMode();
