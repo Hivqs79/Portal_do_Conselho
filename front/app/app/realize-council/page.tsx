@@ -12,7 +12,7 @@ export default function RealizeCouncil() {
     <Box>
       <Title textHighlight="Conselho" text="da turma:" />
       <Box
-        className="mt-[72px] rounded-big p-2 m-0 flex justify-center items-center"
+        className=" rounded-big p-2 m-0 flex justify-center items-center"
         bgcolor={hexToRGBA(constrastColor, 0.1)}
       >
         <Box
