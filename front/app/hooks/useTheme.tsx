@@ -36,6 +36,13 @@ interface ThemeContextType {
   blackColor: string;
   primaryGrayColor: string;
   secondaryGrayColor: string;
+  colorByMode: string;
+  colorByModeSecondary: string;
+  lighterColor: (string: string) => string;
+  darkerColor: (string: string) => string;
+  lightGrayColor: string;
+  darkGrayColor: string;
+  getThemeMode: () => "dark" | "light";
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -52,13 +59,19 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const blackColor = colors.blackColor;
   const primaryGrayColor = colors.primaryGrayColor;
   const secondaryGrayColor = colors.secondaryGrayColor;
+  const lighterColor = ThemeSettings.lighterColor;
+  const colorByMode = ThemeSettings.getColorByMode();
+  const colorByModeSecondary = ThemeSettings.getColorByModeSecondary();
+  const darkerColor = ThemeSettings.darkerColor;
+  const lightGrayColor = ThemeSettings.lightGrayColor();
+  const darkGrayColor = ThemeSettings.darkGrayColor();
+  const getThemeMode = () => ThemeSettings.getThemeMode();
 
-  const reloadTheme = () => {
-    setTheme(ThemeSettings.createThemePallete());
-  };
+  const reloadTheme = () => {};
 
   const changeThemeMode = () => {
-    ThemeSettings.changeThemeMode();
+    const mode = ThemeSettings.changeThemeMode();
+    localStorage.setItem("mode", mode ? "dark" : "light");
     reloadTheme();
   };
 
@@ -98,6 +111,13 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
         blackColor,
         primaryGrayColor,
         secondaryGrayColor,
+        colorByMode,
+        colorByModeSecondary,
+        lighterColor,
+        darkerColor,
+        lightGrayColor,
+        darkGrayColor,
+        getThemeMode,
       }}
     >
       {children}

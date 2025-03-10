@@ -2,7 +2,8 @@
 import DevPalleteChangerMenu from "@/components/DevPalleteChangerMenu";
 import Header from "@/components/Header";
 import { ThemeProviderContext, useThemeContext } from "@/hooks/useTheme";
-import { ThemeProvider } from "@mui/material";
+import { Box, ThemeProvider } from "@mui/material";
+import { usePathname } from "next/navigation";
 import { ReactElement, useEffect } from "react";
 
 export default function InnerLayout({ children }: { children: ReactElement }) {
@@ -15,6 +16,8 @@ export default function InnerLayout({ children }: { children: ReactElement }) {
 
 function CoreLayout({ children }: { children: ReactElement }) {
   const { theme, backgroundColor, primaryColor } = useThemeContext();
+  const pathname = usePathname();
+  const isLoginPage = pathname?.includes("/login");
 
   useEffect(() => {
     document.documentElement.style.setProperty("--primary-color", primaryColor);
@@ -24,8 +27,16 @@ function CoreLayout({ children }: { children: ReactElement }) {
   return (
     <ThemeProvider theme={theme}>
       <body style={{ backgroundColor: backgroundColor, overflowX: "hidden" }}>
-        <Header variant="pedagogic" />
-        {children}
+        {!isLoginPage ? (
+          <>
+            <Header variant="pedagogic" />
+            <Box className="flex flex-col min-h-screen mx-[15%]">
+              {children}
+            </Box>
+          </>
+        ) : (
+          <>{children}</>
+        )}
         <DevPalleteChangerMenu />
       </body>
     </ThemeProvider>

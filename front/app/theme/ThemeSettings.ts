@@ -48,12 +48,52 @@ const blackColor = colors.blackColor;
 
 export default class ThemeSettings {
   public static getThemeMode(): "dark" | "light" {
-    if (typeof document !== "undefined") {
-      const isDarkMode = document.documentElement.classList.contains("dark");
-      return isDarkMode ? "dark" : "light";
+    const mode = localStorage.getItem("mode");
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    if (mode === "dark" && !isDarkMode) {
+      this.changeThemeMode();
+      return 'dark';
     }
+    if (mode === "light" && isDarkMode) {
+      this.changeThemeMode();
+      return 'light';
+    }
+    return isDarkMode ? 'dark' : 'light';
+  };
 
-    return "light";
+  public static changeThemeMode() {
+    return document.documentElement.classList.toggle('dark'); 
+  };
+
+  public static getColorByMode() {
+    const mode = this.getThemeMode();
+    return (mode == 'light' ? BrandColors.primary_color : BrandColors.terciary_color);
+  }
+
+  public static getColorByModeSecondary() {
+    const mode = this.getThemeMode();
+    return (mode == 'light' ? BrandColors.primary_color : BrandColors.secondary_color);
+  }
+
+  public static lightGrayColor() {
+    return this.darkerColor(whiteColor);
+  }
+
+  public static darkGrayColor() {
+    return this.lighterColor(blackColor);
+  }
+
+  public static darkerColor(color: string) {
+    return darken(color, 0.2);
+  }
+
+  public static lighterColor(color: string) {
+    return lighten(color, 0.2);
+  }
+
+  public static getContrastThemeColor() {  
+    const mode = this.getThemeMode();  
+    return (mode == 'dark' ? whiteColor : blackColor);
   }
 
   public static changeThemeMode() {
@@ -78,11 +118,11 @@ export default class ThemeSettings {
   }
 
   public static createThemePallete() {
-    const themeBase = createTheme({});
-    const mode = this.getThemeMode();
+    const themeBase = createTheme({});    
     const primary_color = BrandColors.primary_color;
     const secondary_color = BrandColors.secondary_color;
     const terciary_color = BrandColors.terciary_color;
+    const colorByMode = this.getColorByMode();
 
     return createTheme(themeBase, {
       breakpoints: {
@@ -97,22 +137,22 @@ export default class ThemeSettings {
       palette: {
         primary: {
           main: primary_color,
-          light: lighten(primary_color, 0.2),
-          dark: darken(primary_color, 0.2),
+          light: this.lighterColor(primary_color),
+          dark: this.darkerColor(primary_color),
           contrastText: this.getBetterContrast(primary_color),
         },
         secondary: {
           main: secondary_color,
-          light: lighten(secondary_color, 0.2),
-          dark: darken(secondary_color, 0.2),
+          light: this.lighterColor(secondary_color),
+          dark: this.darkerColor(secondary_color),
           contrastText: this.getBetterContrast(secondary_color),
         },
         terciary: themeBase.palette.augmentColor({
           name: "terciary",
           color: {
             main: terciary_color,
-            light: lighten(terciary_color, 0.2),
-            dark: darken(terciary_color, 0.2),
+            light: this.lighterColor(terciary_color),
+            dark: this.darkerColor(terciary_color),
             contrastText: this.getBetterContrast(terciary_color),
           },
         }),
@@ -262,32 +302,29 @@ export default class ThemeSettings {
           styleOverrides: {
             root: {
               color: this.getContrastThemeColor(),
-              "&.Mui-focused": {
-                color: mode == "light" ? primary_color : terciary_color,
+              '&.Mui-focused': {
+                color: colorByMode,
               },
             },
           },
         },
         MuiOutlinedInput: {
-          styleOverrides: {
-            root: {
-              "&:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline": {
-                borderColor: mode == "light" ? primary_color : terciary_color,
+          styleOverrides: {   
+            root: {              
+              '&:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline': {
+                borderColor: colorByMode,
                 borderWidth: "2px",
                 color: this.getContrastThemeColor(),
               },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: mode == "light" ? primary_color : terciary_color,
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: colorByMode,
                 borderWidth: "2px",
-                boxShadow:
-                  "2px 2px 4px 1px" +
-                  (mode == "light" ? primary_color : terciary_color) +
-                  "77",
+                boxShadow: '2px 2px 4px 1px' + colorByMode + '77',
               },
               color: this.getContrastThemeColor(),
             },
             notchedOutline: {
-              borderColor: mode == "light" ? primary_color : terciary_color,
+              borderColor: colorByMode,
               borderWidth: "2px",
             },
           },
@@ -312,7 +349,7 @@ export default class ThemeSettings {
               padding: "8px 24px",
             },
           },
-        },
+        }, 
       },
     });
   }
