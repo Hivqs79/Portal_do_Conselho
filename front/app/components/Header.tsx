@@ -8,6 +8,7 @@ import { LuLogOut } from "react-icons/lu";
 import { VscBell } from "react-icons/vsc";
 import { useEffect, useRef, useState } from "react";
 import Menu from "./Menu";
+import Link from "next/link";
 
 interface HeaderProps {
   variant?: string;
@@ -20,24 +21,19 @@ export default function Header({ variant }: HeaderProps) {
   const boxRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // Garantir que o código de acesso ao window só rode no cliente
     if (typeof window !== "undefined") {
       const handleResize = () => {
         setIsSmallScreen(window.innerWidth < 640);
       };
 
-      // Inicializa com o tamanho da tela atual
       handleResize();
-
-      // Adiciona o listener para redimensionamento da janela
       window.addEventListener("resize", handleResize);
 
-      // Limpeza do listener ao desmontar o componente
       return () => {
         window.removeEventListener("resize", handleResize);
       };
     }
-  }, []); // Só executa uma vez quando o componente for montado
+  }, []);
 
   const handleMenuOpen = () => {
     setOpenMenu(true);
@@ -50,7 +46,8 @@ export default function Header({ variant }: HeaderProps) {
   return (
     <Box
       style={{ backgroundColor: primaryColor }}
-      className="py-5 px-6 flex flex-row items-center justify-between"
+      className="relative py-5 px-6 flex flex-row items-center justify-between z-50"
+      ref={boxRef}
     >
       <Box className="flex flex-row items-center">
         {variant === "admin" ? (
@@ -82,14 +79,16 @@ export default function Header({ variant }: HeaderProps) {
           style={{ backgroundColor: whiteColor }}
           className="hidden sm:block w-[1px] h-[30px] mx-4"
         />
-        <LogoIcon color={whiteColor} className="hidden sm:block w-8 h-8" />
-        <Typography
-          variant="xl_text_bold"
-          style={{ color: whiteColor }}
-          className="hidden sm:block !ml-2"
-        >
-          Portal do Conselho
-        </Typography>
+        <Link href="/" className="flex flex-row justify-center items-center">
+          <LogoIcon color={whiteColor} className="hidden sm:block w-8 h-8" />
+          <Typography
+            variant="xl_text_bold"
+            style={{ color: whiteColor }}
+            className="hidden sm:block !ml-2"
+          >
+            Portal do Conselho
+          </Typography>
+        </Link>
       </Box>
       <Box className="flex flex-row-reverse sm:flex-row items-center">
         {/* TODO: substitute for a component of UserImage */}

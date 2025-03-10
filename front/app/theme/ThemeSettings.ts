@@ -47,11 +47,16 @@ const whiteColor = colors.whiteColor;
 const blackColor = colors.blackColor;
 
 export default class ThemeSettings {
+
   public static getThemeMode(): "dark" | "light" {
+    if (typeof window === "undefined") {
+      return 'light';
+    }
+    
     const mode = localStorage.getItem("mode");
     const isDarkMode = document.documentElement.classList.contains('dark');
     if (mode === "dark" && !isDarkMode) {
-      this.changeThemeMode();
+      this.changeThemeMode();      
       return 'dark';
     }
     if (mode === "light" && isDarkMode) {
@@ -341,6 +346,16 @@ export default class ThemeSettings {
             },
           },
         }, 
+        MuiModal: {
+          styleOverrides: {
+            root: {
+              zIndex: 25,
+            }, 
+            backdrop: {
+              zIndex: 30,
+            }           
+          }
+        },
       },
     });
   }

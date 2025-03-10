@@ -15,17 +15,17 @@ import { IoIosArrowUp } from "react-icons/io";
 
 export default function DevPalleteChangerMenu() {
     const {backgroundColor, constrastColor, primaryColor, changeThemeMode, changePallete, getThemeMode } = useThemeContext();
-    const defaultPallete = localStorage.getItem("theme") || "blue";
-    const [color, setColor] = useState(defaultPallete);
+
+    const [color, setColor] = useState("blue");
     const [isDarkMode, setIsDarkMode] = useState(getThemeMode() === "dark");
     const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedColor = localStorage.getItem("theme") || "blue";
-      setColor(storedColor);
-    }
-  }, []);
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const storedColor = localStorage.getItem("theme") || "blue";
+            setColor(storedColor);
+        }
+    }, []);
 
     const handleChangeColor = (event: React.ChangeEvent<HTMLInputElement>) => {
         const colorChosen = (event.target as HTMLInputElement).value as "purple" | "gray" | "blue" | "pink" | "yellow" | "red" | "green" | "orange";
@@ -52,8 +52,8 @@ export default function DevPalleteChangerMenu() {
                     </RadioGroup>
                     <FormControlLabel
                         control={<Switch                    
-                            onChange={() => changeThemeMode()}
-                            defaultChecked={isDarkMode}
+                            onChange={() => {changeThemeMode();setIsDarkMode(!isDarkMode)}}
+                            checked={isDarkMode}
                         />}
                         className="!m-0 !mt-4"
                         label={<Typography variant="sm_text_regular">Dark mode</Typography>}

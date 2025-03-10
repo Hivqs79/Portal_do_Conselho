@@ -1,3 +1,4 @@
+"use client";
 import {
   createContext,
   useContext,
@@ -59,9 +60,9 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const blackColor = colors.blackColor;
   const primaryGrayColor = colors.primaryGrayColor;
   const secondaryGrayColor = colors.secondaryGrayColor;
-  const lighterColor = ThemeSettings.lighterColor;
   const colorByMode = ThemeSettings.getColorByMode();
   const colorByModeSecondary = ThemeSettings.getColorByModeSecondary();
+  const lighterColor = (color: string) => ThemeSettings.lighterColor(color);
   const darkerColor = ThemeSettings.darkerColor;
   const lightGrayColor = ThemeSettings.lightGrayColor();
   const darkGrayColor = ThemeSettings.darkGrayColor();
@@ -97,31 +98,29 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        setTheme,
-        reloadTheme,
-        changeThemeMode,
-        changePallete,
-        primaryColor,
-        secondaryColor,
-        terciaryColor,
-        constrastColor,
-        backgroundColor,
-        whiteColor,
-        blackColor,
-        primaryGrayColor,
-        secondaryGrayColor,
-        colorByMode,
-        colorByModeSecondary,
-        lighterColor,
-        darkerColor,
-        lightGrayColor,
-        darkGrayColor,
-        getThemeMode,
-      }}
-    >
+    <ThemeContext.Provider value={{ 
+      theme, 
+      setTheme, 
+      reloadTheme, 
+      changeThemeMode, 
+      changePallete, 
+      primaryColor, 
+      secondaryColor,
+      terciaryColor, 
+      constrastColor, 
+      backgroundColor, 
+      whiteColor, 
+      blackColor,
+      primaryGrayColor,
+      secondaryGrayColor,
+      colorByMode,
+      colorByModeSecondary,
+      lighterColor,
+      darkerColor,
+      lightGrayColor,
+      darkGrayColor,
+      getThemeMode,
+    }}>
       {children}
     </ThemeContext.Provider>
   );
