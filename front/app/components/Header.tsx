@@ -2,7 +2,7 @@ import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Typography } from "@mui/material";
 import LogoIcon from "./LogoIcon";
 import Icon from "./Icon";
-import { IoMenu, IoSettingsOutline } from "react-icons/io5";
+import { IoClose, IoMenu, IoSettingsOutline } from "react-icons/io5";
 import { PiUserBold } from "react-icons/pi";
 import { LuLogOut } from "react-icons/lu";
 import { VscBell } from "react-icons/vsc";
@@ -35,14 +35,6 @@ export default function Header({ variant }: HeaderProps) {
     }
   }, []);
 
-  const handleMenuOpen = () => {
-    setOpenMenu(true);
-  };
-
-  const handleMenuClose = () => {
-    setOpenMenu(false);
-  };
-
   return (
     <Box
       style={{ backgroundColor: primaryColor }}
@@ -60,18 +52,18 @@ export default function Header({ variant }: HeaderProps) {
           </>
         ) : (
           <>
-            <div onClick={handleMenuOpen}>
+            <div onClick={() => setOpenMenu(!openMenu)}>
               <Icon
-                IconPassed={IoMenu}
+                IconPassed={ openMenu ? IoClose : IoMenu}
                 color={whiteColor}
-                className="w-10 h-10"
+                className="w-10 h-10"                
               />
             </div>
             <Menu
               variant={variant}
               anchorEl={boxRef.current}
               open={openMenu}
-              onClose={handleMenuClose}
+              onClose={() => setOpenMenu(false)}
             />
           </>
         )}

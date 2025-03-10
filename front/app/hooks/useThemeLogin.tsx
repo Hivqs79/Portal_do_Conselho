@@ -4,8 +4,8 @@ import { createContext, useContext } from "react";
 
 interface ThemeLoginContextType {
     mode: string;
-    BlueTextField: any;
-    BlueButton: any;
+    BlueTextField: typeof BlueTextField;
+    BlueButton: typeof BlueButton;
     bluePrimary: string;
     blueSecondary: string;
     blueTerciary: string;

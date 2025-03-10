@@ -33,7 +33,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
     if (role === "") {
       setRole("student");
     }
-  }, []);
+  }, [role, setRole]);
 
   return (
     <ThemeProvider theme={theme}>
