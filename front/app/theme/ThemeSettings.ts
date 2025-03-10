@@ -47,7 +47,9 @@ const whiteColor = colors.whiteColor;
 const blackColor = colors.blackColor;
 
 export default class ThemeSettings {
+
   public static getThemeMode(): "dark" | "light" {
+    
     const mode = localStorage.getItem("mode");
     const isDarkMode = document.documentElement.classList.contains("dark");
     if (mode === "dark" && !isDarkMode) {
@@ -348,6 +350,16 @@ export default class ThemeSettings {
               padding: "8px 24px",
             },
           },
+        }, 
+        MuiModal: {
+          styleOverrides: {
+            root: {
+              zIndex: 25,
+            }, 
+            backdrop: {
+              zIndex: 30,
+            }           
+          }
         },
       },
     });

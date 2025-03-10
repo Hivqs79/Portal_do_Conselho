@@ -1,3 +1,4 @@
+"use client";
 import {
   createContext,
   useContext,
@@ -61,9 +62,9 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const blackColor = colors.blackColor;
   const primaryGrayColor = colors.primaryGrayColor;
   const secondaryGrayColor = colors.secondaryGrayColor;
-  const lighterColor = ThemeSettings.lighterColor;
   const colorByMode = ThemeSettings.getColorByMode();
   const colorByModeSecondary = ThemeSettings.getColorByModeSecondary();
+  const lighterColor = (color: string) => ThemeSettings.lighterColor(color);
   const darkerColor = ThemeSettings.darkerColor;
   const textBlackolor = ThemeSettings.textBlackolor();
   const textDarkColor = colors.textDarkColor;
