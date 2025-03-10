@@ -361,6 +361,13 @@ export default class ThemeSettings {
             }           
           }
         },
+        MuiPaper: {
+          styleOverrides: {
+            root: {
+              zIndex: 40,
+            },         
+          }
+        },
       },
     });
   }
