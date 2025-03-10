@@ -49,6 +49,7 @@ import Rank from "@/components/rank/Rank";
 import { FaRegEye, FaRegFilePdf } from "react-icons/fa6";
 import Table from "@/components/table/Table";
 import Textarea from "@/components/input/Textarea";
+import TextareaComponent from "@/components/input/TextareaComponent";
 
 export default function Components() {
   const { primaryColor, secondaryColor, terciaryColor, constrastColor } =
@@ -221,16 +222,8 @@ export default function Components() {
         <Rank type="critico" outline={false} popover={false} />
       </Box>
 
-      <Table variant="primary" />
-      <Box className="flex w-full gap-8">
-        <Textarea title="Pontos Positivos" content="" />
-        <Textarea title="Pontos a Melhorar" content="" />
-      </Box>
-
-      <Box className="flex w-full gap-8">
-        <Textarea title="Pontos Positivos" content="A Rows ta 8, isso pode mudar, ou seja a altura Y pode mudar   by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like." />
-        <Textarea title="Pontos a Melhorar" content="A Rows ta 8, isso pode mudar, ou seja a altura Y pode mudar   by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like." />
-      </Box>
+      <TextareaComponent whriteOnly={false} title="Pontos Positivos" />
+      <TextareaComponent whriteOnly={true} title="Pontos Positivos" />
     </Container>
   );
 }
