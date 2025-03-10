@@ -13,13 +13,13 @@ export default function TextareaComponent({
   title,
   content,
 }: TextareaProps) {
-  const { primaryColor, constrastColor, backgroundColor } = useThemeContext();
+  const { primaryColor, constrastColor, backgroundColor, colorByModeSecondary } = useThemeContext();
 
   if (whriteOnly) {
     return (
       <>
         <div className="w-full">
-          <Typography variant="lg_text_bold" color="primary">
+          <Typography variant="lg_text_bold" color={colorByModeSecondary}>
             {title}
           </Typography>
           <div
@@ -46,7 +46,7 @@ export default function TextareaComponent({
   return (
     <>
       <div className="w-full">
-        <Typography variant="lg_text_bold" color="primary">
+        <Typography variant="lg_text_bold" color={colorByModeSecondary}>
           {title}
         </Typography>
         <div
@@ -57,7 +57,7 @@ export default function TextareaComponent({
           className="rounded-normal p-1 mt-3 min-h-[200px] "
         >
           <textarea
-            className="w-full min-h-[200px] pl-3 pt-2 text-[16px] outline-none resize-none bg-transparent"
+            className="w-full min-h-[200px] pl-3 pr-1 pt-2 text-[16px] outline-none resize-none bg-transparent"
             defaultValue={content}
             style={{
               color: constrastColor,
