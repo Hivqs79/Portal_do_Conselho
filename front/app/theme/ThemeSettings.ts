@@ -346,6 +346,16 @@ export default class ThemeSettings {
             },
           },
         }, 
+        MuiModal: {
+          styleOverrides: {
+            root: {
+              zIndex: 25,
+            }, 
+            backdrop: {
+              zIndex: 30,
+            }           
+          }
+        },
       },
     });
   }

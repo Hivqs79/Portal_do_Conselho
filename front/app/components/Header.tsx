@@ -21,24 +21,19 @@ export default function Header({ variant }: HeaderProps) {
   const boxRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // Garantir que o código de acesso ao window só rode no cliente
     if (typeof window !== "undefined") {
       const handleResize = () => {
         setIsSmallScreen(window.innerWidth < 640);
       };
 
-      // Inicializa com o tamanho da tela atual
       handleResize();
-
-      // Adiciona o listener para redimensionamento da janela
       window.addEventListener("resize", handleResize);
 
-      // Limpeza do listener ao desmontar o componente
       return () => {
         window.removeEventListener("resize", handleResize);
       };
     }
-  }, []); // Só executa uma vez quando o componente for montado
+  }, []);
 
   const handleMenuOpen = () => {
     setOpenMenu(true);
@@ -51,7 +46,7 @@ export default function Header({ variant }: HeaderProps) {
   return (
     <Box
       style={{ backgroundColor: primaryColor }}
-      className="py-5 px-6 flex flex-row items-center justify-between"
+      className="relative py-5 px-6 flex flex-row items-center justify-between z-50"
       ref={boxRef}
     >
       <Box className="flex flex-row items-center">

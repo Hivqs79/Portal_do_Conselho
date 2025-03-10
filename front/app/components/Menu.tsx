@@ -1,5 +1,5 @@
 import { useThemeContext } from '@/hooks/useTheme';
-import { Box, Collapse, Fade, Menu, MenuItem, Typography } from '@mui/material';
+import { Box, Menu, MenuItem, Slide, Typography } from '@mui/material';
 import Icon from './Icon';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { BsHouse } from 'react-icons/bs';
@@ -38,9 +38,20 @@ export default function MenuHeader({ anchorEl, open, onClose, variant }: MenuHea
                 vertical: 'top',
                 horizontal: 'left',
             }}           
-            TransitionComponent={Collapse}                                     
+            TransitionComponent={Slide}
+            TransitionProps={{
+                timeout: 500,
+            }}       
+            slotProps={{
+                paper: {
+                    style: {
+                        zIndex: 40,
+                    },
+                }
+            }}         
+                                 
         >
-            <Collapse in={open} orientation='vertical'>
+            <Box>
                 <Link href="/">
                     <MenuItem onClick={onClose} className="flex flex-row">                    
                         <Icon IconPassed={BsHouse} color={whiteColor} />
@@ -136,7 +147,7 @@ export default function MenuHeader({ anchorEl, open, onClose, variant }: MenuHea
                         <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Configurações</Typography>                    
                     </MenuItem>
                 </Link>
-            </Collapse>
+            </Box>
         </Menu>
     );
 }
