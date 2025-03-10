@@ -209,17 +209,17 @@ export default function Components() {
       </Box>
 
       <Box className="flex gap-4">
-        <Rank type="otimo" outline={false} popover={true} />
+        <Rank type="excellent" outline={false} popover={true} />
 
-        <Rank type="otimo" outline={true} popover={false} />
-        <Rank type="bom" outline={true} popover={false} />
-        <Rank type="mediano" outline={true} popover={false} />
-        <Rank type="critico" outline={true} popover={false} />
+        <Rank type="excellent" outline={true} popover={false} />
+        <Rank type="good" outline={true} popover={false} />
+        <Rank type="average" outline={true} popover={false} />
+        <Rank type="critical" outline={true} popover={false} />
 
-        <Rank type="otimo" outline={false} popover={false} />
-        <Rank type="bom" outline={false} popover={false} />
-        <Rank type="mediano" outline={false} popover={false} />
-        <Rank type="critico" outline={false} popover={false} />
+        <Rank type="excellent" outline={false} popover={false} />
+        <Rank type="good" outline={false} popover={false} />
+        <Rank type="average" outline={false} popover={false} />
+        <Rank type="critical" outline={false} popover={false} />
       </Box>
 
       <TextareaComponent whriteOnly={false} title="Pontos Positivos" />
