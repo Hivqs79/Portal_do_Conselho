@@ -61,10 +61,6 @@ export default class ThemeSettings {
     return isDarkMode ? 'dark' : 'light';
   };
 
-  public static changeThemeMode() {
-    return document.documentElement.classList.toggle('dark'); 
-  };
-
   public static getColorByMode() {
     const mode = this.getThemeMode();
     return (mode == 'light' ? BrandColors.primary_color : BrandColors.terciary_color);
@@ -98,11 +94,6 @@ export default class ThemeSettings {
 
   public static changeThemeMode() {
     return document.documentElement.classList.toggle("dark");
-  }
-
-  public static getContrastThemeColor() {
-    const mode = this.getThemeMode();
-    return mode == "dark" ? whiteColor : blackColor;
   }
 
   public static getBackgroundThemeColor() {
