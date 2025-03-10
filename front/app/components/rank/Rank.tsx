@@ -18,14 +18,14 @@ interface RankProps {
   popover: boolean;
 }
 
-export default function Rank({
-  variant,
-  type,
-  outline,
-  popover,
-}: RankProps) {
-  const { primaryGrayColor, constrastColor, secondaryColor, whiteColor, secondaryGrayColor } =
-    useThemeContext();
+export default function Rank({ variant, type, outline, popover }: RankProps) {
+  const {
+    primaryGrayColor,
+    constrastColor,
+    secondaryColor,
+    whiteColor,
+    secondaryGrayColor,
+  } = useThemeContext();
 
   const [selectedRank, setSelectedRank] = useState(type);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -84,7 +84,11 @@ export default function Rank({
         <>
           <div className="inline-flex justify-center items-center gap-3">
             <span
-              style={{ borderColor: whiteColor, color: constrastColor, backgroundColor: secondaryGrayColor }}
+              style={{
+                borderColor: whiteColor,
+                color: constrastColor,
+                backgroundColor: secondaryGrayColor,
+              }}
               className="cursor-pointer flex items-center gap-1 border-[2px] rounded-normal"
               onClick={handleClick}
             >
@@ -128,7 +132,7 @@ export default function Rank({
     if (popover) {
       return (
         <>
-          <div className="inline-flex justify-center items-center gap-3">
+          <div className="inline-flex justify-start items-center flex-wrap gap-3">
             <Typography
               variant="lg_text_bold"
               style={{ color: constrastColor }}
@@ -174,6 +178,7 @@ export default function Rank({
       );
     }
 
+    // Se o rank inicial for "none", retorna esse valor, mas não permite a seleção de "none"
     return (
       <div className="inline-flex items-center gap-2">{rank[selectedRank]}</div>
     );

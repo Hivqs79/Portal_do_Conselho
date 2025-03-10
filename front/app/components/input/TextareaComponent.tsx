@@ -6,14 +6,21 @@ interface TextareaProps {
   whriteOnly: boolean;
   title: string;
   content?: string;
+  placeholder?: string;
 }
 
 export default function TextareaComponent({
   whriteOnly,
   title,
   content,
+  placeholder,
 }: TextareaProps) {
-  const { primaryColor, constrastColor, backgroundColor, colorByModeSecondary } = useThemeContext();
+  const {
+    primaryColor,
+    constrastColor,
+    backgroundColor,
+    colorByModeSecondary,
+  } = useThemeContext();
 
   if (whriteOnly) {
     return (
@@ -33,6 +40,7 @@ export default function TextareaComponent({
               className="cursor-default w-full min-h-[200px] pl-3 pt-2 text-[16px] outline-none resize-none bg-transparent"
               readOnly
               defaultValue={content}
+              placeholder={placeholder}
               style={{
                 color: constrastColor,
               }}
@@ -59,6 +67,7 @@ export default function TextareaComponent({
           <textarea
             className="w-full min-h-[200px] pl-3 pr-1 pt-2 text-[16px] outline-none resize-none bg-transparent"
             defaultValue={content}
+            placeholder={placeholder}
             style={{
               color: constrastColor,
             }}

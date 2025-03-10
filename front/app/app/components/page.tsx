@@ -61,7 +61,7 @@ export default function Components() {
       maxWidth={"lg"}
       className="flex flex-col gap-8 justify-center items-center min-h-screen" //change to center after
     >
-      {/* <Box className="flex flex-row gap-8 justify-center items-center">
+      <Box className="flex flex-row gap-8 justify-center items-center">
         <Box className="flex flex-col gap-4">
           <Button variant="contained" color="primary" sx={{ width: 300 }}>
             Teste Primary
@@ -223,7 +223,7 @@ export default function Components() {
         <Rank variant="default" type="critical" outline={false} popover={false} />
       </Box>
 
-      <Table variant="primary"/> */}
+      <Table variant="primary"/>
       <Table variant="primary" />
 
       <TextareaComponent whriteOnly={false} title="Pontos Positivos" />
