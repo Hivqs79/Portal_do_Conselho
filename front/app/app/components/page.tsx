@@ -50,6 +50,7 @@ import { FaRegEye, FaRegFilePdf } from "react-icons/fa6";
 import Table from "@/components/table/Table";
 import TextareaComponent from "@/components/input/TextareaComponent";
 import Photo from "@/components/profile/Photo";
+import AvaliationInputs from "@/components/council/AvaliationInputs";
 
 export default function Components() {
   const { primaryColor, secondaryColor, terciaryColor, constrastColor } =
@@ -58,9 +59,9 @@ export default function Components() {
   return (
     <Container
       maxWidth={"lg"}
-      className="flex flex-col gap-8 justify-center items-center min-h-screen"
+      className="flex flex-col gap-8 justify-start items-center min-h-screen"
     >
-      {/* <Box className="flex flex-row gap-8 justify-center items-center">
+      <Box className="flex flex-row gap-8 justify-center items-center">
         <Box className="flex flex-col gap-4">
           <Button variant="contained" color="primary" sx={{ width: 300 }}>
             Teste Primary
@@ -225,9 +226,12 @@ export default function Components() {
       <Table variant="primary"/>
 
       <TextareaComponent whriteOnly={false} title="Pontos Positivos" />
-      <TextareaComponent whriteOnly={true} title="Pontos Positivos" content="teste" /> */}
-      <Photo photo={""} rounded={false} classname="w-full h-full" />
-      <Photo photo={""} rounded={true} classname="w-full h-full" />
+      <TextareaComponent whriteOnly={true} title="Pontos Positivos" content="teste" />
+
+      <AvaliationInputs wrtiteOnly={false} Negativecontent="teste" Positivecontent="teste"/>
+
+      <Photo photo={""} rounded={false} classname="w-20 h-20" />
+      <Photo photo={""} rounded={true} classname="w-20 h-20" />
     </Container>
   );
 }
