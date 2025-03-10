@@ -223,7 +223,7 @@ export default function Components() {
       </Box>
 
       <TextareaComponent whriteOnly={false} title="Pontos Positivos" />
-      <TextareaComponent whriteOnly={true} title="Pontos Positivos" />
+      <TextareaComponent whriteOnly={true} title="Pontos Positivos" content="teste" />
     </Container>
   );
 }

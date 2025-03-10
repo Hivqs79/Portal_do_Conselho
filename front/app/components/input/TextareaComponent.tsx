@@ -27,11 +27,12 @@ export default function TextareaComponent({
               background: backgroundColor,
               border: `2px solid ${primaryColor}`,
             }}
-            className="rounded-normal mt-3"
+            className="rounded-normal p-1 mt-3 min-h-[200px] "
           >
             <textarea
-              className="cursor-default w-full p-[8px] text-[16px] outline-none resize-none bg-transparent"
+              className="cursor-default w-full min-h-[200px] pl-3 pt-2 text-[16px] outline-none resize-none bg-transparent"
               readOnly
+              defaultValue={content}
               style={{
                 color: constrastColor,
               }}
@@ -53,10 +54,11 @@ export default function TextareaComponent({
             background: backgroundColor,
             border: `2px solid ${primaryColor}`,
           }}
-          className="rounded-normal mt-3 min-h-[200px]"
+          className="rounded-normal p-1 mt-3 min-h-[200px] "
         >
           <textarea
-            className="w-full min-h-[200px] p-[8px] text-[16px] outline-none resize-none bg-transparent"
+            className="w-full min-h-[200px] pl-3 pt-2 text-[16px] outline-none resize-none bg-transparent"
+            defaultValue={content}
             style={{
               color: constrastColor,
             }}
