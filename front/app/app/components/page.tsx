@@ -48,7 +48,6 @@ import Icon from "@/components/Icon";
 import Rank from "@/components/rank/Rank";
 import { FaRegEye, FaRegFilePdf } from "react-icons/fa6";
 import Table from "@/components/table/Table";
-import Textarea from "@/components/input/Textarea";
 import TextareaComponent from "@/components/input/TextareaComponent";
 
 export default function Components() {
