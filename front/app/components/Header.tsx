@@ -8,6 +8,7 @@ import { LuLogOut } from "react-icons/lu";
 import { VscBell } from "react-icons/vsc";
 import { useEffect, useRef, useState } from "react";
 import Menu from "./Menu";
+import Photo from "./profile/Photo";
 
 interface HeaderProps {
   variant?: string;
@@ -93,15 +94,8 @@ export default function Header({ variant }: HeaderProps) {
       </Box>
       <Box className="flex flex-row-reverse sm:flex-row items-center">
         {/* TODO: substitute for a component of UserImage */}
-        <div
-          style={{ backgroundColor: whiteColor }}
-          className="w-12 h-12 flex justify-center items-center rounded-full"
-        >
-          <Icon
-            IconPassed={PiUserBold}
-            color={primaryColor}
-            className="w-10 h-10"
-          />
+        <div className="w-12 h-12 flex justify-center items-center rounded-full">
+          <Photo photo={""} rounded={true} classname="w-full h-full" />
         </div>
         <Box className="flex flex-col justify-center items-end sm:items-start mr-2 sm:mr-0 sm:ml-2">
           <Typography
