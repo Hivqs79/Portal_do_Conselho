@@ -15,7 +15,7 @@ interface ThemeLoginContextType {
 
 const ThemeLoginContext = createContext<ThemeLoginContextType | undefined>(undefined);
 
-const mode = localStorage.getItem("mode") || "light";
+const mode = (typeof window !== "undefined" ? localStorage.getItem("mode") : "light") || "light";
 const bluePrimary = colors.pallete.blue.primary;
 const blueSecondary = colors.pallete.blue.secondary;
 const blueTerciary = colors.pallete.blue.terciary;

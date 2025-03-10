@@ -47,11 +47,16 @@ const whiteColor = colors.whiteColor;
 const blackColor = colors.blackColor;
 
 export default class ThemeSettings {
+
   public static getThemeMode(): "dark" | "light" {
+    if (typeof window === "undefined") {
+      return 'light';
+    }
+    
     const mode = localStorage.getItem("mode");
     const isDarkMode = document.documentElement.classList.contains('dark');
     if (mode === "dark" && !isDarkMode) {
-      this.changeThemeMode();
+      this.changeThemeMode();      
       return 'dark';
     }
     if (mode === "light" && isDarkMode) {
@@ -94,16 +99,7 @@ export default class ThemeSettings {
   public static getContrastThemeColor() {  
     const mode = this.getThemeMode();  
     return (mode == 'dark' ? whiteColor : blackColor);
-  }
-
-  public static changeThemeMode() {
-    return document.documentElement.classList.toggle("dark");
-  }
-
-  public static getContrastThemeColor() {
-    const mode = this.getThemeMode();
-    return mode == "dark" ? whiteColor : blackColor;
-  }
+  } 
 
   public static getBackgroundThemeColor() {
     const mode = this.getThemeMode();

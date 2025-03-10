@@ -1,3 +1,4 @@
+"use client";
 import {
   createContext,
   useContext,
@@ -61,12 +62,14 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const secondaryGrayColor = colors.secondaryGrayColor;
   const colorByMode = ThemeSettings.getColorByMode();
   const colorByModeSecondary = ThemeSettings.getColorByModeSecondary();
+  const lighterColor = (color: string) => ThemeSettings.lighterColor(color);
   const darkerColor = ThemeSettings.darkerColor;
   const lightGrayColor = ThemeSettings.lightGrayColor();
   const darkGrayColor = ThemeSettings.darkGrayColor();
   const getThemeMode = () => ThemeSettings.getThemeMode();
 
   const reloadTheme = () => {
+    setTheme(ThemeSettings.createThemePallete());
   };
 
   const changeThemeMode = () => {
@@ -102,6 +105,7 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
       changeThemeMode, 
       changePallete, 
       primaryColor, 
+      secondaryColor,
       terciaryColor, 
       constrastColor, 
       backgroundColor, 
@@ -124,6 +128,7 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
 
 export const useThemeContext = (): ThemeContextType => {
   const context = useContext(ThemeContext);
+  if (context === undefined) {
     throw new Error(
       "useThemeContext must be used within a ThemeProviderContext"
     );
