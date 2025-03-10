@@ -2,7 +2,7 @@
 import DevPalleteChangerMenu from "@/components/DevPalleteChangerMenu";
 import Header from "@/components/Header";
 import { ThemeProviderContext, useThemeContext } from "@/hooks/useTheme";
-import { ThemeProvider } from "@mui/material";
+import { Box, ThemeProvider } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { ReactElement } from "react";
 
@@ -22,8 +22,18 @@ function CoreLayout({ children }: { children: ReactElement }) {
     return (
       <ThemeProvider theme={theme}>
         <body style={{backgroundColor: backgroundColor, overflowX: "hidden" }}>
-        {!isLoginPage && <Header variant="pedagogic" />}
-          {children}
+        {!isLoginPage ? 
+          <>
+            <Header variant="pedagogic" />
+            <Box className="flex flex-col min-h-screen mx-[15%]">
+              {children}
+            </Box>
+          </>
+         :
+          <>
+            {children}
+          </>           
+        }          
           <DevPalleteChangerMenu />
         </body>
       </ThemeProvider>
