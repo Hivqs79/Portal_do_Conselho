@@ -10,11 +10,7 @@ interface TableProps {
   variant: "primary" | "secondary";
 }
 
-export default function Table({ variant }: TableProps) {
-  const { primaryColor } = useThemeContext();
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const tableRows: TableRowProps[] = [
+const tableRows: TableRowProps[] = [
     {
       variant: "primary",
       user: "class",
@@ -65,6 +61,10 @@ export default function Table({ variant }: TableProps) {
     },
   ];
 
+export default function Table({ variant }: TableProps) {
+  const { primaryColor } = useThemeContext();
+  const [searchTerm, setSearchTerm] = useState("");
+
   const filteredRows = tableRows.filter((row) =>
     row.turmaNome?.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -78,7 +78,7 @@ export default function Table({ variant }: TableProps) {
         >
           <div className="w-full overflow-x-auto">
             <table className="w-full max-w-full">
-              <TableHeader variant="Table" setSearchTerm={setSearchTerm} />
+              <TableHeader variant="Table" setSearchTerm={setSearchTerm} searchInput={true} filterButton={true} orderButton={true} />
               <tbody>
                 {filteredRows.length > 0 ? (
                   filteredRows.map((row, index) => (
