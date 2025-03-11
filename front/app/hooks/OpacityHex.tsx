@@ -1,4 +1,4 @@
-export default function hexToRGBA(hex: string, opacity: number): string {
+export default function OpacityHex(hex: string, opacity: number): string {
   hex = hex.replace(/^#/, "");
 
   const r = parseInt(hex.substring(0, 2), 16);

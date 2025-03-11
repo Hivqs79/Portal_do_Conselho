@@ -1,5 +1,5 @@
 "use client";
-import hexToRGBA from "@/hooks/OpacityHex";
+import OpacityHex from "@/hooks/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Button, Skeleton, Typography } from "@mui/material";
 import Rank from "./rank/Rank";
@@ -143,7 +143,7 @@ export default function StudentCouncilForm({
                   <input
                     style={{
                       borderColor: primaryColor,
-                      color: hexToRGBA(constrastColor, 0.7),
+                      color: OpacityHex(constrastColor, 0.7),
                       paddingRight: "20px",
                     }}
                     placeholder={String(initialFrequencia)}

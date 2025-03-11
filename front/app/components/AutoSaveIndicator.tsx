@@ -1,6 +1,6 @@
 "use client";
 
-import hexToRGBA from "@/hooks/hexToRGBA";
+import OpacityHex from "@/hooks/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
 import { dividerClasses } from "@mui/material";
 
@@ -21,7 +21,7 @@ export default function AutoSaveIndicator({ saved }: AutoSaveIndicatorProps) {
               className="w-3 h-3 rounded-full relative"
             ></div>
           </div>
-          <span style={{color: hexToRGBA(constrastColor, 0.8)}} className="text-sm">Alterações salvas</span>
+          <span style={{color: OpacityHex(constrastColor, 0.8)}} className="text-sm">Alterações salvas</span>
         </div>
       </>
     );
@@ -39,7 +39,7 @@ export default function AutoSaveIndicator({ saved }: AutoSaveIndicatorProps) {
           className="w-3 h-3 rounded-full relative"
         ></div>
       </div>
-      <span style={{color: hexToRGBA(constrastColor, 0.8)}} className="text-sm">Salvando alterações</span>
+      <span style={{color: OpacityHex(constrastColor, 0.8)}} className="text-sm">Salvando alterações</span>
     </div>
   );
 }

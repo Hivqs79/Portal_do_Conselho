@@ -8,7 +8,7 @@ import {
 import { Popover, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useThemeContext } from "@/hooks/useTheme";
-import hexToRGBA from "@/hooks/OpacityHex";
+import OpacityHex from "@/hooks/OpacityHex";
 import { RiSubtractFill } from "react-icons/ri";
 import { Encryptor } from "@/encryption/Encryptor";
 
@@ -127,7 +127,7 @@ export default function Rank({
           >
             <div
               className="p-4 flex flex-col space-y-2 z-40"
-              style={{ backgroundColor: hexToRGBA(secondaryColor, 0.2) }}
+              style={{ backgroundColor: OpacityHex(secondaryColor, 0.2) }}
             >
               {(["excellent", "good", "average", "critical"] as const).map(
                 (key) => (
@@ -180,7 +180,7 @@ export default function Rank({
           >
             <div
               className="p-4 flex flex-col space-y-2 z-40"
-              style={{ backgroundColor: hexToRGBA(secondaryColor, 0.2) }}
+              style={{ backgroundColor: OpacityHex(secondaryColor, 0.2) }}
             >
               {(["excellent", "good", "average", "critical"] as const).map(
                 (key) => (

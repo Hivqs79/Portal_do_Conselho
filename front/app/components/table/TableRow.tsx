@@ -7,7 +7,7 @@ import { Button, IconButton, Typography } from "@mui/material";
 import Icon from "../Icon";
 import { FaRegEye } from "react-icons/fa6";
 import { TableRowProps } from "@/interfaces/TableRowProps";
-import hexToRGBA from "@/hooks/OpacityHex";
+import OpacityHex from "@/hooks/OpacityHex";
 import { RiCalendarScheduleLine } from "react-icons/ri";
 
 export default function TableRow({
@@ -32,7 +32,7 @@ export default function TableRow({
       <>
         <tr
           style={{
-            backgroundColor: hexToRGBA(constrastColor, 0.01),
+            backgroundColor: OpacityHex(constrastColor, 0.01),
             borderColor: primaryColor,
           }}
           className={`${className} max-w-[1024px] flex flex-row justify-between items-center p-3 w-[100%]`}
