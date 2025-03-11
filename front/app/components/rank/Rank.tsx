@@ -16,8 +16,8 @@ interface RankProps {
   type: "excellent" | "good" | "average" | "critical" | "none";
   outline: boolean;
   popover: boolean;
-  studentName?: string; // Adicione a prop studentName
-  onRankChange?: (rank: string) => void; // Adicione a prop onRankChange
+  studentName?: string;
+  onRankChange?: (rank: "excellent" | "good" | "average" | "critical" | "none") => void; // Ajuste o tipo aqui
 }
 
 export default function Rank({
@@ -51,10 +51,12 @@ export default function Rank({
     setAnchorEl(null);
   };
 
-  const handleSelect = (newRank: keyof typeof rankLabels) => {
+  const handleSelect = (
+    newRank: "excellent" | "good" | "average" | "critical" | "none"
+  ) => {
     setSelectedRank(newRank);
     if (onRankChange) {
-      onRankChange(newRank); 
+      onRankChange(newRank); // Passa o novo rank para o componente pai
     }
     handleClose();
   };

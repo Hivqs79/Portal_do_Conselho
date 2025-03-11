@@ -22,7 +22,9 @@ export default function TableHeader({
   const { primaryColor, secondaryColor, whiteColor, textDarkColor } =
     useThemeContext();
   const [isFocused, setIsFocused] = useState(false);
-  const [actualRank, setActualRank] = useState<"excellent" | "good" | "average" | "critical" | "none">("none");
+  const [actualRank, setActualRank] = useState<
+    "excellent" | "good" | "average" | "critical" | "none"
+  >("none");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -136,7 +138,7 @@ export default function TableHeader({
                     outline={false}
                     type={actualRank}
                     popover={true}
-                    onRankChange={(rank: "excellent" | "good" | "average" | "critical" | "none") => setActualRank(rank)}
+                    onRankChange={setActualRank} // Passa a função diretamente
                   />
                 </span>
                 <span>
