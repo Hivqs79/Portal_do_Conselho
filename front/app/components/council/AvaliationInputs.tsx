@@ -23,7 +23,7 @@ export default function AvaliationInputs({
         <TextareaComponent
           title="Pontos Positivos"
           content={Positivecontent}
-          whriteOnly={wrtiteOnly}
+          readonly={wrtiteOnly}
         />
         <div
           style={{ backgroundColor: primaryColor }}
@@ -32,7 +32,7 @@ export default function AvaliationInputs({
         <TextareaComponent
           title="Pontos a melhorar"
           content={Negativecontent}
-          whriteOnly={wrtiteOnly}
+          readonly={wrtiteOnly}
         />
       </div>
     </>

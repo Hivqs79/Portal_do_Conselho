@@ -57,7 +57,6 @@ export default function StudentCouncilForm({
     const savedData = localStorage.getItem("studentsData");
     if (savedData) {
       const studentsData = Decryptor(savedData);
-      console.log(studentsData);
       if (studentsData && studentsData[student]) {
         setFrequencia(studentsData[student].frequencia);
         setPositiveContent(studentsData[student].positiveContent || "");
@@ -144,7 +143,7 @@ export default function StudentCouncilForm({
                       color: hexToRGBA(constrastColor, 0.7),
                       paddingRight: "20px",
                     }}
-                    placeholder={`${initialFrequencia}`}
+                    placeholder={String(initialFrequencia)}
                     type="number"
                     value={frequencia}
                     onChange={handleFrequenciaChange}
@@ -197,14 +196,14 @@ export default function StudentCouncilForm({
           <div className="w-full flex flex-col gap-5">
             <TextareaComponent
               title="Pontos Positivos"
-              whriteOnly={false} // Modo editável
+              readonly={false} // Modo editável
               placeholder="Escreva algo aqui..."
               value={positiveContent} // Passe o estado local como value
               onChange={(e) => setPositiveContent(e.target.value)} // Passe o onChange
             />
             <TextareaComponent
               title="Pontos a Melhorar"
-              whriteOnly={false} // Modo editável
+              readonly={false} // Modo editável
               placeholder="Escreva algo aqui..."
               value={negativeContent} // Passe o estado local como value
               onChange={(e) => setNegativeContent(e.target.value)} // Passe o onChange

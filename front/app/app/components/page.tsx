@@ -51,8 +51,6 @@ import Table from "@/components/table/Table";
 import TextareaComponent from "@/components/input/TextareaComponent";
 import Photo from "@/components/profile/Photo";
 import AvaliationInputs from "@/components/council/AvaliationInputs";
-import Encryptor from "@/encryption/Encryptor";
-import Decryptor from "@/encryption/Decryptor";
 
 export default function Components() {
   const { primaryColor, secondaryColor, terciaryColor, constrastColor } =
@@ -214,9 +212,9 @@ export default function Components() {
       <Table variant="primary"/>
       <Table variant="primary" />
 
-      <TextareaComponent whriteOnly={false} title="Pontos Positivos" />
+      <TextareaComponent readonly={false} title="Pontos Positivos" />
       <TextareaComponent
-        whriteOnly={true}
+        readonly={true}
         title="Pontos Positivos"
         content="teste"
       />
