@@ -34,7 +34,7 @@ export default function AvaliationInputs({
     <>
       <div
         style={{ borderColor: primaryColor }}
-        className="w-full flex-col lg:flex-row rounded-b-big p-2 flex border-[2px] border-t-0 justify-center items-center flex-wrap gap-4 md:flex-nowrap lg:h-[280px]"
+        className="w-full flex-col lg:flex-row rounded-b-big p-2 sm:p-5 flex border-[2px] border-t-0 justify-center items-center flex-wrap gap-4 md:flex-nowrap"
       >
         <TextareaComponent
           title="Pontos Positivos"
@@ -45,7 +45,7 @@ export default function AvaliationInputs({
         />
         <div
           style={{ backgroundColor: primaryColor }}
-          className="hidden lg:block w-[5px] h-full"
+          className="hidden lg:block w-[5px] h-[255px]"
         ></div>
         <TextareaComponent
           title="Pontos a melhorar"

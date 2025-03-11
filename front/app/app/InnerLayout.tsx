@@ -19,13 +19,14 @@ export default function InnerLayout({ children }: { children: ReactElement }) {
 }
 
 function CoreLayout({ children }: { children: ReactElement }) {
-  const { theme, backgroundColor, primaryColor } = useThemeContext();
+  const { theme, backgroundColor, primaryColor, secondaryColor } = useThemeContext();
   const {role, setRole} = useRoleContext();
   const pathname = usePathname();
   const isLoginPage = pathname?.includes("/login");
 
   useEffect(() => {
     document.documentElement.style.setProperty("--primary-color", primaryColor);
+    document.documentElement.style.setProperty("--secondary-color", secondaryColor);
     document.documentElement.style.setProperty("--background", backgroundColor);
   }, [backgroundColor, primaryColor]);
 
