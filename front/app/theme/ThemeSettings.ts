@@ -335,7 +335,6 @@ export default class ThemeSettings {
             paper: {
               backgroundColor: primary_color,
               color: whiteColor,
-              left: "0px !important",
               borderRadius: "0px 0px 4px 4px",
               boxShadow: "2px 2px 8px 0px" + primary_color + "77",
             },
@@ -357,17 +356,37 @@ export default class ThemeSettings {
               zIndex: 25,
             }, 
             backdrop: {
-              zIndex: 30,
+              zIndex: 20,
             }           
           }
         },
         MuiPaper: {
           styleOverrides: {
             root: {
-              zIndex: 40,
-            },         
-          }
+              zIndex: 25,
+            },        
+          },
         },
+        MuiPaginationItem: {
+          styleOverrides: {
+            root: {
+              color: this.getContrastThemeColor(),
+              borderColor: colorByMode,
+              borderWidth: "2px",
+              "&.Mui-selected": {
+                backgroundColor: primary_color,
+                borderColor: primary_color,
+                color: whiteColor,
+              },
+              "&.Mui-selected:hover": {
+                backgroundColor: this.darkerColor(primary_color),
+              },
+            },
+            ellipsis: {
+              borderWidth: "0px",
+            },
+          },
+        }
       },
     });
   }

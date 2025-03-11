@@ -3,7 +3,6 @@ import { Box, Typography } from "@mui/material";
 import LogoIcon from "./LogoIcon";
 import Icon from "./Icon";
 import { IoClose, IoMenu, IoSettingsOutline } from "react-icons/io5";
-import { PiUserBold } from "react-icons/pi";
 import { LuLogOut } from "react-icons/lu";
 import { VscBell } from "react-icons/vsc";
 import { useEffect, useRef, useState } from "react";
