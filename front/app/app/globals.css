@@ -4,7 +4,13 @@
 
 :root {
   --primary-color: #0050ac;
+  --secondary-color: #459DEB;
   --background: #f5f5f5;
+}
+
+::selection {
+  background-color: var(--secondary-color);
+  color: #191919;
 }
 
 /* Estiliza a barra de rolagem */

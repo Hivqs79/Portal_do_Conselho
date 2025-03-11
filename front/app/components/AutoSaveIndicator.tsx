@@ -1,5 +1,6 @@
 "use client";
 
+import hexToRGBA from "@/hooks/hexToRGBA";
 import { useThemeContext } from "@/hooks/useTheme";
 import { dividerClasses } from "@mui/material";
 
@@ -8,7 +9,7 @@ interface AutoSaveIndicatorProps {
 }
 
 export default function AutoSaveIndicator({ saved }: AutoSaveIndicatorProps) {
-  const { primaryColor } = useThemeContext();
+  const { primaryColor, constrastColor } = useThemeContext();
 
   if (saved) {
     return (
@@ -20,7 +21,7 @@ export default function AutoSaveIndicator({ saved }: AutoSaveIndicatorProps) {
               className="w-3 h-3 rounded-full relative"
             ></div>
           </div>
-          <span className="text-gray-600 text-sm">Alterações salvas</span>
+          <span style={{color: hexToRGBA(constrastColor, 0.8)}} className="text-sm">Alterações salvas</span>
         </div>
       </>
     );
@@ -38,7 +39,7 @@ export default function AutoSaveIndicator({ saved }: AutoSaveIndicatorProps) {
           className="w-3 h-3 rounded-full relative"
         ></div>
       </div>
-      <span className="text-gray-600 text-sm">Salvando alterações</span>
+      <span style={{color: hexToRGBA(constrastColor, 0.8)}} className="text-sm">Salvando alterações</span>
     </div>
   );
 }
