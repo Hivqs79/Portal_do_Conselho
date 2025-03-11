@@ -51,6 +51,7 @@ import Table from "@/components/table/Table";
 import TextareaComponent from "@/components/input/TextareaComponent";
 import Photo from "@/components/profile/Photo";
 import AvaliationInputs from "@/components/council/AvaliationInputs";
+import Pagination from "@/components/table/Pagination";
 
 export default function Components() {
   const { primaryColor, secondaryColor, terciaryColor, constrastColor } =
@@ -219,14 +220,13 @@ export default function Components() {
         content="teste"
       />
 
-      <AvaliationInputs
-        wrtiteOnly={false}
-        Negativecontent="teste"
-        Positivecontent="teste"
-      />
+      <Pagination />
+      
+      <AvaliationInputs wrtiteOnly={false} Negativecontent="teste" Positivecontent="teste"/>
 
       <Photo photo={""} rounded={false} classname="w-20 h-20" />
       <Photo photo={""} rounded={true} classname="w-20 h-20" />
+
     </Container>
   );
 }
