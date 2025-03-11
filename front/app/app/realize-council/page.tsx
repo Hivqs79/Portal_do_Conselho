@@ -96,7 +96,7 @@ export default function RealizeCouncil() {
     const savedRank = getDecryptedData("rank");
 
     if (savedRank) {
-      setActualRank(savedRank);
+      setActualRank(savedRank); // Define o estado com o valor recuperado
     }
 
     if (savedPositiveContent) {
@@ -142,7 +142,7 @@ export default function RealizeCouncil() {
       <Box
         className="rounded-big  m-0 flex justify-center items-center outline-[16px] outline"
         // bgcolor={OpacityHex(constrastColor, 0.1)}
-        style={{outlineColor: OpacityHex(constrastColor, 0.1)}}
+        style={{ outlineColor: OpacityHex(constrastColor, 0.1) }}
       >
         <Box
           borderColor={primaryColor}

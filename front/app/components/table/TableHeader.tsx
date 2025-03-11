@@ -7,6 +7,7 @@ import { VscSettings } from "react-icons/vsc";
 import { useThemeContext } from "@/hooks/useTheme";
 import Icon from "../Icon";
 import Rank from "../rank/Rank";
+import { Decryptor } from "@/encryption/Decryptor";
 
 interface TableHeaderProps {
   variant: "Table" | "council";
@@ -26,6 +27,17 @@ export default function TableHeader({
     "excellent" | "good" | "average" | "critical" | "none"
   >("none");
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // Recupera o rank salvo no localStorage
+    const savedRank = localStorage.getItem("rank");
+    if (savedRank) {
+      const decryptedRank = Decryptor(savedRank); // Descriptografa o rank
+      if (decryptedRank && decryptedRank.rank) {
+        setActualRank(decryptedRank.rank); // Define o estado com o valor recuperado
+      }
+    }
+  }, []);
 
   useEffect(() => {
     onChangeRank && onChangeRank(actualRank);

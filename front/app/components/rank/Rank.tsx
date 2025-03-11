@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useThemeContext } from "@/hooks/useTheme";
 import hexToRGBA from "@/hooks/OpacityHex";
 import { RiSubtractFill } from "react-icons/ri";
+import { Encryptor } from "@/encryption/Encryptor";
 
 interface RankProps {
   variant: "default" | "council";
@@ -17,7 +18,9 @@ interface RankProps {
   outline: boolean;
   popover: boolean;
   studentName?: string;
-  onRankChange?: (rank: "excellent" | "good" | "average" | "critical" | "none") => void; // Ajuste o tipo aqui
+  onRankChange?: (
+    rank: "excellent" | "good" | "average" | "critical" | "none"
+  ) => void; // Ajuste o tipo aqui
 }
 
 export default function Rank({
@@ -57,6 +60,8 @@ export default function Rank({
     setSelectedRank(newRank);
     if (onRankChange) {
       onRankChange(newRank); // Passa o novo rank para o componente pai
+      const encryptedRank = Encryptor({ rank: newRank }); // Criptografa o rank
+      localStorage.setItem("rank", encryptedRank); // Salva no localStorage
     }
     handleClose();
   };
