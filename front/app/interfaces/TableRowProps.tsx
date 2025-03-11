@@ -5,4 +5,6 @@ export interface TableRowProps {
   rank?: "otimo" | "bom" | "mediano" | "critico";
   frequencia?: number;
   className?: string;
+  data?: string;
+  horario?: string;
 }

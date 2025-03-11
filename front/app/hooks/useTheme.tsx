@@ -1,3 +1,4 @@
+"use client";
 import {
   createContext,
   useContext,
@@ -5,6 +6,7 @@ import {
   ReactNode,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
 import { Theme } from "@mui/material/styles";
 import ThemeSettings from "../theme/ThemeSettings";
@@ -35,6 +37,15 @@ interface ThemeContextType {
   blackColor: string;
   primaryGrayColor: string;
   secondaryGrayColor: string;
+  colorByMode: string;
+  colorByModeSecondary: string;
+  lighterColor: (string: string) => string;
+  darkerColor: (string: string) => string;
+  textBlackolor: string;
+  lightGrayColor: string;
+  darkGrayColor: string;
+  textDarkColor: string;
+  getThemeMode: () => "dark" | "light";
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -51,13 +62,23 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const blackColor = colors.blackColor;
   const primaryGrayColor = colors.primaryGrayColor;
   const secondaryGrayColor = colors.secondaryGrayColor;
+  const colorByMode = ThemeSettings.getColorByMode();
+  const colorByModeSecondary = ThemeSettings.getColorByModeSecondary();
+  const lighterColor = (color: string) => ThemeSettings.lighterColor(color);
+  const darkerColor = ThemeSettings.darkerColor;
+  const textBlackolor = ThemeSettings.textBlackolor();
+  const textDarkColor = colors.textDarkColor;
+  const lightGrayColor = ThemeSettings.lightGrayColor();
+  const darkGrayColor = ThemeSettings.darkGrayColor();
+  const getThemeMode = () => ThemeSettings.getThemeMode();
 
   const reloadTheme = () => {
     setTheme(ThemeSettings.createThemePallete());
   };
 
   const changeThemeMode = () => {
-    ThemeSettings.changeThemeMode();
+    const mode = ThemeSettings.changeThemeMode();
+    localStorage.setItem("mode", mode ? "dark" : "light");
     reloadTheme();
   };
 
@@ -68,14 +89,17 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
     reloadTheme();
   };
 
-  const color: string | null = localStorage.getItem("theme");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedColor = localStorage.getItem("theme");
 
-  if (color === null) {
-    localStorage.setItem("theme", "blue");
-    setThemeColor("blue");
-  } else if (themeColor !== color) {
-    changePallete(color as PossibleColors);
-  }
+      const color: PossibleColors = (storedColor as PossibleColors) || "blue";
+
+      if (themeColor !== color) {
+        changePallete(color);
+      }
+    }
+  }, []);
 
   return (
     <ThemeContext.Provider
@@ -91,9 +115,18 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
         constrastColor,
         backgroundColor,
         whiteColor,
+        textDarkColor,
         blackColor,
         primaryGrayColor,
         secondaryGrayColor,
+        colorByMode,
+        colorByModeSecondary,
+        lighterColor,
+        darkerColor,
+        textBlackolor,
+        lightGrayColor,
+        darkGrayColor,
+        getThemeMode,
       }}
     >
       {children}

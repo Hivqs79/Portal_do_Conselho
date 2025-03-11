@@ -48,6 +48,9 @@ import Icon from "@/components/Icon";
 import Rank from "@/components/rank/Rank";
 import { FaRegEye, FaRegFilePdf } from "react-icons/fa6";
 import Table from "@/components/table/Table";
+import TextareaComponent from "@/components/input/TextareaComponent";
+import Photo from "@/components/profile/Photo";
+import AvaliationInputs from "@/components/council/AvaliationInputs";
 import Encryptor from "@/encryption/Encryptor";
 import Decryptor from "@/encryption/Decryptor";
 
@@ -55,41 +58,10 @@ export default function Components() {
   const { primaryColor, secondaryColor, terciaryColor, constrastColor } =
     useThemeContext();
 
-  const usersJSON = {
-    users: [
-      {
-        id: 1,
-        nome: "Pedro Henrique Panstein",
-        frequencia: 95,
-        rank: "Ótimo",
-        pontos_positivos: "Participativo e proativo nas atividades.",
-        pontos_a_melhorar: "Precisa melhorar a pontualidade.",
-      },
-      {
-        id: 2,
-        nome: "Mateus Henrique Bosqquetti",
-        frequencia: 80,
-        rank: "Bom",
-        pontos_positivos: "Bom desempenho nas entregas.",
-        pontos_a_melhorar: "Poderia se comunicar mais com a equipe.",
-      },
-    ],
-  };
-
-  function mostrarCriptografia() {
-    const jsonEmbaralhado = Encryptor(usersJSON); //embaralha o json
-    console.log("Json embaralhado:");
-    console.log(jsonEmbaralhado);
-
-    const jsonDesembaralhado = Decryptor(jsonEmbaralhado); //desembaralha o json
-    console.log("Json Desembaralhado:");
-    console.log(jsonDesembaralhado);
-  }
-
   return (
     <Container
       maxWidth={"lg"}
-      className="flex flex-col gap-8 justify-start items-center min-h-screen"
+      className="flex flex-col gap-8 justify-center items-center min-h-screen" //change to center after
     >
       <Box className="flex flex-row gap-8 justify-center items-center">
         <Box className="flex flex-col gap-4">
@@ -239,29 +211,24 @@ export default function Components() {
         <Icon IconPassed={IoCopyOutline} />
       </Box>
 
-      <Box className="flex gap-4">
-        <Rank type="otimo" outline={false} popover={true} />
-
-        <Rank type="otimo" outline={true} popover={false} />
-        <Rank type="bom" outline={true} popover={false} />
-        <Rank type="mediano" outline={true} popover={false} />
-        <Rank type="critico" outline={true} popover={false} />
-
-        <Rank type="otimo" outline={false} popover={false} />
-        <Rank type="bom" outline={false} popover={false} />
-        <Rank type="mediano" outline={false} popover={false} />
-        <Rank type="critico" outline={false} popover={false} />
-      </Box>
-
+      <Table variant="primary"/>
       <Table variant="primary" />
 
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => mostrarCriptografia()}
-      >
-        Mostrar Criptografia
-      </Button>
+      <TextareaComponent whriteOnly={false} title="Pontos Positivos" />
+      <TextareaComponent
+        whriteOnly={true}
+        title="Pontos Positivos"
+        content="teste"
+      />
+
+      <AvaliationInputs
+        wrtiteOnly={false}
+        Negativecontent="teste"
+        Positivecontent="teste"
+      />
+
+      <Photo photo={""} rounded={false} classname="w-20 h-20" />
+      <Photo photo={""} rounded={true} classname="w-20 h-20" />
     </Container>
   );
 }
