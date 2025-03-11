@@ -9,7 +9,7 @@ import OpacityHex from "@/hooks/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
-import { MdBorderColor } from "react-icons/md";
+import testeJson from "@/teste.json";
 
 type StudentType = {
   name: string;
@@ -21,49 +21,6 @@ type StudentType = {
 };
 
 export default function RealizeCouncil() {
-  const students: StudentType[] = [
-    {
-      name: "Pedro Henrique Panstein",
-      frequencia: 0,
-      comments: "teste",
-      negativeContent: "",
-      positiveContent: "",
-      rank: "excellent",
-    },
-    {
-      name: "Pedro Augusto Wilhelm",
-      frequencia: 0,
-      comments: "teste",
-      negativeContent: "",
-      positiveContent: "",
-      rank: "good",
-    },
-    {
-      name: "Mateus Henrique Bosquetti",
-      frequencia: 0,
-      comments: "teste",
-      negativeContent: "",
-      positiveContent: "",
-      rank: "average",
-    },
-    {
-      name: "Vinícius Eduardo dos Santos",
-      frequencia: 0,
-      comments: "teste",
-      negativeContent: "",
-      positiveContent: "",
-      rank: "critical",
-    },
-    {
-      name: "Kauan Eggert",
-      frequencia: 0,
-      comments: "teste",
-      negativeContent: "",
-      positiveContent: "",
-      rank: "none",
-    },
-  ];
-
   const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
   const [positiveContent, setPositiveContent] = useState("");
   const [negativeContent, setNegativeContent] = useState("");
@@ -124,12 +81,16 @@ export default function RealizeCouncil() {
   };
 
   const handleNextStudent = () => {
-    setCurrentStudentIndex((prevIndex) => (prevIndex + 1) % students.length);
+    setCurrentStudentIndex(
+      (prevIndex) => (prevIndex + 1) % testeJson["council-form"].users.length
+    );
   };
 
   const handlePreviousStudent = () => {
     setCurrentStudentIndex((prevIndex) =>
-      prevIndex === 0 ? students.length - 1 : prevIndex - 1
+      prevIndex === 0
+        ? testeJson["council-form"].users.length - 1
+        : prevIndex - 1
     );
   };
 
@@ -170,12 +131,24 @@ export default function RealizeCouncil() {
             </div>
             <div>
               <StudentCouncilForm
-                student={students[currentStudentIndex].name}
-                frequencia={students[currentStudentIndex].frequencia}
-                comments={students[currentStudentIndex].comments}
+                student={
+                  testeJson["council-form"].users[currentStudentIndex].name
+                }
+                frequencia={
+                  testeJson["council-form"].users[currentStudentIndex]
+                    .frequencia
+                }
+                comments=""
                 negativeContent={negativeContent}
                 positiveContent={positiveContent}
-                rank={students[currentStudentIndex].rank}
+                rank={
+                  testeJson["council-form"].users[currentStudentIndex].rank as
+                    | "none"
+                    | "average"
+                    | "excellent"
+                    | "good"
+                    | "critical"
+                }
                 onNext={handleNextStudent}
                 onPrevious={handlePreviousStudent}
               />
