@@ -7,6 +7,8 @@ interface TextareaProps {
   title: string;
   content?: string;
   placeholder?: string;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; // Adicione a prop onChange
+  value?: string; // Adicione a prop value
 }
 
 export default function TextareaComponent({
@@ -14,6 +16,8 @@ export default function TextareaComponent({
   title,
   content,
   placeholder,
+  onChange, // Receba a prop onChange
+  value, // Receba a prop value
 }: TextareaProps) {
   const {
     primaryColor,
@@ -38,8 +42,8 @@ export default function TextareaComponent({
           >
             <textarea
               className="cursor-default w-full min-h-[200px] pl-3 pt-2 text-[16px] outline-none resize-none bg-transparent"
-              readOnly
-              defaultValue={content}
+              readOnly // Campo somente leitura
+              value={value || content || ""} // Use value ou content, ou string vazia
               placeholder={placeholder}
               style={{
                 color: constrastColor,
@@ -66,11 +70,12 @@ export default function TextareaComponent({
         >
           <textarea
             className="w-full min-h-[200px] pl-3 pr-1 pt-2 text-[16px] outline-none resize-none bg-transparent"
-            defaultValue={content}
+            value={value || content || ""} // Use value ou content, ou string vazia
             placeholder={placeholder}
             style={{
               color: constrastColor,
             }}
+            onChange={onChange} // Passe o onChange para o textarea
           />
         </div>
       </div>

@@ -5,10 +5,20 @@ import TableHeader from "@/components/table/TableHeader";
 import Title from "@/components/Title";
 import hexToRGBA from "@/hooks/hexToRGBA";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Box } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import { useState } from "react";
+
+type StudentType = {
+  name: string;
+  frequencia: number;
+  comments: string;
+  negativeContent: string;
+  positiveContent: string;
+  rank: "excellent" | "good" | "average" | "critical" | "none";
+};
 
 export default function RealizeCouncil() {
-  const students = [
+  const students: StudentType[] = [
     {
       name: "Pedro Henrique Panstein",
       frequencia: 90.12,
@@ -19,39 +29,53 @@ export default function RealizeCouncil() {
     },
     {
       name: "Pedro Augusto Wilhelm",
-      frequencia: 90.12,
+      frequencia: 80.95,
       comments: "teste",
       negativeContent: "",
       positiveContent: "",
-      rank: "excellent",
+      rank: "good",
     },
     {
       name: "Mateus Henrique Bosquetti",
-      frequencia: 90.12,
+      frequencia: 86.0,
       comments: "teste",
       negativeContent: "",
       positiveContent: "",
-      rank: "excellent",
+      rank: "average",
     },
     {
       name: "Vinícius Eduardo dos Santos",
-      frequencia: 90.12,
+      frequencia: 65.27,
       comments: "teste",
       negativeContent: "",
       positiveContent: "",
-      rank: "excellent",
+      rank: "critical",
     },
     {
       name: "Kauan Eggert",
-      frequencia: 90.12,
+      frequencia: 96.78,
       comments: "teste",
       negativeContent: "",
       positiveContent: "",
-      rank: "excellent",
+      rank: "none",
     },
   ];
 
-  const { constrastColor, backgroundColor, primaryColor } = useThemeContext();
+  const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
+
+  const handleNextStudent = () => {
+    setCurrentStudentIndex((prevIndex) => (prevIndex + 1) % students.length);
+  };
+
+  const handlePreviousStudent = () => {
+    setCurrentStudentIndex((prevIndex) =>
+      prevIndex === 0 ? students.length - 1 : prevIndex - 1
+    );
+  };
+
+  const { constrastColor, backgroundColor, primaryColor, whiteColor } =
+    useThemeContext();
+
   return (
     <Box>
       <Title textHighlight="Conselho" text="da turma:" />
@@ -80,15 +104,22 @@ export default function RealizeCouncil() {
             </div>
             <div>
               <StudentCouncilForm
-                student="Pedro Henrique Panstein"
-                frequencia={90.12}
-                comments="teste"
-                negativeContent=""
-                positiveContent=""
-                rank="excellent"
+                student={students[currentStudentIndex].name}
+                frequencia={students[currentStudentIndex].frequencia}
+                comments={students[currentStudentIndex].comments}
+                negativeContent={students[currentStudentIndex].negativeContent}
+                positiveContent={students[currentStudentIndex].positiveContent}
+                rank={students[currentStudentIndex].rank}
+                onNext={handleNextStudent}
+                onPrevious={handlePreviousStudent}
               />
             </div>
           </Box>
+          <Button className="w-full !mt-3 !rounded-normal" variant="contained" color="primary">
+            <Typography variant="lg_text_bold" color={whiteColor}>
+              Terminar Conselho
+            </Typography>
+          </Button>
         </Box>
       </Box>
     </Box>

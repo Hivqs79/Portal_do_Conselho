@@ -8,7 +8,7 @@ import TextareaComponent from "./input/TextareaComponent";
 import Icon from "./Icon";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import AutoSaveIndicator from "./AutoSaveIndicator";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface StudentCouncilFormProps {
   student: string;
@@ -17,21 +17,100 @@ interface StudentCouncilFormProps {
   positiveContent: string;
   negativeContent: string;
   comments: string;
+  onNext: () => void;
+  onPrevious: () => void;
 }
 
 export default function StudentCouncilForm({
   student,
-  frequencia,
-  rank,
-  positiveContent,
-  negativeContent,
+  frequencia: initialFrequencia,
+  rank: initialRank,
+  positiveContent: initialPositiveContent,
+  negativeContent: initialNegativeContent,
   comments,
+  onNext,
+  onPrevious,
 }: StudentCouncilFormProps) {
   const { constrastColor, colorByModeSecondary, primaryColor, whiteColor } =
     useThemeContext();
-  const [frequenciaAtual, setFrequencia] = useState<number | string>("");
+  const [frequencia, setFrequencia] = useState<number | string>(
+    initialFrequencia
+  );
+  const [isSaving, setIsSaving] = useState(false);
+  const [positiveContent, setPositiveContent] = useState(
+    initialPositiveContent
+  );
+  const [negativeContent, setNegativeContent] = useState(
+    initialNegativeContent
+  );
+  const [rank, setRank] = useState(initialRank);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Carrega os dados do localStorage quando o student muda
+  useEffect(() => {
+    // Limpa o estado local antes de carregar os novos dados
+    setFrequencia(initialFrequencia);
+    setPositiveContent(""); // Define como string vazia
+    setNegativeContent(""); // Define como string vazia
+    setRank(initialRank);
+
+    // Carrega os dados do localStorage
+    const savedData = localStorage.getItem("studentsData");
+    if (savedData) {
+      const studentsData = JSON.parse(savedData);
+      const studentData = studentsData[student];
+      if (studentData) {
+        setFrequencia(studentData.frequencia);
+        setPositiveContent(studentData.positiveContent || ""); // Define como string vazia se não houver dados
+        setNegativeContent(studentData.negativeContent || ""); // Define como string vazia se não houver dados
+        setRank(studentData.rank);
+      }
+    }
+  }, [student]);
+
+  // Função para salvar no localStorage
+  const saveToLocalStorage = () => {
+    setIsSaving(true);
+
+    const studentData = {
+      frequencia: frequencia,
+      comments: comments,
+      negativeContent: negativeContent,
+      positiveContent: positiveContent,
+      rank: rank,
+    };
+
+    // Carrega os dados existentes
+    const savedData = localStorage.getItem("studentsData");
+    const studentsData = savedData ? JSON.parse(savedData) : {};
+
+    // Atualiza os dados do aluno atual
+    studentsData[student] = studentData;
+
+    // Salva o objeto atualizado no localStorage
+    localStorage.setItem("studentsData", JSON.stringify(studentsData));
+
+    setTimeout(() => {
+      setIsSaving(false);
+    }, 1000);
+  };
+
+  // Monitora alterações e salva após um tempo de inatividade
+  useEffect(() => {
+    const debounceSave = setTimeout(() => {
+      if (
+        positiveContent !== initialPositiveContent ||
+        negativeContent !== initialNegativeContent ||
+        frequencia !== initialFrequencia ||
+        rank !== initialRank
+      ) {
+        saveToLocalStorage();
+      }
+    }, 1000);
+
+    return () => clearTimeout(debounceSave);
+  }, [positiveContent, negativeContent, frequencia, rank]);
+
+  const handleFrequenciaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = parseInt(e.target.value, 10);
 
     if (isNaN(value)) {
@@ -39,6 +118,10 @@ export default function StudentCouncilForm({
     } else {
       setFrequencia(value > 100 ? 100 : value);
     }
+  };
+
+  const handleRankChange = (newRank: string) => {
+    setRank(newRank as "excellent" | "good" | "average" | "critical" | "none");
   };
 
   return (
@@ -63,12 +146,12 @@ export default function StudentCouncilForm({
                     style={{
                       borderColor: primaryColor,
                       color: hexToRGBA(constrastColor, 0.7),
-                      paddingRight: "20px", // Garante espaço para o %
+                      paddingRight: "20px",
                     }}
-                    placeholder={`${frequencia}%`}
+                    placeholder={`${initialFrequencia}`}
                     type="number"
-                    value={frequenciaAtual}
-                    onChange={handleChange}
+                    value={frequencia}
+                    onChange={handleFrequenciaChange}
                     min={0}
                     max={100}
                     className="text-center bg-none bg-transparent appearance-none border-2 w-24 font-bold h-[40px] flex justify-center items-center rounded-small [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
@@ -83,6 +166,8 @@ export default function StudentCouncilForm({
                 popover={true}
                 outline={false}
                 type={rank}
+                studentName={student}
+                onRankChange={handleRankChange}
               />
             </span>
           </div>
@@ -116,30 +201,42 @@ export default function StudentCouncilForm({
           <div className="w-full flex flex-col gap-5">
             <TextareaComponent
               title="Pontos Positivos"
-              whriteOnly={false}
-              content={positiveContent}
+              whriteOnly={false} // Modo editável
               placeholder="Escreva algo aqui..."
+              value={positiveContent} // Passe o estado local como value
+              onChange={(e) => setPositiveContent(e.target.value)} // Passe o onChange
             />
             <TextareaComponent
               title="Pontos a Melhorar"
-              whriteOnly={false}
-              content={positiveContent}
+              whriteOnly={false} // Modo editável
               placeholder="Escreva algo aqui..."
+              value={negativeContent} // Passe o estado local como value
+              onChange={(e) => setNegativeContent(e.target.value)} // Passe o onChange
             />
           </div>
         </div>
-        <Icon
-          color={primaryColor}
-          className="absolute left-[-12px] lg:left-[-10] xl:left-0 top-1/3 lg:top-1/2 -translate-y-1/2 text-6xl"
-          IconPassed={IoIosArrowBack}
-        />
-        <Icon
-          color={primaryColor}
-          className="absolute right-[-12px] lg:right-[-10] xl:right-0 top-1/3 lg:top-1/2 -translate-y-1/2 text-6xl"
-          IconPassed={IoIosArrowForward}
-        />
+        <span
+          onClick={onPrevious}
+          className="absolute left-[-12px] lg:left-[-10] xl:left-0 top-1/3 lg:top-1/2 -translate-y-1/2 cursor-pointer"
+        >
+          <Icon
+            color={primaryColor}
+            className="text-6xl"
+            IconPassed={IoIosArrowBack}
+          />
+        </span>
+        <span
+          onClick={onNext}
+          className="absolute right-[-12px] lg:right-[-10] xl:right-0 top-1/3 lg:top-1/2 -translate-y-1/2 cursor-pointer"
+        >
+          <Icon
+            color={primaryColor}
+            className="text-6xl"
+            IconPassed={IoIosArrowForward}
+          />
+        </span>
         <div className="absolute bottom-2 left-3 lg:left-[65px] lg:bottom-[20px]">
-          <AutoSaveIndicator saved={false} />
+          <AutoSaveIndicator saved={!isSaving} />
         </div>
       </div>
     </>

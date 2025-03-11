@@ -6,7 +6,7 @@ import {
   FaRegFaceSmile,
 } from "react-icons/fa6";
 import { Popover, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useThemeContext } from "@/hooks/useTheme";
 import hexToRGBA from "@/hooks/hexToRGBA";
 import { RiSubtractFill } from "react-icons/ri";
@@ -16,9 +16,18 @@ interface RankProps {
   type: "excellent" | "good" | "average" | "critical" | "none";
   outline: boolean;
   popover: boolean;
+  studentName: string; // Adicione a prop studentName
+  onRankChange?: (rank: string) => void; // Adicione a prop onRankChange
 }
 
-export default function Rank({ variant, type, outline, popover }: RankProps) {
+export default function Rank({
+  variant,
+  type,
+  outline,
+  popover,
+  studentName,
+  onRankChange,
+}: RankProps) {
   const {
     primaryGrayColor,
     constrastColor,
@@ -29,6 +38,10 @@ export default function Rank({ variant, type, outline, popover }: RankProps) {
 
   const [selectedRank, setSelectedRank] = useState(type);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  useEffect(() => {
+    setSelectedRank(type);
+  }, [type]);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
@@ -41,6 +54,9 @@ export default function Rank({ variant, type, outline, popover }: RankProps) {
   const handleSelect = (newRank: keyof typeof rankLabels) => {
     setSelectedRank(newRank);
     console.log(`Selecionado: ${rankLabels[newRank]}`);
+    if (onRankChange) {
+      onRankChange(newRank); // Notifica o componente pai sobre a mudança de rank
+    }
     handleClose();
   };
 
@@ -178,7 +194,6 @@ export default function Rank({ variant, type, outline, popover }: RankProps) {
       );
     }
 
-    // Se o rank inicial for "none", retorna esse valor, mas não permite a seleção de "none"
     return (
       <div className="inline-flex items-center gap-2">{rank[selectedRank]}</div>
     );
