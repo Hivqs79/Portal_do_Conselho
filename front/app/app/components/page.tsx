@@ -51,6 +51,8 @@ import Table from "@/components/table/Table";
 import TextareaComponent from "@/components/input/TextareaComponent";
 import Photo from "@/components/profile/Photo";
 import AvaliationInputs from "@/components/council/AvaliationInputs";
+import Encryptor from "@/encryption/Encryptor";
+import Decryptor from "@/encryption/Decryptor";
 
 export default function Components() {
   const { primaryColor, secondaryColor, terciaryColor, constrastColor } =
@@ -207,20 +209,6 @@ export default function Components() {
         <Icon IconPassed={FaRegEye} />
         <Icon IconPassed={FaRegEyeSlash} />
         <Icon IconPassed={IoCopyOutline} />
-      </Box>
-
-      <Box className="flex gap-4">
-        <Rank variant="default" type="excellent" outline={false} popover={true} />
-
-        <Rank variant="default" type="excellent" outline={true} popover={false} />
-        <Rank variant="default" type="good" outline={true} popover={false} />
-        <Rank variant="default" type="average" outline={true} popover={false} />
-        <Rank variant="default" type="critical" outline={true} popover={false} />
-
-        <Rank variant="default" type="excellent" outline={false} popover={false} />
-        <Rank variant="default" type="good" outline={false} popover={false} />
-        <Rank variant="default" type="average" outline={false} popover={false} />
-        <Rank variant="default" type="critical" outline={false} popover={false} />
       </Box>
 
       <Table variant="primary"/>
