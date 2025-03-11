@@ -46,6 +46,7 @@ export default function MenuHeader({ anchorEl, open, onClose, variant }: MenuHea
                 paper: {
                     style: {
                         zIndex: 40,
+                        transform: "translateX(-16px)",
                     },
                 }
             }}         
