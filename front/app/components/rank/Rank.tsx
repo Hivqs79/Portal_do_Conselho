@@ -8,7 +8,7 @@ import {
 import { Popover, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useThemeContext } from "@/hooks/useTheme";
-import hexToRGBA from "@/hooks/hexToRGBA";
+import hexToRGBA from "@/hooks/OpacityHex";
 import { RiSubtractFill } from "react-icons/ri";
 
 interface RankProps {
@@ -53,9 +53,8 @@ export default function Rank({
 
   const handleSelect = (newRank: keyof typeof rankLabels) => {
     setSelectedRank(newRank);
-    console.log(`Selecionado: ${rankLabels[newRank]}`);
     if (onRankChange) {
-      onRankChange(newRank); // Notifica o componente pai sobre a mudança de rank
+      onRankChange(newRank); 
     }
     handleClose();
   };

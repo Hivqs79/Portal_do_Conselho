@@ -210,7 +210,7 @@ export default function Components() {
         <Icon IconPassed={IoCopyOutline} />
       </Box>
 
-      <Table variant="primary"/>
+      <Table variant="primary" />
       <Table variant="primary" />
 
       <TextareaComponent readonly={false} title="Pontos Positivos" />
@@ -221,12 +221,15 @@ export default function Components() {
       />
 
       <Pagination />
-      
-      <AvaliationInputs wrtiteOnly={false} Negativecontent="teste" Positivecontent="teste"/>
+
+      <AvaliationInputs
+        wrtiteOnly={false}
+        Negativecontent="teste"
+        Positivecontent="teste"
+      />
 
       <Photo photo={""} rounded={false} classname="w-20 h-20" />
       <Photo photo={""} rounded={true} classname="w-20 h-20" />
-
     </Container>
   );
 }

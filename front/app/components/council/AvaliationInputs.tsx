@@ -1,19 +1,35 @@
 "use client";
+import { useState, useEffect } from "react";
 import { useThemeContext } from "@/hooks/useTheme";
 import TextareaComponent from "../input/TextareaComponent";
 
 interface AvaliationInputsProps {
-  wrtiteOnly: boolean;
+  writeOnly: boolean;
   Positivecontent?: string;
   Negativecontent?: string;
+  onPositiveChange: (content: string) => void; // Recebe uma string
+  onNegativeChange: (content: string) => void; // Recebe uma string
 }
 
 export default function AvaliationInputs({
-  wrtiteOnly,
+  writeOnly,
   Positivecontent,
   Negativecontent,
+  onPositiveChange,
+  onNegativeChange,
 }: AvaliationInputsProps) {
   const { primaryColor } = useThemeContext();
+
+  // Converte o evento em uma string e repassa para onPositiveChange
+  const handlePositiveChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onPositiveChange(e.target.value);
+  };
+
+  // Converte o evento em uma string e repassa para onNegativeChange
+  const handleNegativeChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onNegativeChange(e.target.value);
+  };
+
   return (
     <>
       <div
@@ -23,7 +39,9 @@ export default function AvaliationInputs({
         <TextareaComponent
           title="Pontos Positivos"
           content={Positivecontent}
-          readonly={wrtiteOnly}
+          readonly={writeOnly}
+          placeholder="Digite algo aqui..."
+          onChange={handlePositiveChange} // Passa o evento diretamente
         />
         <div
           style={{ backgroundColor: primaryColor }}
@@ -32,7 +50,9 @@ export default function AvaliationInputs({
         <TextareaComponent
           title="Pontos a melhorar"
           content={Negativecontent}
-          readonly={wrtiteOnly}
+          readonly={writeOnly}
+          placeholder="Digite algo aqui..."
+          onChange={handleNegativeChange} // Passa o evento diretamente
         />
       </div>
     </>

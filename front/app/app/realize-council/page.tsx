@@ -3,10 +3,13 @@ import AvaliationInputs from "@/components/council/AvaliationInputs";
 import StudentCouncilForm from "@/components/StudentCouncilForm";
 import TableHeader from "@/components/table/TableHeader";
 import Title from "@/components/Title";
-import hexToRGBA from "@/hooks/hexToRGBA";
+import { Decryptor } from "@/encryption/Decryptor";
+import { Encryptor } from "@/encryption/Encryptor";
+import OpacityHex from "@/hooks/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { MdBorderColor } from "react-icons/md";
 
 type StudentType = {
   name: string;
@@ -21,7 +24,7 @@ export default function RealizeCouncil() {
   const students: StudentType[] = [
     {
       name: "Pedro Henrique Panstein",
-      frequencia: 90.12,
+      frequencia: 0,
       comments: "teste",
       negativeContent: "",
       positiveContent: "",
@@ -29,7 +32,7 @@ export default function RealizeCouncil() {
     },
     {
       name: "Pedro Augusto Wilhelm",
-      frequencia: 80.95,
+      frequencia: 0,
       comments: "teste",
       negativeContent: "",
       positiveContent: "",
@@ -37,7 +40,7 @@ export default function RealizeCouncil() {
     },
     {
       name: "Mateus Henrique Bosquetti",
-      frequencia: 86.0,
+      frequencia: 0,
       comments: "teste",
       negativeContent: "",
       positiveContent: "",
@@ -45,7 +48,7 @@ export default function RealizeCouncil() {
     },
     {
       name: "Vinícius Eduardo dos Santos",
-      frequencia: 65.27,
+      frequencia: 0,
       comments: "teste",
       negativeContent: "",
       positiveContent: "",
@@ -53,7 +56,7 @@ export default function RealizeCouncil() {
     },
     {
       name: "Kauan Eggert",
-      frequencia: 96.78,
+      frequencia: 0,
       comments: "teste",
       negativeContent: "",
       positiveContent: "",
@@ -62,6 +65,63 @@ export default function RealizeCouncil() {
   ];
 
   const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
+  const [positiveContent, setPositiveContent] = useState("");
+  const [negativeContent, setNegativeContent] = useState("");
+
+  const [positiveClassContent, setPositiveClassContent] = useState("");
+  const [negativeClassContent, setNegativeClassContent] = useState("");
+
+  const [actualRank, setActualRank] = useState("none");
+
+  // Função para descriptografar dados do localStorage
+  const getDecryptedData = (key: string): string => {
+    const encryptedData = localStorage.getItem(key);
+    if (encryptedData) {
+      const decryptedData = Decryptor(encryptedData);
+      return decryptedData ? decryptedData[key] : "";
+    }
+    return "";
+  };
+
+  // Função para criptografar e salvar dados no localStorage
+  const saveEncryptedData = (key: string, value: string) => {
+    const encryptedData = Encryptor({ [key]: value });
+    localStorage.setItem(key, encryptedData);
+  };
+
+  useEffect(() => {
+    // Recupera e descriptografa os dados do localStorage ao montar o componente
+    const savedPositiveContent = getDecryptedData("positiveContent");
+    const savedNegativeContent = getDecryptedData("negativeContent");
+    const savedRank = getDecryptedData("rank");
+
+    if (savedRank) {
+      setActualRank(savedRank);
+    }
+
+    if (savedPositiveContent) {
+      setPositiveClassContent(savedPositiveContent);
+    }
+
+    if (savedNegativeContent) {
+      setNegativeClassContent(savedNegativeContent);
+    }
+  }, []);
+
+  const handlePositiveChange = (content: string) => {
+    setPositiveClassContent(content);
+    saveEncryptedData("positiveContent", content);
+  };
+
+  const handleNegativeChange = (content: string) => {
+    setNegativeClassContent(content);
+    saveEncryptedData("negativeContent", content);
+  };
+
+  const handleRankChange = (rank: string) => {
+    setActualRank(rank);
+    saveEncryptedData("rank", rank);
+  };
 
   const handleNextStudent = () => {
     setCurrentStudentIndex((prevIndex) => (prevIndex + 1) % students.length);
@@ -80,8 +140,9 @@ export default function RealizeCouncil() {
     <Box>
       <Title textHighlight="Conselho" text="da turma:" />
       <Box
-        className=" rounded-big p-2 m-0 flex justify-center items-center"
-        bgcolor={hexToRGBA(constrastColor, 0.1)}
+        className="rounded-big  m-0 flex justify-center items-center outline-[16px] outline"
+        // bgcolor={OpacityHex(constrastColor, 0.1)}
+        style={{outlineColor: OpacityHex(constrastColor, 0.1)}}
       >
         <Box
           borderColor={primaryColor}
@@ -94,12 +155,17 @@ export default function RealizeCouncil() {
           >
             <div>
               <table className="p-0 m-0 w-full">
-                <TableHeader variant="council" />
+                <TableHeader
+                  variant="council"
+                  onChangeRank={handleRankChange}
+                />
               </table>
               <AvaliationInputs
-                wrtiteOnly={false}
-                Positivecontent="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, itaque! Exercitationem, dolore consectetur cupiditate ab maiores impedit facere ad tempore quod, odit rerum consequatur perferendis."
-                Negativecontent="Este aluno precisa melhorar em algumas coisas"
+                writeOnly={false}
+                Positivecontent={positiveClassContent}
+                Negativecontent={negativeClassContent}
+                onPositiveChange={handlePositiveChange}
+                onNegativeChange={handleNegativeChange}
               />
             </div>
             <div>
@@ -107,15 +173,19 @@ export default function RealizeCouncil() {
                 student={students[currentStudentIndex].name}
                 frequencia={students[currentStudentIndex].frequencia}
                 comments={students[currentStudentIndex].comments}
-                negativeContent={students[currentStudentIndex].negativeContent}
-                positiveContent={students[currentStudentIndex].positiveContent}
+                negativeContent={negativeContent}
+                positiveContent={positiveContent}
                 rank={students[currentStudentIndex].rank}
                 onNext={handleNextStudent}
                 onPrevious={handlePreviousStudent}
               />
             </div>
           </Box>
-          <Button className="w-full !mt-3 !rounded-normal" variant="contained" color="primary">
+          <Button
+            className="w-full !mt-3 !rounded-normal"
+            variant="contained"
+            color="primary"
+          >
             <Typography variant="lg_text_bold" color={whiteColor}>
               Terminar Conselho
             </Typography>

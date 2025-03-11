@@ -7,7 +7,7 @@ import { Button, IconButton, Typography } from "@mui/material";
 import Icon from "../Icon";
 import { FaRegEye } from "react-icons/fa6";
 import { TableRowProps } from "@/interfaces/TableRowProps";
-import hexToRGBA from "@/hooks/hexToRGBA";
+import hexToRGBA from "@/hooks/OpacityHex";
 import { RiCalendarScheduleLine } from "react-icons/ri";
 
 export default function TableRow({

@@ -6,14 +6,15 @@ interface IconProps {
     IconPassed: IconType;
     color?: string;
     className?: string;
+    cursor?: string;
 }
 
-export default function Icon({ IconPassed, color, className = "w-6 h-6" }: IconProps) {
+export default function Icon({ IconPassed, color, className = "w-6 h-6", cursor = "cursor-pointer" }: IconProps) {
     const { constrastColor } = useThemeContext();
 
     const inlineStyle = { color: color || constrastColor };
 
     return (
-        <IconPassed style={inlineStyle} className={"cursor-pointer " + className} />
+        <IconPassed style={inlineStyle} className={`${cursor + " "}` + className} />
     );
 }

@@ -1,5 +1,5 @@
 "use client";
-import hexToRGBA from "@/hooks/hexToRGBA";
+import hexToRGBA from "@/hooks/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Button, Skeleton, Typography } from "@mui/material";
 import Rank from "./rank/Rank";
@@ -46,12 +46,13 @@ export default function StudentCouncilForm({
     initialNegativeContent
   );
   const [rank, setRank] = useState(initialRank);
+  const [isDisable, setDisable] = useState(false);
 
   // Carrega os dados do localStorage quando o student muda
   useEffect(() => {
     setFrequencia(initialFrequencia);
-    setPositiveContent("");
-    setNegativeContent("");
+    setPositiveContent(initialPositiveContent);
+    setNegativeContent(initialNegativeContent);
     setRank(initialRank);
 
     const savedData = localStorage.getItem("studentsData");
@@ -68,6 +69,7 @@ export default function StudentCouncilForm({
 
   // Função para salvar no localStorage
   const saveToLocalStorage = () => {
+    setDisable(true);
     setIsSaving(true);
 
     const studentData = {
@@ -86,6 +88,7 @@ export default function StudentCouncilForm({
 
     setTimeout(() => {
       setIsSaving(false);
+      setDisable(false);
     }, 1000);
   };
 
@@ -100,7 +103,7 @@ export default function StudentCouncilForm({
       ) {
         saveToLocalStorage();
       }
-    }, 1000);
+    });
 
     return () => clearTimeout(debounceSave);
   }, [positiveContent, negativeContent, frequencia, rank]);
@@ -210,26 +213,49 @@ export default function StudentCouncilForm({
             />
           </div>
         </div>
-        <span
-          onClick={onPrevious}
-          className="absolute left-[-12px] lg:left-[-10] xl:left-0 top-1/3 lg:top-1/2 -translate-y-1/2 cursor-pointer"
-        >
-          <Icon
-            color={primaryColor}
-            className="text-6xl"
-            IconPassed={IoIosArrowBack}
-          />
-        </span>
-        <span
-          onClick={onNext}
-          className="absolute right-[-12px] lg:right-[-10] xl:right-0 top-1/3 lg:top-1/2 -translate-y-1/2 cursor-pointer"
-        >
-          <Icon
-            color={primaryColor}
-            className="text-6xl"
-            IconPassed={IoIosArrowForward}
-          />
-        </span>
+        {!isDisable ? (
+          <>
+            <span
+              onClick={onPrevious}
+              className="absolute left-[-12px] lg:left-[-10] xl:left-0 top-1/3 lg:top-1/2 -translate-y-1/2 cursor-pointer"
+            >
+              <Icon
+                color={primaryColor}
+                className="text-6xl"
+                IconPassed={IoIosArrowBack}
+              />
+            </span>
+            <span
+              onClick={onNext}
+              className="absolute right-[-12px] lg:right-[-10] xl:right-0 top-1/3 lg:top-1/2 -translate-y-1/2 cursor-pointer"
+            >
+              <Icon
+                color={primaryColor}
+                className="text-6xl"
+                IconPassed={IoIosArrowForward}
+              />
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="absolute opacity-30 left-[-12px] lg:left-[-10] xl:left-0 top-1/3 lg:top-1/2 -translate-y-1/2 !cursor-wait">
+              <Icon
+                color={primaryColor}
+                className="text-6xl"
+                IconPassed={IoIosArrowBack}
+                cursor="cursor-not-allowed"
+              />
+            </span>
+            <span className="absolute opacity-30 right-[-12px] lg:right-[-10] xl:right-0 top-1/3 lg:top-1/2 -translate-y-1/2 !cursor-wait">
+              <Icon
+                color={primaryColor}
+                className="text-6xl"
+                IconPassed={IoIosArrowForward}
+                cursor="cursor-not-allowed"
+              />
+            </span>
+          </>
+        )}
         <div className="absolute bottom-2 left-3 lg:left-[65px] lg:bottom-[20px]">
           <AutoSaveIndicator saved={!isSaving} />
         </div>

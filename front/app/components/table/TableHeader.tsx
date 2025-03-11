@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Typography } from "@mui/material";
 import { HiOutlineFilter } from "react-icons/hi";
 import { IoSearch } from "react-icons/io5";
@@ -11,16 +11,23 @@ import Rank from "../rank/Rank";
 interface TableHeaderProps {
   variant: "Table" | "council";
   setSearchTerm?: (term: string) => void;
+  onChangeRank?: (rank: string) => void;
 }
 
 export default function TableHeader({
   variant,
   setSearchTerm,
+  onChangeRank,
 }: TableHeaderProps) {
   const { primaryColor, secondaryColor, whiteColor, textDarkColor } =
     useThemeContext();
   const [isFocused, setIsFocused] = useState(false);
+  const [actualRank, setActualRank] = useState<"excellent" | "good" | "average" | "critical" | "none">("none");
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    onChangeRank && onChangeRank(actualRank);
+  }, [actualRank]);
 
   if (variant == "Table") {
     return (
@@ -127,8 +134,9 @@ export default function TableHeader({
                   <Rank
                     variant="council"
                     outline={false}
-                    type="none"
+                    type={actualRank}
                     popover={true}
+                    onRankChange={(rank: "excellent" | "good" | "average" | "critical" | "none") => setActualRank(rank)}
                   />
                 </span>
                 <span>
