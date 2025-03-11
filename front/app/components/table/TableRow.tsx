@@ -35,9 +35,9 @@ export default function TableRow({
             backgroundColor: hexToRGBA(constrastColor, 0.01),
             borderColor: primaryColor,
           }}
-          className={`${className} max-w-[1024px] flex flex-row justify-between items-center p-3 w-[100%]`}
+          className={`${className} max-w-full flex flex-row justify-between items-center p-3 w-[100%]`}
         >
-          <td style={{ color: constrastColor }} className="md:w-[250px]">
+          <td style={{ color: constrastColor }} className="md:w-[100px] xl:w-[200px]">
             {turmaNome}
           </td>
           <td

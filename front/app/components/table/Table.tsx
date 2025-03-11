@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import TableRow from "./TableRow";
@@ -70,13 +71,13 @@ export default function Table({ variant }: TableProps) {
 
   if (variant === "primary") {
     return (
-      <div className="w-screen flex justify-center items-start">
+      <div className="w-full flex justify-center items-start">
         <Box
           style={{ borderColor: primaryColor }}
-          className="flex justify-center items-start flex-col border-[2px] overflow-hidden rounded-big w-full max-w-[1024px] mx-10"
+          className="flex justify-center items-start flex-col border-[2px] overflow-hidden rounded-big w-full max-w-full"
         >
           <div className="w-full overflow-x-auto">
-            <table className="w-full max-w-[1024px]">
+            <table className="w-full max-w-full">
               <TableHeader variant="Table" setSearchTerm={setSearchTerm} />
               <tbody>
                 {filteredRows.length > 0 ? (

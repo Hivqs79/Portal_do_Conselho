@@ -29,7 +29,7 @@ export default function TableHeader({
         className="max-w-[1024px]"
       >
         <tr className="w-full flex justify-between items-center p-3">
-          <th className="flex w-full md:w-[250px] p-0">
+          <th className="flex w-full md:w-[100px] xl:w-[200px] p-0">
             <Typography variant="sm_text_bold" color="white">
               Turma
             </Typography>
