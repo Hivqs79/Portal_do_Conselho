@@ -1,9 +1,10 @@
-export default function Encryptor(obj: object): string {
-  const jsonString = JSON.stringify(obj); // Converte o JSON para string
-  const indices: number[] = Array.from(jsonString, (_, i) => i);
-  indices.sort(() => Math.random() - 0.5); // Embaralha os índices
-  const jsonEmbaralhado = indices.map((i) => jsonString[i]).join("");
+export function Encryptor(data: object): string {
+  const jsonString: string = JSON.stringify(data);
+  let encryptedString: string = "";
 
-  // Concatena JSON embaralhado + separador && + chave convertida em string
-  return `${jsonEmbaralhado}&&${indices.join(",")}`;
+  for (let i = 0; i < jsonString.length; i++) {
+    encryptedString += String.fromCharCode(jsonString.charCodeAt(i) + 3);
+  }
+
+  return `${btoa(encryptedString)}`;
 }

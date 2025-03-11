@@ -1,15 +1,14 @@
-export default function Decryptor(jsonComChave: string): object {
-  const [jsonEmbaralhado, chaveString] = jsonComChave.split("&&"); // Separa os dois elementos
-  if (!jsonEmbaralhado || !chaveString)
-    throw new Error("Formato inválido para decodificação!");
-
-  const chave = chaveString.split(",").map(Number); // Converte a chave de volta para array de números
-  const jsonOriginalArray: string[] = new Array(jsonEmbaralhado.length);
-
-  chave.forEach((indiceOriginal, i) => {
-    jsonOriginalArray[indiceOriginal] = jsonEmbaralhado[i];
-  });
-
-  const jsonOriginal = jsonOriginalArray.join("");
-  return JSON.parse(jsonOriginal); // Converte a string de volta para JSON
+export function Decryptor(encryptedData: string): Record<string, any> | null {
+  try {
+    const decodedString: string = atob(encryptedData);
+    let decryptedString: string = "";
+    
+    for (let i = 0; i < decodedString.length; i++) {
+      decryptedString += String.fromCharCode(decodedString.charCodeAt(i) - 3);
+    }
+    
+    return JSON.parse(decryptedString) as Record<string, any>;
+  } catch (error) {
+    return null;
+  }
 }

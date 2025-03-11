@@ -9,6 +9,8 @@ import Icon from "./Icon";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import AutoSaveIndicator from "./AutoSaveIndicator";
 import { useState, useEffect } from "react";
+import { Decryptor } from "@/encryption/Decryptor";
+import { Encryptor } from "@/encryption/Encryptor";
 
 interface StudentCouncilFormProps {
   student: string;
@@ -47,22 +49,20 @@ export default function StudentCouncilForm({
 
   // Carrega os dados do localStorage quando o student muda
   useEffect(() => {
-    // Limpa o estado local antes de carregar os novos dados
     setFrequencia(initialFrequencia);
-    setPositiveContent(""); // Define como string vazia
-    setNegativeContent(""); // Define como string vazia
+    setPositiveContent("");
+    setNegativeContent("");
     setRank(initialRank);
 
-    // Carrega os dados do localStorage
     const savedData = localStorage.getItem("studentsData");
     if (savedData) {
-      const studentsData = JSON.parse(savedData);
-      const studentData = studentsData[student];
-      if (studentData) {
-        setFrequencia(studentData.frequencia);
-        setPositiveContent(studentData.positiveContent || ""); // Define como string vazia se não houver dados
-        setNegativeContent(studentData.negativeContent || ""); // Define como string vazia se não houver dados
-        setRank(studentData.rank);
+      const studentsData = Decryptor(savedData);
+      console.log(studentsData);
+      if (studentsData && studentsData[student]) {
+        setFrequencia(studentsData[student].frequencia);
+        setPositiveContent(studentsData[student].positiveContent || "");
+        setNegativeContent(studentsData[student].negativeContent || "");
+        setRank(studentsData[student].rank);
       }
     }
   }, [student]);
@@ -72,22 +72,18 @@ export default function StudentCouncilForm({
     setIsSaving(true);
 
     const studentData = {
-      frequencia: frequencia,
-      comments: comments,
-      negativeContent: negativeContent,
-      positiveContent: positiveContent,
-      rank: rank,
+      frequencia,
+      comments,
+      negativeContent,
+      positiveContent,
+      rank,
     };
 
-    // Carrega os dados existentes
     const savedData = localStorage.getItem("studentsData");
-    const studentsData = savedData ? JSON.parse(savedData) : {};
+    const studentsData = savedData ? Decryptor(savedData) || {} : {};
 
-    // Atualiza os dados do aluno atual
     studentsData[student] = studentData;
-
-    // Salva o objeto atualizado no localStorage
-    localStorage.setItem("studentsData", JSON.stringify(studentsData));
+    localStorage.setItem("studentsData", Encryptor(studentsData));
 
     setTimeout(() => {
       setIsSaving(false);
