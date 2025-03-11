@@ -16,7 +16,7 @@ interface RankProps {
   type: "excellent" | "good" | "average" | "critical" | "none";
   outline: boolean;
   popover: boolean;
-  studentName: string; // Adicione a prop studentName
+  studentName?: string; // Adicione a prop studentName
   onRankChange?: (rank: string) => void; // Adicione a prop onRankChange
 }
 
