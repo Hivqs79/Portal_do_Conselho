@@ -12,14 +12,14 @@ import hexToRGBA from "@/hooks/hexToRGBA";
 import { RiSubtractFill } from "react-icons/ri";
 
 interface RankProps {
-  variant: "default" | "council";
+  variant?: "default" | "council";
   type: "excellent" | "good" | "average" | "critical" | "none";
   outline: boolean;
   popover: boolean;
 }
 
 export default function Rank({
-  variant,
+  variant = "default",
   type,
   outline,
   popover,

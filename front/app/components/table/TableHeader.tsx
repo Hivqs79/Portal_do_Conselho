@@ -1,16 +1,16 @@
 "use client";
-import { useRef, useState } from "react";
 import { Button, Typography } from "@mui/material";
 import { HiOutlineFilter } from "react-icons/hi";
-import { IoSearch } from "react-icons/io5";
 import { VscSettings } from "react-icons/vsc";
 import { useThemeContext } from "@/hooks/useTheme";
 import Icon from "../Icon";
 import Search from "./Search";
 import Rank from "../rank/Rank";
+import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
 
 interface TableHeaderProps {
   variant: "Table" | "council";
+  headers: TableHeaderContent[];
   searchInput?: boolean;
   setSearchTerm?: (term: string) => void;
   filterButton?: boolean;
@@ -21,6 +21,7 @@ interface TableHeaderProps {
 
 export default function TableHeader({
   variant,
+  headers,
   setSearchTerm,
   searchInput = false,
   setFilter,
@@ -33,40 +34,49 @@ export default function TableHeader({
 
   if (variant == "Table") {
     return (
-      <thead
-        style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
-        className="max-w-[1024px]"
-      >
-        <tr className="w-full flex justify-between items-center p-3">
-          <th className="flex w-full md:w-[100px] xl:w-[200px] p-0">
-            <Typography variant="sm_text_bold" color="white">
-              Turma
-            </Typography>
-          </th>
-          <th className="hidden md:flex">
-            <span className="w-[100px] p-0">
-              <Typography variant="sm_text_bold" color="white">
-                Data
-              </Typography>
-            </span>
-          </th>
-          <th className="hidden lg:flex text-center">
-            <span className="w-[100px] hidden lg:block p-0">
-              <Typography variant="sm_text_bold" color="white">
-                Horario
-              </Typography>
-            </span>
-          </th>
-          <th className="flex gap-2 md:w-[300px] justify-end">
-            { filterButton && <Icon IconPassed={HiOutlineFilter} isButton={true} />}                        
-            { orderButton && <Icon IconPassed={VscSettings} isButton={true} />}
-            { searchInput && <Search setSearchTerm={setSearchTerm}/>}
-          </th>
+      <thead style={{ backgroundColor: primaryColor, borderColor: primaryColor }} className="w-full">
+        <tr className="flex justify-between items-center p-3">
+            {headers.map((header, index) => (
+                <th key={index} 
+                    className={(index !== 0 ?                                                           //all but the first
+                                (index === 1 ? `hidden lg:justify-center md:flex md:flex-1`             //the second 
+                              : `hidden justify-center lg:flex lg:flex-1`)                              //the third
+                                : `flex flex-1`)                                                        //the first
+                                + ` p-0`}                                                               //all
+                > 
+                    <Typography variant="sm_text_bold" color={whiteColor} className={(index === 1 ? `md:pl-6 lg:pl-0` : ``)}>
+                        {header.name}
+                    </Typography>
+                </th>
+            ))}
+            <th className="flex gap-2 w-1/3 justify-end">
+                {filterButton && <Icon IconPassed={HiOutlineFilter} isButton={true} />}
+                {orderButton && <Icon IconPassed={VscSettings} isButton={true} />}
+                {searchInput && <Search setSearchTerm={setSearchTerm} />}
+            </th>
         </tr>
       </thead>
     );
   }
-
+{/* <th className="flex w-full md:w-[100px] xl:w-[200px] p-0">
+          <Typography variant="sm_text_bold" color="white">
+            Turma
+          </Typography>
+        </th>
+        <th className="hidden md:flex">
+          <span className="w-[100px] p-0">
+            <Typography variant="sm_text_bold" color="white">
+              Data
+            </Typography>
+          </span>
+        </th>
+        <th className="hidden lg:flex text-center">
+          <span className="w-[100px] hidden lg:block p-0">
+            <Typography variant="sm_text_bold" color="white">
+              Horario
+            </Typography>
+          </span>
+        </th> */}
   if (variant == "council") {
     return (
       <>

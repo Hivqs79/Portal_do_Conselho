@@ -14,9 +14,9 @@ export default function Search({ setSearchTerm }: SearchProps) {
 
     return (
         <>
-            <Icon IconPassed={IoSearch} isButton={true} classNameButton="md:!hidden"/>                
+            <Icon IconPassed={IoSearch} isButton={true} classNameButton="lg:!hidden"/>                
 
-            <div className="relative w-full max-w-xs cursor-text hidden md:block">
+            <div className="relative w-full max-w-xs cursor-text hidden lg:block">
                 <label
                     htmlFor="search"
                     style={{ backgroundColor: primaryColor }}

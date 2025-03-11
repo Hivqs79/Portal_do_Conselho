@@ -26,8 +26,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
 
   useEffect(() => {
     document.documentElement.style.setProperty("--primary-color", primaryColor);
-    document.documentElement.style.setProperty("--background", backgroundColor);
-  }, [backgroundColor, primaryColor]);
+  }, [primaryColor]);
 
   useEffect(() => {
     if (role === "") {
@@ -41,7 +40,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
         {!isLoginPage ? (
           <>
             <Header variant={role} />
-            <Box className="flex flex-col min-h-screen mx-[15%]">
+            <Box className="flex flex-col mb-32 mx-[15%]">
               {children}
             </Box>
           </>

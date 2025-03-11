@@ -6,8 +6,10 @@ export default function Home() {
 	return (
 		<Box>
 			<Title isWelcomeMensage={true}/>
-			<Typography variant="h6_title">Últimos feedbacks</Typography>
-			<Table variant={"primary"} />
+			<Box  className="!mb-6">
+				<Typography variant="h6_title">Últimos feedbacks</Typography>
+			</Box>
+			<Table/>
 		</Box>
   	);
 }

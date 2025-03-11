@@ -24,10 +24,10 @@ import {
   FaCheck,
   FaRegCalendarAlt,
   FaRegClock,
-  FaRegEyeSlash,
+  FaRegEyeSlash,  
 } from "react-icons/fa";
 import { BiCheckDouble, BiSupport } from "react-icons/bi";
-import { PiBooks, PiStudentBold, PiUserBold } from "react-icons/pi";
+import { PiBooks, PiPlayBold, PiStudentBold, PiUserBold } from "react-icons/pi";
 import { GoGraph, GoPeople } from "react-icons/go";
 import { MdOutlineChat } from "react-icons/md";
 import { HiOutlineFilter, HiOutlineKey } from "react-icons/hi";
@@ -208,6 +208,7 @@ export default function Components() {
         <Icon IconPassed={FaRegEye} />
         <Icon IconPassed={FaRegEyeSlash} />
         <Icon IconPassed={IoCopyOutline} />
+        <Icon IconPassed={PiPlayBold} />
       </Box>
 
       <Box className="flex gap-4">
@@ -224,7 +225,7 @@ export default function Components() {
         <Rank variant="default" type="critical" outline={false} popover={false} />
       </Box>
 
-      <Table variant="primary"/>
+      <Table />
 
       <TextareaComponent whriteOnly={false} title="Pontos Positivos" />
       <TextareaComponent whriteOnly={true} title="Pontos Positivos" content="teste" />
