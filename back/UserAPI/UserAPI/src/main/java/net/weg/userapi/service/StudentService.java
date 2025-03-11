@@ -6,8 +6,15 @@ import net.weg.userapi.model.dto.response.StudentResponseDTO;
 import net.weg.userapi.model.entity.Student;
 import net.weg.userapi.repository.StudentRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -16,12 +23,40 @@ public class StudentService {
     private StudentRepository repository;
     private ModelMapper modelMapper;
 
-    public StudentResponseDTO createStudent (StudentRequestDTO studentRequestDTO) {
+    public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {
         Student student = modelMapper.map(studentRequestDTO, Student.class);
         Student studentSaved = repository.save(student);
-        StudentResponseDTO studentResponseDTO = modelMapper.map(studentSaved, StudentResponseDTO.class);
 
-        return studentResponseDTO;
+        return modelMapper.map(studentSaved, StudentResponseDTO.class);
+    }
+
+    public StudentResponseDTO findStudent(Integer id) {
+        Student studentFound = findStudentEntity(id);
+
+        return modelMapper.map(studentFound, StudentResponseDTO.class);
+    }
+
+    public Student findStudentEntity(Integer id) {
+        return repository.findById(id).orElseThrow(NoSuchElementException::new);
+    }
+
+    public Page<StudentResponseDTO> pageStudent(Pageable pageable) {
+        Page<Student> studentPage = repository.findAll(pageable);
+
+        return studentPage.map(student -> modelMapper.map(student, StudentResponseDTO.class));
+    }
+
+    public StudentResponseDTO updateStudent(StudentRequestDTO studentRequestDTO, Integer id) {
+        Student student = findStudentEntity(id);
+        modelMapper.map(studentRequestDTO, student);
+        Student updatedStudent = repository.save(student);
+        return modelMapper.map(updatedStudent, StudentResponseDTO.class);
+    }
+
+    public StudentResponseDTO deleteStudent(Integer id) {
+        Student student = findStudentEntity(id);
+        repository.delete(student);
+        return modelMapper.map(student, StudentResponseDTO.class);
     }
 
 }
