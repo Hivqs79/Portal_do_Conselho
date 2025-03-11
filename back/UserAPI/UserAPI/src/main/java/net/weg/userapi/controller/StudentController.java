@@ -1,6 +1,8 @@
 package net.weg.userapi.controller;
 
 import lombok.AllArgsConstructor;
+import net.weg.userapi.model.dto.request.StudentRequestDTO;
+import net.weg.userapi.model.dto.response.StudentResponseDTO;
 import net.weg.userapi.model.entity.Student;
 import net.weg.userapi.repository.StudentRepository;
 import net.weg.userapi.service.StudentService;
@@ -18,8 +20,8 @@ public class StudentController {
     private StudentService service;
 
     @PostMapping
-    public Student postStudent (@RequestBody Student student) {
-        return service.createStudent(student);
+    public StudentResponseDTO postStudent(@RequestBody StudentRequestDTO studentRequestDTO) {
+        return service.createStudent(studentRequestDTO);
     }
 
 }
