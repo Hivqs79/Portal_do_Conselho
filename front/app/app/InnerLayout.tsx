@@ -8,27 +8,38 @@ import { usePathname } from "next/navigation";
 import { ReactElement, useEffect } from "react";
 
 export default function InnerLayout({ children }: { children: ReactElement }) {
-
   return (
     <ThemeProviderContext>
-        <RoleProvider>
-            <CoreLayout>{children}</CoreLayout>
-        </RoleProvider>
+      <RoleProvider>
+        <CoreLayout>{children}</CoreLayout>
+      </RoleProvider>
     </ThemeProviderContext>
   );
 }
 
 function CoreLayout({ children }: { children: ReactElement }) {
-  const { theme, backgroundColor, primaryColor, secondaryColor } = useThemeContext();
-  const {role, setRole} = useRoleContext();
+  const {
+    theme,
+    backgroundColor,
+    primaryColor,
+    secondaryColor,
+    terciaryColor,
+  } = useThemeContext();
+  const { role, setRole } = useRoleContext();
   const pathname = usePathname();
   const isLoginPage = pathname?.includes("/login");
 
   useEffect(() => {
     document.documentElement.style.setProperty("--primary-color", primaryColor);
-    document.documentElement.style.setProperty("--secondary-color", secondaryColor);
-    document.documentElement.style.setProperty("--background", backgroundColor);
-  }, [backgroundColor, primaryColor]);
+    document.documentElement.style.setProperty(
+      "--secondary-color",
+      secondaryColor
+    );
+    document.documentElement.style.setProperty(
+      "--terciary-color",
+      terciaryColor
+    );
+  }, [secondaryColor, primaryColor, terciaryColor]);
 
   useEffect(() => {
     if (role === "") {

@@ -33,6 +33,7 @@ export default function Rank({
 }: RankProps) {
   const {
     primaryGrayColor,
+    colorByModeSecondary,
     constrastColor,
     secondaryColor,
     whiteColor,
@@ -157,7 +158,7 @@ export default function Rank({
           <div className="inline-flex justify-start items-center flex-wrap gap-3">
             <Typography
               variant="lg_text_bold"
-              style={{ color: constrastColor }}
+              style={{ color: colorByModeSecondary }}
             >
               Rank:
             </Typography>
