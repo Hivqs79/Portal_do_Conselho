@@ -13,10 +13,6 @@ const tableContent: TableContent = {
 	  name: "Data",
 	  key: "data",
 	},
-	{
-	  name: "Horário",
-	  key: "horario",
-	},
   ],
   rows: [
 	{
@@ -66,7 +62,7 @@ export default function Home() {
 			<Box  className="!mb-6">
 				<Typography variant="h6_title">Últimos feedbacks</Typography>
 			</Box>
-			<Table content={tableContent}/>
+			<Table content={tableContent} searchInput={true} filterButton={true} orderButton={true} visualizeIconButton={true} editButton={true}/>
 		</Box>
   	);
 }

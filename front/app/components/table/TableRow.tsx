@@ -9,13 +9,24 @@ import { FaRegEye } from "react-icons/fa6";
 import { TableRowContent } from "@/interfaces/TableRowContent";
 import hexToRGBA from "@/hooks/hexToRGBA";
 import { PiPlayBold } from "react-icons/pi";
+import { LuPencilLine } from "react-icons/lu";
 
 interface TableRowProps {
   content: TableRowContent;
+  rank?: boolean;
+  realizeButton?: boolean;
+  visualizeIconButton?: boolean;
+  visualizeButton?: boolean;
+  editButton?: boolean;
 }
 
 export default function TableRow({  
   content,
+  rank = false,
+  realizeButton = false,
+  visualizeIconButton = false,
+  visualizeButton = false,
+  editButton = false
 }: TableRowProps) {
   const [selectedRank, setSelectedRank] = useState(content.rank);
   const { primaryColor, constrastColor, whiteColor,backgroundColor } = useThemeContext();
@@ -46,20 +57,53 @@ export default function TableRow({
             </td>            
           )}
           <td className="flex justify-end items-center w-1/3 gap-2 sm:gap-4">
-            <span className="hidden sm:flex justify-center items-center">
-                {selectedRank && <Rank type={selectedRank} outline={true} popover={false} />}
-            </span>
+            {rank && (
+              <span className="hidden sm:flex justify-center items-center">
+                  {selectedRank && <Rank type={selectedRank} outline={true} popover={false} />}
+              </span>              
+            )}
+            
+            {visualizeIconButton && (
+              <Icon IconPassed={FaRegEye} color={whiteColor} isButton={true} colorButton={primaryColor} />              
+            )}
 
-            <Icon IconPassed={FaRegEye} color={whiteColor} isButton={true} colorButton={primaryColor} />
-            <Icon IconPassed={PiPlayBold } color={whiteColor} isButton={true} colorButton={primaryColor} classNameButton={"!block small:!hidden"} />
-                        
-            <span className="hidden small:block">
-                <Button variant="contained" color="primary">
+            {visualizeButton && (
+              <>
+                <Button variant="contained" color="primary" className="!hidden sm:!flex">
                     <Typography variant="sm_text_bold" color="white">
-                        Realizar
+                        Visualizar
                     </Typography>
+                    <Icon IconPassed={FaRegEye} color={whiteColor} className="!ml-2 !w-6 !h-6"/>
                 </Button>
-            </span>
+                <Icon IconPassed={FaRegEye } color={whiteColor} isButton={true} colorButton={primaryColor} classNameButton={"!block sm:!hidden"} />
+              </>
+            )}
+            
+            {realizeButton && (
+              <>
+                <Icon IconPassed={PiPlayBold } color={whiteColor} isButton={true} colorButton={primaryColor} classNameButton={"!block small:!hidden"} />
+                            
+                <span className="hidden small:block">
+                    <Button variant="contained" color="primary">
+                        <Typography variant="sm_text_bold" color="white">
+                            Realizar
+                        </Typography>
+                    </Button>
+                </span>
+              </>
+            )}
+
+            {editButton && (
+              <>
+                <Button variant="contained" color="primary" className="!hidden sm:!flex">
+                    <Typography variant="sm_text_bold" color="white">
+                        Editar
+                    </Typography>
+                    <Icon IconPassed={LuPencilLine} color={whiteColor} className="!ml-2 !w-6 !h-6"/>
+                </Button>
+                <Icon IconPassed={LuPencilLine} color={whiteColor} isButton={true} colorButton={primaryColor} classNameButton="!block sm:!hidden"/>
+              </>
+            )}
           </td>
       </tr>
     </>

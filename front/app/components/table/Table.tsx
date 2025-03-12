@@ -11,9 +11,24 @@ interface TableProps {
   searchInput?: boolean,
   filterButton?: boolean,
   orderButton?: boolean,
+  rank?: boolean;
+  realizeButton?: boolean;
+  visualizeIconButton?: boolean;
+  visualizeButton?: boolean;
+  editButton?: boolean;
 }
 
-export default function Table({ content, searchInput = false, filterButton = false, orderButton = false }: TableProps) {
+export default function Table({ 
+  content, 
+  searchInput = false, 
+  filterButton = false, 
+  orderButton = false, 
+  rank = false, 
+  realizeButton = false, 
+  visualizeIconButton = false, 
+  visualizeButton = false,
+  editButton = false
+}: TableProps) {
   const { primaryColor } = useThemeContext();
   const [searchTerm, setSearchTerm] = useState("");  
 
@@ -45,6 +60,11 @@ export default function Table({ content, searchInput = false, filterButton = fal
                         <TableRow
                           key={index}
                           content={row}
+                          rank={rank}
+                          realizeButton={realizeButton}
+                          visualizeIconButton={visualizeIconButton}
+                          visualizeButton={visualizeButton}
+                          editButton={editButton}
                         />
                       );
                     })
