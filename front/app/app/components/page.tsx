@@ -52,6 +52,62 @@ import TextareaComponent from "@/components/input/TextareaComponent";
 import Photo from "@/components/profile/Photo";
 import AvaliationInputs from "@/components/council/AvaliationInputs";
 import Pagination from "@/components/table/Pagination";
+import { TableContent } from "@/interfaces/TableContent";
+
+const tableContent: TableContent = {
+  headers: [
+  {
+    name: "Turma",
+    key: "turmaNome",
+  },
+  {
+    name: "Data",
+    key: "data",
+  },
+  {
+    name: "Horário",
+    key: "horario",
+  },
+  ],
+  rows: [
+  {
+    turmaNome: "Turma A",
+    data: "10/03/2025",
+    horario: "08:00",
+    rank: "excellent",            
+  },
+  {
+    turmaNome: "Turma B",
+    data: "11/03/2025",
+    horario: "09:30",
+    rank: "good",            
+  },
+  {
+    turmaNome: "Turma C",
+    data: "12/03/2025",
+    horario: "14:00",
+    rank: "average",            
+  },
+  {
+    turmaNome: "Turma A",
+    data: "10/03/2025",
+    horario: "08:00",
+    rank: "excellent",            
+  },
+  {
+    turmaNome: "Turma B",
+    data: "11/03/2025",
+    horario: "09:30",
+    rank: "critical",            
+  },
+  {
+    turmaNome: "Turma C",
+    data: "12/03/2025",
+    horario: "14:00",
+    rank: "average",            
+  },
+  ],
+};
 
 export default function Components() {
   const { primaryColor, secondaryColor, terciaryColor, constrastColor } =
@@ -225,7 +281,7 @@ export default function Components() {
         <Rank variant="default" type="critical" outline={false} popover={false} />
       </Box>
 
-      <Table />
+      <Table content={tableContent}/>
 
       <TextareaComponent whriteOnly={false} title="Pontos Positivos" />
       <TextareaComponent whriteOnly={true} title="Pontos Positivos" content="teste" />

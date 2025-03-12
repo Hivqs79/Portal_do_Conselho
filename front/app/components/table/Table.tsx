@@ -6,66 +6,18 @@ import { useThemeContext } from "@/hooks/useTheme";
 import TableHeader from "./TableHeader";
 import { TableContent } from "@/interfaces/TableContent";
 
-const tableContent: TableContent = {
-  headers: [
-    {
-      name: "Turma",
-      key: "turmaNome",
-    },
-    {
-      name: "Data",
-      key: "data",
-    },
-    {
-      name: "Horário",
-      key: "horario",
-    },
-  ],
-  rows: [
-    {
-      turmaNome: "Turma A",
-      data: "10/03/2025",
-      horario: "08:00",
-      rank: "excellent",            
-    },
-    {
-      turmaNome: "Turma B",
-      data: "11/03/2025",
-      horario: "09:30",
-      rank: "good",            
-    },
-    {
-      turmaNome: "Turma C",
-      data: "12/03/2025",
-      horario: "14:00",
-      rank: "average",            
-    },
-    {
-      turmaNome: "Turma A",
-      data: "10/03/2025",
-      horario: "08:00",
-      rank: "excellent",            
-    },
-    {
-      turmaNome: "Turma B",
-      data: "11/03/2025",
-      horario: "09:30",
-      rank: "critical",            
-    },
-    {
-      turmaNome: "Turma C",
-      data: "12/03/2025",
-      horario: "14:00",
-      rank: "average",            
-    },
-  ],
-};
+interface TableProps {
+  content: TableContent,
+  searchInput?: boolean,
+  filterButton?: boolean,
+  orderButton?: boolean,
+}
 
-export default function Table() {
+export default function Table({ content, searchInput = false, filterButton = false, orderButton = false }: TableProps) {
   const { primaryColor } = useThemeContext();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");  
 
-  const filteredRows = tableContent.rows.filter((row) =>
+  const filteredRows = content.rows.filter((row) =>
     row.turmaNome?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -77,7 +29,14 @@ export default function Table() {
       >
         <div className="w-full overflow-x-auto">
           <table className="w-full max-w-full">
-            <TableHeader variant="Table" headers={tableContent.headers} setSearchTerm={setSearchTerm} searchInput={true} filterButton={true} orderButton={true} />
+            <TableHeader 
+              variant="Table" 
+              headers={content.headers} 
+              setSearchTerm={setSearchTerm} 
+              searchInput={searchInput} 
+              filterButton={filterButton} 
+              orderButton={orderButton} 
+            />
             <tbody>
                 {filteredRows.length > 0 ? (
                   filteredRows.map((row, index) => {
