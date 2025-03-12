@@ -13,7 +13,7 @@ import { RiSubtractFill } from "react-icons/ri";
 import { Encryptor } from "@/encryption/Encryptor";
 
 interface RankProps {
-  variant: "default" | "council";
+  variant?: "default" | "council";
   type: "excellent" | "good" | "average" | "critical" | "none";
   outline: boolean;
   popover: boolean;
@@ -24,7 +24,7 @@ interface RankProps {
 }
 
 export default function Rank({
-  variant,
+  variant = "default",
   type,
   outline,
   popover,

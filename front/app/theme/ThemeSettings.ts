@@ -386,7 +386,14 @@ export default class ThemeSettings {
               borderWidth: "0px",
             },
           },
-        }
+        },
+        MuiSvgIcon: {
+          styleOverrides: {
+            root: {
+              fill: this.getContrastThemeColor(),
+            },
+          },
+        },
       },
     });
   }

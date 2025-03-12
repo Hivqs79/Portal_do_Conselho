@@ -24,10 +24,10 @@ import {
   FaCheck,
   FaRegCalendarAlt,
   FaRegClock,
-  FaRegEyeSlash,
+  FaRegEyeSlash,  
 } from "react-icons/fa";
 import { BiCheckDouble, BiSupport } from "react-icons/bi";
-import { PiBooks, PiStudentBold, PiUserBold } from "react-icons/pi";
+import { PiBooks, PiPlayBold, PiStudentBold, PiUserBold } from "react-icons/pi";
 import { GoGraph, GoPeople } from "react-icons/go";
 import { MdOutlineChat } from "react-icons/md";
 import { HiOutlineFilter, HiOutlineKey } from "react-icons/hi";
@@ -50,8 +50,6 @@ import { FaRegEye, FaRegFilePdf } from "react-icons/fa6";
 import Table from "@/components/table/Table";
 import TextareaComponent from "@/components/input/TextareaComponent";
 import Photo from "@/components/profile/Photo";
-import AvaliationInputs from "@/components/council/AvaliationInputs";
-import Pagination from "@/components/table/Pagination";
 
 export default function Components() {
   const { primaryColor, secondaryColor, terciaryColor, constrastColor } =
@@ -208,10 +206,8 @@ export default function Components() {
         <Icon IconPassed={FaRegEye} />
         <Icon IconPassed={FaRegEyeSlash} />
         <Icon IconPassed={IoCopyOutline} />
+        <Icon IconPassed={PiPlayBold} />
       </Box>
-
-      <Table variant="primary" />
-      <Table variant="primary" />
 
       <TextareaComponent readonly={false} title="Pontos Positivos" />
       <TextareaComponent
@@ -219,15 +215,18 @@ export default function Components() {
         title="Pontos Positivos"
         content="teste"
       />
+      <Box>
+        <Rank variant="default" type="excellent" outline={true} popover={false} />
+        <Rank variant="default" type="good" outline={true} popover={false} />
+        <Rank variant="default" type="average" outline={true} popover={false} />
+        <Rank variant="default" type="critical" outline={true} popover={false} />
 
-      <Pagination />
-
-      <AvaliationInputs
-        wrtiteOnly={false}
-        Negativecontent="teste"
-        Positivecontent="teste"
-      />
-
+        <Rank variant="default" type="excellent" outline={false} popover={false} />
+        <Rank variant="default" type="good" outline={false} popover={false} />
+        <Rank variant="default" type="average" outline={false} popover={false} />
+        <Rank variant="default" type="critical" outline={false} popover={false} />
+      </Box>
+ 
       <Photo photo={""} rounded={false} classname="w-20 h-20" />
       <Photo photo={""} rounded={true} classname="w-20 h-20" />
     </Container>
