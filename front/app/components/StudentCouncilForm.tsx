@@ -33,10 +33,15 @@ export default function StudentCouncilForm({
   onNext,
   onPrevious,
 }: StudentCouncilFormProps) {
-  let frequenciaAtualizada = initialFrequencia;
-  let positiveContentAtualizado = initialPositiveContent;
-  let negativeContentAtualizado = initialNegativeContent;
-  let rankAtualizado = initialRank;
+  const [frequenciaAtualizada, setFrequenciaAtual] =
+    useState(initialFrequencia);
+  const [positiveContentAtualizado, setPositiveContentAtual] = useState(
+    initialPositiveContent
+  );
+  const [negativeContentAtualizado, setNegativeContentAtual] = useState(
+    initialNegativeContent
+  );
+  const [rankAtualizado, setRankAtual] = useState(initialRank);
 
   const { constrastColor, colorByModeSecondary, primaryColor, whiteColor } =
     useThemeContext();
@@ -67,6 +72,11 @@ export default function StudentCouncilForm({
         setPositiveContent(studentsData[student].positiveContent || "");
         setNegativeContent(studentsData[student].negativeContent || "");
         setRank(studentsData[student].rank);
+
+        setFrequenciaAtual(studentsData[student].frequencia);
+        setPositiveContentAtual(studentsData[student].positiveContent || "");
+        setNegativeContentAtual(studentsData[student].negativeContent || "");
+        setRankAtual(studentsData[student].rank);
       }
     }
   }, [student]);
@@ -103,16 +113,6 @@ export default function StudentCouncilForm({
       return;
     }
 
-    console.log("Monitorando alterações: "); //fazer um use state para isso aqui
-    console.log("Frequência Inicial:", frequenciaAtualizada); //fazer um use state para isso aqui
-    console.log("Frequência Atual:", frequencia); //fazer um use state para isso aqui
-    console.log("Conteúdo Positivo Inicial:", positiveContentAtualizado); //fazer um use state para isso aqui
-    console.log("Conteúdo Positivo Atual:", positiveContent); //fazer um use state para isso aqui
-    console.log("Conteúdo Negativo Inicial:", negativeContentAtualizado); //fazer um use state para isso aqui
-    console.log("Conteúdo Negativo Atual:", negativeContent); //fazer um use state para isso aqui
-    console.log("Rank Inicial:", rankAtualizado); //fazer um use state para isso aqui
-    console.log("Rank Atual:", rank); //fazer um use state para isso aqui
-
     const debounceSave = setTimeout(() => {
       if (
         positiveContent !== positiveContentAtualizado ||
@@ -121,20 +121,11 @@ export default function StudentCouncilForm({
         rank !== rankAtualizado
       ) {
         saveToLocalStorage();
-        positiveContentAtualizado = positiveContent;
-        negativeContentAtualizado = negativeContent;
-        frequenciaAtualizada = frequencia;
-        rankAtualizado = rank;
+        setFrequenciaAtual(frequencia);
+        setPositiveContentAtual(positiveContent);
+        setNegativeContentAtual(negativeContent);
+        setRankAtual(rank);
       }
-
-      // if (
-      //   positiveContent !== savedStudentData.positiveContent ||
-      //   negativeContent !== savedStudentData.negativeContent ||
-      //   frequencia !== savedStudentData.frequencia ||
-      //   rank !== savedStudentData.rank
-      // ) {
-      //   saveToLocalStorage();
-      // }
     });
 
     return () => clearTimeout(debounceSave);
@@ -158,7 +149,7 @@ export default function StudentCouncilForm({
     <>
       <div
         style={{ borderColor: primaryColor }}
-        className="relative w-full border-2 rounded-big p-5 px-10 xl:px-16 flex flex-col gap-5 pb-10 lg:pb-5"
+        className="relative w-full border-2 rounded-big p-5 px-9 xl:px-16 flex flex-col gap-5 pb-10 lg:pb-5"
       >
         <div>
           <div className="flex flex-wrap justify-between items-center gap-4">
@@ -207,7 +198,7 @@ export default function StudentCouncilForm({
           ></div>
         </div>
         <div className="flex flex-wrap lg:flex-nowrap gap-5 justify-center">
-          <div className="flex flex-col justify-start items-center gap-5">
+          <div className="relative flex flex-col justify-start items-center gap-5">
             <Photo classname="lg:w-[250px]" rounded={false} />
             <span className="lg:hidden">
               <Button
@@ -227,6 +218,9 @@ export default function StudentCouncilForm({
                 </Typography>
               </Button>
             </span>
+            <div className="absolute hidden lg:block left-[0px] bottom-0">
+              <AutoSaveIndicator saved={!isSaving} />
+            </div>
           </div>
           <div className="w-full flex flex-col gap-5">
             <TextareaComponent
@@ -288,7 +282,7 @@ export default function StudentCouncilForm({
             </span>
           </>
         )}
-        <div className="absolute bottom-2 left-3 lg:left-[65px] lg:bottom-[20px]">
+        <div className="absolute bottom-2 left-3 lg:hidden lg:bottom-[20px]">
           <AutoSaveIndicator saved={!isSaving} />
         </div>
       </div>
