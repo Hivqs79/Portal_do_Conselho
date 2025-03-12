@@ -8,6 +8,7 @@ import { useThemeContext } from "@/hooks/useTheme";
 import Icon from "../Icon";
 import Rank from "../rank/Rank";
 import { Decryptor } from "@/encryption/Decryptor";
+import testeJson from "@/teste.json";
 
 interface TableHeaderProps {
   variant: "Table" | "council";
@@ -23,9 +24,14 @@ export default function TableHeader({
   const { primaryColor, secondaryColor, whiteColor, textDarkColor } =
     useThemeContext();
   const [isFocused, setIsFocused] = useState(false);
-  const [actualRank, setActualRank] = useState<
-    "excellent" | "good" | "average" | "critical" | "none"
-  >("none");
+  const [actualRank, setActualRank] = useState(
+    testeJson["council-form"].class.rank as
+      | "none"
+      | "average"
+      | "excellent"
+      | "good"
+      | "critical"
+  );
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {

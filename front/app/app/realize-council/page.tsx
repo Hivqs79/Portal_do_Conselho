@@ -16,10 +16,10 @@ export default function RealizeCouncil() {
   const [positiveContent, setPositiveContent] = useState("");
   const [negativeContent, setNegativeContent] = useState("");
 
-  const [positiveClassContent, setPositiveClassContent] = useState("");
-  const [negativeClassContent, setNegativeClassContent] = useState("");
+  const [positiveClassContent, setPositiveClassContent] = useState(testeJson["council-form"].class.positiveContent);
+  const [negativeClassContent, setNegativeClassContent] = useState(testeJson["council-form"].class.negativeContent);
 
-  const [actualRank, setActualRank] = useState("none");
+  const [actualRank, setActualRank] = useState(testeJson["council-form"].class.rank);
 
   // Função para descriptografar dados do localStorage
   const getDecryptedData = (key: string): string => {
