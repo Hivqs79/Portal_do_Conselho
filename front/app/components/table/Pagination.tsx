@@ -9,7 +9,7 @@ interface PaginationTableProps {
     setCount: (count: number) => void;
     rowsPerPage: number;
     setRowsPerPage: (rowsPerPage: number) => void;
-}
+} 
 
 export default function PaginationTable({
     page,
