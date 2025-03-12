@@ -165,7 +165,7 @@ export default function Rank({
     if (popover) {
       return (
         <>
-          <div className="inline-flex justify-start items-center flex-wrap gap-3">
+          <div className="inline-flex justify-between items-center flex-wrap gap-3 w-full">
             <Typography
               variant="lg_text_bold"
               style={{ color: colorByModeSecondary }}

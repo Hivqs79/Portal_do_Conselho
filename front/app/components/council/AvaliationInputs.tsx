@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
 import { useThemeContext } from "@/hooks/useTheme";
 import TextareaComponent from "../input/TextareaComponent";
 
@@ -45,7 +44,7 @@ export default function AvaliationInputs({
         />
         <div
           style={{ backgroundColor: primaryColor }}
-          className="hidden lg:block w-[5px] h-[255px]"
+          className="hidden lg:block w-[.2rem] h-[255px]"
         ></div>
         <TextareaComponent
           title="Pontos a melhorar"

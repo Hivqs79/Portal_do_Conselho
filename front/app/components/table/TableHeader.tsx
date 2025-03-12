@@ -139,7 +139,7 @@ export default function TableHeader({
           style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
           className="max-w-[1024px] rounded-big"
         >
-          <tr className="w-full flex flex-wrap gap-5 justify-between items-center p-3">
+          <tr className="w-full flex flex-wrap gap-5 justify-between items-center p-3 lg:px-6">
             <th className="flex w-full md:w-[250px] p-0">
               <Typography variant="sm_text_bold" color="white">
                 Feedback da turma no geral
