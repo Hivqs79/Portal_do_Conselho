@@ -1,8 +1,10 @@
+"use client";
 import PaginationTable from "@/components/table/Pagination";
 import Table from "@/components/table/Table";
 import Title from "@/components/Title";
 import { TableContent } from "@/interfaces/TableContent";
 import { Box, Typography } from "@mui/material";
+import { useState } from "react";
 
 const tableContent: TableContent = {
   headers: [
@@ -45,6 +47,10 @@ const tableContent: TableContent = {
 
 
 export default function Home() {
+	const [page, setPage] = useState(1);
+	const [count, setCount] = useState(10);
+	const [rowsPerPage, setRowsPerPage] = useState(10);  
+
 	const rowButtons: TableRowButtons = {
 		visualizeIconButton: true,
 	}
@@ -61,7 +67,14 @@ export default function Home() {
 				<Typography variant="h6_title">Últimos feedbacks</Typography>
 			</Box>
 			<Table content={tableContent} headerButtons={headerButtons} rowButtons={rowButtons} />
-			<PaginationTable />
+			<PaginationTable 
+				page={page} 
+				setPage={setPage}
+				count={count}
+				setCount={setCount}
+				rowsPerPage={rowsPerPage}
+				setRowsPerPage={setRowsPerPage}
+			/>
 		</Box>
   	);
 }

@@ -4,7 +4,7 @@ import { useThemeContext } from "@/hooks/useTheme";
 import Icon from "../Icon";
 
 interface SearchProps {
-    setSearch?: (term: string) => void;
+    setSearch?: (search: string) => void;
 }
 
 export default function Search({ setSearch }: SearchProps) {
