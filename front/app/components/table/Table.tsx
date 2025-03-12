@@ -8,32 +8,25 @@ import { TableContent } from "@/interfaces/TableContent";
 
 interface TableProps {
   content: TableContent,
-  searchInput?: boolean,
-  filterButton?: boolean,
-  orderButton?: boolean,
-  rank?: boolean;
-  realizeButton?: boolean;
-  visualizeIconButton?: boolean;
-  visualizeButton?: boolean;
-  editButton?: boolean;
+  headerButtons?: TableHeaderButtons,
+  rowButtons?: TableRowButtons,
 }
 
 export default function Table({ 
   content, 
-  searchInput = false, 
-  filterButton = false, 
-  orderButton = false, 
-  rank = false, 
-  realizeButton = false, 
-  visualizeIconButton = false, 
-  visualizeButton = false,
-  editButton = false
+  headerButtons ={},
+  rowButtons = {}
 }: TableProps) {
   const { primaryColor } = useThemeContext();
-  const [searchTerm, setSearchTerm] = useState("");  
+  const [search, setSearch] = useState("");    
+  headerButtons.setSearch = setSearch;
 
   const filteredRows = content.rows.filter((row) =>
-    row.turmaNome?.toLowerCase().includes(searchTerm.toLowerCase())
+    row.turmaNome?.toLowerCase().includes(search.toLowerCase())
+    || row.data?.includes(search)
+    || row.horario?.includes(search)
+    || row.rank?.includes(search)
+    || row.user?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -47,10 +40,7 @@ export default function Table({
             <TableHeader 
               variant="Table" 
               headers={content.headers} 
-              setSearchTerm={setSearchTerm} 
-              searchInput={searchInput} 
-              filterButton={filterButton} 
-              orderButton={orderButton} 
+              headerButtons={headerButtons}
             />
             <tbody>
                 {filteredRows.length > 0 ? (
@@ -60,11 +50,7 @@ export default function Table({
                         <TableRow
                           key={index}
                           content={row}
-                          rank={rank}
-                          realizeButton={realizeButton}
-                          visualizeIconButton={visualizeIconButton}
-                          visualizeButton={visualizeButton}
-                          editButton={editButton}
+                          rowButtons={rowButtons}
                         />
                       );
                     })

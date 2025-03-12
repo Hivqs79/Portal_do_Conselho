@@ -1,3 +1,4 @@
+import PaginationTable from "@/components/table/Pagination";
 import Table from "@/components/table/Table";
 import Title from "@/components/Title";
 import { TableContent } from "@/interfaces/TableContent";
@@ -12,57 +13,55 @@ const tableContent: TableContent = {
 	{
 	  name: "Data",
 	  key: "data",
-	},
+	}
   ],
   rows: [
 	{
 	  turmaNome: "Turma A",
-	  data: "10/03/2025",
-	  horario: "08:00",
-	  rank: "excellent",            
+	  data: "10/03/2025",	  	             
 	},
 	{
 	  turmaNome: "Turma B",
-	  data: "11/03/2025",
-	  horario: "09:30",
-	  rank: "good",            
+	  data: "11/03/2025",	  	        
 	},
 	{
 	  turmaNome: "Turma C",
-	  data: "12/03/2025",
-	  horario: "14:00",
-	  rank: "average",            
+	  data: "12/03/2025",	  	           
 	},
 	{
 	  turmaNome: "Turma A",
-	  data: "10/03/2025",
-	  horario: "08:00",
-	  rank: "excellent",            
+	  data: "10/03/2025",	  	             
 	},
 	{
 	  turmaNome: "Turma B",
-	  data: "11/03/2025",
-	  horario: "09:30",
-	  rank: "critical",            
+	  data: "11/03/2025",	  	            
 	},
 	{
 	  turmaNome: "Turma C",
-	  data: "12/03/2025",
-	  horario: "14:00",
-	  rank: "average",            
+	  data: "12/03/2025",	  	           
 	},
   ],
 };
 
 
 export default function Home() {
+	const rowButtons: TableRowButtons = {
+		visualizeIconButton: true,
+	}
+	const headerButtons: TableHeaderButtons = {
+		searchInput: true,
+		orderButton: true,
+		filterButton: true		
+	}
+
 	return (
 		<Box>
 			<Title isWelcomeMensage={true}/>
 			<Box  className="!mb-6">
 				<Typography variant="h6_title">Últimos feedbacks</Typography>
 			</Box>
-			<Table content={tableContent} searchInput={true} filterButton={true} orderButton={true} visualizeIconButton={true} editButton={true}/>
+			<Table content={tableContent} headerButtons={headerButtons} rowButtons={rowButtons} />
+			<PaginationTable />
 		</Box>
   	);
 }

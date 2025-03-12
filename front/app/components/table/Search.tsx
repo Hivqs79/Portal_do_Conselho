@@ -4,10 +4,10 @@ import { useThemeContext } from "@/hooks/useTheme";
 import Icon from "../Icon";
 
 interface SearchProps {
-    setSearchTerm?: (term: string) => void;
+    setSearch?: (term: string) => void;
 }
 
-export default function Search({ setSearchTerm }: SearchProps) {
+export default function Search({ setSearch }: SearchProps) {
     const { primaryColor, secondaryColor } = useThemeContext();
     const [isFocused, setIsFocused] = useState(false); 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -36,7 +36,7 @@ export default function Search({ setSearchTerm }: SearchProps) {
                     className="w-full pl-4 pr-10 h-[36px] text-white text-sm font-semibold border-2 rounded-md bg-transparent focus:outline-none"
                     onFocus={() => setIsFocused(true)}
                     onBlur={(e) => setIsFocused(e.target.value !== "")}
-                    onChange={(e) => setSearchTerm && setSearchTerm(e.target.value)}
+                    onChange={(e) => setSearch && setSearch(e.target.value)}
                 />
                 <IoSearch
                     color={secondaryColor}

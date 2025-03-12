@@ -11,26 +11,23 @@ import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
 interface TableHeaderProps {
   variant: "Table" | "council";
   headers: TableHeaderContent[];
-  searchInput?: boolean;
-  setSearchTerm?: (term: string) => void;
-  filterButton?: boolean;
-  setFilter?: (filter: boolean) => void;
-  orderButton?: boolean;
-  setOrder?: (order: boolean) => void;  
+  headerButtons: TableHeaderButtons;   
 }
 
 export default function TableHeader({
   variant,
   headers,
-  setSearchTerm,
-  searchInput = false,
-  setFilter,
-  filterButton = false,
-  setOrder,
-  orderButton = false,
+  headerButtons,
 
 }: TableHeaderProps) {
   const { primaryColor, whiteColor, textDarkColor } = useThemeContext();   
+  const {filterButton, 
+    orderButton, 
+    searchInput, 
+    setSearch,
+    setFilter,
+    setOrder
+  } = headerButtons;
 
   if (variant == "Table") {
     return (
@@ -38,7 +35,7 @@ export default function TableHeader({
         <tr className="flex justify-between items-center p-3">
             {headers.map((header, index) => (
                 <th key={index} 
-                    className={(index !== 0 ?                                                           //all but the first
+                    className={(index !== 0 ?                                                           
                                 (index === 1 ? `hidden lg:justify-center md:flex md:flex-1`             //the second 
                               : `hidden justify-center lg:flex lg:flex-1`)                              //the third
                                 : `flex flex-1`)                                                        //the first
@@ -49,34 +46,16 @@ export default function TableHeader({
                     </Typography>
                 </th>
             ))}
-            <th className="flex gap-2 w-1/3 justify-end">
+            <th className="flex gap-2 w-2/5 lg:w-1/3 justify-end">
                 {filterButton && <Icon IconPassed={HiOutlineFilter} isButton={true} />}
                 {orderButton && <Icon IconPassed={VscSettings} isButton={true} />}
-                {searchInput && <Search setSearchTerm={setSearchTerm} />}
+                {searchInput && <Search setSearch={setSearch} />}
             </th>
         </tr>
       </thead>
     );
   }
-{/* <th className="flex w-full md:w-[100px] xl:w-[200px] p-0">
-          <Typography variant="sm_text_bold" color="white">
-            Turma
-          </Typography>
-        </th>
-        <th className="hidden md:flex">
-          <span className="w-[100px] p-0">
-            <Typography variant="sm_text_bold" color="white">
-              Data
-            </Typography>
-          </span>
-        </th>
-        <th className="hidden lg:flex text-center">
-          <span className="w-[100px] hidden lg:block p-0">
-            <Typography variant="sm_text_bold" color="white">
-              Horario
-            </Typography>
-          </span>
-        </th> */}
+
   if (variant == "council") {
     return (
       <>
