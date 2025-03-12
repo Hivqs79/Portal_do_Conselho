@@ -21,7 +21,7 @@ export default function Table({
   const [search, setSearch] = useState("");    
   headerButtons.setSearch = setSearch;
 
-  const filteredRows = content.rows.filter((row) =>
+  const filteredRows = content.content.filter((row) =>
     row.turmaNome?.toLowerCase().includes(search.toLowerCase())
     || row.data?.includes(search)
     || row.horario?.includes(search)
