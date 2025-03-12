@@ -1,14 +1,14 @@
 "use client";
 import OpacityHex from "@/hooks/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Button, Skeleton, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import Rank from "./rank/Rank";
 import Photo from "./profile/Photo";
 import TextareaComponent from "./input/TextareaComponent";
 import Icon from "./Icon";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import AutoSaveIndicator from "./AutoSaveIndicator";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Decryptor } from "@/encryption/Decryptor";
 import { Encryptor } from "@/encryption/Encryptor";
 
@@ -33,11 +33,14 @@ export default function StudentCouncilForm({
   onNext,
   onPrevious,
 }: StudentCouncilFormProps) {
+  let frequenciaAtualizada = initialFrequencia;
+  let positiveContentAtualizado = initialPositiveContent;
+  let negativeContentAtualizado = initialNegativeContent;
+  let rankAtualizado = initialRank;
+
   const { constrastColor, colorByModeSecondary, primaryColor, whiteColor } =
     useThemeContext();
-  const [frequencia, setFrequencia] = useState<number | string>(
-    initialFrequencia
-  );
+  const [frequencia, setFrequencia] = useState<number>(initialFrequencia);
   const [isSaving, setIsSaving] = useState(false);
   const [positiveContent, setPositiveContent] = useState(
     initialPositiveContent
@@ -47,6 +50,7 @@ export default function StudentCouncilForm({
   );
   const [rank, setRank] = useState(initialRank);
   const [isDisable, setDisable] = useState(false);
+  const isInitialMount = useRef(true);
 
   // Carrega os dados do localStorage quando o student muda
   useEffect(() => {
@@ -94,15 +98,43 @@ export default function StudentCouncilForm({
 
   // Monitora alterações e salva após um tempo de inatividade
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    console.log("Monitorando alterações: "); //fazer um use state para isso aqui
+    console.log("Frequência Inicial:", frequenciaAtualizada); //fazer um use state para isso aqui
+    console.log("Frequência Atual:", frequencia); //fazer um use state para isso aqui
+    console.log("Conteúdo Positivo Inicial:", positiveContentAtualizado); //fazer um use state para isso aqui
+    console.log("Conteúdo Positivo Atual:", positiveContent); //fazer um use state para isso aqui
+    console.log("Conteúdo Negativo Inicial:", negativeContentAtualizado); //fazer um use state para isso aqui
+    console.log("Conteúdo Negativo Atual:", negativeContent); //fazer um use state para isso aqui
+    console.log("Rank Inicial:", rankAtualizado); //fazer um use state para isso aqui
+    console.log("Rank Atual:", rank); //fazer um use state para isso aqui
+
     const debounceSave = setTimeout(() => {
       if (
-        positiveContent !== initialPositiveContent ||
-        negativeContent !== initialNegativeContent ||
-        frequencia !== initialFrequencia ||
-        rank !== initialRank
+        positiveContent !== positiveContentAtualizado ||
+        negativeContent !== negativeContentAtualizado ||
+        frequencia !== frequenciaAtualizada ||
+        rank !== rankAtualizado
       ) {
         saveToLocalStorage();
+        positiveContentAtualizado = positiveContent;
+        negativeContentAtualizado = negativeContent;
+        frequenciaAtualizada = frequencia;
+        rankAtualizado = rank;
       }
+
+      // if (
+      //   positiveContent !== savedStudentData.positiveContent ||
+      //   negativeContent !== savedStudentData.negativeContent ||
+      //   frequencia !== savedStudentData.frequencia ||
+      //   rank !== savedStudentData.rank
+      // ) {
+      //   saveToLocalStorage();
+      // }
     });
 
     return () => clearTimeout(debounceSave);
@@ -112,7 +144,7 @@ export default function StudentCouncilForm({
     let value = parseInt(e.target.value, 10);
 
     if (isNaN(value)) {
-      setFrequencia("");
+      setFrequencia(0);
     } else {
       setFrequencia(value > 100 ? 100 : value);
     }
@@ -199,17 +231,17 @@ export default function StudentCouncilForm({
           <div className="w-full flex flex-col gap-5">
             <TextareaComponent
               title="Pontos Positivos"
-              readonly={false} // Modo editável
+              readonly={false}
               placeholder="Escreva algo aqui..."
-              value={positiveContent} // Passe o estado local como value
-              onChange={(e) => setPositiveContent(e.target.value)} // Passe o onChange
+              value={positiveContent}
+              onChange={(e) => setPositiveContent(e.target.value)}
             />
             <TextareaComponent
               title="Pontos a Melhorar"
-              readonly={false} // Modo editável
+              readonly={false}
               placeholder="Escreva algo aqui..."
-              value={negativeContent} // Passe o estado local como value
-              onChange={(e) => setNegativeContent(e.target.value)} // Passe o onChange
+              value={negativeContent}
+              onChange={(e) => setNegativeContent(e.target.value)}
             />
           </div>
         </div>

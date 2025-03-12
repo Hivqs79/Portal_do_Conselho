@@ -67,6 +67,16 @@ export default function Rank({
     handleClose();
   };
 
+  const handleSelectNormalRank = (
+    newRank: "excellent" | "good" | "average" | "critical" | "none"
+  ) => {
+    setSelectedRank(newRank);
+    if (onRankChange) {
+      onRankChange(newRank);
+    }
+    handleClose();
+  };
+
   const open = Boolean(anchorEl);
   const id = open ? "rank-popover" : undefined;
 
@@ -188,7 +198,7 @@ export default function Rank({
                   <div
                     key={key}
                     className="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition"
-                    onClick={() => handleSelect(key)}
+                    onClick={() => handleSelectNormalRank(key)}
                   >
                     {rank[key]}{" "}
                     <span className="capitalize">{rankLabels[key]}</span>

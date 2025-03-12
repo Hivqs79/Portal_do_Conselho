@@ -11,15 +11,6 @@ import { Box, Button, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import testeJson from "@/teste.json";
 
-type StudentType = {
-  name: string;
-  frequencia: number;
-  comments: string;
-  negativeContent: string;
-  positiveContent: string;
-  rank: "excellent" | "good" | "average" | "critical" | "none";
-};
-
 export default function RealizeCouncil() {
   const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
   const [positiveContent, setPositiveContent] = useState("");
@@ -101,13 +92,13 @@ export default function RealizeCouncil() {
     <Box>
       <Title textHighlight="Conselho" text="da turma:" />
       <Box
-        className="rounded-big  m-0 flex justify-center items-center outline-[16px] outline"
+        className="rounded-big m-0 flex justify-center items-center outline-[16px] outline"
         // bgcolor={OpacityHex(constrastColor, 0.1)}
         style={{ outlineColor: OpacityHex(constrastColor, 0.1) }}
       >
         <Box
           borderColor={primaryColor}
-          className="rounded-big border-2 w-full p-2 m-0"
+          className="rounded-big border-2 w-full p-5 m-0"
           bgcolor={backgroundColor}
         >
           <Box
@@ -155,7 +146,7 @@ export default function RealizeCouncil() {
             </div>
           </Box>
           <Button
-            className="w-full !mt-3 !rounded-normal"
+            className="w-full !mt-5 !rounded-normal"
             variant="contained"
             color="primary"
           >
