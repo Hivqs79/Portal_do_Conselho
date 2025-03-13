@@ -23,7 +23,7 @@ export default function TableButton ({
         <>
             {(!onlyIcon) && (
                 <Button variant="contained" color="primary" className="!hidden sm:!flex">
-                    <Typography variant="sm_text_bold" color="white" className="!normal-case">
+                    <Typography variant="sm_text_bold" color="white">
                         {text}
                     </Typography>
                     {(!onlyTextInBigSize && icon) && <Icon IconPassed={icon} color={whiteColor} className="!ml-2 !w-6 !h-6"/>}                

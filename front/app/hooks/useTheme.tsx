@@ -47,6 +47,9 @@ interface ThemeContextType {
   redDanger: string;
   textDarkColor: string;
   getThemeMode: () => "dark" | "light";
+  getThemePallete: () => PossibleColors;
+  changeFontSize: (multiplier: number) => void;
+  getFontSize: () => number;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -73,6 +76,8 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const darkGrayColor = ThemeSettings.darkGrayColor();
   const redDanger = colors.redDanger;
   const getThemeMode = () => ThemeSettings.getThemeMode();
+  const getThemePallete = (): PossibleColors => ThemeSettings.getThemePallete() as PossibleColors;  
+  const getFontSize = () => ThemeSettings.getFontSize();
 
   const reloadTheme = () => {
     setTheme(ThemeSettings.createThemePallete());
@@ -88,6 +93,11 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("theme", color);
     setThemeColor(color);
     BrandColors.changePallete(color);
+    reloadTheme();
+  };
+
+  const changeFontSize = (multiplier: number) => {
+    ThemeSettings.changeFontSize(multiplier);
     reloadTheme();
   };
 
@@ -130,6 +140,9 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
         darkGrayColor,
         redDanger,
         getThemeMode,
+        getThemePallete,
+        changeFontSize,
+        getFontSize,
       }}
     >
       {children}
