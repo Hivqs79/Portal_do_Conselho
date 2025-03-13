@@ -133,12 +133,12 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
         </Box>
         <Box className="flex justify-between gap-3 mt-5">
           <Button
-            variant="outlined"
+            variant="contained"
             onClick={onClose}
             sx={{
-              width: "50%",
-              color: redDanger,
-              borderColor: redDanger,
+              width: "45%",
+              color: textBlackolor,
+              backgroundColor: terciaryColor,
               borderWidth: 2,
               fontSize: 14,
               fontWeight: 600,
@@ -150,7 +150,7 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
             variant="contained"
             color="primary"
             sx={{
-              width: "50%",
+              width: "45%",
               backgroundColor: primaryColor,
               color: whiteColor,
               fontSize: 14,

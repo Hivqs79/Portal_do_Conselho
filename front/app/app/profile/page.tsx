@@ -184,7 +184,7 @@ export default function Profile() {
               color="inherit"
               onClick={closeSnackbar}
             >
-              <Icon IconPassed={IoClose} color={redDanger} />
+              <Icon IconPassed={IoClose} color={whiteColor} />
             </IconButton>
           }
         />
