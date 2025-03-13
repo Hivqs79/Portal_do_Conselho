@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
 import net.weg.userapi.model.dto.request.TeacherRequestDTO;
 import net.weg.userapi.model.dto.response.TeacherResponseDTO;
+import net.weg.userapi.model.entity.Class;
 import net.weg.userapi.model.entity.Teacher;
 import net.weg.userapi.repository.TeacherRepository;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -47,6 +49,13 @@ public class TeacherService {
     public TeacherResponseDTO updateTeacher(TeacherRequestDTO teacherRequestDTO, Integer id) {
         Teacher teacher = findTeacherEntity(id);
         modelMapper.map(teacherRequestDTO, teacher);
+        Teacher updatedTeacher = repository.save(teacher);
+        return modelMapper.map(updatedTeacher, TeacherResponseDTO.class);
+    }
+
+    public TeacherResponseDTO updateTeacherClasses(Integer id, List<Class> classes) {
+        Teacher teacher = findTeacherEntity(id);
+        teacher.setClasses(classes);
         Teacher updatedTeacher = repository.save(teacher);
         return modelMapper.map(updatedTeacher, TeacherResponseDTO.class);
     }

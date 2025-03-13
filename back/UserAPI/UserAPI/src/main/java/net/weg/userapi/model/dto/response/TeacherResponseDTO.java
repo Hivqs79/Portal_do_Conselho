@@ -3,6 +3,9 @@ package net.weg.userapi.model.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.weg.userapi.model.entity.Class;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -13,4 +16,5 @@ public class TeacherResponseDTO {
     private String name;
     private String email;
     private String password;
+    private List<ClassResponseDTO> classes;
 }

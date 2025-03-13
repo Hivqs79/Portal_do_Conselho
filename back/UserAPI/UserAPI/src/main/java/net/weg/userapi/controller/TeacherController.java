@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/teacher")
 @AllArgsConstructor
 public class TeacherController {
-    
+
     private TeacherService service;
 
     @PostMapping
@@ -25,6 +25,11 @@ public class TeacherController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TeacherResponseDTO> putTeacher(@RequestBody @Validated TeacherRequestDTO teacherRequestDTO, @PathVariable Integer id) {
+        return new ResponseEntity<>(service.updateTeacher(teacherRequestDTO, id), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<TeacherResponseDTO> patchTeacherClass(@RequestBody @Validated TeacherRequestDTO teacherRequestDTO, @PathVariable Integer id) {
         return new ResponseEntity<>(service.updateTeacher(teacherRequestDTO, id), HttpStatus.OK);
     }
 
