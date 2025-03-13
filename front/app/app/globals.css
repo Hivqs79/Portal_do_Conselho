@@ -24,6 +24,7 @@
 .dark ::selection {
   background-color: var(--primary-color);
   color: #F5F5F5;
+  --outline-color: rgba(245, 245, 245, 0.1);
 }
 
 .outline-component {

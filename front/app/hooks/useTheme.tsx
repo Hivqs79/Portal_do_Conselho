@@ -44,6 +44,7 @@ interface ThemeContextType {
   textBlackolor: string;
   lightGrayColor: string;
   darkGrayColor: string;
+  redDanger: string;
   textDarkColor: string;
   getThemeMode: () => "dark" | "light";
 }
@@ -70,6 +71,7 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const textDarkColor = colors.textDarkColor;
   const lightGrayColor = ThemeSettings.lightGrayColor();
   const darkGrayColor = ThemeSettings.darkGrayColor();
+  const redDanger = colors.redDanger;
   const getThemeMode = () => ThemeSettings.getThemeMode();
 
   const reloadTheme = () => {
@@ -126,6 +128,7 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
         textBlackolor,
         lightGrayColor,
         darkGrayColor,
+        redDanger,
         getThemeMode,
       }}
     >

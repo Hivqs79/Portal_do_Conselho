@@ -151,14 +151,17 @@ export default function StudentCouncilForm({
         style={{ borderColor: primaryColor }}
         className="relative w-full border-2 rounded-big p-5 px-9 xl:px-16 flex flex-col gap-5 pb-10 lg:pb-5"
       >
-        <div>
-          <div className="flex flex-wrap justify-between items-center gap-4">
-            <Typography variant="lg_text_bold" color={constrastColor}>
-              <span style={{ color: colorByModeSecondary }}>Aluno:</span>{" "}
-              {student}
-            </Typography>
-            <span className="flex flex-wrap justify-start items-center gap-y-5 gap-x-10">
-              <span className="flex justify-start items-center gap-4 flex-wrap">
+        <div className="flex flex-wrap lg:flex-nowrap gap-5 lg:gap-10 justify-center">
+          <div className="flex flex-col justify-between items-start gap-5 h-[550px]">
+            <div className="flex flex-wrap justify-between items-center gap-4">
+              <Typography variant="lg_text_bold" color={constrastColor}>
+                <span style={{ color: colorByModeSecondary }}>Aluno:</span>{" "}
+                {student}
+              </Typography>
+            </div>
+            <Photo classname="lg:w-[250px] mx-auto" rounded={false} />
+            <span className="flex flex-col justify-center items-center gap-4 w-full">
+              <span className="flex justify-between w-full items-center flex-wrap gap-y-4 gap-x-4">
                 <Typography variant="lg_text_bold" color={colorByModeSecondary}>
                   Frequência:
                 </Typography>
@@ -175,31 +178,27 @@ export default function StudentCouncilForm({
                     onChange={handleFrequenciaChange}
                     min={0}
                     max={100}
-                    className="text-center bg-none bg-transparent appearance-none border-2 w-24 font-bold h-[40px] flex justify-center items-center rounded-small [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    className="text-center bg-none bg-transparent appearance-none border-2 w-[120px] font-bold h-[40px] flex justify-center items-center rounded-small [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none outline-none"
                   />
-                  <span className="absolute right-2 text-gray-500 font-bold">
+                  <span
+                    style={{ color: OpacityHex(constrastColor, 0.7) }}
+                    className="absolute right-2 font-bold"
+                  >
                     %
                   </span>
                 </div>
               </span>
-              <Rank
-                variant="default"
-                popover={true}
-                outline={false}
-                type={rank}
-                studentName={student}
-                onRankChange={handleRankChange}
-              />
+              <span className="w-full">
+                <Rank
+                  variant="default"
+                  popover={true}
+                  outline={false}
+                  type={rank}
+                  studentName={student}
+                  onRankChange={handleRankChange}
+                />
+              </span>
             </span>
-          </div>
-          <div
-            style={{ backgroundColor: primaryColor }}
-            className="w-full h-[2px] rounded-full mt-2"
-          ></div>
-        </div>
-        <div className="flex flex-wrap lg:flex-nowrap gap-5 justify-center">
-          <div className="relative flex flex-col justify-start items-center gap-5">
-            <Photo classname="lg:w-[250px]" rounded={false} />
             <span className="lg:hidden">
               <Button
                 variant="contained"
@@ -218,11 +217,12 @@ export default function StudentCouncilForm({
                 </Typography>
               </Button>
             </span>
-            <div className="absolute hidden lg:block left-[0px] bottom-0">
-              <AutoSaveIndicator saved={!isSaving} />
-            </div>
           </div>
-          <div className="w-full flex flex-col gap-5">
+          <div
+            style={{ backgroundColor: primaryColor }}
+            className="hidden lg:block w-[.2rem] rounded-full h-[550px]"
+          ></div>
+          <div className="w-full flex justify-between flex-col gap-5 lg:h-[550px]">
             <TextareaComponent
               title="Pontos Positivos"
               readonly={false}
@@ -283,6 +283,9 @@ export default function StudentCouncilForm({
           </>
         )}
         <div className="absolute bottom-2 left-3 lg:hidden lg:bottom-[20px]">
+          <AutoSaveIndicator saved={!isSaving} />
+        </div>
+        <div className="absolute hidden lg:block right-[4rem] top-5">
           <AutoSaveIndicator saved={!isSaving} />
         </div>
       </div>

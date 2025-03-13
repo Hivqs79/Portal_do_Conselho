@@ -1,5 +1,5 @@
 import { useThemeContext } from '@/hooks/useTheme';
-import { Box, Menu, MenuItem, Slide, Typography } from '@mui/material';
+import { Box, Menu, MenuItem, Slide, styled, Typography } from '@mui/material';
 import Icon from './Icon';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { BsHouse } from 'react-icons/bs';
@@ -14,6 +14,7 @@ import { SiGoogleclassroom } from 'react-icons/si';
 import { GoGraph, GoPeople } from 'react-icons/go';
 import { FaRegFilePdf } from 'react-icons/fa6';
 import Link from 'next/link';
+import { useRef } from 'react';
 
 interface MenuHeaderProps {
     anchorEl: null | HTMLElement;
@@ -22,35 +23,42 @@ interface MenuHeaderProps {
     variant?: string;
 }
 
-export default function MenuHeader({ anchorEl, open, onClose, variant }: MenuHeaderProps) {
+const CustomMenu = styled(Menu)(() => ({
+    "& .MuiPaper-root": {
+        backgroundColor: "var(--primary-color)",
+        color: "var(--white-color)",
+        borderRadius: "0px 0px 4px 4px",
+        left: "0px !important",
+        boxShadow: "2px 2px 8px 0px var(--primary-color)77",
+    },
+    "& .MuiList-root": {
+        padding: "16px 0px",
+    },
+}))
+
+
+export default function MenuHeader({ open, onClose, variant }: MenuHeaderProps) {
     const {whiteColor} = useThemeContext();
+    const menuRef = useRef<HTMLDivElement>(null);    
 
     return (
-        <Menu
-            anchorEl={anchorEl}
+        <CustomMenu
+            anchorReference="anchorPosition"
+            anchorPosition={{
+                top: 88,
+                left: 0,
+            }}
             open={open}
+            ref={menuRef}
             onClose={onClose}   
             anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'left',
-            }}
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-            }}           
+            }}               
             TransitionComponent={Slide}
             TransitionProps={{
                 timeout: 500,
             }}       
-            slotProps={{
-                paper: {
-                    style: {
-                        zIndex: 40,
-                        transform: "translateX(-16px)",
-                    },
-                }
-            }}         
-                                 
         >
             <Box>
                 <Link href="/">
@@ -149,6 +157,6 @@ export default function MenuHeader({ anchorEl, open, onClose, variant }: MenuHea
                     </MenuItem>
                 </Link>
             </Box>
-        </Menu>
+        </CustomMenu>
     );
 }
