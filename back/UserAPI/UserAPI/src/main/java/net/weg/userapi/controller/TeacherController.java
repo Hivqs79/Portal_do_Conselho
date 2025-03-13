@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/teacher")
 @AllArgsConstructor
 public class TeacherController {
-
+    
     private TeacherService service;
 
     @PostMapping

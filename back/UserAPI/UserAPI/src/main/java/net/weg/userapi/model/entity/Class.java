@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.enums.ClassAreaENUM;
 
+import java.util.List;
+
 @Builder
 @Entity
 @Data
@@ -28,5 +30,8 @@ public class Class {
 
     @Column(nullable = false)
     private String course;
+
+    @ManyToMany(mappedBy = "classes")
+    private List<Teacher> teachers;
 
 }

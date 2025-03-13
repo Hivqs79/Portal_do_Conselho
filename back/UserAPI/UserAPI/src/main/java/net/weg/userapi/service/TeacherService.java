@@ -21,6 +21,7 @@ public class TeacherService {
     private ModelMapper modelMapper;
 
     public TeacherResponseDTO createTeacher(TeacherRequestDTO teacherRequestDTO) {
+        System.out.println(teacherRequestDTO.getClasses());
         Teacher teacher = modelMapper.map(teacherRequestDTO, Teacher.class);
         Teacher teacherSaved = repository.save(teacher);
 
