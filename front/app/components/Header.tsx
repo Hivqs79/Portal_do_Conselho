@@ -1,5 +1,5 @@
 import { useThemeContext } from "@/hooks/useTheme";
-import { Box, Typography } from "@mui/material";
+import { Badge, Box, Typography } from "@mui/material";
 import LogoIcon from "./LogoIcon";
 import Icon from "./Icon";
 import { IoClose, IoMenu, IoSettingsOutline } from "react-icons/io5";
@@ -82,14 +82,14 @@ export default function Header({ variant }: HeaderProps) {
           </Typography>
         </Link>
       </Box>
-      <Box className="flex flex-row-reverse sm:flex-row items-center">
+      <Box className="flex flex-row items-center">
         {/* TODO: substitute for a component of UserImage */}
         <div className="w-12 h-12 flex justify-center items-center rounded-full">
           <Link href={"/profile"}>
             <Photo photo={""} rounded={true} classname="w-full h-full" />
           </Link>
         </div>
-        <Box className="flex flex-col justify-center items-end sm:items-start mr-2 sm:mr-0 sm:ml-2">
+        <Box className="flex flex-col justify-center items-start ml-2">
           <Typography
             variant={isSmallScreen ? "md_text_regular" : "xl_text_regular"}
             style={{ color: whiteColor }}
@@ -116,13 +116,17 @@ export default function Header({ variant }: HeaderProps) {
         </Box>
         <div
           style={{ backgroundColor: whiteColor }}
-          className="hidden sm:block w-[1px] h-[30px] mx-4"
+          className="w-[1px] h-[30px] mx-4"
         />
-        <Icon
-          IconPassed={VscBell}
-          color={whiteColor}
-          className="hidden sm:block w-8 h-8"
-        />
+        <span className=" sm:block">
+          <Badge badgeContent={10} color="secondary">
+            <Icon
+              IconPassed={VscBell}
+              color={whiteColor}
+              className=" sm:block w-8 h-8"
+            />
+          </Badge>
+        </span>
       </Box>
     </Box>
   );
