@@ -1,17 +1,27 @@
+"use client";
 import { Box, MenuItem, Pagination, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-export default function PaginationTable() {
-    const [page, setPage] = useState(10);
-    const [count, setCount] = useState(10);
-    const [rowsPerPage, setRowsPerPage] = useState(10);    
+interface PaginationTableProps {
+    page: number;
+    setPage: (page: number) => void;
+    count: number;
+    setCount: (count: number) => void;
+    rowsPerPage: number;
+    setRowsPerPage: (rowsPerPage: number) => void;
+} 
+
+export default function PaginationTable({
+    page,
+    setPage,
+    count,
+    setCount,
+    rowsPerPage,
+    setRowsPerPage
+}: PaginationTableProps) {      
     const [isMedium, setIsMedium] = useState(window.innerWidth < 700);    
     const [isSmall, setIsSmall] = useState(window.innerWidth < 600);    
-    const [isTiny, setIsTiny] = useState(window.innerWidth < 450);    
-
-    useEffect(() => {
-        setCount(10);
-    }, []);
+    const [isTiny, setIsTiny] = useState(window.innerWidth < 450);        
 
     useEffect(() => {
         const handleResize = () => {
@@ -30,7 +40,7 @@ export default function PaginationTable() {
 
 
     return (
-        <Box className="!flex !flex-col-reverse !w-full !items-end lg:!justify-end lg:!flex-row lg:items-center">
+        <Box className="!flex !flex-col-reverse !w-full !mt-8  !items-end lg:!justify-end lg:!flex-row lg:items-center">
             <Box className="!flex !flex-row items-center mt-4 lg:mt-0 lg:mr-4">
                 <Typography variant={isMedium ? "sm_text_bold" : "md_text_bold"} className="!mr-4">Itens por página</Typography>    
                 <Select 

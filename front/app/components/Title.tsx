@@ -18,7 +18,7 @@ export default function Title({textHighlight, text, isWelcomeMensage=false}: Tit
         text = "ao Portal do Conselho";
     }
     return (
-        <Box className={`flex !mt-36 !mb-[4.5rem] ` + (isWelcomeMensage && "justify-center text-center")}>
+        <Box className={`flex !mt-[4.5rem] !mb-[4.5rem] ` + (isWelcomeMensage && "justify-center text-center")}>
             <Typography variant="h4_title" color={colorByModeSecondary} className="font-bold">
                 {textHighlight}
                 <Typography variant="h4_title" className="font-normal">{isWelcomeMensage && <br/>} {text}</Typography>

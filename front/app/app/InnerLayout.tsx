@@ -53,7 +53,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
         {!isLoginPage ? (
           <>
             <Header variant={role} />
-            <Box className="flex flex-col min-h-screen mx-[15%]">
+            <Box className="flex flex-col mb-24 mx-[15%]">
               {children}
             </Box>
           </>

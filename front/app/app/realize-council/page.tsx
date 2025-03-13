@@ -16,10 +16,16 @@ export default function RealizeCouncil() {
   const [positiveContent, setPositiveContent] = useState("");
   const [negativeContent, setNegativeContent] = useState("");
 
-  const [positiveClassContent, setPositiveClassContent] = useState(testeJson["council-form"].class.positiveContent);
-  const [negativeClassContent, setNegativeClassContent] = useState(testeJson["council-form"].class.negativeContent);
+  const [positiveClassContent, setPositiveClassContent] = useState(
+    testeJson["council-form"].class.positiveContent
+  );
+  const [negativeClassContent, setNegativeClassContent] = useState(
+    testeJson["council-form"].class.negativeContent
+  );
 
-  const [actualRank, setActualRank] = useState(testeJson["council-form"].class.rank);
+  const [actualRank, setActualRank] = useState(
+    testeJson["council-form"].class.rank
+  );
 
   // Função para descriptografar dados do localStorage
   const getDecryptedData = (key: string): string => {
@@ -109,7 +115,10 @@ export default function RealizeCouncil() {
               <table className="p-0 m-0 w-full">
                 <TableHeader
                   variant="council"
-                  onChangeRank={handleRankChange}
+                  headers={[]}
+                  headerButtons={{
+                    onChangeRank: handleRankChange,
+                  }}
                 />
               </table>
               <AvaliationInputs
