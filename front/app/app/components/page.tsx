@@ -222,12 +222,6 @@ export default function Components() {
 
       <Pagination />
 
-      <AvaliationInputs
-        wrtiteOnly={false}
-        Negativecontent="teste"
-        Positivecontent="teste"
-      />
-
       <Photo photo={""} rounded={false} classname="w-20 h-20" />
       <Photo photo={""} rounded={true} classname="w-20 h-20" />
     </Container>
