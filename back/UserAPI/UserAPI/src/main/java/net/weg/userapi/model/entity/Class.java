@@ -34,4 +34,7 @@ public class Class {
     @ManyToMany(mappedBy = "classes")
     private List<Teacher> teachers;
 
+    @ManyToMany(mappedBy = "classes")
+    private List<Student> students;
+
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -16,4 +17,5 @@ public class StudentResponseDTO {
     private String password;
     private Boolean isRepresentant;
     private UUID imageKey;
+    private List<ClassResponseDTO> classes;
 }

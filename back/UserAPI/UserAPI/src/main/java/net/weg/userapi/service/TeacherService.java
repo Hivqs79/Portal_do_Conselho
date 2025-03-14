@@ -49,13 +49,7 @@ public class TeacherService {
     public TeacherResponseDTO updateTeacher(TeacherRequestDTO teacherRequestDTO, Integer id) {
         Teacher teacher = findTeacherEntity(id);
         modelMapper.map(teacherRequestDTO, teacher);
-        Teacher updatedTeacher = repository.save(teacher);
-        return modelMapper.map(updatedTeacher, TeacherResponseDTO.class);
-    }
-
-    public TeacherResponseDTO updateTeacherClasses(Integer id, List<Class> classes) {
-        Teacher teacher = findTeacherEntity(id);
-        teacher.setClasses(classes);
+        teacher.setClasses(teacherRequestDTO.getClasses()); //ATUALIZAR O MANY TO MANY
         Teacher updatedTeacher = repository.save(teacher);
         return modelMapper.map(updatedTeacher, TeacherResponseDTO.class);
     }
