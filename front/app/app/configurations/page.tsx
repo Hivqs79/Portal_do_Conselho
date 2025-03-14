@@ -10,10 +10,29 @@ import { colors } from "@/theme/BrandColors";
 import { useState } from "react";
 
 export default function Config() {
-    const {constrastColor, whiteColor, backgroundColor, primaryColor, getThemeMode, changeThemeMode, changePallete, getThemePallete, changeFontSize, getFontSize} = useThemeContext();
+    const {
+        constrastColor, 
+        whiteColor, 
+        backgroundColor, 
+        primaryColor, 
+        getThemeMode, 
+        changeThemeMode, 
+        changePallete, 
+        getThemePallete, 
+        changeFontSize, 
+        getFontSize, 
+        colorByMode,
+        changeFontFamilyText,
+        getFontFamilyText,
+        getFontFamilyTitle,
+        changeFontFamilyTitle
+    } = useThemeContext();
+
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const [popoverMessage, setPopoverMessage] = useState("");
     const [fontMultiplier, setFontMultiplier] = useState(getFontSize());
+    const [fontFamilyText, setFontFamilyText] = useState(getFontFamilyText());
+    const [fontFamilyTitle, setFontFamilyTitle] = useState(getFontFamilyTitle());
     const themeMode = getThemeMode();
     const open = Boolean(anchorEl);
 
@@ -102,6 +121,7 @@ export default function Config() {
                         </Box>
                     </Box>
                     <Box>
+                        <Typography variant="xl_text_bold" style={{color: colorByMode}} className="!mb-4">Exemplos</Typography>
                         <Box className="flex flex-row justify-between">
                             <Button variant="contained" size="small" className="h-fit !font-bold" color="primary">
                                 Primary
@@ -123,22 +143,35 @@ export default function Config() {
                     <Typography variant="xl_text_bold">Fonte</Typography>
                     <Typography variant="xl_text_regular">Selecione a fonte que mais te agrada para sua interface.</Typography>
                 </Box>
-                <Select value={fontMultiplier} onChange={(e) => {changeFontSize(e.target.value as number); setFontMultiplier(e.target.value as number)} }>
-                    <MenuItem value={0.5}>0.5x</MenuItem>
-                    <MenuItem value={0.75}>0.75x</MenuItem>
-                    <MenuItem value={1.0}>1x</MenuItem>
-                    <MenuItem value={1.25}>1.25x</MenuItem>
-                    <MenuItem value={1.5}>1.5x</MenuItem>
+                <Box>
+
+                    <Select value={fontMultiplier} size="small" onChange={(e) => {changeFontSize(e.target.value as number); setFontMultiplier(e.target.value as number)} }>
+                        <MenuItem value={0.5}>0.5x</MenuItem>
+                        <MenuItem value={0.75}>0.75x</MenuItem>
+                        <MenuItem value={1.0}>1x</MenuItem>
+                        <MenuItem value={1.25}>1.25x</MenuItem>
+                        <MenuItem value={1.5}>1.5x</MenuItem>
+                    </Select>
+                </Box>
+                <Select value={fontFamilyText} size="small" onChange={(e) => {changeFontFamilyText(e.target.value as string); setFontFamilyText(e.target.value as string)} }>
+                    <MenuItem value="Poppins">Poppins</MenuItem>
+                    <MenuItem value="Inter">Inter</MenuItem>
+                    <MenuItem value="Merriweather">Merriweather</MenuItem>
+                    <MenuItem value="Montserrat">Montserrat</MenuItem>
+                </Select>
+                <Select value={fontFamilyTitle} size="small" onChange={(e) => {changeFontFamilyTitle(e.target.value as string); setFontFamilyTitle(e.target.value as string)} }>
+                    <MenuItem value="Lora">Lora</MenuItem>
+                    <MenuItem value="Libre Baskerville">Libre Baskerville</MenuItem>                    
                 </Select>
             </Box>
             <div style={{backgroundColor: OpacityHex(constrastColor, 0.6)}} className="w-full h-[1px] !my-8" />
             <Box>
                 <Box className="flex flex-row gap-2 justify-end">
                     <Button variant="contained" className="h-fit" color="primary">
-                        <Typography variant="lg_text_bold" style={{color: whiteColor}}>Salvar</Typography>
+                        <Typography variant="md_text_bold" style={{color: whiteColor}}>Salvar</Typography>
                     </Button>
                     <Button variant="contained" className="h-fit" style={{backgroundColor: OpacityHex(constrastColor, 0.5)}}>
-                        <Typography variant="lg_text_bold" style={{color: backgroundColor}}>Cancelar</Typography>
+                        <Typography variant="md_text_bold" style={{color: backgroundColor}}>Cancelar</Typography>
                     </Button>                
                 </Box>
             </Box>
