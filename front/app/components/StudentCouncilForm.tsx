@@ -45,7 +45,9 @@ export default function StudentCouncilForm({
 
   const { constrastColor, colorByModeSecondary, primaryColor, whiteColor } =
     useThemeContext();
-  const [frequencia, setFrequencia] = useState<number>(initialFrequencia);
+  const [frequencia, setFrequencia] = useState<number | null>(
+    initialFrequencia ?? ""
+  );
   const [isSaving, setIsSaving] = useState(false);
   const [positiveContent, setPositiveContent] = useState(
     initialPositiveContent
@@ -100,6 +102,8 @@ export default function StudentCouncilForm({
     studentsData[student] = studentData;
     localStorage.setItem("studentsData", Encryptor(studentsData));
 
+    console.log(studentsData);
+
     setTimeout(() => {
       setIsSaving(false);
       setDisable(false);
@@ -121,7 +125,9 @@ export default function StudentCouncilForm({
         rank !== rankAtualizado
       ) {
         saveToLocalStorage();
-        setFrequenciaAtual(frequencia);
+        if (frequencia !== null) {
+          setFrequenciaAtual(frequencia);
+        }
         setPositiveContentAtual(positiveContent);
         setNegativeContentAtual(negativeContent);
         setRankAtual(rank);
@@ -132,12 +138,13 @@ export default function StudentCouncilForm({
   }, [positiveContent, negativeContent, frequencia, rank]);
 
   const handleFrequenciaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = parseInt(e.target.value, 10);
+    let value = e.target.value.replace(",", ".");
+    let parsedValue = parseFloat(value);
 
-    if (isNaN(value)) {
-      setFrequencia(0);
+    if (isNaN(parsedValue)) {
+      setFrequencia(null);
     } else {
-      setFrequencia(value > 100 ? 100 : value);
+      setFrequencia(parsedValue > 100 ? 100 : parsedValue);
     }
   };
 
@@ -174,7 +181,7 @@ export default function StudentCouncilForm({
                     }}
                     placeholder={String(initialFrequencia)}
                     type="number"
-                    value={frequencia}
+                    value={frequencia ?? ""}
                     onChange={handleFrequenciaChange}
                     min={0}
                     max={100}
