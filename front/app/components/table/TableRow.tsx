@@ -11,6 +11,7 @@ import TableButton from "./TableButton";
 import { IoClose } from "react-icons/io5";
 import { FaRegClock } from "react-icons/fa";
 import OpacityHex from "@/hooks/OpacityHex";
+import { Typography } from "@mui/material";
 
 interface TableRowProps {
   content: TableRowContent;
@@ -51,16 +52,16 @@ export default function TableRow({
           className={`${content.className} flex rounded-b-big justify-between items-center p-3 w-full`}
       >
           <td style={{ color: constrastColor }} className="flex-1">
-              <span>{content.turmaNome}</span>
+              <Typography variant="lg_text_regular">{content.turmaNome}</Typography>
           </td>
           {content.data && (
             <td style={{ color: constrastColor }} className="hidden md:flex-1 md:flex text-center lg:justify-center">
-                <span>{content.data}</span>
+                <Typography variant="lg_text_regular">{content.data}</Typography>
             </td>
           )}
           {content.horario && (
             <td style={{ color: constrastColor }} className="hidden lg:flex-1 lg:flex text-center justify-center">
-                <span>{content.horario}</span>
+                <Typography variant="lg_text_regular">{content.horario}</Typography>
             </td>            
           )}
 

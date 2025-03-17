@@ -7,9 +7,10 @@ interface TitleProps {
     textHighlight?: string;
     text?: string;
     isWelcomeMensage?: boolean;
+    className?: string;
 }
 
-export default function Title({textHighlight, text, isWelcomeMensage=false}: TitleProps) {
+export default function Title({textHighlight, text, isWelcomeMensage=false, className}: TitleProps) {
     const { colorByModeSecondary } = useThemeContext();
     const { role } = useRoleContext();
 
