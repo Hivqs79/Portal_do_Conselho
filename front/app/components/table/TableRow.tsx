@@ -3,83 +3,88 @@
 import { useState, useEffect } from "react";
 import Rank from "../rank/Rank";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Button, IconButton, Typography } from "@mui/material";
-import Icon from "../Icon";
 import { FaRegEye } from "react-icons/fa6";
-import { TableRowProps } from "@/interfaces/TableRowProps";
-import hexToRGBA from "@/hooks/hexToRGBA";
-import { RiCalendarScheduleLine } from "react-icons/ri";
+import { TableRowContent } from "@/interfaces/TableRowContent";
+import { PiPlayBold } from "react-icons/pi";
+import { LuPencilLine, LuTrash } from "react-icons/lu";
+import TableButton from "./TableButton";
+import { IoClose } from "react-icons/io5";
+import { FaRegClock } from "react-icons/fa";
+import OpacityHex from "@/hooks/OpacityHex";
+import { Typography } from "@mui/material";
 
-export default function TableRow({
-  variant,
-  user,
-  rank,
-  frequencia,
-  turmaNome,
-  className,
-  horario,
-  data,
+interface TableRowProps {
+  content: TableRowContent;
+  rowButtons: TableRowButtons;
+}
+
+export default function TableRow({  
+  content,
+  rowButtons,
 }: TableRowProps) {
-  const [selectedRank, setSelectedRank] = useState(rank);
-  const { backgroundColor, primaryColor, constrastColor } = useThemeContext();
+  const [selectedRank, setSelectedRank] = useState(content.rank);
+  const { primaryColor, constrastColor, backgroundColor } = useThemeContext();
+  const {rank,
+    realizeButton,
+    visualizeIconButton,
+    visualizeButton,
+    editButton,
+    deleteButton,
+    seeButton,
+    anotationButton,
+    closeButton,
+    releasedButton,
+    releaseButton
+  } = rowButtons;
 
   useEffect(() => {
-    setSelectedRank(rank);
-  }, [rank]);
+    setSelectedRank(content.rank);
+  }, [content.rank]);
 
-  if (variant == "primary") {
-    return (
-      <>
-        <tr
+  
+  return (
+    <>
+      <tr
           style={{
-            backgroundColor: hexToRGBA(constrastColor, 0.01),
+            backgroundColor: OpacityHex(constrastColor, 0.01),
             borderColor: primaryColor,
           }}
-          className={`${className} max-w-[1024px] flex flex-row justify-between items-center p-3 w-[100%]`}
-        >
-          <td style={{ color: constrastColor }} className="md:w-[250px]">
-            {turmaNome}
+          className={`${content.className} flex rounded-b-big justify-between items-center p-3 w-full`}
+      >
+          <td style={{ color: constrastColor }} className="flex-1">
+              <Typography variant="lg_text_regular">{content.turmaNome}</Typography>
           </td>
-          <td
-            style={{ color: constrastColor }}
-            className="hidden w-[100px] md:flex justify-center"
-          >
-            <span className="">{data}</span>
-          </td>
-          <td
-            style={{ color: constrastColor }}
-            className="hidden w-[100px] lg:flex justify-center"
-          >
-            <span className="hidden lg:block">{horario}</span>
-          </td>
-          <td className="flex justify-end items-center w-auto md:w-[300px] gap-4 md:justify-end">
-            <span className="hidden small:flex justify-center items-center">
-              {selectedRank && (
-                <Rank type={selectedRank} outline={true} popover={false} />
-              )}
-            </span>
-            <span className="extraSmall:block">
-              <Button variant="contained" color="primary">
-                <Icon IconPassed={FaRegEye} color="primary" />
-              </Button>
-            </span>
-            <span className="extraSmall:hidden">
-              <Button variant="contained" color="primary">
-                <Icon IconPassed={RiCalendarScheduleLine} color="primary" />
-              </Button>
-            </span>
-            <span className="hidden extraSmall:block">
-              <Button variant="contained" color="primary">
-                <Typography variant="sm_text_bold" color="white">
-                  Realizar
-                </Typography>
-              </Button>
-            </span>
-          </td>
-        </tr>
-      </>
-    );
-  }
+          {content.data && (
+            <td style={{ color: constrastColor }} className="hidden md:flex-1 md:flex text-center lg:justify-center">
+                <Typography variant="lg_text_regular">{content.data}</Typography>
+            </td>
+          )}
+          {content.horario && (
+            <td style={{ color: constrastColor }} className="hidden lg:flex-1 lg:flex text-center justify-center">
+                <Typography variant="lg_text_regular">{content.horario}</Typography>
+            </td>            
+          )}
 
-  return null;
+          <td className="flex justify-end items-center w-2/5 lg:w-1/3 gap-2 sm:gap-4">
+            {rank && (
+              <span className="hidden md:flex justify-center items-center">
+                  {selectedRank && <Rank type={selectedRank} outline={true} popover={false} />}
+              </span>              
+            )}                        
+
+            {(visualizeButton || seeButton || visualizeIconButton) && <TableButton text={(seeButton ? "Olhar" : "Visualizar")} onlyIcon={visualizeIconButton} icon={FaRegEye}/>}
+            
+            {realizeButton && <TableButton text="Realizar" onlyTextInBigSize={true} icon={PiPlayBold} />}
+
+            {(editButton || anotationButton) && <TableButton text={anotationButton ? "Anotar" : "Editar"} icon={LuPencilLine} />}
+
+            {(releasedButton || releaseButton) && <TableButton text={releasedButton ? "Liberado" : "Liberar"} icon={FaRegClock}/>}
+
+            {closeButton && <TableButton text="Fechar" icon={IoClose}/>}
+
+            {deleteButton && <TableButton text="Excluir" icon={LuTrash}/>}
+          </td>
+      </tr>
+    </>
+  );
 }

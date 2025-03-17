@@ -1,3 +1,4 @@
+"use client";
 import {
   createContext,
   useContext,
@@ -11,7 +12,7 @@ import { Theme } from "@mui/material/styles";
 import ThemeSettings from "../theme/ThemeSettings";
 import { BrandColors, colors } from "../theme/BrandColors";
 
-type PossibleColors =
+export type PossibleColors =
   | "gray"
   | "blue"
   | "pink"
@@ -40,9 +41,19 @@ interface ThemeContextType {
   colorByModeSecondary: string;
   lighterColor: (string: string) => string;
   darkerColor: (string: string) => string;
+  textBlackolor: string;
   lightGrayColor: string;
   darkGrayColor: string;
+  redDanger: string;
+  textDarkColor: string;
   getThemeMode: () => "dark" | "light";
+  getThemePallete: () => PossibleColors;
+  changeFontSize: (multiplier: number) => void;
+  getFontSize: () => number;
+  changeFontFamilyText: (fontFamilyText: string) => void;
+  getFontFamilyText: () => string;
+  changeFontFamilyTitle: (fontFamilyText: string) => void;
+  getFontFamilyTitle: () => string;  
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -59,13 +70,20 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const blackColor = colors.blackColor;
   const primaryGrayColor = colors.primaryGrayColor;
   const secondaryGrayColor = colors.secondaryGrayColor;
-  const lighterColor = ThemeSettings.lighterColor;
   const colorByMode = ThemeSettings.getColorByMode();
   const colorByModeSecondary = ThemeSettings.getColorByModeSecondary();
+  const lighterColor = (color: string) => ThemeSettings.lighterColor(color);
   const darkerColor = ThemeSettings.darkerColor;
+  const textBlackolor = ThemeSettings.textBlackolor();
+  const textDarkColor = colors.textDarkColor;
   const lightGrayColor = ThemeSettings.lightGrayColor();
   const darkGrayColor = ThemeSettings.darkGrayColor();
+  const redDanger = colors.redDanger;
   const getThemeMode = () => ThemeSettings.getThemeMode();
+  const getThemePallete = (): PossibleColors => ThemeSettings.getThemePallete() as PossibleColors;  
+  const getFontSize = () => ThemeSettings.getFontSize();
+  const getFontFamilyText = () => ThemeSettings.getFontFamilyText();
+  const getFontFamilyTitle = () => ThemeSettings.getFontFamilyTitle();
 
   const reloadTheme = () => {
     setTheme(ThemeSettings.createThemePallete());
@@ -81,6 +99,21 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("theme", color);
     setThemeColor(color);
     BrandColors.changePallete(color);
+    reloadTheme();
+  };
+
+  const changeFontSize = (multiplier: number) => {
+    ThemeSettings.changeFontSize(multiplier);
+    reloadTheme();
+  };
+
+  const changeFontFamilyText = (fontFamilyText: string) => {
+    ThemeSettings.changeFontFamilyText(fontFamilyText);
+    reloadTheme();
+  };
+
+  const changeFontFamilyTitle = (fontFamilyText: string) => {
+    ThemeSettings.changeFontFamilyTitle(fontFamilyText);
     reloadTheme();
   };
 
@@ -110,6 +143,7 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
         constrastColor,
         backgroundColor,
         whiteColor,
+        textDarkColor,
         blackColor,
         primaryGrayColor,
         secondaryGrayColor,
@@ -117,9 +151,18 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
         colorByModeSecondary,
         lighterColor,
         darkerColor,
+        textBlackolor,
         lightGrayColor,
         darkGrayColor,
+        redDanger,
         getThemeMode,
+        getThemePallete,
+        changeFontSize,
+        getFontSize,
+        changeFontFamilyText,
+        getFontFamilyText,
+        changeFontFamilyTitle,
+        getFontFamilyTitle
       }}
     >
       {children}

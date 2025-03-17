@@ -1,21 +1,32 @@
 import React from "react";
 import { useThemeContext } from "@/hooks/useTheme";
-import { TextareaAutosize, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 interface TextareaProps {
-  whriteOnly: boolean;
+  readonly: boolean;
   title: string;
   content?: string;
+  placeholder?: string;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; // Adicione a prop onChange
+  value?: string; // Adicione a prop value
 }
 
 export default function TextareaComponent({
-  whriteOnly,
+  readonly,
   title,
   content,
+  placeholder,
+  onChange, // Receba a prop onChange
+  value, // Receba a prop value
 }: TextareaProps) {
-  const { primaryColor, constrastColor, backgroundColor, colorByModeSecondary } = useThemeContext();
+  const {
+    primaryColor,
+    constrastColor,
+    backgroundColor,
+    colorByModeSecondary,
+  } = useThemeContext();
 
-  if (whriteOnly) {
+  if (readonly) {
     return (
       <>
         <div className="w-full">
@@ -32,7 +43,8 @@ export default function TextareaComponent({
             <textarea
               className="cursor-default w-full min-h-[200px] pl-3 pt-2 text-[16px] outline-none resize-none bg-transparent"
               readOnly
-              defaultValue={content}
+              value={value || content || ""}
+              placeholder={placeholder}
               style={{
                 color: constrastColor,
               }}
@@ -58,10 +70,11 @@ export default function TextareaComponent({
         >
           <textarea
             className="w-full min-h-[200px] pl-3 pr-1 pt-2 text-[16px] outline-none resize-none bg-transparent"
-            defaultValue={content}
-            style={{
-              color: constrastColor,
-            }}
+            value={value || content || ""} // Use value ou content, ou string vazia
+            placeholder={placeholder}
+            style={{ color: constrastColor }}
+            onChange={onChange ? onChange : undefined} // Garante que onChange não seja passado como `null`
+            readOnly={!onChange} // Se onChange não existir, torne o campo somente leitura
           />
         </div>
       </div>

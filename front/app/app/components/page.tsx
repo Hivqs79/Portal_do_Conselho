@@ -24,10 +24,10 @@ import {
   FaCheck,
   FaRegCalendarAlt,
   FaRegClock,
-  FaRegEyeSlash,
+  FaRegEyeSlash,  
 } from "react-icons/fa";
 import { BiCheckDouble, BiSupport } from "react-icons/bi";
-import { PiBooks, PiStudentBold, PiUserBold } from "react-icons/pi";
+import { PiBooks, PiPlayBold, PiStudentBold, PiUserBold } from "react-icons/pi";
 import { GoGraph, GoPeople } from "react-icons/go";
 import { MdOutlineChat } from "react-icons/md";
 import { HiOutlineFilter, HiOutlineKey } from "react-icons/hi";
@@ -49,6 +49,7 @@ import Rank from "@/components/rank/Rank";
 import { FaRegEye, FaRegFilePdf } from "react-icons/fa6";
 import Table from "@/components/table/Table";
 import TextareaComponent from "@/components/input/TextareaComponent";
+import Photo from "@/components/profile/Photo";
 
 export default function Components() {
   const { primaryColor, secondaryColor, terciaryColor, constrastColor } =
@@ -57,7 +58,7 @@ export default function Components() {
   return (
     <Container
       maxWidth={"lg"}
-      className="flex flex-col gap-8 justify-start items-center min-h-screen"
+      className="flex flex-col gap-8 justify-center items-center min-h-screen" //change to center after
     >
       <Box className="flex flex-row gap-8 justify-center items-center">
         <Box className="flex flex-col gap-4">
@@ -205,24 +206,29 @@ export default function Components() {
         <Icon IconPassed={FaRegEye} />
         <Icon IconPassed={FaRegEyeSlash} />
         <Icon IconPassed={IoCopyOutline} />
+        <Icon IconPassed={PiPlayBold} />
       </Box>
 
-      <Box className="flex gap-4">
-        <Rank type="excellent" outline={false} popover={true} />
+      <TextareaComponent readonly={false} title="Pontos Positivos" />
+      <TextareaComponent
+        readonly={true}
+        title="Pontos Positivos"
+        content="teste"
+      />
+      <Box>
+        <Rank variant="default" type="excellent" outline={true} popover={false} />
+        <Rank variant="default" type="good" outline={true} popover={false} />
+        <Rank variant="default" type="average" outline={true} popover={false} />
+        <Rank variant="default" type="critical" outline={true} popover={false} />
 
-        <Rank type="excellent" outline={true} popover={false} />
-        <Rank type="good" outline={true} popover={false} />
-        <Rank type="average" outline={true} popover={false} />
-        <Rank type="critical" outline={true} popover={false} />
-
-        <Rank type="excellent" outline={false} popover={false} />
-        <Rank type="good" outline={false} popover={false} />
-        <Rank type="average" outline={false} popover={false} />
-        <Rank type="critical" outline={false} popover={false} />
+        <Rank variant="default" type="excellent" outline={false} popover={false} />
+        <Rank variant="default" type="good" outline={false} popover={false} />
+        <Rank variant="default" type="average" outline={false} popover={false} />
+        <Rank variant="default" type="critical" outline={false} popover={false} />
       </Box>
-
-      <TextareaComponent whriteOnly={false} title="Pontos Positivos" />
-      <TextareaComponent whriteOnly={true} title="Pontos Positivos" content="teste" />
+ 
+      <Photo photo={""} rounded={false} classname="w-20 h-20" />
+      <Photo photo={""} rounded={true} classname="w-20 h-20" />
     </Container>
   );
 }
