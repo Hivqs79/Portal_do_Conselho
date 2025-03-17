@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -58,6 +59,11 @@ public class StudentService {
         Student student = findStudentEntity(id);
         repository.delete(student);
         return modelMapper.map(student, StudentResponseDTO.class);
+    }
+
+    public void mockarStudent (List<StudentRequestDTO> studentRequestDTOS) {
+        List<Student> students = studentRequestDTOS.stream().map(studentRequestDTO -> modelMapper.map(studentRequestDTO, Student.class)).collect(Collectors.toList());
+        repository.saveAll(students);
     }
 
 }

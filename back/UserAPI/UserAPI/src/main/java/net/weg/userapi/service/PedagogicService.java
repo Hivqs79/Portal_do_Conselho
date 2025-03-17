@@ -3,15 +3,19 @@ package net.weg.userapi.service;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
 import net.weg.userapi.model.dto.request.PedagogicRequestDTO;
+import net.weg.userapi.model.dto.request.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.PedagogicResponseDTO;
 import net.weg.userapi.model.entity.Pedagogic;
+import net.weg.userapi.model.entity.Student;
 import net.weg.userapi.repository.PedagogicRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -55,5 +59,10 @@ public class PedagogicService {
         Pedagogic pedagogic = findPedagogicEntity(id);
         repository.delete(pedagogic);
         return modelMapper.map(pedagogic, PedagogicResponseDTO.class);
+    }
+
+    public void mockarPedagogic (List<PedagogicRequestDTO> pedagogicRequestDTOS) {
+        List<Pedagogic> pedagogics = pedagogicRequestDTOS.stream().map(pedagogicRequestDTO -> modelMapper.map(pedagogicRequestDTO, Pedagogic.class)).collect(Collectors.toList());
+        repository.saveAll(pedagogics);
     }
 }

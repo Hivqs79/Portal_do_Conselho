@@ -2,9 +2,12 @@ package net.weg.userapi.service;
 
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
+import net.weg.userapi.model.dto.request.StudentRequestDTO;
 import net.weg.userapi.model.dto.request.TeacherRequestDTO;
+import net.weg.userapi.model.dto.response.ClassResponseDTO;
 import net.weg.userapi.model.dto.response.TeacherResponseDTO;
 import net.weg.userapi.model.entity.Class;
+import net.weg.userapi.model.entity.Student;
 import net.weg.userapi.model.entity.Teacher;
 import net.weg.userapi.repository.TeacherRepository;
 import org.modelmapper.ModelMapper;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -58,5 +62,15 @@ public class TeacherService {
         Teacher teacher = findTeacherEntity(id);
         repository.delete(teacher);
         return modelMapper.map(teacher, TeacherResponseDTO.class);
+    }
+
+    public List<ClassResponseDTO> getClassByTeacher(Integer teacher_id) {
+        Teacher teacher = findTeacherEntity(teacher_id);
+        return teacher.getClasses().stream().map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class)).collect(Collectors.toList());
+    }
+
+    public void mockarTeacher (List<TeacherRequestDTO> teacherRequestDTOS) {
+        List<Teacher> teacher = teacherRequestDTOS.stream().map(teacherRequestDTO -> modelMapper.map(teacherRequestDTO, Teacher.class)).collect(Collectors.toList());
+        repository.saveAll(teacher);
     }
 }

@@ -1,7 +1,9 @@
 package net.weg.userapi.controller;
 
 import lombok.AllArgsConstructor;
+import net.weg.userapi.model.dto.request.StudentRequestDTO;
 import net.weg.userapi.model.dto.request.TeacherRequestDTO;
+import net.weg.userapi.model.dto.response.ClassResponseDTO;
 import net.weg.userapi.model.dto.response.TeacherResponseDTO;
 import net.weg.userapi.service.TeacherService;
 import org.springframework.data.domain.Page;
@@ -10,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/teacher")
@@ -43,8 +47,20 @@ public class TeacherController {
         return new ResponseEntity<>(service.findTeacher(id), HttpStatus.OK);
     }
 
+    @GetMapping("/classes/{id}")
+    public ResponseEntity<List<ClassResponseDTO>> getClassesByTeacher(@PathVariable Integer id) {
+        return new ResponseEntity<>(service.getClassByTeacher(id), HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<Page<TeacherResponseDTO>> getAllTeacher(Pageable pageable) {
         return new ResponseEntity<>(service.pageTeacher(pageable), HttpStatus.OK);
     }
+
+    @PostMapping("/mock")
+    public ResponseEntity<Void> postAllTeacher(@RequestBody List<TeacherRequestDTO> teacherRequestDTOS) {
+        service.mockarTeacher(teacherRequestDTOS);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/student")
 @AllArgsConstructor
@@ -44,6 +46,12 @@ public class StudentController {
     @GetMapping
     public ResponseEntity<Page<StudentResponseDTO>> getAllStudent(Pageable pageable) {
         return new ResponseEntity<>(service.pageStudent(pageable), HttpStatus.OK);
+    }
+
+    @PostMapping("/mock")
+    public ResponseEntity<Void> postAllStudent(@RequestBody List<StudentRequestDTO> studentRequestDTOS) {
+        service.mockarStudent(studentRequestDTOS);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

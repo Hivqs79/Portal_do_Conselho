@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
 import net.weg.userapi.model.dto.request.ClassRequestDTO;
+import net.weg.userapi.model.dto.request.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.ClassResponseDTO;
 import net.weg.userapi.model.dto.response.StudentResponseDTO;
 import net.weg.userapi.model.dto.response.TeacherResponseDTO;
@@ -69,5 +70,10 @@ public class ClassService {
         Class classes = findClassEntity(id);
         repository.delete(classes);
         return modelMapper.map(classes, ClassResponseDTO.class);
+    }
+
+    public void mockarClass (List<ClassRequestDTO> classRequestDTOS) {
+        List<Class> classes = classRequestDTOS.stream().map(classRequestDTO -> modelMapper.map(classRequestDTO, Class.class)).collect(Collectors.toList());
+        repository.saveAll(classes);
     }
 }

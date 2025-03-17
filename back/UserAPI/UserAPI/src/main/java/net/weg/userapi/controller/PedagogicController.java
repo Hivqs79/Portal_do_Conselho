@@ -2,6 +2,7 @@ package net.weg.userapi.controller;
 
 import lombok.AllArgsConstructor;
 import net.weg.userapi.model.dto.request.PedagogicRequestDTO;
+import net.weg.userapi.model.dto.request.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.PedagogicResponseDTO;
 import net.weg.userapi.service.PedagogicService;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/pedagogic")
@@ -42,4 +45,11 @@ public class PedagogicController {
     public ResponseEntity<Page<PedagogicResponseDTO>> getAllPedagogic(Pageable pageable) {
         return new ResponseEntity<>(service.pagePedagogic(pageable), HttpStatus.OK);
     }
+
+    @PostMapping("/mock")
+    public ResponseEntity<Void> postAllPedagogic(@RequestBody List<PedagogicRequestDTO> pedagogicRequestDTOS) {
+        service.mockarPedagogic(pedagogicRequestDTOS);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

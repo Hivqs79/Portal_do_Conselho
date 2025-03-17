@@ -3,15 +3,19 @@ package net.weg.userapi.service;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
 import net.weg.userapi.model.dto.request.AdminRequestDTO;
+import net.weg.userapi.model.dto.request.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.AdminResponseDTO;
 import net.weg.userapi.model.entity.Admin;
+import net.weg.userapi.model.entity.Student;
 import net.weg.userapi.repository.AdminRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -55,5 +59,9 @@ public class AdminService {
         repository.delete(admin);
         return modelMapper.map(admin, AdminResponseDTO.class);
     }
-    
+
+    public void mockarAdmin (List<AdminRequestDTO> adminRequestDTOS) {
+        List<Admin> admins = adminRequestDTOS.stream().map(adminRequestDTO -> modelMapper.map(adminRequestDTO, Admin.class)).collect(Collectors.toList());
+        repository.saveAll(admins);
+    }
 }
