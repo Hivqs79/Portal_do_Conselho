@@ -12,7 +12,7 @@ import { Theme } from "@mui/material/styles";
 import ThemeSettings from "../theme/ThemeSettings";
 import { BrandColors, colors } from "../theme/BrandColors";
 
-type PossibleColors =
+export type PossibleColors =
   | "gray"
   | "blue"
   | "pink"
@@ -53,7 +53,7 @@ interface ThemeContextType {
   changeFontFamilyText: (fontFamilyText: string) => void;
   getFontFamilyText: () => string;
   changeFontFamilyTitle: (fontFamilyText: string) => void;
-  getFontFamilyTitle: () => string;
+  getFontFamilyTitle: () => string;  
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

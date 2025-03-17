@@ -7,7 +7,8 @@ import WhiteModeImage from "@/assets/white-mode-image.png";
 import DarkModeImage from "@/assets/dark-mode-image.png";
 import Image from "next/image";
 import { colors } from "@/theme/BrandColors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { PossibleColors } from "@/hooks/useTheme";
 
 export default function Config() {
     const {
@@ -26,20 +27,72 @@ export default function Config() {
         getFontFamilyText,
         getFontFamilyTitle,
         changeFontFamilyTitle
-    } = useThemeContext();
-
+    } = useThemeContext();    
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const [popoverMessage, setPopoverMessage] = useState("");
     const [fontMultiplier, setFontMultiplier] = useState(getFontSize());
     const [fontFamilyText, setFontFamilyText] = useState(getFontFamilyText());
     const [fontFamilyTitle, setFontFamilyTitle] = useState(getFontFamilyTitle());
     const themeMode = getThemeMode();
-    const open = Boolean(anchorEl);
+    const open = Boolean(anchorEl);    
+    
+    useEffect(() => {
+        function getThemePallete() {
+            const color = localStorage.getItem("theme");
+            return color ? color : "blue";
+        }
+        
+        if (!localStorage.getItem("palleteInitialConfig")) {
+            localStorage.setItem("palleteInitialConfig", getThemePallete());
+        }
+        if (!localStorage.getItem("modeInitialConfig")) {
+            localStorage.setItem("modeInitialConfig", themeMode);
+        }
+        if (!localStorage.getItem("fontFamilyTextInitialConfig")) {
+            localStorage.setItem("fontFamilyTextInitialConfig", fontFamilyText);
+        }
+        if (!localStorage.getItem("fontFamilyTitleInitialConfig")) {
+            localStorage.setItem("fontFamilyTitleInitialConfig", fontFamilyTitle);
+        }
+        if (!localStorage.getItem("fontMultiplierInitialConfig")) {                    
+            localStorage.setItem("fontMultiplierInitialConfig", fontMultiplier.toString());
+        }
+    }, [fontFamilyText, fontFamilyTitle, fontMultiplier, themeMode]);
+
+    function returnInitialValues() {
+        const palleteInitialConfig = localStorage.getItem("palleteInitialConfig");
+        const modeInitialConfig = localStorage.getItem("modeInitialConfig");
+        const fontFamilyTextInitialConfig = localStorage.getItem("fontFamilyTextInitialConfig");
+        const fontFamilyTitleInitialConfig = localStorage.getItem("fontFamilyTitleInitialConfig");
+        const fontMultiplierInitialConfig = localStorage.getItem("fontMultiplierInitialConfig");
+        changePallete(palleteInitialConfig as PossibleColors);
+        if (modeInitialConfig !== themeMode) {
+            changeThemeMode();
+        }
+        changeFontFamilyText(fontFamilyTextInitialConfig as string);
+        changeFontFamilyTitle(fontFamilyTitleInitialConfig as string);
+        changeFontSize(parseInt(fontMultiplierInitialConfig as string));
+    }
 
     return (
         <Box>
             <Box className="flex flex-col md:flex-row md:justify-between md:items-end">
                 <Title textHighlight="Configurações" className=" !mb-0"/>                
+            </Box>
+            <div style={{backgroundColor: OpacityHex(constrastColor, 0.6)}} className="w-full h-[1px] !my-8"/>
+            <Box className="flex flex-col xl:flex-row justify-between h-full xl:items-start ">
+                <Box className="flex flex-col mb-8 w-fit xl:mb-0">
+                    <Typography variant="xl_text_bold">Editar perfil</Typography>
+                    <Typography variant="xl_text_regular">Visualize suas informações e altere a sua foto de perfil</Typography>
+                </Box>                
+                <Box className="flex flex-col small:flex-row gap-2 w-full xl:w-fit justify-center">
+                    <Button variant="contained" className="w-full small:w-fit" color="primary">
+                        <Typography variant="md_text_bold" style={{color: whiteColor}}>Editar perfil</Typography>
+                    </Button>
+                    <Button variant="contained" className="w-full small:w-fit" style={{backgroundColor: OpacityHex(constrastColor, 0.5)}}>
+                        <Typography variant="md_text_bold" style={{color: backgroundColor}}>Log-out</Typography>
+                    </Button>                
+                </Box>            
             </Box>
             <div style={{backgroundColor: OpacityHex(constrastColor, 0.6)}} className="w-full h-[1px] !my-8"/>
             <Box className="flex flex-col xl:flex-row justify-between xl:items-start ">
@@ -183,7 +236,7 @@ export default function Config() {
                     <Button variant="contained" className="h-fit" color="primary">
                         <Typography variant="md_text_bold" style={{color: whiteColor}}>Salvar</Typography>
                     </Button>
-                    <Button variant="contained" className="h-fit" style={{backgroundColor: OpacityHex(constrastColor, 0.5)}}>
+                    <Button variant="contained" onClick={() => returnInitialValues()} className="h-fit" style={{backgroundColor: OpacityHex(constrastColor, 0.5)}}>
                         <Typography variant="md_text_bold" style={{color: backgroundColor}}>Cancelar</Typography>
                     </Button>                
                 </Box>
