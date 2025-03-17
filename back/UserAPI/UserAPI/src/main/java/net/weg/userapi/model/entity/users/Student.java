@@ -1,9 +1,10 @@
-package net.weg.userapi.model.entity;
+package net.weg.userapi.model.entity.users;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.weg.userapi.model.entity.Class;
 
 import java.util.List;
 

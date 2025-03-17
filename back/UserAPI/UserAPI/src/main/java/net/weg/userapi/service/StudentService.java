@@ -1,18 +1,15 @@
 package net.weg.userapi.service;
 
 import lombok.AllArgsConstructor;
-import net.weg.userapi.model.dto.request.StudentRequestDTO;
-import net.weg.userapi.model.dto.response.StudentResponseDTO;
-import net.weg.userapi.model.entity.Student;
+import net.weg.userapi.model.dto.request.users.StudentRequestDTO;
+import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
+import net.weg.userapi.model.entity.users.Student;
 import net.weg.userapi.repository.StudentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;

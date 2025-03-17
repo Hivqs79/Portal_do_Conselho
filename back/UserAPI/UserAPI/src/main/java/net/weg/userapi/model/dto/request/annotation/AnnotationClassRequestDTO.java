@@ -1,6 +1,5 @@
-package net.weg.userapi.model.dto.request;
+package net.weg.userapi.model.dto.request.annotation;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,15 +9,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminRequestDTO {
-
+public class AnnotationClassRequestDTO {
     @NotBlank
-    private String name;
-
+    private String rank;
     @NotBlank
-    @Email
-    private String email;
-
+    private String strengths;
+    @NotBlank
+    private String toImprove;
     @NotNull
-    private String password;
+    private Integer teacher_id;
+    @NotNull
+    private Integer class_id;
 }

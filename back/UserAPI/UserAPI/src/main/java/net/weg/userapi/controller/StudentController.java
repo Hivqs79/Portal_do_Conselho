@@ -1,16 +1,13 @@
 package net.weg.userapi.controller;
 
 import lombok.AllArgsConstructor;
-import net.weg.userapi.model.dto.request.StudentRequestDTO;
-import net.weg.userapi.model.dto.response.StudentResponseDTO;
-import net.weg.userapi.model.entity.Student;
-import net.weg.userapi.repository.StudentRepository;
+import net.weg.userapi.model.dto.request.users.StudentRequestDTO;
+import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
 import net.weg.userapi.service.StudentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

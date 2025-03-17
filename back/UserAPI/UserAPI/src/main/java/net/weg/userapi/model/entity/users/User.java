@@ -1,4 +1,4 @@
-package net.weg.userapi.model.entity;
+package net.weg.userapi.model.entity.users;
 
 import jakarta.persistence.*;
 import lombok.Data;

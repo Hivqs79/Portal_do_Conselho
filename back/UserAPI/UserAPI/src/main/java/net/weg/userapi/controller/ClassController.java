@@ -2,10 +2,9 @@ package net.weg.userapi.controller;
 
 import lombok.AllArgsConstructor;
 import net.weg.userapi.model.dto.request.ClassRequestDTO;
-import net.weg.userapi.model.dto.request.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.ClassResponseDTO;
-import net.weg.userapi.model.dto.response.StudentResponseDTO;
-import net.weg.userapi.model.dto.response.TeacherResponseDTO;
+import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
+import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
 import net.weg.userapi.service.ClassService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,3 +63,8 @@ public class ClassController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
+
+
+
+
+

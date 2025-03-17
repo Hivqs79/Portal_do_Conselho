@@ -1,6 +1,6 @@
 package net.weg.userapi.repository;
 
-import net.weg.userapi.model.entity.Pedagogic;
+import net.weg.userapi.model.entity.users.Pedagogic;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PedagogicRepository extends JpaRepository<Pedagogic, Integer> {

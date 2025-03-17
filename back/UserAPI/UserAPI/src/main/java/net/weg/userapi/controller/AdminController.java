@@ -1,9 +1,8 @@
 package net.weg.userapi.controller;
 
 import lombok.AllArgsConstructor;
-import net.weg.userapi.model.dto.request.AdminRequestDTO;
-import net.weg.userapi.model.dto.request.StudentRequestDTO;
-import net.weg.userapi.model.dto.response.AdminResponseDTO;
+import net.weg.userapi.model.dto.request.users.AdminRequestDTO;
+import net.weg.userapi.model.dto.response.users.AdminResponseDTO;
 import net.weg.userapi.service.AdminService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

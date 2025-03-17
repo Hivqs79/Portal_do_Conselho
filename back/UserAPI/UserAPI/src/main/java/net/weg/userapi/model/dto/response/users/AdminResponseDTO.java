@@ -1,4 +1,4 @@
-package net.weg.userapi.model.dto.response;
+package net.weg.userapi.model.dto.response.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,5 +12,4 @@ public class AdminResponseDTO {
     private Integer id;
     private String name;
     private String email;
-    private String password;
 }
