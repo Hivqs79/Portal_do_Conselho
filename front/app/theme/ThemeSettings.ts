@@ -157,7 +157,7 @@ export default class ThemeSettings {
     const fontFamilyText = localStorage.getItem("fontFamilyTitle");
     if (!fontFamilyText) {
       localStorage.setItem("fontFamilyTitle", "Inter");
-      return "Inter";
+      return "Lora";
     } 
     return fontFamilyText;
   }

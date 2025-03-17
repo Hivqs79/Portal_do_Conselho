@@ -7,8 +7,8 @@ import WhiteModeImage from "@/assets/white-mode-image.png";
 import DarkModeImage from "@/assets/dark-mode-image.png";
 import Image from "next/image";
 import { colors } from "@/theme/BrandColors";
-import { useEffect, useState } from "react";
-import { PossibleColors } from "@/hooks/useTheme";
+import { useState } from "react";
+// import { PossibleColors } from "@/hooks/useTheme";
 
 export default function Config() {
     const {
@@ -36,43 +36,52 @@ export default function Config() {
     const themeMode = getThemeMode();
     const open = Boolean(anchorEl);    
     
-    useEffect(() => {
-        function getThemePallete() {
-            const color = localStorage.getItem("theme");
-            return color ? color : "blue";
-        }
+    // useEffect(() => {
+    //     function getThemePallete() {
+    //         const color = localStorage.getItem("theme");
+    //         return color ? color : "blue";
+    //     }
         
-        if (!localStorage.getItem("palleteInitialConfig")) {
-            localStorage.setItem("palleteInitialConfig", getThemePallete());
-        }
-        if (!localStorage.getItem("modeInitialConfig")) {
-            localStorage.setItem("modeInitialConfig", themeMode);
-        }
-        if (!localStorage.getItem("fontFamilyTextInitialConfig")) {
-            localStorage.setItem("fontFamilyTextInitialConfig", fontFamilyText);
-        }
-        if (!localStorage.getItem("fontFamilyTitleInitialConfig")) {
-            localStorage.setItem("fontFamilyTitleInitialConfig", fontFamilyTitle);
-        }
-        if (!localStorage.getItem("fontMultiplierInitialConfig")) {                    
-            localStorage.setItem("fontMultiplierInitialConfig", fontMultiplier.toString());
-        }
-    }, [fontFamilyText, fontFamilyTitle, fontMultiplier, themeMode]);
+    //     if (!localStorage.getItem("palleteInitialConfig")) {
+    //         localStorage.setItem("palleteInitialConfig", getThemePallete());
+    //     }
+    //     if (!localStorage.getItem("modeInitialConfig")) {
+    //         localStorage.setItem("modeInitialConfig", themeMode);
+    //     }
+    //     if (!localStorage.getItem("fontFamilyTextInitialConfig")) {
+    //         localStorage.setItem("fontFamilyTextInitialConfig", fontFamilyText);
+    //     }
+    //     if (!localStorage.getItem("fontFamilyTitleInitialConfig")) {
+    //         localStorage.setItem("fontFamilyTitleInitialConfig", fontFamilyTitle);
+    //     }
+    //     if (!localStorage.getItem("fontMultiplierInitialConfig")) {                    
+    //         localStorage.setItem("fontMultiplierInitialConfig", fontMultiplier.toString());
+    //     }
+    // }, [fontFamilyText, fontFamilyTitle, fontMultiplier, themeMode]);
 
-    function returnInitialValues() {
-        const palleteInitialConfig = localStorage.getItem("palleteInitialConfig");
-        const modeInitialConfig = localStorage.getItem("modeInitialConfig");
-        const fontFamilyTextInitialConfig = localStorage.getItem("fontFamilyTextInitialConfig");
-        const fontFamilyTitleInitialConfig = localStorage.getItem("fontFamilyTitleInitialConfig");
-        const fontMultiplierInitialConfig = localStorage.getItem("fontMultiplierInitialConfig");
-        changePallete(palleteInitialConfig as PossibleColors);
-        if (modeInitialConfig !== themeMode) {
-            changeThemeMode();
-        }
-        changeFontFamilyText(fontFamilyTextInitialConfig as string);
-        changeFontFamilyTitle(fontFamilyTitleInitialConfig as string);
-        changeFontSize(parseInt(fontMultiplierInitialConfig as string));
-    }
+    // function returnInitialValues() {
+    //     const palleteInitialConfig = localStorage.getItem("palleteInitialConfig");
+    //     const modeInitialConfig = localStorage.getItem("modeInitialConfig");
+    //     const fontFamilyTextInitialConfig = localStorage.getItem("fontFamilyTextInitialConfig");
+    //     const fontFamilyTitleInitialConfig = localStorage.getItem("fontFamilyTitleInitialConfig");
+    //     const fontMultiplierInitialConfig = localStorage.getItem("fontMultiplierInitialConfig");
+    //     changePallete(palleteInitialConfig as PossibleColors);
+    //     if (modeInitialConfig !== themeMode) {
+    //         changeThemeMode();
+    //     }
+    //     changeFontFamilyText(fontFamilyTextInitialConfig as string);
+    //     changeFontFamilyTitle(fontFamilyTitleInitialConfig as string);
+    //     changeFontSize(parseInt(fontMultiplierInitialConfig as string));
+    //     console.log("teste 123")
+    // }
+
+    // function saveValues() {
+    //     localStorage.setItem("palleteInitialConfig", getThemePallete());
+    //     localStorage.setItem("modeInitialConfig", themeMode);
+    //     localStorage.setItem("fontFamilyTextInitialConfig", fontFamilyText);
+    //     localStorage.setItem("fontFamilyTitleInitialConfig", fontFamilyTitle);  
+    //     localStorage.setItem("fontMultiplierInitialConfig", fontMultiplier.toString());
+    // }
 
     return (
         <Box>
@@ -230,17 +239,17 @@ export default function Config() {
                     </Box>
                 </Box>
             </Box>
-            <div style={{backgroundColor: OpacityHex(constrastColor, 0.6)}} className="w-full h-[1px] !my-8" />
+            {/* <div style={{backgroundColor: OpacityHex(constrastColor, 0.6)}} className="w-full h-[1px] !my-8" />
             <Box>
                 <Box className="flex flex-row gap-2 justify-end">
-                    <Button variant="contained" className="h-fit" color="primary">
+                    <Button variant="contained" onClick={() => saveValues()} className="h-fit" color="primary">
                         <Typography variant="md_text_bold" style={{color: whiteColor}}>Salvar</Typography>
                     </Button>
                     <Button variant="contained" onClick={() => returnInitialValues()} className="h-fit" style={{backgroundColor: OpacityHex(constrastColor, 0.5)}}>
-                        <Typography variant="md_text_bold" style={{color: backgroundColor}}>Cancelar</Typography>
+                        <Typography variant="md_text_bold"  style={{color: backgroundColor}}>Cancelar</Typography>
                     </Button>                
                 </Box>
-            </Box>
+            </Box> */}
         </Box>
     )
 }
