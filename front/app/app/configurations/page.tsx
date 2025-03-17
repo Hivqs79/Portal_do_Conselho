@@ -121,7 +121,7 @@ export default function Config() {
                         </Box>
                     </Box>
                     <Box>
-                        <Typography variant="xl_text_bold" style={{color: colorByMode}} className="!mb-4">Exemplos</Typography>
+                        <Typography variant="xl_text_regular" style={{color: colorByMode}} className="!mb-4">Exemplos</Typography>
                         <Box className="flex flex-row justify-between">
                             <Button variant="contained" size="small" className="h-fit !font-bold" color="primary">
                                 Primary
@@ -138,31 +138,44 @@ export default function Config() {
                 </Box>
             </Box>
             <div style={{backgroundColor: OpacityHex(constrastColor, 0.6)}} className="w-full h-[1px] !my-8" />
-            <Box className="flex flex-col xl:flex-row justify-between xl:items-start ">
-                <Box className="flex flex-col mb-8 mr-0 xl:mr-8 xl:mb-0">
-                    <Typography variant="xl_text_bold">Fonte</Typography>
-                    <Typography variant="xl_text_regular">Selecione a fonte que mais te agrada para sua interface.</Typography>
-                </Box>
-                <Box>
+            <Box className="flex flex-col  justify-between">
+                <Box className="flex flex-col xl:flex-row justify-between xl:items-start">
+                    <Box className="flex flex-col mb-8 mr-0 xl:mr-8 xl:mb-0">
+                        <Typography variant="xl_text_bold">Fonte</Typography>
+                        <Typography variant="xl_text_regular">Selecione a fonte que mais te agrada para sua interface.</Typography>
+                    </Box>
+                    <Box className="grid grid-cols-2 grid-rows-3 gap-y-2  justify-between">
+                        <Typography variant="xl_text_bold" style={{color: colorByMode}} className="!mr-4">Tamanho</Typography>
+                        <Select className="small:!min-w-44" value={fontMultiplier} size="small" onChange={(e) => {changeFontSize(e.target.value as number); setFontMultiplier(e.target.value as number)} }>
+                            <MenuItem value={0.5}>0.5x</MenuItem>
+                            <MenuItem value={0.75}>0.75x</MenuItem>
+                            <MenuItem value={1.0}>1x</MenuItem>
+                            <MenuItem value={1.25}>1.25x</MenuItem>
+                            <MenuItem value={1.5}>1.5x</MenuItem>
+                        </Select>
+                        
+                        <Typography variant="xl_text_bold" style={{color: colorByMode}} className="!mr-4">Texto</Typography>
+                        <Select className="small:!min-w-44" value={fontFamilyText} size="small" onChange={(e) => {changeFontFamilyText(e.target.value as string); setFontFamilyText(e.target.value as string)} }>
+                            <MenuItem value="Poppins">Poppins</MenuItem>
+                            <MenuItem value="Inter">Inter</MenuItem>
+                            <MenuItem value="Merriweather">Merriweather</MenuItem>
+                            <MenuItem value="Montserrat">Montserrat</MenuItem>
+                        </Select>
 
-                    <Select value={fontMultiplier} size="small" onChange={(e) => {changeFontSize(e.target.value as number); setFontMultiplier(e.target.value as number)} }>
-                        <MenuItem value={0.5}>0.5x</MenuItem>
-                        <MenuItem value={0.75}>0.75x</MenuItem>
-                        <MenuItem value={1.0}>1x</MenuItem>
-                        <MenuItem value={1.25}>1.25x</MenuItem>
-                        <MenuItem value={1.5}>1.5x</MenuItem>
-                    </Select>
+                        <Typography variant="xl_text_bold" style={{color: colorByMode}} className="!mr-4">Títulos</Typography>
+                        <Select className="small:!min-w-44" value={fontFamilyTitle} size="small" onChange={(e) => {changeFontFamilyTitle(e.target.value as string); setFontFamilyTitle(e.target.value as string)} }>
+                            <MenuItem value="Lora">Lora</MenuItem>
+                            <MenuItem value="Libre Baskerville">Libre Baskerville</MenuItem>                    
+                        </Select>
+                    </Box>
                 </Box>
-                <Select value={fontFamilyText} size="small" onChange={(e) => {changeFontFamilyText(e.target.value as string); setFontFamilyText(e.target.value as string)} }>
-                    <MenuItem value="Poppins">Poppins</MenuItem>
-                    <MenuItem value="Inter">Inter</MenuItem>
-                    <MenuItem value="Merriweather">Merriweather</MenuItem>
-                    <MenuItem value="Montserrat">Montserrat</MenuItem>
-                </Select>
-                <Select value={fontFamilyTitle} size="small" onChange={(e) => {changeFontFamilyTitle(e.target.value as string); setFontFamilyTitle(e.target.value as string)} }>
-                    <MenuItem value="Lora">Lora</MenuItem>
-                    <MenuItem value="Libre Baskerville">Libre Baskerville</MenuItem>                    
-                </Select>
+                <Box className="mt-8">
+                    <Typography variant="xl_text_regular" style={{color: colorByMode}} >Exemplos</Typography>
+                    <Box className="flex flex-col rounded-2xl p-4 border mt-4 border-gray-400 gap-4 justify-between">
+                        <Typography variant="h4_title">The quick brown fox jumps over the lazy dog</Typography>
+                        <Typography variant="xl_text_regular">Lorem ipsum dolor sit amet consectur adiscipling elit. The quick brown fox jumps over the lazy dog. Lorem ipsum dolor sit amet consectur adiscipling elit. The quick brown fox jumps over the lazy dog.</Typography>
+                    </Box>
+                </Box>
             </Box>
             <div style={{backgroundColor: OpacityHex(constrastColor, 0.6)}} className="w-full h-[1px] !my-8" />
             <Box>
