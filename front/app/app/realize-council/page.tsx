@@ -1,5 +1,6 @@
 "use client";
 import AvaliationInputs from "@/components/council/AvaliationInputs";
+import CommentariesModal from "@/components/Modals/CommentariesModal";
 import StudentCouncilForm from "@/components/StudentCouncilForm";
 import TableHeader from "@/components/table/TableHeader";
 import Title from "@/components/Title";
@@ -9,25 +10,70 @@ import OpacityHex from "@/hooks/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
-import testeJson from "@/teste.json";
+
+type TeacherAnnotation = {
+  name: string;
+  rank?: string;
+  positiveContent: string;
+  negativeContent: string;
+};
+
+type UserComment = {
+  name: string;
+  rank?: string;
+  positiveContent: string;
+  negativeContent: string;
+};
+
+type User = {
+  name: string;
+  frequencia: number;
+  imageKey: string;
+  negativeContent: string;
+  positiveContent: string;
+  rank: string;
+  comments: UserComment[];
+};
+
+type CouncilClass = {
+  name: string;
+  positiveContent: string;
+  negativeContent: string;
+  rank: string;
+  teacherAnotations: TeacherAnnotation[];
+};
+
+type CouncilData = {
+  ["council-form"]: {
+    class: CouncilClass;
+    users: User[];
+  };
+};
 
 export default function RealizeCouncil() {
+  const [data, setData] = useState<CouncilData | null>(null);
   const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
   const [positiveContent, setPositiveContent] = useState("");
   const [negativeContent, setNegativeContent] = useState("");
 
-  const [positiveClassContent, setPositiveClassContent] = useState(
-    testeJson["council-form"].class.positiveContent
-  );
-  const [negativeClassContent, setNegativeClassContent] = useState(
-    testeJson["council-form"].class.negativeContent
-  );
+  const [positiveClassContent, setPositiveClassContent] = useState("");
+  const [negativeClassContent, setNegativeClassContent] = useState("");
+  const [actualRank, setActualRank] = useState<
+    "none" | "average" | "excellent" | "good" | "critical"
+  >("none");
 
-  const [actualRank, setActualRank] = useState(
-    testeJson["council-form"].class.rank
-  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Função para descriptografar dados do localStorage
+  useEffect(() => {
+    const fetchCouncilContent = async () => {
+      const response = await fetch("http://localhost:3030/studentCouncil");
+      const result: CouncilData = await response.json();
+      setData(result);
+    };
+
+    fetchCouncilContent();
+  }, []);
+
   const getDecryptedData = (key: string): string => {
     const encryptedData = localStorage.getItem(key);
     if (encryptedData) {
@@ -37,21 +83,14 @@ export default function RealizeCouncil() {
     return "";
   };
 
-  // Função para criptografar e salvar dados no localStorage
   const saveEncryptedData = (key: string, value: string) => {
     const encryptedData = Encryptor({ [key]: value });
     localStorage.setItem(key, encryptedData);
   };
 
   useEffect(() => {
-    // Recupera e descriptografa os dados do localStorage ao montar o componente
     const savedPositiveContent = getDecryptedData("positiveContent");
     const savedNegativeContent = getDecryptedData("negativeContent");
-    const savedRank = getDecryptedData("rank");
-
-    if (savedRank) {
-      setActualRank(savedRank); // Define o estado com o valor recuperado
-    }
 
     if (savedPositiveContent) {
       setPositiveClassContent(savedPositiveContent);
@@ -73,33 +112,48 @@ export default function RealizeCouncil() {
   };
 
   const handleRankChange = (rank: string) => {
-    setActualRank(rank);
+    // console.log("handle: " + rank)
+    setActualRank(
+      rank as "none" | "average" | "excellent" | "good" | "critical"
+    );
     saveEncryptedData("rank", rank);
   };
 
   const handleNextStudent = () => {
-    setCurrentStudentIndex(
-      (prevIndex) => (prevIndex + 1) % testeJson["council-form"].users.length
-    );
+    if (data !== null) {
+      setCurrentStudentIndex(
+        (prevIndex) => (prevIndex + 1) % data["council-form"].users.length
+      );
+    }
   };
 
   const handlePreviousStudent = () => {
-    setCurrentStudentIndex((prevIndex) =>
-      prevIndex === 0
-        ? testeJson["council-form"].users.length - 1
-        : prevIndex - 1
-    );
+    if (data !== null) {
+      setCurrentStudentIndex((prevIndex) =>
+        prevIndex === 0 ? data["council-form"].users.length - 1 : prevIndex - 1
+      );
+    }
   };
 
   const { constrastColor, backgroundColor, primaryColor, whiteColor } =
     useThemeContext();
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Box>
-      <Title textHighlight="Conselho" text="da turma:" />
+      <Title
+        textHighlight="Conselho"
+        text={`da turma: ${data ? data["council-form"].class.name : ""}`}
+      />
       <Box
         className="rounded-big m-0 flex justify-center items-center outline-[16px] outline"
-        // bgcolor={OpacityHex(constrastColor, 0.1)}
         style={{ outlineColor: OpacityHex(constrastColor, 0.1) }}
       >
         <Box
@@ -119,6 +173,8 @@ export default function RealizeCouncil() {
                   headerButtons={{
                     onChangeRank: handleRankChange,
                   }}
+                  openCommentsModal={openModal}
+                  data={actualRank}
                 />
               </table>
               <AvaliationInputs
@@ -132,22 +188,27 @@ export default function RealizeCouncil() {
             <div>
               <StudentCouncilForm
                 student={
-                  testeJson["council-form"].users[currentStudentIndex].name
+                  data
+                    ? data["council-form"].users[currentStudentIndex].name
+                    : ""
                 }
                 frequencia={
-                  testeJson["council-form"].users[currentStudentIndex]
-                    .frequencia
+                  data
+                    ? data["council-form"].users[currentStudentIndex].frequencia
+                    : 0
                 }
                 comments=""
                 negativeContent={negativeContent}
                 positiveContent={positiveContent}
                 rank={
-                  testeJson["council-form"].users[currentStudentIndex].rank as
-                    | "none"
-                    | "average"
-                    | "excellent"
-                    | "good"
-                    | "critical"
+                  data
+                    ? (data["council-form"].users[currentStudentIndex].rank as
+                        | "none"
+                        | "average"
+                        | "excellent"
+                        | "good"
+                        | "critical")
+                    : "none"
                 }
                 onNext={handleNextStudent}
                 onPrevious={handlePreviousStudent}
@@ -165,6 +226,7 @@ export default function RealizeCouncil() {
           </Button>
         </Box>
       </Box>
+      {isModalOpen && <CommentariesModal onClose={closeModal} />}
     </Box>
   );
 }

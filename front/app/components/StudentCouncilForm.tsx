@@ -102,8 +102,6 @@ export default function StudentCouncilForm({
     studentsData[student] = studentData;
     localStorage.setItem("studentsData", Encryptor(studentsData));
 
-    console.log(studentsData);
-
     setTimeout(() => {
       setIsSaving(false);
       setDisable(false);

@@ -5,7 +5,7 @@ import Icon from "../Icon";
 import { IoClose } from "react-icons/io5";
 import Photo from "../profile/Photo";
 import { FiUpload } from "react-icons/fi";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 interface UploadImageModalProps {
   onClose: () => void;
@@ -22,6 +22,20 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
   } = useThemeContext();
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

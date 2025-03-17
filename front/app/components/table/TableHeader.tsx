@@ -8,49 +8,55 @@ import Icon from "../Icon";
 import Search from "./Search";
 import Rank from "../rank/Rank";
 import { Decryptor } from "@/encryption/Decryptor";
-import testeJson from "@/teste.json";
 import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
+import CommentariesModal from "../Modals/CommentariesModal";
 
 interface TableHeaderProps {
   variant: "Table" | "council";
   headers: TableHeaderContent[];
-  headerButtons: TableHeaderButtons;   
+  headerButtons: TableHeaderButtons;
+  data?: any;
+  openCommentsModal?: (open: boolean) => void;
 }
 
 export default function TableHeader({
   variant,
   headers,
   headerButtons,
+  data,
+  openCommentsModal,
 }: TableHeaderProps) {
-  
-  const [actualRank, setActualRank] = useState(
-    testeJson["council-form"].class.rank as
-      | "none"
-      | "average"
-      | "excellent"
-      | "good"
-      | "critical"
-  );
-  const { primaryColor, whiteColor, textDarkColor } = useThemeContext();   
-  const {filterButton, 
-    orderButton, 
-    searchInput, 
+  const [actualRank, setActualRank] = useState(data);
+
+  const { primaryColor, whiteColor, textDarkColor } = useThemeContext();
+  const {
+    filterButton,
+    orderButton,
+    searchInput,
     setSearch,
     setFilter,
     setOrder,
-    onChangeRank
+    onChangeRank,
   } = headerButtons;
-
 
   useEffect(() => {
     const savedRank = localStorage.getItem("rank");
-    if (savedRank) {
+    console.log(savedRank);
+    if (savedRank !== null) {
+      console.log("1");
       const decryptedRank = Decryptor(savedRank);
       if (decryptedRank && decryptedRank.rank) {
-        setActualRank(decryptedRank.rank); 
+        console.log("2");
+        setActualRank(decryptedRank.rank);
       }
     }
   }, []);
+
+  const openModal = () => {
+    if (openCommentsModal) {
+      openCommentsModal(true);
+    }
+  };
 
   useEffect(() => {
     onChangeRank && onChangeRank(actualRank);
@@ -58,26 +64,38 @@ export default function TableHeader({
 
   if (variant == "Table") {
     return (
-      <thead style={{ backgroundColor: primaryColor, borderColor: primaryColor }} className="w-full">
+      <thead
+        style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
+        className="w-full"
+      >
         <tr className="flex justify-between items-center p-3">
-            {headers.map((header, index) => (
-                <th key={index} 
-                    className={(index !== 0 ?                                                           
-                                (index === 1 ? `hidden lg:justify-center md:flex md:flex-1`             //the second 
-                              : `hidden justify-center lg:flex lg:flex-1`)                              //the third
-                                : `flex flex-1`)                                                        //the first
-                                + ` p-0`}                                                               //all
-                > 
-                    <Typography variant="sm_text_bold" color={whiteColor} className={(index === 1 ? `md:pl-6 lg:pl-0` : ``)}>
-                        {header.name}
-                    </Typography>
-                </th>
-            ))}
-            <th className="flex gap-2 w-2/5 lg:w-1/3 justify-end">
-                {filterButton && <Icon IconPassed={HiOutlineFilter} isButton={true} />}
-                {orderButton && <Icon IconPassed={VscSettings} isButton={true} />}
-                {searchInput && <Search setSearch={setSearch} />}
+          {headers.map((header, index) => (
+            <th
+              key={index}
+              className={
+                (index !== 0
+                  ? index === 1
+                    ? `hidden lg:justify-center md:flex md:flex-1`
+                    : `hidden justify-center lg:flex lg:flex-1`
+                  : `flex flex-1`) + ` p-0`
+              }
+            >
+              <Typography
+                variant="sm_text_bold"
+                color={whiteColor}
+                className={index === 1 ? `md:pl-6 lg:pl-0` : ``}
+              >
+                {header.name}
+              </Typography>
             </th>
+          ))}
+          <th className="flex gap-2 w-2/5 lg:w-1/3 justify-end">
+            {filterButton && (
+              <Icon IconPassed={HiOutlineFilter} isButton={true} />
+            )}
+            {orderButton && <Icon IconPassed={VscSettings} isButton={true} />}
+            {searchInput && <Search setSearch={setSearch} />}
+          </th>
         </tr>
       </thead>
     );
@@ -110,7 +128,7 @@ export default function TableHeader({
                     onRankChange={setActualRank}
                   />
                 </span>
-                <span>
+                <span onClick={openModal}>
                   <Button variant="contained" color={`secondary`}>
                     <Typography variant="sm_text_bold" color={textDarkColor}>
                       Ver anotações
