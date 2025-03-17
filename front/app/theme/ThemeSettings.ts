@@ -8,6 +8,10 @@ import { BrandColors, colors } from "./BrandColors";
 import "@fontsource/lora";
 import "@fontsource/poppins";
 import "@fontsource/poppins/300.css";
+import "@fontsource/montserrat";
+import "@fontsource/inter";
+import "@fontsource/merriweather";
+import "@fontsource/libre-baskerville";
 
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
@@ -61,6 +65,11 @@ export default class ThemeSettings {
       return "light";
     }
     return isDarkMode ? "dark" : "light";
+  }
+
+  public static getThemePallete() {
+    const color = localStorage.getItem("theme");
+    return color ? color : "blue";
   }
 
   public static getColorByMode() {
@@ -118,12 +127,60 @@ export default class ThemeSettings {
       : blackColor;
   }
 
+  public static getFontSize() {
+    const multiplier = localStorage.getItem("fontMultiplier");
+    if (!multiplier) {
+      localStorage.setItem("fontMultiplier", "1");
+      return 1;
+    } 
+    return parseFloat(multiplier);
+  }
+
+  public static changeFontSize(multiplier: number) {
+    localStorage.setItem("fontMultiplier", multiplier.toString());        
+  }
+
+  public static getFontFamilyText() {
+    const fontFamilyText = localStorage.getItem("fontFamilyText");
+    if (!fontFamilyText) {
+      localStorage.setItem("fontFamilyText", "Poppins");
+      return "Poppins";
+    } 
+    return fontFamilyText;
+  }
+
+  public static changeFontFamilyText(fontFamilyText: string) {
+    localStorage.setItem("fontFamilyText", fontFamilyText);        
+  }
+
+  public static getFontFamilyTitle() {
+    const fontFamilyText = localStorage.getItem("fontFamilyTitle");
+    if (!fontFamilyText) {
+      localStorage.setItem("fontFamilyTitle", "Inter");
+      return "Lora";
+    } 
+    return fontFamilyText;
+  }
+
+  public static changeFontFamilyTitle(fontFamilyText: string) {
+    localStorage.setItem("fontFamilyTitle", fontFamilyText);        
+  }
+  
+
   public static createThemePallete() {
     const themeBase = createTheme({});
     const primary_color = BrandColors.primary_color;
     const secondary_color = BrandColors.secondary_color;
     const terciary_color = BrandColors.terciary_color;
     const colorByMode = this.getColorByMode();
+    const fontMultiplier = this.getFontSize();
+
+    const fontSize = (baseSize: number) => {
+      return `${baseSize * fontMultiplier}rem`;
+    };
+
+    const fontFamilyText = this.getFontFamilyText();
+    const fontFamilyTitle = this.getFontFamilyTitle();
 
     return createTheme(themeBase, {
       breakpoints: {
@@ -160,141 +217,141 @@ export default class ThemeSettings {
       },
       typography: {
         h1_title: {
-          fontSize: "3.5rem",
-          fontFamily: "Lora",
+          fontSize: fontSize(3.5),
+          fontFamily: fontFamilyTitle,
           color: this.getContrastThemeColor(),
         },
         h2_title: {
-          fontSize: "3rem",
-          fontFamily: "Lora",
+          fontSize: fontSize(3),
+          fontFamily: fontFamilyTitle,
           color: this.getContrastThemeColor(),
         },
         h3_title: {
-          fontSize: "2.5rem",
-          fontFamily: "Lora",
+          fontSize: fontSize(2.5),
+          fontFamily: fontFamilyTitle,
           color: this.getContrastThemeColor(),
         },
         h4_title: {
-          fontSize: "2.25rem",
-          fontFamily: "Lora",
+          fontSize: fontSize(2.25),
+          fontFamily: fontFamilyTitle,
           color: this.getContrastThemeColor(),
         },
         h5_title: {
-          fontSize: "1.875rem",
-          fontFamily: "Lora",
+          fontSize: fontSize(1.875),
+          fontFamily: fontFamilyTitle,
           color: this.getContrastThemeColor(),
         },
         h6_title: {
-          fontSize: "1.5rem",
-          fontFamily: "Lora",
+          fontSize: fontSize(1.5),
+          fontFamily: fontFamilyTitle,
           color: this.getContrastThemeColor(),
         },
         xl_text_light: {
-          fontSize: "1.25rem",
+          fontSize: fontSize(1.25),
           fontWeight: 300,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         xl_text_regular: {
-          fontSize: "1.25rem",
+          fontSize: fontSize(1.25),
           fontWeight: 400,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         xl_text_bold: {
-          fontSize: "1.25rem",
+          fontSize: fontSize(1.25),
           fontWeight: 700,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         lg_text_light: {
-          fontSize: "1.125rem",
+          fontSize: fontSize(1.125),
           fontWeight: 300,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         lg_text_regular: {
-          fontSize: "1.125rem",
+          fontSize: fontSize(1.125),
           fontWeight: 400,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         lg_text_bold: {
-          fontSize: "1.125rem",
+          fontSize: fontSize(1.125),
           fontWeight: 700,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         md_text_light: {
-          fontSize: "1rem",
+          fontSize: fontSize(1),
           fontWeight: 300,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         md_text_regular: {
-          fontSize: "1rem",
+          fontSize: fontSize(1),
           fontWeight: 400,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         md_text_bold: {
-          fontSize: "1rem",
+          fontSize: fontSize(1),
           fontWeight: 700,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         sm_text_light: {
-          fontSize: "0.875rem",
+          fontSize: fontSize(0.875),
           fontWeight: 300,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         sm_text_regular: {
-          fontSize: "0.875rem",
+          fontSize: fontSize(0.875),
           fontWeight: 400,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         sm_text_bold: {
-          fontSize: "0.875rem",
+          fontSize: fontSize(0.875),
           fontWeight: 700,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         xs_text_light: {
-          fontSize: "0.75rem",
+          fontSize: fontSize(0.75),
           fontWeight: 300,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         xs_text_regular: {
-          fontSize: "0.75rem",
+          fontSize: fontSize(0.75),
           fontWeight: 400,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         xs_text_bold: {
-          fontSize: "0.75rem",
+          fontSize: fontSize(0.75),
           fontWeight: 700,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         tn_text_light: {
-          fontSize: "0.625rem",
+          fontSize: fontSize(0.625),
           fontWeight: 300,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         tn_text_regular: {
-          fontSize: "0.625rem",
+          fontSize: fontSize(0.625),
           fontWeight: 400,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
         tn_text_bold: {
-          fontSize: "0.625rem",
+          fontSize: fontSize(0.625),
           fontWeight: 700,
-          fontFamily: "Poppins",
+          fontFamily: fontFamilyText,
           color: this.getContrastThemeColor(),
         },
       },
@@ -394,6 +451,13 @@ export default class ThemeSettings {
             },
           },
         },
+        MuiButton: {
+          styleOverrides: {
+            root: {
+              textTransform: "none",
+            }
+          }
+        }
       },
     });
   }
