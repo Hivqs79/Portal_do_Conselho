@@ -1,4 +1,4 @@
-package net.weg.userapi.service;
+package net.weg.userapi.service.users;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,12 +10,9 @@ import net.weg.userapi.model.entity.Student;
 import net.weg.userapi.repository.StudentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;

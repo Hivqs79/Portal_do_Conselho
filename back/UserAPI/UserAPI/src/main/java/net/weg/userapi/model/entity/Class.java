@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.weg.userapi.model.entity.users.Student;
+import net.weg.userapi.model.entity.users.Teacher;
 import net.weg.userapi.model.enums.ClassAreaENUM;
 
 import java.util.List;

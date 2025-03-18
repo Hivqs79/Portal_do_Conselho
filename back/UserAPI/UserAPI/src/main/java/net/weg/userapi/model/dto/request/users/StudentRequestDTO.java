@@ -1,4 +1,4 @@
-package net.weg.userapi.model.dto.request;
+package net.weg.userapi.model.dto.request.users;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

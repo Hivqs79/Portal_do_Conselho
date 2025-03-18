@@ -1,15 +1,12 @@
 package net.weg.userapi.service;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
 import net.weg.userapi.model.dto.request.ClassRequestDTO;
-import net.weg.userapi.model.dto.request.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.ClassResponseDTO;
-import net.weg.userapi.model.dto.response.StudentResponseDTO;
-import net.weg.userapi.model.dto.response.TeacherResponseDTO;
+import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
+import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
 import net.weg.userapi.model.entity.Class;
-import net.weg.userapi.model.entity.Student;
 import net.weg.userapi.repository.ClassRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
