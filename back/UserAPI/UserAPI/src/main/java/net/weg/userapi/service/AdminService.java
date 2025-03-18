@@ -23,11 +23,11 @@ public class AdminService {
 
     private AdminRepository repository;
     private ModelMapper modelMapper;
+    private KafkaProducerService kafkaProducerService;
 
     public AdminResponseDTO createAdmin(AdminRequestDTO adminRequestDTO) {
         Admin admin = modelMapper.map(adminRequestDTO, Admin.class);
         Admin adminSaved = repository.save(admin);
-
         return modelMapper.map(adminSaved, AdminResponseDTO.class);
     }
 

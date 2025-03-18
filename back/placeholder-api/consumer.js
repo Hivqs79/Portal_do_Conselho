@@ -1,7 +1,7 @@
 const kafka = require('kafka-node');
 const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092', requestTimeout: 20000 });
 const Consumer = kafka.Consumer;
-const TOPIC = 'your-topic';
+const TOPIC = 'student';
 const consumer = new Consumer(
   client,
   [{ topic: TOPIC, partition: 0 }],

@@ -1,6 +1,9 @@
 package net.weg.userapi.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import net.weg.userapi.model.KafkaMessage;
 import net.weg.userapi.model.dto.request.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.StudentResponseDTO;
 import net.weg.userapi.model.entity.Student;
@@ -23,11 +26,13 @@ public class StudentService {
 
     private StudentRepository repository;
     private ModelMapper modelMapper;
+    private KafkaProducerService kafkaProducerService;
+    private final ObjectMapper objectMapper;
 
     public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {
         Student student = modelMapper.map(studentRequestDTO, Student.class);
         Student studentSaved = repository.save(student);
-
+        this.sendStudentEvent(student, "POST");
         return modelMapper.map(studentSaved, StudentResponseDTO.class);
     }
 
@@ -64,6 +69,21 @@ public class StudentService {
     public void mockarStudent (List<StudentRequestDTO> studentRequestDTOS) {
         List<Student> students = studentRequestDTOS.stream().map(studentRequestDTO -> modelMapper.map(studentRequestDTO, Student.class)).collect(Collectors.toList());
         repository.saveAll(students);
+    }
+
+    public void sendStudentEvent(Student student, String httpMethod) {
+        try {
+            KafkaMessage message = new KafkaMessage();
+            message.setHttpMethod(httpMethod);
+            message.setObject(student);
+
+            String jsonMessage = objectMapper.writeValueAsString(message);
+
+            kafkaProducerService.sendMessage("student", jsonMessage);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to serialize KafkaMessage object", e);
+        }
     }
 
 }
