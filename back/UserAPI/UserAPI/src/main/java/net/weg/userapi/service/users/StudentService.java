@@ -53,7 +53,7 @@ public class StudentService {
     public StudentResponseDTO updateStudent(StudentRequestDTO studentRequestDTO, Integer id) {
         Student student = findStudentEntity(id);
         modelMapper.map(studentRequestDTO, student);
-        student.setClasses(studentRequestDTO.getClasses()); //ATUALIZAR O MANY TO MANY
+        student.setClasses(studentRequestDTO.getClasses());
         Student updatedStudent = repository.save(student);
         return modelMapper.map(updatedStudent, StudentResponseDTO.class);
     }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.entity.Class;
+import net.weg.userapi.model.entity.council.Council;
 
 import java.util.List;
 
@@ -23,5 +24,8 @@ public class Teacher extends User {
             inverseJoinColumns= @JoinColumn(name = "class_id")
     )
     private List<Class> classes;
+
+    @ManyToMany(mappedBy = "teachers")
+    private List<Council> councils;
 
 }
