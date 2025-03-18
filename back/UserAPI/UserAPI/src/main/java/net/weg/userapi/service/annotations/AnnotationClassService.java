@@ -75,8 +75,9 @@ public class AnnotationClassService {
 
     public AnnotationClassResponseDTO deleteAnnotationClass(Integer id) {
         AnnotationClass annotationClass = findAnnotationEntity(id);
+        AnnotationClassResponseDTO annotationClassResponseDTO = modelMapper.map(annotationClass, AnnotationClassResponseDTO.class);
         repository.delete(annotationClass);
-        return modelMapper.map(annotationClass, AnnotationClassResponseDTO.class);
+        return annotationClassResponseDTO;
     }
 
 }

@@ -65,8 +65,9 @@ public class ClassService {
 
     public ClassResponseDTO deleteClass(Integer id) {
         Class classes = findClassEntity(id);
+        ClassResponseDTO classResponseDTO = modelMapper.map(classes, ClassResponseDTO.class);
         repository.delete(classes);
-        return modelMapper.map(classes, ClassResponseDTO.class);
+        return classResponseDTO;
     }
 
     public void mockarClass (List<ClassRequestDTO> classRequestDTOS) {

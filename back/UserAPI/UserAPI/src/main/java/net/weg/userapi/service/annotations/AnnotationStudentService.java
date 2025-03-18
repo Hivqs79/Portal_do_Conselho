@@ -82,8 +82,9 @@ public class AnnotationStudentService {
 
     public AnnotationStudentResponseDTO deleteAnnotationStudent(Integer id) {
         AnnotationStudent annotationStudent = findAnnotationEntity(id);
+        AnnotationStudentResponseDTO annotationStudentResponseDTO = modelMapper.map(annotationStudent, AnnotationStudentResponseDTO.class);
         repository.delete(annotationStudent);
-        return modelMapper.map(annotationStudent, AnnotationStudentResponseDTO.class);
+        return annotationStudentResponseDTO;
     }
 
 }

@@ -55,8 +55,9 @@ public class TeacherService {
 
     public TeacherResponseDTO deleteTeacher(Integer id) {
         Teacher teacher = findTeacherEntity(id);
+        TeacherResponseDTO teacherResponseDTO = modelMapper.map(teacher, TeacherResponseDTO.class);
         repository.delete(teacher);
-        return modelMapper.map(teacher, TeacherResponseDTO.class);
+        return teacherResponseDTO;
     }
 
     public List<ClassResponseDTO> getClassByTeacher(Integer teacher_id) {

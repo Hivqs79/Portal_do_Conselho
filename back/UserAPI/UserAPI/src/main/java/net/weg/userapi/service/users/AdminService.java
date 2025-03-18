@@ -53,8 +53,9 @@ public class AdminService {
 
     public AdminResponseDTO deleteAdmin(Integer id) {
         Admin admin = findAdminEntity(id);
+        AdminResponseDTO adminResponseDTO = modelMapper.map(admin, AdminResponseDTO.class);
         repository.delete(admin);
-        return modelMapper.map(admin, AdminResponseDTO.class);
+        return adminResponseDTO;
     }
 
     public void mockarAdmin (List<AdminRequestDTO> adminRequestDTOS) {

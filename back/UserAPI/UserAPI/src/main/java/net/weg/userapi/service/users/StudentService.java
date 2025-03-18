@@ -60,8 +60,9 @@ public class StudentService {
 
     public StudentResponseDTO deleteStudent(Integer id) {
         Student student = findStudentEntity(id);
+        StudentResponseDTO studentResponseDTO = modelMapper.map(student, StudentResponseDTO.class);
         repository.delete(student);
-        return modelMapper.map(student, StudentResponseDTO.class);
+        return studentResponseDTO;
     }
 
     public void mockarStudent (List<StudentRequestDTO> studentRequestDTOS) {

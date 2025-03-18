@@ -53,8 +53,9 @@ public class PedagogicService {
 
     public PedagogicResponseDTO deletePedagogic(Integer id) {
         Pedagogic pedagogic = findPedagogicEntity(id);
+        PedagogicResponseDTO pedagogicResponseDTO = modelMapper.map(pedagogic, PedagogicResponseDTO.class);
         repository.delete(pedagogic);
-        return modelMapper.map(pedagogic, PedagogicResponseDTO.class);
+        return pedagogicResponseDTO;
     }
 
     public void mockarPedagogic (List<PedagogicRequestDTO> pedagogicRequestDTOS) {

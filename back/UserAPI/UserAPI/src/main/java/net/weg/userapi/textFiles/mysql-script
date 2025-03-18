@@ -3,12 +3,25 @@ use userapi_db;
 
 show tables;
 
+-- DESCRIBE
 describe user;
 describe admin;
 describe pedagogic;
 describe student;
 describe teacher;
 
+describe class;
+describe teacher_class;
+describe student_class;
+
+describe annotation;
+describe annotation_student;
+describe annotation_class;
+
+describe council;
+describe council_teacher;
+
+-- SELECT * FROM
 select * from user;
 select * from admin;
 select * from pedagogic;
@@ -16,7 +29,17 @@ select * from student;
 select * from teacher;
 
 select * from class;
+select * from teacher_class;
+select * from student_class;
 
+select * from annotation;
+select * from annotation_student;
+select * from annotation_class;
+
+select * from council;
+select * from council_teacher;
+
+-- DELETE FROM
 set sql_safe_updates = 0;
 
 delete from user;
@@ -26,3 +49,13 @@ delete from student;
 delete from teacher;
 
 delete from class;
+delete from teacher_class;
+delete from student_class;
+
+delete from annotation;
+delete from annotation_student;
+delete from annotation_class;
+
+delete from council;
+delete from council_teacher;
+
