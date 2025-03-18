@@ -22,7 +22,7 @@ interface StudentCouncilFormProps {
   comments: string;
   onNext: () => void;
   onPrevious: () => void;
-  data?: any; //LEMBRAR DE INTEHRAR COM AS REQUISIÇÕES DA API
+  openCommentsModal?: (open: boolean) => void;
 }
 
 export default function StudentCouncilForm({
@@ -34,6 +34,7 @@ export default function StudentCouncilForm({
   comments,
   onNext,
   onPrevious,
+  openCommentsModal
 }: StudentCouncilFormProps) {
   const [frequenciaAtualizada, setFrequenciaAtual] =
     useState(initialFrequencia);
@@ -60,15 +61,6 @@ export default function StudentCouncilForm({
   const [rank, setRank] = useState(initialRank);
   const [isDisable, setDisable] = useState(false);
   const isInitialMount = useRef(true);
-  const [isModalStudentOpen, setIsModalStudentOpen] = useState(false);
-
-  const openStudentModal = () => {
-    setIsModalStudentOpen(true);
-  };
-
-  const closeStudentModal = () => {
-    setIsModalStudentOpen(false);
-  };
 
   // Carrega os dados do localStorage quando o student muda
   useEffect(() => {
@@ -161,6 +153,12 @@ export default function StudentCouncilForm({
     setRank(newRank as "excellent" | "good" | "average" | "critical" | "none");
   };
 
+  const openModal = () => {
+    if (openCommentsModal) {
+      openCommentsModal(true);
+    }
+  };
+
   return (
     <>
       <div
@@ -228,7 +226,7 @@ export default function StudentCouncilForm({
             <span className="hidden lg:block w-full">
               <Button
                 variant="contained"
-                onClick={() => openStudentModal()}
+                onClick={() => openModal()}
                 className="!w-full"
                 color="primary"
               >
@@ -308,16 +306,6 @@ export default function StudentCouncilForm({
         <div className="absolute hidden lg:block right-[4rem] top-5">
           <AutoSaveIndicator saved={!isSaving} />
         </div>
-        {isModalStudentOpen && (
-          <CommentariesModal
-            anotations={
-              data ? data["council-form"].class.teacherAnotations : []
-            }
-            student={false}
-            name={data ? data["council-form"].class.name : ""}
-            onClose={closeStudentModal}
-          />
-        )}
       </div>
     </>
   );

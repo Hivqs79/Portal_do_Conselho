@@ -14,11 +14,13 @@
         },
         {
           "name": "Romário Hornburg",
+          "rank": "average",
           "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
           "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
         },
         {
           "name": "Iago Soares da Silva",
+          "rank": "critical",
           "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
           "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
         }
@@ -35,17 +37,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -61,17 +65,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -87,17 +93,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -113,17 +121,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -139,17 +149,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -165,17 +177,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -191,17 +205,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -217,17 +233,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -243,17 +261,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -269,17 +289,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -295,17 +317,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -321,17 +345,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -347,17 +373,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -373,17 +401,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -399,17 +429,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -425,17 +457,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -451,17 +485,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -477,17 +513,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -503,17 +541,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -529,17 +569,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }
@@ -555,17 +597,19 @@
         "comments": [
           {
             "name": "Kristian Erdmann",
-            "rank": "average",
+            "rank": "good",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Romário Hornburg",
+            "rank": "average",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           },
           {
             "name": "Iago Soares da Silva",
+            "rank": "critical",
             "positiveContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             "negativeContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
           }

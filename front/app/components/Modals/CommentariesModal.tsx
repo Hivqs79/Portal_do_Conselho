@@ -40,6 +40,10 @@ export default function CommentariesModal({
     };
   }, []);
 
+  const verifyRank = (rank: string | undefined | null): string => {
+    return rank ?? "none";
+  };
+
   return (
     <>
       <Box className="bg-black/60 fixed inset-0 flex justify-center items-center z-50">
@@ -73,9 +77,9 @@ export default function CommentariesModal({
             <span className="flex rounded-big flex-col max-h-[550px] p-2 gap-5 overflow-y-scroll">
               {anotations.map((anotation: any, index: number) => (
                 <Anotation
-                  key={index} // Adicione uma chave única para cada elemento do array
+                  key={index} 
                   name={anotation.name}
-                  rank={anotation.rank}
+                  rank={verifyRank(anotation.rank)}
                   positiveContent={anotation.positiveContent}
                   negativeContent={anotation.negativeContent}
                 />

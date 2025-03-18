@@ -56,6 +56,7 @@ export default function RealizeCouncil() {
   >("none");
 
   const [isModalTeacherOpen, setIsModalTeacherOpen] = useState(false);
+  const [isModalStudentOpen, setIsModalStudentOpen] = useState(false);
 
   useEffect(() => {
     const fetchCouncilContent = async () => {
@@ -105,7 +106,6 @@ export default function RealizeCouncil() {
   };
 
   const handleRankChange = (rank: string) => {
-    // console.log("handle: " + rank)
     setActualRank(
       rank as "none" | "average" | "excellent" | "good" | "critical"
     );
@@ -139,6 +139,13 @@ export default function RealizeCouncil() {
     setIsModalTeacherOpen(false);
   };
 
+  const openStudentModal = () => {
+    setIsModalStudentOpen(true);
+  };
+
+  const closeStudentModal = () => {
+    setIsModalStudentOpen(false);
+  };
 
   return (
     <Box>
@@ -206,6 +213,7 @@ export default function RealizeCouncil() {
                 }
                 onNext={handleNextStudent}
                 onPrevious={handlePreviousStudent}
+                openCommentsModal={openStudentModal}
               />
             </div>
           </Box>
@@ -228,7 +236,18 @@ export default function RealizeCouncil() {
           onClose={closeTeacherModal}
         />
       )}
-  
+      {isModalStudentOpen && (
+        <CommentariesModal
+          anotations={
+            data ? data["council-form"].users[currentStudentIndex].comments : []
+          }
+          student={true}
+          name={
+            data ? data["council-form"].users[currentStudentIndex].name : ""
+          }
+          onClose={closeStudentModal}
+        />
+      )}
     </Box>
   );
 }
