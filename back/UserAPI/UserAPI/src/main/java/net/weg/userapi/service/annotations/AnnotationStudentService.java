@@ -6,8 +6,8 @@ import net.weg.userapi.model.dto.request.annotation.AnnotationStudentRequestDTO;
 import net.weg.userapi.model.dto.response.annotation.AnnotationStudentResponseDTO;
 import net.weg.userapi.model.entity.annotation.AnnotationStudent;
 import net.weg.userapi.repository.AnnotationStudentRepository;
-import net.weg.userapi.service.StudentService;
-import net.weg.userapi.service.TeacherService;
+import net.weg.userapi.service.users.StudentService;
+import net.weg.userapi.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,6 +59,12 @@ public class AnnotationStudentService {
 
     public Page<AnnotationStudentResponseDTO> pageAnnotationStudent(Pageable pageable) {
         Page<AnnotationStudent> annotationStudent = repository.findAll(pageable);
+
+        return annotationStudent.map(annotation -> modelMapper.map(annotation, AnnotationStudentResponseDTO.class));
+    }
+
+    public Page<AnnotationStudentResponseDTO> pageAnnotationsByStudent(Integer id, Pageable pageable) {
+        Page<AnnotationStudent> annotationStudent = repository.findAllByStudent_Id(pageable, id);
 
         return annotationStudent.map(annotation -> modelMapper.map(annotation, AnnotationStudentResponseDTO.class));
     }

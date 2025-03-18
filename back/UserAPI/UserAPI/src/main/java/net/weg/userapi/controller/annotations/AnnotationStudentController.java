@@ -38,6 +38,11 @@ public class AnnotationStudentController {
         return new ResponseEntity<>(service.findAnnotationStudent(id), HttpStatus.OK);
     }
 
+    @GetMapping("/by/{id}")
+    public ResponseEntity<Page<AnnotationStudentResponseDTO>> getAnnotationByOneStudent(@PathVariable Integer id, Pageable pageable) {
+        return new ResponseEntity<>(service.pageAnnotationsByStudent(id, pageable), HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<Page<AnnotationStudentResponseDTO>> getAllAnnotationStudent(Pageable pageable) {
         return new ResponseEntity<>(service.pageAnnotationStudent(pageable), HttpStatus.OK);

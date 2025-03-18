@@ -1,4 +1,4 @@
-package net.weg.userapi.service;
+package net.weg.userapi.service.users;
 
 import lombok.AllArgsConstructor;
 import net.weg.userapi.model.dto.request.users.StudentRequestDTO;
