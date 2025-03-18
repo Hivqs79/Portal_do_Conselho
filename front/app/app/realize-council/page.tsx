@@ -11,13 +11,6 @@ import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 
-type TeacherAnnotation = {
-  name: string;
-  rank?: string;
-  positiveContent: string;
-  negativeContent: string;
-};
-
 type UserComment = {
   name: string;
   rank?: string;
@@ -62,7 +55,7 @@ export default function RealizeCouncil() {
     "none" | "average" | "excellent" | "good" | "critical"
   >("none");
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalTeacherOpen, setIsModalTeacherOpen] = useState(false);
 
   useEffect(() => {
     const fetchCouncilContent = async () => {
@@ -138,13 +131,14 @@ export default function RealizeCouncil() {
   const { constrastColor, backgroundColor, primaryColor, whiteColor } =
     useThemeContext();
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openTeacherModal = () => {
+    setIsModalTeacherOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeTeacherModal = () => {
+    setIsModalTeacherOpen(false);
   };
+
 
   return (
     <Box>
@@ -173,7 +167,7 @@ export default function RealizeCouncil() {
                   headerButtons={{
                     onChangeRank: handleRankChange,
                   }}
-                  openCommentsModal={openModal}
+                  openCommentsModal={openTeacherModal}
                   data={actualRank}
                 />
               </table>
@@ -226,7 +220,15 @@ export default function RealizeCouncil() {
           </Button>
         </Box>
       </Box>
-      {isModalOpen && <CommentariesModal onClose={closeModal} />}
+      {isModalTeacherOpen && (
+        <CommentariesModal
+          anotations={data ? data["council-form"].class.teacherAnotations : []}
+          student={false}
+          name={data ? data["council-form"].class.name : ""}
+          onClose={closeTeacherModal}
+        />
+      )}
+  
     </Box>
   );
 }

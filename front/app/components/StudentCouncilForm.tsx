@@ -11,6 +11,7 @@ import AutoSaveIndicator from "./AutoSaveIndicator";
 import { useState, useEffect, useRef } from "react";
 import { Decryptor } from "@/encryption/Decryptor";
 import { Encryptor } from "@/encryption/Encryptor";
+import CommentariesModal from "./Modals/CommentariesModal";
 
 interface StudentCouncilFormProps {
   student: string;
@@ -21,6 +22,7 @@ interface StudentCouncilFormProps {
   comments: string;
   onNext: () => void;
   onPrevious: () => void;
+  data?: any; //LEMBRAR DE INTEHRAR COM AS REQUISIÇÕES DA API
 }
 
 export default function StudentCouncilForm({
@@ -58,6 +60,15 @@ export default function StudentCouncilForm({
   const [rank, setRank] = useState(initialRank);
   const [isDisable, setDisable] = useState(false);
   const isInitialMount = useRef(true);
+  const [isModalStudentOpen, setIsModalStudentOpen] = useState(false);
+
+  const openStudentModal = () => {
+    setIsModalStudentOpen(true);
+  };
+
+  const closeStudentModal = () => {
+    setIsModalStudentOpen(false);
+  };
 
   // Carrega os dados do localStorage quando o student muda
   useEffect(() => {
@@ -199,7 +210,6 @@ export default function StudentCouncilForm({
                   popover={true}
                   outline={false}
                   type={rank}
-                  studentName={student}
                   onRankChange={handleRankChange}
                 />
               </span>
@@ -216,7 +226,12 @@ export default function StudentCouncilForm({
               </Button>
             </span>
             <span className="hidden lg:block w-full">
-              <Button variant="contained" className="!w-full" color="primary">
+              <Button
+                variant="contained"
+                onClick={() => openStudentModal()}
+                className="!w-full"
+                color="primary"
+              >
                 <Typography variant="lg_text_bold" color={whiteColor}>
                   Ver comentários
                 </Typography>
@@ -293,6 +308,16 @@ export default function StudentCouncilForm({
         <div className="absolute hidden lg:block right-[4rem] top-5">
           <AutoSaveIndicator saved={!isSaving} />
         </div>
+        {isModalStudentOpen && (
+          <CommentariesModal
+            anotations={
+              data ? data["council-form"].class.teacherAnotations : []
+            }
+            student={false}
+            name={data ? data["council-form"].class.name : ""}
+            onClose={closeStudentModal}
+          />
+        )}
       </div>
     </>
   );

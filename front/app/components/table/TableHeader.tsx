@@ -41,12 +41,9 @@ export default function TableHeader({
 
   useEffect(() => {
     const savedRank = localStorage.getItem("rank");
-    console.log(savedRank);
     if (savedRank !== null) {
-      console.log("1");
       const decryptedRank = Decryptor(savedRank);
       if (decryptedRank && decryptedRank.rank) {
-        console.log("2");
         setActualRank(decryptedRank.rank);
       }
     }
