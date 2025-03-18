@@ -31,8 +31,10 @@ export class BrandColors {
 export const colors = {
     "whiteColor": "#f5f5f5",
     "blackColor": "#333333",
+    "textDarkColor": "#191919",
     "primaryGrayColor": "#888888",
     "secondaryGrayColor": "#E7E7E7",
+    "redDanger": "#FE3535",
     "pallete" : {
         "blue": {
             "primary": "#0050AC",

@@ -20,7 +20,6 @@ export default {
       screens: {
         extraSmall: "375px",
         small: "450px",
-        big: "1079px"
       },
     },
   },
