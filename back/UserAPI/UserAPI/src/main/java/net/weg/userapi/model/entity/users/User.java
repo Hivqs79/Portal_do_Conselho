@@ -2,7 +2,9 @@ package net.weg.userapi.model.entity.users;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import net.weg.userapi.model.entity.feedback.FeedbackUser;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,5 +25,8 @@ public abstract class User {
 
     @Column(nullable = true)
     private UUID imageKey;
+
+    @OneToMany(mappedBy = "user")
+    private List<FeedbackUser> feedbackUsers;
 
 }
