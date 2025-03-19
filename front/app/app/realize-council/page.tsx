@@ -1,6 +1,7 @@
 "use client";
 import AvaliationInputs from "@/components/council/AvaliationInputs";
 import CommentariesModal from "@/components/Modals/CommentariesModal";
+import ConfirmChanges from "@/components/Modals/ConfirmChanges";
 import StudentCouncilForm from "@/components/StudentCouncilForm";
 import TableHeader from "@/components/table/TableHeader";
 import Title from "@/components/Title";
@@ -52,6 +53,7 @@ export default function RealizeCouncil() {
 
   const [isModalTeacherOpen, setIsModalTeacherOpen] = useState(false);
   const [isModalStudentOpen, setIsModalStudentOpen] = useState(false);
+  const [isUniversalModalOpen, setIsUniversalModalOpen] = useState(true);
   const {
     constrastColor,
     backgroundColor,
@@ -207,7 +209,7 @@ export default function RealizeCouncil() {
   }
 
   function cancelCouncil() {
-    
+    setIsUniversalModalOpen(true);
   }
 
   function formatFinalCouncilJson(
@@ -217,7 +219,6 @@ export default function RealizeCouncil() {
     studentsData: { [key: string]: any },
     councilClassName: string
   ): any {
-    // Transforma o objeto studentsData em um array de alunos
     const studentsArray = Object.keys(studentsData).map((studentName) => {
       return {
         name: studentName,
@@ -228,7 +229,6 @@ export default function RealizeCouncil() {
       };
     });
 
-    // Formata os dados no formato desejado
     const formattedData = {
       "council-form": {
         class: {
@@ -237,7 +237,7 @@ export default function RealizeCouncil() {
           ClassnegativeContent: ClassnegativeContent,
           ClasspositiveContent: ClasspositiveContent,
         },
-        users: studentsArray, // Usa o array de alunos transformado
+        users: studentsArray,
       },
     };
 
@@ -266,6 +266,10 @@ export default function RealizeCouncil() {
     }
     return 0;
   }
+
+  const closeUniversalModal = () => {
+    setIsUniversalModalOpen(false);
+  };
 
   return (
     <Box>
@@ -371,6 +375,13 @@ export default function RealizeCouncil() {
             data ? data["council-form"].users[currentStudentIndex].name : ""
           }
           onClose={closeStudentModal}
+        />
+      )}
+      {isUniversalModalOpen && (
+        <ConfirmChanges
+          title="Cancelar Conselho"
+          description="Você tem certeza que deseja cancelar este conselho? Ao fazer isso ele voltará para a lista de conselhos a fazer e todo o progresso será perdido."
+          onClose={closeUniversalModal}
         />
       )}
     </Box>

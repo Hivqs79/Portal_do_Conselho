@@ -36,7 +36,6 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
     };
   }, []);
 
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -56,13 +55,20 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
   }, []);
 
   // Função para prevenir o comportamento padrão ao arrastar sobre a área
-  const handleDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  }, []);
+  const handleDragOver = useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+    },
+    []
+  );
 
   return (
-    <Box className="bg-black/60 fixed inset-0 flex justify-center items-center z-50">
+    <div
+      onClick={onClose}
+      className="bg-black/60 fixed inset-0 flex justify-center items-center z-50"
+    >
       <div
+        onClick={(e) => e.stopPropagation()}
         style={{ backgroundColor: backgroundColor }}
         className="p-5 rounded-lg w-full max-w-[800px] m-5"
       >
@@ -175,6 +181,6 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
           </Button>
         </Box>
       </div>
-    </Box>
+    </div>
   );
 }

@@ -46,8 +46,12 @@ export default function CommentariesModal({
 
   return (
     <>
-      <Box className="bg-black/60 fixed inset-0 flex justify-center items-center z-50">
-        <Box
+      <div
+        onClick={onClose}
+        className="bg-black/60 fixed inset-0 flex justify-center items-center z-50"
+      >
+        <div
+          onClick={(e) => e.stopPropagation()}
           style={{ backgroundColor: backgroundColor }}
           className="p-5 rounded-lg w-full max-w-[1000px] m-5"
         >
@@ -77,7 +81,7 @@ export default function CommentariesModal({
             <span className="flex rounded-big flex-col max-h-[550px] p-2 gap-5 overflow-y-scroll">
               {anotations.map((anotation: any, index: number) => (
                 <Anotation
-                  key={index} 
+                  key={index}
                   name={anotation.name}
                   rank={verifyRank(anotation.rank)}
                   positiveContent={anotation.positiveContent}
@@ -86,8 +90,8 @@ export default function CommentariesModal({
               ))}
             </span>
           </Box>
-        </Box>
-      </Box>
+        </div>
+      </div>
     </>
   );
 }
