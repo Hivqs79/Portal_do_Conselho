@@ -11,7 +11,6 @@ import AutoSaveIndicator from "./AutoSaveIndicator";
 import { useState, useEffect, useRef } from "react";
 import { Decryptor } from "@/encryption/Decryptor";
 import { Encryptor } from "@/encryption/Encryptor";
-import CommentariesModal from "./Modals/CommentariesModal";
 
 interface StudentCouncilFormProps {
   student: string;
@@ -19,6 +18,7 @@ interface StudentCouncilFormProps {
   rank: "excellent" | "good" | "average" | "critical" | "none";
   positiveContent: string;
   negativeContent: string;
+  imageKey: File | string | null;
   comments: string;
   onNext: () => void;
   onPrevious: () => void;
@@ -32,9 +32,10 @@ export default function StudentCouncilForm({
   positiveContent: initialPositiveContent,
   negativeContent: initialNegativeContent,
   comments,
+  imageKey,
   onNext,
   onPrevious,
-  openCommentsModal
+  openCommentsModal,
 }: StudentCouncilFormProps) {
   const [frequenciaAtualizada, setFrequenciaAtual] =
     useState(initialFrequencia);
@@ -62,7 +63,6 @@ export default function StudentCouncilForm({
   const [isDisable, setDisable] = useState(false);
   const isInitialMount = useRef(true);
 
-  // Carrega os dados do localStorage quando o student muda
   useEffect(() => {
     setFrequencia(initialFrequencia);
     setPositiveContent(initialPositiveContent);
@@ -86,7 +86,6 @@ export default function StudentCouncilForm({
     }
   }, [student]);
 
-  // Função para salvar no localStorage
   const saveToLocalStorage = () => {
     setDisable(true);
     setIsSaving(true);
@@ -111,7 +110,6 @@ export default function StudentCouncilForm({
     }, 1000);
   };
 
-  // Monitora alterações e salva após um tempo de inatividade
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
@@ -173,7 +171,11 @@ export default function StudentCouncilForm({
                 {student}
               </Typography>
             </div>
-            <Photo classname="lg:w-[250px] mx-auto" rounded={false} />
+            <Photo
+              classname="lg:w-[250px] mx-auto"
+              photo={imageKey}
+              rounded={false}
+            />
             <span className="flex flex-col justify-center items-center gap-4 w-full">
               <span className="flex justify-between w-full items-center flex-wrap gap-y-4 gap-x-4">
                 <Typography variant="lg_text_bold" color={colorByModeSecondary}>

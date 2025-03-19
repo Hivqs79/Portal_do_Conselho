@@ -13,26 +13,21 @@ import { useState, useEffect } from "react";
 
 type UserComment = {
   name: string;
-  rank?: string;
+  rank: string;
   positiveContent: string;
   negativeContent: string;
 };
 
 type User = {
   name: string;
-  frequencia: number;
+  frequencia?: number;
   imageKey: string;
-  negativeContent: string;
-  positiveContent: string;
-  rank: string;
+  rank?: string;
   comments: UserComment[];
 };
 
 type CouncilClass = {
   name: string;
-  positiveContent: string;
-  negativeContent: string;
-  rank: string;
   teacherAnotations: TeacherAnnotation[];
 };
 
@@ -57,6 +52,13 @@ export default function RealizeCouncil() {
 
   const [isModalTeacherOpen, setIsModalTeacherOpen] = useState(false);
   const [isModalStudentOpen, setIsModalStudentOpen] = useState(false);
+  const {
+    constrastColor,
+    backgroundColor,
+    primaryColor,
+    whiteColor,
+    textBlackolor,
+  } = useThemeContext();
 
   useEffect(() => {
     const fetchCouncilContent = async () => {
@@ -128,9 +130,6 @@ export default function RealizeCouncil() {
     }
   };
 
-  const { constrastColor, backgroundColor, primaryColor, whiteColor } =
-    useThemeContext();
-
   const openTeacherModal = () => {
     setIsModalTeacherOpen(true);
   };
@@ -146,6 +145,127 @@ export default function RealizeCouncil() {
   const closeStudentModal = () => {
     setIsModalStudentOpen(false);
   };
+
+  function finalizeCouncil() {
+    const ClassRank = getDecryptedData("rank");
+    const ClassnegativeContent = getDecryptedData("negativeContent");
+    const ClasspositiveContent = getDecryptedData("positiveContent");
+
+    let studentsData: { [key: string]: any } = {};
+    let councilClassName: string = "";
+
+    const savedData = localStorage.getItem("studentsData");
+    if (savedData) {
+      const decryptedData = Decryptor(savedData);
+      if (decryptedData) {
+        studentsData = decryptedData;
+      } else {
+        studentsData = [];
+      }
+    }
+
+    if (data) {
+      councilClassName = data["council-form"].class.name;
+      if (
+        ClassRank === "none" ||
+        ClassnegativeContent === "" ||
+        ClasspositiveContent === ""
+      ) {
+        console.log("Você deve preencher todos os campos da turma!");
+        return;
+      }
+
+      for (let i = 0; i < data["council-form"].users.length; i++) {
+        const userName = data["council-form"].users[i].name;
+        if (studentsData[userName] === undefined) {
+          console.log("Você deve preencer o aluno: ", userName);
+          return;
+        } else if (
+          studentsData[userName].frequencia === 0 ||
+          studentsData[userName].rank === "none" ||
+          studentsData[userName].positiveContent === "" ||
+          studentsData[userName].negativeContent === ""
+        ) {
+          console.log("Aluno incompleto: ", userName);
+          return;
+        }
+      }
+      console.log("Conselho finalizado com sucesso!");
+      console.log("data: ", data);
+      console.log(
+        "Final json: ",
+        formatFinalCouncilJson(
+          ClassRank,
+          ClassnegativeContent,
+          ClasspositiveContent,
+          studentsData,
+          councilClassName
+        )
+      );
+      return;
+    }
+  }
+
+  function cancelCouncil() {
+    
+  }
+
+  function formatFinalCouncilJson(
+    ClassRank: string,
+    ClassnegativeContent: string,
+    ClasspositiveContent: string,
+    studentsData: { [key: string]: any },
+    councilClassName: string
+  ): any {
+    // Transforma o objeto studentsData em um array de alunos
+    const studentsArray = Object.keys(studentsData).map((studentName) => {
+      return {
+        name: studentName,
+        frequencia: studentsData[studentName].frequencia,
+        rank: studentsData[studentName].rank,
+        positiveContent: studentsData[studentName].positiveContent,
+        negativeContent: studentsData[studentName].negativeContent,
+      };
+    });
+
+    // Formata os dados no formato desejado
+    const formattedData = {
+      "council-form": {
+        class: {
+          name: councilClassName,
+          ClassRank: ClassRank,
+          ClassnegativeContent: ClassnegativeContent,
+          ClasspositiveContent: ClasspositiveContent,
+        },
+        users: studentsArray, // Usa o array de alunos transformado
+      },
+    };
+
+    return formattedData;
+  }
+
+  function verifyRank() {
+    if (data) {
+      const rank = data["council-form"].users[currentStudentIndex].rank;
+      if (rank === undefined || rank === null) {
+        return "none";
+      }
+      return rank as "none" | "average" | "excellent" | "good" | "critical";
+    }
+    return "none";
+  }
+
+  function verifyFrequency() {
+    if (data) {
+      const frequency =
+        data["council-form"].users[currentStudentIndex].frequencia;
+      if (frequency === undefined || frequency === null) {
+        return 0;
+      }
+      return frequency;
+    }
+    return 0;
+  }
 
   return (
     <Box>
@@ -193,39 +313,44 @@ export default function RealizeCouncil() {
                     ? data["council-form"].users[currentStudentIndex].name
                     : ""
                 }
-                frequencia={
-                  data
-                    ? data["council-form"].users[currentStudentIndex].frequencia
-                    : 0
-                }
+                frequencia={verifyFrequency()}
                 comments=""
                 negativeContent={negativeContent}
                 positiveContent={positiveContent}
-                rank={
-                  data
-                    ? (data["council-form"].users[currentStudentIndex].rank as
-                        | "none"
-                        | "average"
-                        | "excellent"
-                        | "good"
-                        | "critical")
-                    : "none"
-                }
+                rank={verifyRank()}
                 onNext={handleNextStudent}
                 onPrevious={handlePreviousStudent}
                 openCommentsModal={openStudentModal}
+                imageKey={
+                  data
+                    ? data["council-form"].users[currentStudentIndex].imageKey
+                    : ""
+                }
               />
             </div>
           </Box>
-          <Button
-            className="w-full !mt-5 !rounded-normal"
-            variant="contained"
-            color="primary"
-          >
-            <Typography variant="lg_text_bold" color={whiteColor}>
-              Terminar Conselho
-            </Typography>
-          </Button>
+          <Box className="flex gap-10">
+            <Button
+              className="w-full !mt-5 !rounded-normal"
+              variant="contained"
+              color="terciary"
+              onClick={() => cancelCouncil()}
+            >
+              <Typography variant="lg_text_bold" color={textBlackolor}>
+                Cancelar Conselho
+              </Typography>
+            </Button>
+            <Button
+              className="w-full !mt-5 !rounded-normal"
+              variant="contained"
+              color="primary"
+              onClick={() => finalizeCouncil()}
+            >
+              <Typography variant="lg_text_bold" color={whiteColor}>
+                Terminar Conselho
+              </Typography>
+            </Button>
+          </Box>
         </Box>
       </Box>
       {isModalTeacherOpen && (
