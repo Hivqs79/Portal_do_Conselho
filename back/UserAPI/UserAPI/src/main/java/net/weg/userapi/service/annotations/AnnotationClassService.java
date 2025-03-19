@@ -32,8 +32,8 @@ public class AnnotationClassService {
     public void configureModelMapper() {
         modelMapper.createTypeMap(AnnotationClass.class, AnnotationClassResponseDTO.class)
                 .addMappings(mapper -> {
-                    mapper.map(src -> src.getTeacher(), AnnotationClassResponseDTO::setTeacherResponseDTO);
-                    mapper.map(src -> src.getAClass(), AnnotationClassResponseDTO::setClassResponseDTO);
+                    mapper.map(src -> src.getTeacher(), AnnotationClassResponseDTO::setTeacher);
+                    mapper.map(src -> src.getAClass(), AnnotationClassResponseDTO::setAClass);
                 });
     }
 
