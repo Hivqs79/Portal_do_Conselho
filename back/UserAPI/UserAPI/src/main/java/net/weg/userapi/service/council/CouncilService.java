@@ -3,6 +3,7 @@ package net.weg.userapi.service.council;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.model.dto.request.council.CouncilRequestDTO;
 import net.weg.userapi.model.dto.response.council.CouncilResponseDTO;
+import net.weg.userapi.model.entity.annotation.Annotation;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.repository.CouncilRepository;
 import net.weg.userapi.service.ClassService;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -21,7 +24,6 @@ public class CouncilService {
     private CouncilRepository repository;
     private ModelMapper modelMapper;
     private ClassService classService;
-    private TeacherService teacherService;
 
     public CouncilResponseDTO createCouncil(CouncilRequestDTO councilRequestDTO) {
         Council council = modelMapper.map(councilRequestDTO, Council.class);
@@ -36,12 +38,12 @@ public class CouncilService {
     }
 
     public CouncilResponseDTO findCouncil(Integer id) {
-        Council council = findAnnotationEntity(id);
+        Council council = findCouncilEntity(id);
 
         return modelMapper.map(council, CouncilResponseDTO.class);
     }
 
-    public Council findAnnotationEntity(Integer id) {
+    public Council findCouncilEntity(Integer id) {
         return repository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
@@ -52,7 +54,7 @@ public class CouncilService {
     }
 
     public CouncilResponseDTO updateCouncil(CouncilRequestDTO councilRequestDTO, Integer id) {
-        Council council = findAnnotationEntity(id);
+        Council council = findCouncilEntity(id);
         modelMapper.map(councilRequestDTO, council);
 
         //council.setTeacher(teacherService.findTeacherEntity(councilRequestDTO.getTeacher_id()));
@@ -63,10 +65,16 @@ public class CouncilService {
     }
 
     public CouncilResponseDTO deleteCouncil(Integer id) {
-        Council council = findAnnotationEntity(id);
+        Council council = findCouncilEntity(id);
         CouncilResponseDTO councilResponseDTO = modelMapper.map(council, CouncilResponseDTO.class);
         repository.delete(council);
         return councilResponseDTO;
+    }
+
+    public List<Annotation> getAllAnnotations(Integer id) {
+        Council council = findCouncilEntity(id);
+
+        return council.getAnnotations();
     }
 
 

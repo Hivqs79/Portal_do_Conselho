@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.entity.Class;
+import net.weg.userapi.model.entity.annotation.Annotation;
+import net.weg.userapi.model.entity.preCouncil.PreCouncil;
 import net.weg.userapi.model.entity.users.Teacher;
 
 import java.time.LocalDate;
@@ -22,13 +24,16 @@ public class Council {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer council;
+    private Integer id;
 
     private LocalDate date;
     private LocalTime time;
 
     @ManyToOne
     private Class aClass;
+
+    @OneToMany(mappedBy = "council")
+    private List<Annotation> annotations;
 
     @ManyToMany
     @JoinTable(
@@ -37,5 +42,8 @@ public class Council {
             inverseJoinColumns = @JoinColumn(name = "teacher_id")
     )
     private List<Teacher> teachers;
+
+    @OneToOne(mappedBy = "council")
+    private PreCouncil preCouncil;
 
 }
