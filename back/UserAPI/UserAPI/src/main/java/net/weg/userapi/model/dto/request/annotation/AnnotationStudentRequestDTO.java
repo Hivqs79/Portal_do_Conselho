@@ -19,5 +19,7 @@ public class AnnotationStudentRequestDTO {
     @NotNull
     private Integer teacher_id;
     @NotNull
+    private Integer council_id;
+    @NotNull
     private Integer student_id;
 }

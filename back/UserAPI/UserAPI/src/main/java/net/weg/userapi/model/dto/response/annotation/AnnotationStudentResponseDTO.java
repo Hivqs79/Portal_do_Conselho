@@ -16,7 +16,7 @@ public class AnnotationStudentResponseDTO {
     private String rank;
     private String strengths;
     private String toImprove;
-    private TeacherResponseDTO teacherResponseDTO;
-    private StudentResponseDTO studentResponseDTO;
     private OffsetDateTime releaseDate;
+    private TeacherResponseDTO teacher;
+    private StudentResponseDTO student;
 }

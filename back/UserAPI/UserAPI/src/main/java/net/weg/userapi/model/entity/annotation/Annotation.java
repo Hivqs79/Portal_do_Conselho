@@ -2,6 +2,7 @@ package net.weg.userapi.model.entity.annotation;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.model.entity.users.Teacher;
 
 import java.time.OffsetDateTime;
@@ -23,6 +24,9 @@ public abstract class Annotation {
     private String toImprove;
     @Column(nullable = false)
     private OffsetDateTime releaseDate;
+
+    @ManyToOne
+    private Council council;
 
     @ManyToOne
     private Teacher teacher;

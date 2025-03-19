@@ -4,9 +4,11 @@ import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.model.dto.request.annotation.AnnotationClassRequestDTO;
 import net.weg.userapi.model.dto.response.annotation.AnnotationClassResponseDTO;
+import net.weg.userapi.model.dto.response.annotation.AnnotationStudentResponseDTO;
 import net.weg.userapi.model.entity.annotation.AnnotationClass;
 import net.weg.userapi.repository.AnnotationClassRepository;
 import net.weg.userapi.service.ClassService;
+import net.weg.userapi.service.council.CouncilService;
 import net.weg.userapi.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ public class AnnotationClassService {
     private AnnotationClassRepository repository;
     private ClassService classService;
     private TeacherService teacherService;
+    private CouncilService councilService;
     private ModelMapper modelMapper;
 
     @PostConstruct
@@ -39,7 +42,8 @@ public class AnnotationClassService {
 
         annotationClass.setAClass(classService.findClassEntity(annotationClassRequestDTO.getClass_id())); //SETAR CLASSE
         annotationClass.setTeacher(teacherService.findTeacherEntity(annotationClassRequestDTO.getTeacher_id())); //SETAR PROFESSOR
-        annotationClass.setReleaseDate(OffsetDateTime.now()); //SETAR PROFESSOR
+        annotationClass.setCouncil(councilService.findCouncilEntity(annotationClassRequestDTO.getCouncil_id())); //SETAR CONSELHO
+        annotationClass.setReleaseDate(OffsetDateTime.now()); //SETAR HORARIO
 
         AnnotationClass annotationSaved = repository.save(annotationClass);
 
