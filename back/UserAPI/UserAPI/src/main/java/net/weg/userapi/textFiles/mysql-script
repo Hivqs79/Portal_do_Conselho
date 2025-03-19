@@ -1,0 +1,28 @@
+drop database userapi_db;
+use userapi_db;
+
+show tables;
+
+describe user;
+describe admin;
+describe pedagogic;
+describe student;
+describe teacher;
+
+select * from user;
+select * from admin;
+select * from pedagogic;
+select * from student;
+select * from teacher;
+
+select * from class;
+
+set sql_safe_updates = 0;
+
+delete from user;
+delete from admin;
+delete from pedagogic;
+delete from student;
+delete from teacher;
+
+delete from class;
