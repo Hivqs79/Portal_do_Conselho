@@ -42,7 +42,7 @@ export default function ConfirmChanges({
     if (event.key === "Escape") {
       onClose();
     }
-    if (event.key === "Enter" && inputRef.current?.value === spanValue) {
+    if (event.key === "Enter") {
       const result = handleConfirmClick();
       if (result) {
         console.log("oi: ", result);
