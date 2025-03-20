@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.model.dto.request.feedback.FeedbackClassRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackClassResponseDTO;
+import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.model.entity.feedback.FeedbackClass;
 import net.weg.userapi.repository.FeedbackClassRepository;
 import net.weg.userapi.service.ClassService;
@@ -25,20 +26,13 @@ public class FeedbackClassService {
     private CouncilService councilService;
     private ModelMapper modelMapper;
 
-    @PostConstruct
-    public void configureModelMapper() {
-        modelMapper.createTypeMap(FeedbackClass.class, FeedbackClassResponseDTO.class)
-                .addMappings(mapper -> {
-                    mapper.map(src -> src.getAClass(), FeedbackClassResponseDTO::setAClass);
-                    mapper.map(src -> src.getCouncil(), FeedbackClassResponseDTO::setCouncil);
-                });
-    }
-
     public FeedbackClassResponseDTO createFeedbackClass(FeedbackClassRequestDTO feedbackClassRequestDTO) {
         FeedbackClass feedbackClass = modelMapper.map(feedbackClassRequestDTO, FeedbackClass.class);
 
-        feedbackClass.setAClass(classService.findClassEntity(feedbackClassRequestDTO.getClass_id())); //SETAR CLASSE
-        feedbackClass.setCouncil(councilService.findCouncilEntity(feedbackClassRequestDTO.getCouncil_id())); //SETAR CONSELHO
+        Council council = councilService.findCouncilEntity(feedbackClassRequestDTO.getCouncil_id());
+
+        feedbackClass.setAClass(council.getAClass());
+        feedbackClass.setCouncil(council); //SETAR CONSELHO
 
         FeedbackClass feedbackSaved = repository.save(feedbackClass);
 
@@ -65,7 +59,10 @@ public class FeedbackClassService {
         FeedbackClass feedbackClass = findFeedbackEntity(id);
         modelMapper.map(feedbackClassRequestDTO, feedbackClass);
 
-        feedbackClass.setAClass(classService.findClassEntity(feedbackClassRequestDTO.getClass_id()));
+        Council council = councilService.findCouncilEntity(feedbackClassRequestDTO.getCouncil_id());
+
+        feedbackClass.setAClass(council.getAClass());
+        feedbackClass.setCouncil(council); //SETAR CONSELHO
 
         FeedbackClass updatedFeedbackClass = repository.save(feedbackClass);
         return modelMapper.map(updatedFeedbackClass, FeedbackClassResponseDTO.class);

@@ -28,15 +28,6 @@ public class AnnotationStudentService {
 
     private ModelMapper modelMapper;
 
-    @PostConstruct
-    public void configureModelMapper() {
-        modelMapper.createTypeMap(AnnotationStudent.class, AnnotationStudentResponseDTO.class)
-                .addMappings(mapper -> {
-                    mapper.map(src -> src.getTeacher(), AnnotationStudentResponseDTO::setTeacher);
-                    mapper.map(src -> src.getStudent(), AnnotationStudentResponseDTO::setStudent);
-                });
-    }
-
     public AnnotationStudentResponseDTO createAnnotationStudent(AnnotationStudentRequestDTO annotationStudentRequestDTO) {
         AnnotationStudent annotationStudent = modelMapper.map(annotationStudentRequestDTO, AnnotationStudent.class);
 

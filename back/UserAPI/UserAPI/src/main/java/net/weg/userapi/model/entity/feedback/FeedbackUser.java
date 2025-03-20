@@ -19,6 +19,4 @@ public class FeedbackUser extends Feedback {
     @ManyToOne
     private User user;
 
-    @Column(nullable = false)
-    private Double frequency;
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.entity.Class;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +28,8 @@ public class StudentRequestDTO {
 
     @NotNull
     private Boolean isRepresentant;
+
+    private Double frequency;
 
     //Podem ser nulo
 

@@ -20,6 +20,5 @@ public class AnnotationClassRequestDTO {
     private Integer teacher_id;
     @NotNull
     private Integer council_id;
-    @NotNull
-    private Integer class_id;
+
 }

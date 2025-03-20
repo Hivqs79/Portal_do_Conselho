@@ -19,7 +19,6 @@ public class FeedbackClassRequestDTO {
     private String strengths;
     @NotBlank
     private String toImprove;
-    @NotNull
-    private Integer class_id;
+
 
 }

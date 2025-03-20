@@ -6,6 +6,7 @@ import net.weg.userapi.model.dto.request.annotation.AnnotationClassRequestDTO;
 import net.weg.userapi.model.dto.response.annotation.AnnotationClassResponseDTO;
 import net.weg.userapi.model.dto.response.annotation.AnnotationStudentResponseDTO;
 import net.weg.userapi.model.entity.annotation.AnnotationClass;
+import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.repository.AnnotationClassRepository;
 import net.weg.userapi.service.ClassService;
 import net.weg.userapi.service.council.CouncilService;
@@ -28,21 +29,13 @@ public class AnnotationClassService {
     private CouncilService councilService;
     private ModelMapper modelMapper;
 
-    @PostConstruct
-    public void configureModelMapper() {
-        modelMapper.createTypeMap(AnnotationClass.class, AnnotationClassResponseDTO.class)
-                .addMappings(mapper -> {
-                    mapper.map(src -> src.getTeacher(), AnnotationClassResponseDTO::setTeacher);
-                    mapper.map(src -> src.getAClass(), AnnotationClassResponseDTO::setAClass);
-                });
-    }
-
     public AnnotationClassResponseDTO createAnnotationClass(AnnotationClassRequestDTO annotationClassRequestDTO) {
         AnnotationClass annotationClass = modelMapper.map(annotationClassRequestDTO, AnnotationClass.class);
 
-        annotationClass.setAClass(classService.findClassEntity(annotationClassRequestDTO.getClass_id())); //SETAR CLASSE
+        Council council = councilService.findCouncilEntity(annotationClassRequestDTO.getCouncil_id());
+
         annotationClass.setTeacher(teacherService.findTeacherEntity(annotationClassRequestDTO.getTeacher_id())); //SETAR PROFESSOR
-        annotationClass.setCouncil(councilService.findCouncilEntity(annotationClassRequestDTO.getCouncil_id())); //SETAR CONSELHO
+        annotationClass.setCouncil(council); //SETAR CONSELHO
         annotationClass.setReleaseDate(OffsetDateTime.now()); //SETAR HORARIO
 
         AnnotationClass annotationSaved = repository.save(annotationClass);
@@ -70,8 +63,10 @@ public class AnnotationClassService {
         AnnotationClass annotationClass = findAnnotationEntity(id);
         modelMapper.map(annotationClassRequestDTO, annotationClass);
 
-        annotationClass.setTeacher(teacherService.findTeacherEntity(annotationClassRequestDTO.getTeacher_id()));
-        annotationClass.setAClass(classService.findClassEntity(annotationClassRequestDTO.getClass_id()));
+        Council council = councilService.findCouncilEntity(annotationClassRequestDTO.getCouncil_id());
+
+        annotationClass.setTeacher(teacherService.findTeacherEntity(annotationClassRequestDTO.getTeacher_id())); //SETAR PROFESSOR
+        annotationClass.setCouncil(council); //SETAR CONSELHO
 
         AnnotationClass updatedAnnotationClass = repository.save(annotationClass);
         return modelMapper.map(updatedAnnotationClass, AnnotationClassResponseDTO.class);

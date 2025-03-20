@@ -16,6 +16,7 @@ public class StudentResponseDTO {
     private String name;
     private String email;
     private Boolean isRepresentant;
+    private Double frequency;
     private UUID imageKey;
     private List<ClassResponseDTO> classes;
 }

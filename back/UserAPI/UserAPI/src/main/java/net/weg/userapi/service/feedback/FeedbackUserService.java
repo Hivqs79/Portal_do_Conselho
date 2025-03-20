@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.model.dto.request.feedback.FeedbackUserRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
+import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.model.entity.feedback.FeedbackUser;
 import net.weg.userapi.repository.FeedbackUserRepository;
 import net.weg.userapi.service.ClassService;
@@ -25,20 +26,13 @@ public class FeedbackUserService {
     private CouncilService councilService;
     private ModelMapper modelMapper;
 
-    @PostConstruct
-    public void configureModelMapper() {
-        modelMapper.createTypeMap(FeedbackUser.class, FeedbackUserResponseDTO.class)
-                .addMappings(mapper -> {
-                    mapper.map(src -> src.getUser(), FeedbackUserResponseDTO::setUser);
-                    mapper.map(src -> src.getCouncil(), FeedbackUserResponseDTO::setCouncil);
-                });
-    }
-
     public FeedbackUserResponseDTO createFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO) {
         FeedbackUser feedbackUser = modelMapper.map(feedbackUserRequestDTO, FeedbackUser.class);
 
-        feedbackUser.setUser(userService.findUserEntity(feedbackUserRequestDTO.getUser_id())); //SETAR CLASSE
-        feedbackUser.setCouncil(councilService.findCouncilEntity(feedbackUserRequestDTO.getCouncil_id())); //SETAR CONSELHO
+        Council council = councilService.findCouncilEntity(feedbackUserRequestDTO.getCouncil_id());
+
+        feedbackUser.setUser(userService.findUserEntity(feedbackUserRequestDTO.getUser_id())); //SETAR USUARIO
+        feedbackUser.setCouncil(council); //SETAR CONSELHO
 
         FeedbackUser feedbackSaved = repository.save(feedbackUser);
 

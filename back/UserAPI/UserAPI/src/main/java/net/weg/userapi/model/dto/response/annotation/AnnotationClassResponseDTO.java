@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.dto.response.ClassResponseDTO;
+import net.weg.userapi.model.dto.response.council.CouncilResponseDTO;
 import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
 
 import java.time.OffsetDateTime;
@@ -18,5 +19,5 @@ public class AnnotationClassResponseDTO {
     private String toImprove;
     private OffsetDateTime releaseDate;
     private TeacherResponseDTO teacher;
-    private ClassResponseDTO aClass;
+    private CouncilResponseDTO council;
 }

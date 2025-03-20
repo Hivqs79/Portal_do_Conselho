@@ -26,6 +26,5 @@ public class FeedbackUserRequestDTO {
     private String toImprove;
     @NotNull
     private Integer user_id;
-    @NotNull
-    private Double frequency;
+
 }

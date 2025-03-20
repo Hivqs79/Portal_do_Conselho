@@ -3,6 +3,7 @@ package net.weg.userapi.model.dto.response.annotation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.weg.userapi.model.dto.response.council.CouncilResponseDTO;
 import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
 import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
 
@@ -19,4 +20,6 @@ public class AnnotationStudentResponseDTO {
     private OffsetDateTime releaseDate;
     private TeacherResponseDTO teacher;
     private StudentResponseDTO student;
+    private CouncilResponseDTO council;
+
 }
