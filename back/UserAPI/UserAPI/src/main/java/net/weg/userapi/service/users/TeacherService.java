@@ -5,6 +5,7 @@ import net.weg.userapi.exception.exceptions.UserNotFoundException;
 import net.weg.userapi.model.dto.request.users.TeacherRequestDTO;
 import net.weg.userapi.model.dto.response.ClassResponseDTO;
 import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
+import net.weg.userapi.model.entity.Class;
 import net.weg.userapi.model.entity.users.Teacher;
 import net.weg.userapi.repository.TeacherRepository;
 import net.weg.userapi.service.ClassService;
@@ -72,7 +73,7 @@ public class TeacherService {
         return teacher.getClasses().stream().map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class)).collect(Collectors.toList());
     }
 
-    public void mockarTeacher (List<TeacherRequestDTO> teacherRequestDTOS) {
+    public void mockarTeacher(List<TeacherRequestDTO> teacherRequestDTOS) {
         List<Teacher> teacher = teacherRequestDTOS.stream().map(teacherRequestDTO -> modelMapper.map(teacherRequestDTO, Teacher.class)).collect(Collectors.toList());
         repository.saveAll(teacher);
     }
@@ -81,4 +82,33 @@ public class TeacherService {
         return repository.findAllById(teachers_id);
     }
 
+    public TeacherResponseDTO addTeacherClasss(Integer id, List<Integer> classesId) {
+        Teacher teacher = findTeacherEntity(id);
+        List<Class> classes = teacher.getClasses();
+
+        classesId.forEach(integer -> {
+            Class aClass = classService.findClassEntity(integer);
+            if (!classes.contains(aClass)) {
+                classes.add(aClass);
+            }
+        });
+        teacher.setClasses(classes);
+        repository.save(teacher);
+
+        return modelMapper.map(teacher, TeacherResponseDTO.class);
+    }
+
+    public TeacherResponseDTO removeTeacherClasss(Integer id, List<Integer> classesId) {
+        Teacher teacher = findTeacherEntity(id);
+        List<Class> classes = teacher.getClasses();
+
+        classesId.forEach(integer -> {
+            Class aClass = classService.findClassEntity(integer);
+            classes.remove(aClass);
+        });
+        teacher.setClasses(classes);
+        repository.save(teacher);
+
+        return modelMapper.map(teacher, TeacherResponseDTO.class);
+    }
 }

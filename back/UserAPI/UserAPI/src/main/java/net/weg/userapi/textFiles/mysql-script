@@ -4,58 +4,87 @@ use userapi_db;
 show tables;
 
 -- DESCRIBE
-describe user;
-describe admin;
-describe pedagogic;
-describe student;
-describe teacher;
+DESCRIBE user;
+DESCRIBE admin;
+DESCRIBE teacher;
+DESCRIBE student;
+DESCRIBE pedagogic;
 
-describe class;
-describe teacher_class;
-describe student_class;
+DESCRIBE class;
+DESCRIBE student_class;
+DESCRIBE teacher_class;
 
-describe annotation;
-describe annotation_student;
-describe annotation_class;
+DESCRIBE annotation;
+DESCRIBE annotation_class;
+DESCRIBE annotation_student;
 
-describe council;
-describe council_teacher;
+DESCRIBE feedback;
+DESCRIBE feedback_class;
+DESCRIBE feedback_user;
 
--- SELECT * FROM
-select * from user;
-select * from admin;
-select * from pedagogic;
-select * from student;
-select * from teacher;
+DESCRIBE council;
+DESCRIBE council_teacher;
 
-select * from class;
-select * from teacher_class;
-select * from student_class;
+DESCRIBE pre_council;
+DESCRIBE pre_council_section;
 
-select * from annotation;
-select * from annotation_student;
-select * from annotation_class;
+-- SELECT
+SELECT * FROM user;
+SELECT * FROM admin;
+SELECT * FROM teacher;
+SELECT * FROM student;
+SELECT * FROM pedagogic;
 
-select * from council;
-select * from council_teacher;
+SELECT * FROM class;
+SELECT * FROM student_class;
+SELECT * FROM teacher_class;
 
--- DELETE FROM
-set sql_safe_updates = 0;
+SELECT * FROM annotation;
+SELECT * FROM annotation_class;
+SELECT * FROM annotation_student;
 
-delete from user;
-delete from admin;
-delete from pedagogic;
-delete from student;
-delete from teacher;
+SELECT * FROM feedback;
+SELECT * FROM feedback_class;
+SELECT * FROM feedback_user;
 
-delete from class;
-delete from teacher_class;
-delete from student_class;
+SELECT * FROM council;
+SELECT * FROM council_teacher;
 
-delete from annotation;
-delete from annotation_student;
-delete from annotation_class;
+SELECT * FROM pre_council;
+SELECT * FROM pre_council_section;
 
-delete from council;
-delete from council_teacher;
+DELIMITER //
 
+CREATE PROCEDURE DeleteAllRecords()
+BEGIN
+    -- Desabilitar chaves estrangeiras temporariamente
+    SET FOREIGN_KEY_CHECKS = 0;
+	set sql_safe_updates = 0;
+    -- Apagar registros de cada tabela
+    DELETE FROM admin;
+    DELETE FROM annotation;
+    DELETE FROM annotation_class;
+    DELETE FROM annotation_student;
+    DELETE FROM class;
+    DELETE FROM council;
+    DELETE FROM council_teacher;
+    DELETE FROM feedback;
+    DELETE FROM feedback_class;
+    DELETE FROM feedback_user;
+    DELETE FROM pedagogic;
+    DELETE FROM pre_council;
+    DELETE FROM pre_council_section;
+    DELETE FROM student;
+    DELETE FROM student_class;
+    DELETE FROM teacher;
+    DELETE FROM teacher_class;
+    DELETE FROM user;
+
+    -- Reabilitar chaves estrangeiras
+    SET FOREIGN_KEY_CHECKS = 1;
+END //
+
+DELIMITER ;
+
+-- Para executar o procedimento e apagar todos os registros
+CALL DeleteAllRecords();

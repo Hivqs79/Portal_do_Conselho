@@ -6,7 +6,10 @@ import lombok.AllArgsConstructor;
 import net.weg.userapi.model.KafkaMessage;
 import net.weg.userapi.model.dto.request.users.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
+import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
+import net.weg.userapi.model.entity.Class;
 import net.weg.userapi.model.entity.users.Student;
+import net.weg.userapi.model.entity.users.Teacher;
 import net.weg.userapi.repository.StudentRepository;
 import net.weg.userapi.service.ClassService;
 import net.weg.userapi.service.KafkaProducerService;
@@ -92,4 +95,33 @@ public class StudentService {
         }
     }
 
+    public StudentResponseDTO addStudentClasss(Integer id, List<Integer> classesId) {
+        Student student = findStudentEntity(id);
+        List<Class> classes = student.getClasses();
+
+        classesId.forEach(integer -> {
+            Class aClass = classService.findClassEntity(integer);
+            if (!classes.contains(aClass)) {
+                classes.add(aClass);
+            }
+        });
+        student.setClasses(classes);
+        repository.save(student);
+
+        return modelMapper.map(student, StudentResponseDTO.class);
+    }
+
+    public StudentResponseDTO removeStudentClasss(Integer id, List<Integer> classesId) {
+        Student student = findStudentEntity(id);
+        List<Class> classes = student.getClasses();
+
+        classesId.forEach(integer -> {
+            Class aClass = classService.findClassEntity(integer);
+            classes.remove(aClass);
+        });
+        student.setClasses(classes);
+        repository.save(student);
+
+        return modelMapper.map(student, StudentResponseDTO.class);
+    }
 }

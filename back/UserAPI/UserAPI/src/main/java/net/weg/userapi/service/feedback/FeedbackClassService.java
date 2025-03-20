@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import net.weg.userapi.model.dto.request.feedback.FeedbackClassRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackClassResponseDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
+import net.weg.userapi.model.entity.Class;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.model.entity.feedback.FeedbackClass;
 import net.weg.userapi.repository.FeedbackClassRepository;
@@ -78,4 +79,14 @@ public class FeedbackClassService {
     }
 
 
+    public List<FeedbackClassResponseDTO> getFeedbackClassByClassId(Integer id) {
+        Class aClass = classService.findClassEntity(id);
+        System.out.println(aClass.toString());
+
+        List<FeedbackClass> list = repository.findAll();
+        System.out.println(list.getFirst());
+        System.out.println(list.getFirst().getCouncil());
+
+        return new ArrayList<>();
+    }
 }

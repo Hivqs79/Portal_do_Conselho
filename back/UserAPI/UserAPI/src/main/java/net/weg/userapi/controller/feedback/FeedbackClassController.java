@@ -46,12 +46,11 @@ public class FeedbackClassController {
     public ResponseEntity<Page<FeedbackClassResponseDTO>> getAllFeedbackClass(Pageable pageable) {
         return new ResponseEntity<>(service.pageFeedbackClass(pageable), HttpStatus.OK);
     }
-    /*
+
     @GetMapping("/find/{id}")
     public ResponseEntity<List<FeedbackClassResponseDTO>> getAllFeedbackClassByClass(Integer id) {
         return new ResponseEntity<>(service.getFeedbackClassByClassId(id), HttpStatus.OK);
     }
 
-     */
     
 }
