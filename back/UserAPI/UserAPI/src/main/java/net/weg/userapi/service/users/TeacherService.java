@@ -5,8 +5,10 @@ import net.weg.userapi.exception.exceptions.UserNotFoundException;
 import net.weg.userapi.model.dto.request.users.TeacherRequestDTO;
 import net.weg.userapi.model.dto.response.ClassResponseDTO;
 import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
+import net.weg.userapi.model.entity.Class;
 import net.weg.userapi.model.entity.users.Teacher;
 import net.weg.userapi.repository.TeacherRepository;
+import net.weg.userapi.service.ClassService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class TeacherService {
 
     private TeacherRepository repository;
+    private ClassService classService;
     private ModelMapper modelMapper;
 
     public TeacherResponseDTO createTeacher(TeacherRequestDTO teacherRequestDTO) {
@@ -67,5 +70,25 @@ public class TeacherService {
     public void mockarTeacher (List<TeacherRequestDTO> teacherRequestDTOS) {
         List<Teacher> teacher = teacherRequestDTOS.stream().map(teacherRequestDTO -> modelMapper.map(teacherRequestDTO, Teacher.class)).collect(Collectors.toList());
         repository.saveAll(teacher);
+    }
+
+    public TeacherResponseDTO addClassToTeacher(Integer id, Integer idClass) {
+        Teacher teacher = this.findTeacherEntity(id);
+        List<Class> classes = teacher.getClasses();
+        Class newClass = classService.findClassEntity(idClass);
+        classes.add(newClass);
+        teacher.setClasses(classes);
+        teacher = repository.save(teacher);
+        return modelMapper.map(teacher, TeacherResponseDTO.class);
+    }
+
+    public TeacherResponseDTO removeClassToTeacher(Integer id, Integer idClass) {
+        Teacher teacher = this.findTeacherEntity(id);
+        List<Class> classes = teacher.getClasses();
+        Class removedClass = classService.findClassEntity(idClass);
+        classes.remove(removedClass);
+        teacher.setClasses(classes);
+        teacher = repository.save(teacher);
+        return modelMapper.map(teacher, TeacherResponseDTO.class);
     }
 }

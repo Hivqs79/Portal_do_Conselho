@@ -31,9 +31,14 @@ public class TeacherController {
         return new ResponseEntity<>(service.updateTeacher(teacherRequestDTO, id), HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<TeacherResponseDTO> patchTeacherClass(@RequestBody @Validated TeacherRequestDTO teacherRequestDTO, @PathVariable Integer id) {
-        return new ResponseEntity<>(service.updateTeacher(teacherRequestDTO, id), HttpStatus.OK);
+    @PatchMapping("/classes/add")
+    public ResponseEntity<TeacherResponseDTO> patchTeacherAddClass(@RequestParam Integer id,@RequestParam Integer idClass) {
+        return new ResponseEntity<>(service.addClassToTeacher(id, idClass), HttpStatus.OK);
+    }
+
+    @PatchMapping("/classes/remove")
+    public ResponseEntity<TeacherResponseDTO> patchTeacherRemoveClass(@RequestParam Integer id,@RequestParam Integer idClass) {
+        return new ResponseEntity<>(service.removeClassToTeacher(id, idClass), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
