@@ -23,6 +23,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
     backgroundColor,
     primaryColor,
     secondaryColor,
+    colorByModeSecondary,
     terciaryColor,
   } = useThemeContext();
   const { role, setRole } = useRoleContext();

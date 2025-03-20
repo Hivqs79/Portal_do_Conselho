@@ -68,7 +68,7 @@ export default function TextareaComponent({
           <div
             style={{
               background: backgroundColor,
-              border: `2px solid ${primaryColor}`,
+              border: `2px solid ${colorByModeSecondary}`,
             }}
             className="rounded-normal p-1 mt-3 min-h-[200px] "
           >
@@ -133,7 +133,7 @@ export default function TextareaComponent({
         <div
           style={{
             background: backgroundColor,
-            border: `2px solid ${primaryColor}`,
+            border: `2px solid ${colorByModeSecondary}`,
           }}
           className="rounded-normal p-1 mt-3 min-h-[200px] "
         >

@@ -160,7 +160,7 @@ export default function StudentCouncilForm({
   return (
     <>
       <div
-        style={{ borderColor: primaryColor }}
+        style={{ borderColor: colorByModeSecondary }}
         className="relative w-full border-2 rounded-big p-5 px-9 xl:px-16 flex flex-col gap-5 pb-10 lg:pb-5"
       >
         <div className="flex flex-wrap lg:flex-nowrap gap-5 lg:gap-10 justify-center">
@@ -184,7 +184,7 @@ export default function StudentCouncilForm({
                 <div className="relative flex items-center">
                   <input
                     style={{
-                      borderColor: primaryColor,
+                      borderColor: colorByModeSecondary,
                       color: OpacityHex(constrastColor, 0.7),
                       paddingRight: "20px",
                     }}
@@ -239,7 +239,7 @@ export default function StudentCouncilForm({
             </span>
           </div>
           <div
-            style={{ backgroundColor: primaryColor }}
+            style={{ backgroundColor: colorByModeSecondary }}
             className="hidden lg:block w-[.2rem] rounded-full h-[550px]"
           ></div>
           <div className="w-full flex justify-between flex-col gap-5 lg:h-[550px]">
@@ -266,7 +266,7 @@ export default function StudentCouncilForm({
               className="absolute left-[-12px] lg:left-[-10] xl:left-0 top-1/3 lg:top-1/2 -translate-y-1/2 cursor-pointer"
             >
               <Icon
-                color={primaryColor}
+                color={colorByModeSecondary}
                 className="text-6xl"
                 IconPassed={IoIosArrowBack}
               />
@@ -276,7 +276,7 @@ export default function StudentCouncilForm({
               className="absolute right-[-12px] lg:right-[-10] xl:right-0 top-1/3 lg:top-1/2 -translate-y-1/2 cursor-pointer"
             >
               <Icon
-                color={primaryColor}
+                color={colorByModeSecondary}
                 className="text-6xl"
                 IconPassed={IoIosArrowForward}
               />

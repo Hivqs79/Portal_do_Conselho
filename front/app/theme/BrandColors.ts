@@ -67,7 +67,7 @@ export const colors = {
             "terciary": "#FFC5C5"
         },
         "purple": {
-            "primary": "#5E0BCC",
+            "primary": "#4E0BA7",
             "secondary": "#AF92FF",
             "terciary": "#DBD0FF"
         },

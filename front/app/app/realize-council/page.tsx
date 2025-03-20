@@ -53,11 +53,11 @@ export default function RealizeCouncil() {
 
   const [isModalTeacherOpen, setIsModalTeacherOpen] = useState(false);
   const [isModalStudentOpen, setIsModalStudentOpen] = useState(false);
-  const [isUniversalModalOpen, setIsUniversalModalOpen] = useState(true);
+  const [isUniversalModalOpen, setIsUniversalModalOpen] = useState(false);
   const {
     constrastColor,
     backgroundColor,
-    primaryColor,
+    colorByModeSecondary,
     whiteColor,
     textBlackolor,
   } = useThemeContext();
@@ -278,16 +278,16 @@ export default function RealizeCouncil() {
         text={`da turma: ${data ? data["council-form"].class.name : ""}`}
       />
       <Box
-        className="rounded-big m-0 flex justify-center items-center outline-[16px] outline"
+        className={`rounded-big m-0 flex justify-center items-center outline-[16px] outline`}
         style={{ outlineColor: OpacityHex(constrastColor, 0.1) }}
       >
         <Box
-          borderColor={primaryColor}
+          borderColor={colorByModeSecondary}
           className="rounded-big border-2 w-full p-5 m-0"
           bgcolor={backgroundColor}
         >
           <Box
-            style={{ borderColor: primaryColor }}
+            style={{ borderColor: colorByModeSecondary }}
             className="w-full overflow-hidden rounded-t-big flex flex-col gap-6"
           >
             <div>

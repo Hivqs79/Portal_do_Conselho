@@ -9,7 +9,7 @@ interface AutoSaveIndicatorProps {
 }
 
 export default function AutoSaveIndicator({ saved }: AutoSaveIndicatorProps) {
-  const { primaryColor, constrastColor } = useThemeContext();
+  const { primaryColor, constrastColor, colorByModeSecondary } = useThemeContext();
 
   if (saved) {
     return (
@@ -17,7 +17,7 @@ export default function AutoSaveIndicator({ saved }: AutoSaveIndicatorProps) {
         <div className="flex items-center gap-2 opacity-40">
           <div className="relative">
             <div
-              style={{ backgroundColor: primaryColor }}
+              style={{ backgroundColor: colorByModeSecondary }}
               className="w-3 h-3 rounded-full relative"
             ></div>
           </div>
@@ -31,11 +31,11 @@ export default function AutoSaveIndicator({ saved }: AutoSaveIndicatorProps) {
     <div className="flex items-center gap-2">
       <div className="relative">
         <div
-          style={{ backgroundColor: primaryColor }}
+          style={{ backgroundColor: colorByModeSecondary }}
           className="w-3 h-3 rounded-full animate-ping absolute"
         ></div>
         <div
-          style={{ backgroundColor: primaryColor }}
+          style={{ backgroundColor: colorByModeSecondary }}
           className="w-3 h-3 rounded-full relative"
         ></div>
       </div>
