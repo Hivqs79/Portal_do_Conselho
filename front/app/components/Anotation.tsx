@@ -21,7 +21,7 @@ export default function Anotation({
   negativeContent,
 }: AnotationProps) {
   const [isOpenInputs, setIsOpenInputs] = useState(false);
-  const { primaryColor, whiteColor, backgroundColor } = useThemeContext();
+  const { primaryColor, whiteColor, backgroundColor, colorByModeSecondary } = useThemeContext();
 
   const showIputs = () => {
     setIsOpenInputs(true);
@@ -112,7 +112,7 @@ export default function Anotation({
               copyButton={true}
             />
             <div
-              style={{ backgroundColor: primaryColor }}
+              style={{ backgroundColor: colorByModeSecondary }}
               className="hidden lg:block w-[.2rem] h-[255px]"
             ></div>
             <TextareaComponent

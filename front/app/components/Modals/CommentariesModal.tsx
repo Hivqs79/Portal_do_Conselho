@@ -1,6 +1,6 @@
 "use client";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Box, Typography } from "@mui/material";
+import { Box, Modal, Typography } from "@mui/material";
 import { IoClose } from "react-icons/io5";
 import Icon from "../Icon";
 import { useEffect } from "react";
@@ -20,11 +20,11 @@ export default function CommentariesModal({
   anotations,
 }: CommentariesModalProps) {
   const {
-    primaryColor,
     redDanger,
     backgroundColor,
     constrastColor,
     terciaryColor,
+    colorByModeSecondary,
   } = useThemeContext();
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -46,9 +46,16 @@ export default function CommentariesModal({
 
   return (
     <>
-      <div
-        onClick={onClose}
-        className="bg-black/60 fixed inset-0 flex justify-center items-center z-50"
+      <Modal
+        open
+        sx={{
+          display: "flex",
+          p: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          border: "none",
+          outline: "none",
+        }}
       >
         <div
           onClick={(e) => e.stopPropagation()}
@@ -57,7 +64,7 @@ export default function CommentariesModal({
         >
           <Box className="flex justify-between items-center">
             <Box>
-              <Typography variant="lg_text_bold" color={primaryColor}>
+              <Typography variant="lg_text_bold" color={colorByModeSecondary}>
                 {student
                   ? "Comentarios para o Aluno: "
                   : "Anotações para a turma: "}
@@ -91,7 +98,7 @@ export default function CommentariesModal({
             </span>
           </Box>
         </div>
-      </div>
+        </Modal>
     </>
   );
 }

@@ -89,7 +89,7 @@ export default function TextareaComponent({
                   onClick={() => copyTextArea()}
                   className="absolute bottom-1 right-2"
                 >
-                  <Icon color={primaryColor} IconPassed={IoCopyOutline} />
+                  <Icon color={colorByModeSecondary} IconPassed={IoCopyOutline} />
                 </span>
               )}
             </span>
