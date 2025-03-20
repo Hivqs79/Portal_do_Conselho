@@ -17,10 +17,9 @@ interface RankProps {
   type: "excellent" | "good" | "average" | "critical" | "none";
   outline: boolean;
   popover: boolean;
-  studentName?: string;
   onRankChange?: (
     rank: "excellent" | "good" | "average" | "critical" | "none"
-  ) => void; // Ajuste o tipo aqui
+  ) => void;
 }
 
 export default function Rank({
@@ -28,7 +27,6 @@ export default function Rank({
   type,
   outline,
   popover,
-  studentName,
   onRankChange,
 }: RankProps) {
   const {
@@ -212,7 +210,18 @@ export default function Rank({
     }
 
     return (
-      <div className="inline-flex items-center gap-2">{rank[selectedRank]}</div>
+      <div className="inline-flex justify-center items-center gap-3">
+        <span
+          style={{
+            borderColor: whiteColor,
+            color: constrastColor,
+            backgroundColor: secondaryGrayColor,
+          }}
+          className="flex items-center gap-1 border-[2px] rounded-normal"
+        >
+          {rank[selectedRank]}
+        </span>
+      </div>
     );
   }
 }

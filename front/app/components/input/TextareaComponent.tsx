@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Typography } from "@mui/material";
+import { IconButton, Snackbar, Typography } from "@mui/material";
+import Icon from "../Icon";
+import { IoClose, IoCopyOutline } from "react-icons/io5";
 
 interface TextareaProps {
   readonly: boolean;
   title: string;
   content?: string;
   placeholder?: string;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; // Adicione a prop onChange
-  value?: string; // Adicione a prop value
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  value?: string;
+  copyButton?: boolean;
 }
 
 export default function TextareaComponent({
@@ -16,15 +19,44 @@ export default function TextareaComponent({
   title,
   content,
   placeholder,
-  onChange, // Receba a prop onChange
-  value, // Receba a prop value
+  onChange,
+  value,
+  copyButton,
 }: TextareaProps) {
+  const [isCopy, setIsCopy] = useState(false);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const {
     primaryColor,
     constrastColor,
     backgroundColor,
     colorByModeSecondary,
+    whiteColor,
   } = useThemeContext();
+
+  useEffect(() => {
+    if (copyButton) {
+      setIsCopy(true);
+    }
+  }, [isCopy]);
+
+  function copyTextArea() {
+    navigator.clipboard
+      .writeText(value || content || "")
+      .then(() => {
+        openSnackbar();
+      })
+      .catch((err) => {
+        console.error("Erro ao copiar texto:", err);
+      });
+  }
+
+  const openSnackbar = () => {
+    setIsSnackbarOpen(true);
+  };
+
+  const closeSnackbar = () => {
+    setIsSnackbarOpen(false);
+  };
 
   if (readonly) {
     return (
@@ -40,17 +72,54 @@ export default function TextareaComponent({
             }}
             className="rounded-normal p-1 mt-3 min-h-[200px] "
           >
-            <textarea
-              className="cursor-default w-full min-h-[200px] pl-3 pt-2 text-[16px] outline-none resize-none bg-transparent"
-              readOnly
-              value={value || content || ""}
-              placeholder={placeholder}
-              style={{
-                color: constrastColor,
-              }}
-            />
+            <span className={`${isCopy ? "relative" : ""}`}>
+              <textarea
+                className={`${
+                  isCopy ? "cursor-copy" : ""
+                } cursor-default w-full min-h-[200px] pl-3 pt-2 text-[16px] outline-none resize-none bg-transparent`}
+                readOnly
+                value={value || content || ""}
+                placeholder={placeholder}
+                style={{
+                  color: constrastColor,
+                }}
+              />
+              {isCopy && (
+                <span
+                  onClick={() => copyTextArea()}
+                  className="absolute bottom-1 right-2"
+                >
+                  <Icon color={primaryColor} IconPassed={IoCopyOutline} />
+                </span>
+              )}
+            </span>
           </div>
         </div>
+        {isSnackbarOpen && (
+          <Snackbar
+            open={isSnackbarOpen}
+            autoHideDuration={3000}
+            onClose={closeSnackbar}
+            message="Texto copiado para a área de transferência!"
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            sx={{
+              "& .MuiSnackbarContent-root": {
+                backgroundColor: primaryColor,
+                color: whiteColor,
+              },
+            }}
+            action={
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={closeSnackbar}
+              >
+                <Icon IconPassed={IoClose} color={whiteColor} />
+              </IconButton>
+            }
+          />
+        )}
       </>
     );
   }

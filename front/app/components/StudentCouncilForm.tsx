@@ -11,6 +11,7 @@ import AutoSaveIndicator from "./AutoSaveIndicator";
 import { useState, useEffect, useRef } from "react";
 import { Decryptor } from "@/encryption/Decryptor";
 import { Encryptor } from "@/encryption/Encryptor";
+import CommentariesModal from "./Modals/CommentariesModal";
 
 interface StudentCouncilFormProps {
   student: string;
@@ -21,6 +22,7 @@ interface StudentCouncilFormProps {
   comments: string;
   onNext: () => void;
   onPrevious: () => void;
+  openCommentsModal?: (open: boolean) => void;
 }
 
 export default function StudentCouncilForm({
@@ -32,6 +34,7 @@ export default function StudentCouncilForm({
   comments,
   onNext,
   onPrevious,
+  openCommentsModal
 }: StudentCouncilFormProps) {
   const [frequenciaAtualizada, setFrequenciaAtual] =
     useState(initialFrequencia);
@@ -102,8 +105,6 @@ export default function StudentCouncilForm({
     studentsData[student] = studentData;
     localStorage.setItem("studentsData", Encryptor(studentsData));
 
-    console.log(studentsData);
-
     setTimeout(() => {
       setIsSaving(false);
       setDisable(false);
@@ -150,6 +151,12 @@ export default function StudentCouncilForm({
 
   const handleRankChange = (newRank: string) => {
     setRank(newRank as "excellent" | "good" | "average" | "critical" | "none");
+  };
+
+  const openModal = () => {
+    if (openCommentsModal) {
+      openCommentsModal(true);
+    }
   };
 
   return (
@@ -201,7 +208,6 @@ export default function StudentCouncilForm({
                   popover={true}
                   outline={false}
                   type={rank}
-                  studentName={student}
                   onRankChange={handleRankChange}
                 />
               </span>
@@ -218,7 +224,12 @@ export default function StudentCouncilForm({
               </Button>
             </span>
             <span className="hidden lg:block w-full">
-              <Button variant="contained" className="!w-full" color="primary">
+              <Button
+                variant="contained"
+                onClick={() => openModal()}
+                className="!w-full"
+                color="primary"
+              >
                 <Typography variant="lg_text_bold" color={whiteColor}>
                   Ver comentários
                 </Typography>
