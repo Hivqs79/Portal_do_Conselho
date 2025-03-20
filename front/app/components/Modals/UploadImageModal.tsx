@@ -1,6 +1,6 @@
 "use client";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Modal } from "@mui/material";
 import Icon from "../Icon";
 import { IoClose } from "react-icons/io5";
 import Photo from "../profile/Photo";
@@ -63,10 +63,17 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
   );
 
   return (
-    <div
-      onClick={onClose}
-      className="bg-black/60 fixed inset-0 flex justify-center items-center z-50"
-    >
+    <Modal
+        open
+        sx={{
+          display: "flex",
+          p: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          border: "none",
+          outline: "none",
+        }}
+      >
       <div
         onClick={(e) => e.stopPropagation()}
         style={{ backgroundColor: backgroundColor }}
@@ -181,6 +188,6 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
           </Button>
         </Box>
       </div>
-    </div>
+    </Modal>
   );
 }

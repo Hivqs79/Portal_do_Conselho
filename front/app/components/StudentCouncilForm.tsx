@@ -302,10 +302,7 @@ export default function StudentCouncilForm({
             </span>
           </>
         )}
-        <div className="absolute bottom-2 left-3 lg:hidden lg:bottom-[20px]">
-          <AutoSaveIndicator saved={!isSaving} />
-        </div>
-        <div className="absolute hidden lg:block right-[4rem] top-5">
+        <div className="absolute bottom-2 left-3 lg:bottom-auto lg:left-auto lg:right-[2.5rem] lg:top-5 xl:right-[4rem]">
           <AutoSaveIndicator saved={!isSaving} />
         </div>
       </div>

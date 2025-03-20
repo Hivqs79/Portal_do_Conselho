@@ -380,6 +380,9 @@ export default function RealizeCouncil() {
       {isUniversalModalOpen && (
         <ConfirmChanges
           title="Cancelar Conselho"
+          confirmText="Confirmar cancelamento do conselho atual"
+          secondDescription="Para você cancelar o conselho, voce precisa escrever a frase abaixo no campo de texto para confirmar o cancelamento do conselho atual"
+          confirmColor="green"
           description="Você tem certeza que deseja cancelar este conselho? Ao fazer isso ele voltará para a lista de conselhos a fazer e todo o progresso será perdido."
           onClose={closeUniversalModal}
         />

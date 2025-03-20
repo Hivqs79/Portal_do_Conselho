@@ -9,12 +9,18 @@ import OpacityHex from "@/hooks/OpacityHex";
 interface ConfirmChangesProps {
   title: string;
   description: string;
+  secondDescription: string;
+  confirmText: string;
+  confirmColor: "red" | "green";
   onClose: () => void;
 }
 
 export default function ConfirmChanges({
   title,
   description,
+  secondDescription,
+  confirmText,
+  confirmColor,
   onClose,
 }: ConfirmChangesProps) {
   const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
@@ -26,12 +32,19 @@ export default function ConfirmChanges({
     colorByModeSecondary,
     backgroundColor,
     redDanger,
+    greenConfirm,
   } = useThemeContext();
-  const spanValue = "Confirmar cancelamento do conselho atual";
-
+  const spanValue = confirmText;
+  const [confirmColorHex, setConfirmColorHex] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (confirmColor === "red") {
+      setConfirmColorHex(redDanger);
+    } else if (confirmColor === "green") {
+      setConfirmColorHex(greenConfirm);
+    }
+
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
@@ -159,18 +172,16 @@ export default function ConfirmChanges({
               </Box>
               <Box className="my-6">
                 <Typography variant="lg_text_regular">
-                  Para você cancelar o conselho, voce precisa escrever esta
-                  frase{" "}
+                  {secondDescription}:{" "}
                   <span
                     style={{
-                      backgroundColor: OpacityHex(redDanger, 0.1),
-                      color: redDanger,
+                      backgroundColor: OpacityHex(confirmColorHex, 0.1),
+                      color: confirmColorHex,
                     }}
                     className="font-bold rounded-normal p-1"
                   >
                     {spanValue}
-                  </span>{" "}
-                  no campo de texto abaixo:
+                  </span>
                 </Typography>
               </Box>
               <TextField

@@ -35,6 +35,7 @@ export const colors = {
     "primaryGrayColor": "#888888",
     "secondaryGrayColor": "#E7E7E7",
     "redDanger": "#FE3535",
+    "greenConfirm": "#148018",
     "pallete" : {
         "blue": {
             "primary": "#0050AC",
