@@ -31,9 +31,9 @@ public class AnnotationStudentService {
     public AnnotationStudentResponseDTO createAnnotationStudent(AnnotationStudentRequestDTO annotationStudentRequestDTO) {
         AnnotationStudent annotationStudent = modelMapper.map(annotationStudentRequestDTO, AnnotationStudent.class);
 
+        annotationStudent.setCouncil(councilService.findCouncilEntity(annotationStudentRequestDTO.getCouncil_id())); //SETAR CONSELHO
         annotationStudent.setStudent(studentService.findStudentEntity(annotationStudentRequestDTO.getStudent_id())); //SETAR ALUNO
         annotationStudent.setTeacher(teacherService.findTeacherEntity(annotationStudentRequestDTO.getTeacher_id())); //SETAR PROFESSOR
-        annotationStudent.setCouncil(councilService.findCouncilEntity(annotationStudentRequestDTO.getCouncil_id())); //SETAR CONSELHO
         annotationStudent.setReleaseDate(OffsetDateTime.now()); //SETAR DATA
 
         AnnotationStudent annotationSaved = repository.save(annotationStudent);
