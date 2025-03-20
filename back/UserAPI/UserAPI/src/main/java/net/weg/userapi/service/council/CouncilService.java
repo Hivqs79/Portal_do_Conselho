@@ -24,13 +24,17 @@ public class CouncilService {
     private CouncilRepository repository;
     private ModelMapper modelMapper;
     private ClassService classService;
+    private TeacherService teacherService;
 
     public CouncilResponseDTO createCouncil(CouncilRequestDTO councilRequestDTO) {
         Council council = modelMapper.map(councilRequestDTO, Council.class);
 
-        council.setAClass(classService.findClassEntity(councilRequestDTO.getClass_id())); //SETAR CLASSE
+        System.out.println(councilRequestDTO.getTeachers_id());
 
-        council.setTeachers(councilRequestDTO.getTeachers()); //SETAR PROFESSOR
+        council.setAClass(classService.findClassEntity(councilRequestDTO.getClass_id())); //SETAR CLASSE
+        council.setTeachers(teacherService.getTeachersByIdList(councilRequestDTO.getTeachers_id())); //SETAR PROFESSOR
+
+        System.out.println(council.getTeachers().size());
 
         Council councilSaved = repository.save(council);
 
@@ -57,8 +61,8 @@ public class CouncilService {
         Council council = findCouncilEntity(id);
         modelMapper.map(councilRequestDTO, council);
 
-        //council.setTeacher(teacherService.findTeacherEntity(councilRequestDTO.getTeacher_id()));
-        council.setAClass(classService.findClassEntity(councilRequestDTO.getClass_id()));
+        council.setAClass(classService.findClassEntity(councilRequestDTO.getClass_id())); //SETAR CLASSE
+        council.setTeachers(teacherService.getTeachersByIdList(councilRequestDTO.getTeachers_id())); //SETAR PROFESSOR
 
         Council updatedCouncil = repository.save(council);
         return modelMapper.map(updatedCouncil, CouncilResponseDTO.class);
@@ -76,6 +80,7 @@ public class CouncilService {
 
         return council.getAnnotations();
     }
+
 
 
 }

@@ -21,11 +21,10 @@ public class CouncilRequestDTO {
     private LocalDate date;
     @NotNull
     private LocalTime time;
-
     @NotNull
     private Integer class_id;
 
-    private List<Teacher> teachers;
+    private List<Integer> teachers_id;
 
 
 }

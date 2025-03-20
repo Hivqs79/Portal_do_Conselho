@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.model.dto.request.feedback.FeedbackClassRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackClassResponseDTO;
+import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.model.entity.feedback.FeedbackClass;
 import net.weg.userapi.repository.FeedbackClassRepository;
@@ -15,7 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -31,7 +35,6 @@ public class FeedbackClassService {
 
         Council council = councilService.findCouncilEntity(feedbackClassRequestDTO.getCouncil_id());
 
-        feedbackClass.setAClass(council.getAClass());
         feedbackClass.setCouncil(council); //SETAR CONSELHO
 
         FeedbackClass feedbackSaved = repository.save(feedbackClass);
@@ -61,7 +64,6 @@ public class FeedbackClassService {
 
         Council council = councilService.findCouncilEntity(feedbackClassRequestDTO.getCouncil_id());
 
-        feedbackClass.setAClass(council.getAClass());
         feedbackClass.setCouncil(council); //SETAR CONSELHO
 
         FeedbackClass updatedFeedbackClass = repository.save(feedbackClass);
@@ -74,5 +76,6 @@ public class FeedbackClassService {
         repository.delete(feedbackClass);
         return feedbackClassResponseDTO;
     }
+
 
 }

@@ -74,4 +74,9 @@ public class ClassService {
         List<Class> classes = classRequestDTOS.stream().map(classRequestDTO -> modelMapper.map(classRequestDTO, Class.class)).collect(Collectors.toList());
         repository.saveAll(classes);
     }
+
+    public List<Class> getClassesByIdList(List<Integer> classes_id) {
+        return repository.findAllById(classes_id);
+    }
+
 }

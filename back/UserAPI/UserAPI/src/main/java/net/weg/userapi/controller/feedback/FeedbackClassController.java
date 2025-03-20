@@ -3,6 +3,7 @@ package net.weg.userapi.controller.feedback;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.model.dto.request.feedback.FeedbackClassRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackClassResponseDTO;
+import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
 import net.weg.userapi.service.feedback.FeedbackClassService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -43,5 +46,12 @@ public class FeedbackClassController {
     public ResponseEntity<Page<FeedbackClassResponseDTO>> getAllFeedbackClass(Pageable pageable) {
         return new ResponseEntity<>(service.pageFeedbackClass(pageable), HttpStatus.OK);
     }
+    /*
+    @GetMapping("/find/{id}")
+    public ResponseEntity<List<FeedbackClassResponseDTO>> getAllFeedbackClassByClass(Integer id) {
+        return new ResponseEntity<>(service.getFeedbackClassByClassId(id), HttpStatus.OK);
+    }
+    
+     */
     
 }

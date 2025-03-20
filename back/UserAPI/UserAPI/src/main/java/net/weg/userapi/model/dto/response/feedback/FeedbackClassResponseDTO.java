@@ -15,5 +15,4 @@ public class FeedbackClassResponseDTO {
     private CouncilResponseDTO council;
     private String strengths;
     private String toImprove;
-    private ClassResponseDTO aClass;
 }

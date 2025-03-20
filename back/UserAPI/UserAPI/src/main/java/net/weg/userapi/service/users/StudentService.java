@@ -8,6 +8,7 @@ import net.weg.userapi.model.dto.request.users.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
 import net.weg.userapi.model.entity.users.Student;
 import net.weg.userapi.repository.StudentRepository;
+import net.weg.userapi.service.ClassService;
 import net.weg.userapi.service.KafkaProducerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -23,12 +24,16 @@ import java.util.stream.Collectors;
 public class StudentService {
 
     private StudentRepository repository;
+    private ClassService classService;
     private ModelMapper modelMapper;
     private KafkaProducerService kafkaProducerService;
     private final ObjectMapper objectMapper;
 
     public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {
         Student student = modelMapper.map(studentRequestDTO, Student.class);
+
+        student.setClasses(classService.getClassesByIdList(studentRequestDTO.getClasses_id()));
+
         Student studentSaved = repository.save(student);
         this.sendStudentEvent(student, "POST");
         return modelMapper.map(studentSaved, StudentResponseDTO.class);
@@ -53,7 +58,9 @@ public class StudentService {
     public StudentResponseDTO updateStudent(StudentRequestDTO studentRequestDTO, Integer id) {
         Student student = findStudentEntity(id);
         modelMapper.map(studentRequestDTO, student);
-        student.setClasses(studentRequestDTO.getClasses());
+
+        student.setClasses(classService.getClassesByIdList(studentRequestDTO.getClasses_id()));
+
         Student updatedStudent = repository.save(student);
         return modelMapper.map(updatedStudent, StudentResponseDTO.class);
     }
@@ -65,7 +72,7 @@ public class StudentService {
         return studentResponseDTO;
     }
 
-    public void mockarStudent (List<StudentRequestDTO> studentRequestDTOS) {
+    public void mockarStudent(List<StudentRequestDTO> studentRequestDTOS) {
         List<Student> students = studentRequestDTOS.stream().map(studentRequestDTO -> modelMapper.map(studentRequestDTO, Student.class)).collect(Collectors.toList());
         repository.saveAll(students);
     }

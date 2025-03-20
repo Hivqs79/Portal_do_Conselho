@@ -6,6 +6,7 @@ import net.weg.userapi.model.dto.request.feedback.FeedbackUserRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.model.entity.feedback.FeedbackUser;
+import net.weg.userapi.model.entity.users.User;
 import net.weg.userapi.repository.FeedbackUserRepository;
 import net.weg.userapi.service.ClassService;
 import net.weg.userapi.service.council.CouncilService;
@@ -15,7 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -72,4 +75,7 @@ public class FeedbackUserService {
         return feedbackUserResponseDTO;
     }
 
+    public List<FeedbackUserResponseDTO> getFeedbackUserByUserId(Integer id) {
+        return repository.getAllByUser_Id(id).stream().map(feedbackUser -> modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class)).collect(Collectors.toList());
+    }
 }

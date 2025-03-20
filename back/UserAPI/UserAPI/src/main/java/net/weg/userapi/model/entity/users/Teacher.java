@@ -28,4 +28,6 @@ public class Teacher extends User {
     @ManyToMany(mappedBy = "teachers")
     private List<Council> councils;
 
+
+
 }

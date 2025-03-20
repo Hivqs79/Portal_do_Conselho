@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.entity.Class;
 import net.weg.userapi.model.entity.annotation.Annotation;
+import net.weg.userapi.model.entity.feedback.Feedback;
 import net.weg.userapi.model.entity.preCouncil.PreCouncil;
 import net.weg.userapi.model.entity.users.Teacher;
 
@@ -42,6 +43,9 @@ public class Council {
             inverseJoinColumns = @JoinColumn(name = "teacher_id")
     )
     private List<Teacher> teachers;
+
+    @OneToMany(mappedBy = "council")
+    private List<Feedback> feedbacks;
 
     @OneToOne(mappedBy = "council")
     private PreCouncil preCouncil;

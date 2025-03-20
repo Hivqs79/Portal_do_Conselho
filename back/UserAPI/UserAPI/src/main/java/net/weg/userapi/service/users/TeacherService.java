@@ -7,6 +7,7 @@ import net.weg.userapi.model.dto.response.ClassResponseDTO;
 import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
 import net.weg.userapi.model.entity.users.Teacher;
 import net.weg.userapi.repository.TeacherRepository;
+import net.weg.userapi.service.ClassService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +21,14 @@ import java.util.stream.Collectors;
 public class TeacherService {
 
     private TeacherRepository repository;
+    private ClassService classService;
     private ModelMapper modelMapper;
 
     public TeacherResponseDTO createTeacher(TeacherRequestDTO teacherRequestDTO) {
         Teacher teacher = modelMapper.map(teacherRequestDTO, Teacher.class);
+
+        teacher.setClasses(classService.getClassesByIdList(teacherRequestDTO.getClasses_id()));
+
         Teacher teacherSaved = repository.save(teacher);
 
         return modelMapper.map(teacherSaved, TeacherResponseDTO.class);
@@ -48,7 +53,9 @@ public class TeacherService {
     public TeacherResponseDTO updateTeacher(TeacherRequestDTO teacherRequestDTO, Integer id) {
         Teacher teacher = findTeacherEntity(id);
         modelMapper.map(teacherRequestDTO, teacher);
-        teacher.setClasses(teacherRequestDTO.getClasses()); //ATUALIZAR O MANY TO MANY
+
+        teacher.setClasses(classService.getClassesByIdList(teacherRequestDTO.getClasses_id()));
+
         Teacher updatedTeacher = repository.save(teacher);
         return modelMapper.map(updatedTeacher, TeacherResponseDTO.class);
     }
@@ -69,4 +76,9 @@ public class TeacherService {
         List<Teacher> teacher = teacherRequestDTOS.stream().map(teacherRequestDTO -> modelMapper.map(teacherRequestDTO, Teacher.class)).collect(Collectors.toList());
         repository.saveAll(teacher);
     }
+
+    public List<Teacher> getTeachersByIdList(List<Integer> teachers_id) {
+        return repository.findAllById(teachers_id);
+    }
+
 }

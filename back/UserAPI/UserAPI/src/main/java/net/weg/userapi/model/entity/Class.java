@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.model.entity.feedback.FeedbackClass;
 import net.weg.userapi.model.entity.users.Student;
 import net.weg.userapi.model.entity.users.Teacher;
@@ -41,6 +42,6 @@ public class Class {
     private List<Student> students;
 
     @OneToMany(mappedBy = "aClass")
-    private List<FeedbackClass> feedbackClassList;
+    private List<Council> councils;
 
 }

@@ -11,12 +11,7 @@ import lombok.NoArgsConstructor;
 import net.weg.userapi.model.entity.Class;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "feedback_id")
 public class FeedbackClass extends Feedback {
 
-    @ManyToOne
-    private Class aClass;
 }

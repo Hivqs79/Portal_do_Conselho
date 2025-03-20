@@ -34,7 +34,7 @@ public class StudentRequestDTO {
     //Podem ser nulo
 
     private UUID imageKey;
-    private List<Class> classes;
+    private List<Integer> classes_id;
 
 
 }

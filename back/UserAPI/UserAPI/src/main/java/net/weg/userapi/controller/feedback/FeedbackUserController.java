@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/feedbacks/user")
 @AllArgsConstructor
@@ -41,6 +43,11 @@ public class FeedbackUserController {
     @GetMapping
     public ResponseEntity<Page<FeedbackUserResponseDTO>> getAllFeedbackUser(Pageable pageable) {
         return new ResponseEntity<>(service.pageFeedbackUser(pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<List<FeedbackUserResponseDTO>> getAllFeedbackUserByUser(@PathVariable Integer id) {
+        return new ResponseEntity<>(service.getFeedbackUserByUserId(id), HttpStatus.OK);
     }
     
 }
