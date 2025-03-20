@@ -10,6 +10,7 @@ import net.weg.userapi.model.entity.users.User;
 import net.weg.userapi.repository.FeedbackUserRepository;
 import net.weg.userapi.service.ClassService;
 import net.weg.userapi.service.council.CouncilService;
+import net.weg.userapi.service.users.StudentService;
 import net.weg.userapi.service.users.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,7 @@ public class FeedbackUserService {
     private UserService userService;
     private CouncilService councilService;
     private ModelMapper modelMapper;
+    private StudentService studentService;
 
     public FeedbackUserResponseDTO createFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO) {
         FeedbackUser feedbackUser = modelMapper.map(feedbackUserRequestDTO, FeedbackUser.class);

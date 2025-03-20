@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import net.weg.userapi.model.entity.Class;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -27,5 +28,18 @@ public class Student extends User {
             inverseJoinColumns= @JoinColumn(name = "class_id", nullable = false)
     )
     private List<Class> classes;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(getId(), student.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 
 }

@@ -51,7 +51,7 @@ public class FeedbackClassController {
     public ResponseEntity<List<FeedbackClassResponseDTO>> getAllFeedbackClassByClass(Integer id) {
         return new ResponseEntity<>(service.getFeedbackClassByClassId(id), HttpStatus.OK);
     }
-    
+
      */
     
 }
