@@ -457,7 +457,27 @@ export default class ThemeSettings {
               textTransform: "none",
             }
           }
-        }
+        },
+        MuiCheckbox: {
+          styleOverrides: {
+            root: {
+              "& .MuiSvgIcon-root": {          
+                fill: colorByMode,
+              },
+              padding: 0,            
+            },
+          },
+        },
+        MuiRadio: {
+          styleOverrides: {
+            root: {
+              "& .MuiSvgIcon-root": {          
+                fill: colorByMode,
+              },
+              padding: 0,            
+            },
+          },
+        },
       },
     });
   }

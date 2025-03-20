@@ -1,6 +1,7 @@
 "use client";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, Typography } from "@mui/material";
+import { useWindowWidth } from "@react-hook/window-size";
 import { useState } from "react";
 
 interface SwapButtonProps {
@@ -13,8 +14,10 @@ interface SwapButtonProps {
 export default function SwapButton({ button1Text, button2Text, onClickButton1, onClickButton2 }: SwapButtonProps) {
     const {primaryColor, terciaryColor} = useThemeContext();
     const [button1Focused, setButton1Focused] = useState(true);
+    const windowWidth = useWindowWidth();
+
     return (
-        <Button style={{ backgroundColor: terciaryColor }} className="relative flex flex-row items-center rounded-lg w-full z-10 h-12">
+        <Button style={{ backgroundColor: terciaryColor }} className="relative flex flex-row items-center !rounded-lg w-full z-10 h-12">
             <div 
                 style={{ backgroundColor: primaryColor }} 
                 className={`absolute z-20 top-0 left-0 w-[50%] h-12 rounded-lg transition-transform duration-300 ease-in-out ${button1Focused ? 'translate-x-0' : 'translate-x-full'}`} 
@@ -22,7 +25,7 @@ export default function SwapButton({ button1Text, button2Text, onClickButton1, o
             />
 
             <Typography 
-                variant="md_text_bold" 
+                variant={windowWidth < 640 ? "xs_text_bold" : "md_text_bold"}
                 color={button1Focused ? terciaryColor : primaryColor}                 
                 onClick={() => {
                     setButton1Focused(true);
@@ -33,7 +36,7 @@ export default function SwapButton({ button1Text, button2Text, onClickButton1, o
                 {button1Text}
             </Typography>
             <Typography 
-                variant="md_text_bold" 
+                variant={windowWidth < 640 ? "xs_text_bold" : "md_text_bold"}
                 color={!button1Focused ? terciaryColor : primaryColor}                 
                 onClick={() => {
                     setButton1Focused(false);
