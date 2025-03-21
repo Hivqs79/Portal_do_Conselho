@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PreCouncilSectionRequestDTO {
 
-    @NotNull
+    @NotNull(message = "{not.null.message}")
     private Integer preCouncil_id;
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String topic;
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String description;
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String strengths;
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String toImprove;
 }

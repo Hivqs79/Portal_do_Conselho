@@ -16,17 +16,17 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentRequestDTO {
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String name;
 
-    @Email
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
+    @Email(message = "{email.message}")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String password;
 
-    @NotNull
+    @NotNull(message = "{not.null.message}")
     private Boolean isRepresentant;
 
     private Double frequency;

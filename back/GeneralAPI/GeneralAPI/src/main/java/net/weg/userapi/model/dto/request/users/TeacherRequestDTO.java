@@ -15,14 +15,14 @@ import java.util.List;
 @NoArgsConstructor
 public class TeacherRequestDTO {
 
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String name;
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "{not.blank.message}")
+    @Email(message = "{email.message}")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String password;
 
     private List<Integer> classes_id;

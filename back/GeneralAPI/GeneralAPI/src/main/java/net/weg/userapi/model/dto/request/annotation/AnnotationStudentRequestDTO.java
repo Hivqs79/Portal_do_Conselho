@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AnnotationStudentRequestDTO {
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String rank;
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String strengths;
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String toImprove;
-    @NotNull
+    @NotNull(message = "{not.null.message}")
     private Integer teacher_id;
-    @NotNull
+    @NotNull(message = "{not.null.message}")
     private Integer council_id;
-    @NotNull
+    @NotNull(message = "{not.null.message}")
     private Integer student_id;
 }

@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FeedbackClassRequestDTO {
 
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String rank;
-    @NotNull
+    @NotNull(message = "{not.null.message}")
     private Integer council_id;
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String strengths;
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String toImprove;
 
 

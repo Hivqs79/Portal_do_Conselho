@@ -17,11 +17,11 @@ import java.util.List;
 @NoArgsConstructor
 public class CouncilRequestDTO {
 
-    @NotNull
+    @NotNull(message = "{not.null.message}")
     private LocalDate date;
-    @NotNull
+    @NotNull(message = "{not.null.message}")
     private LocalTime time;
-    @NotNull
+    @NotNull(message = "{not.null.message}")
     private Integer class_id;
 
     private List<Integer> teachers_id;

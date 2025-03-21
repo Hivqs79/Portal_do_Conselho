@@ -16,15 +16,15 @@ import net.weg.userapi.model.entity.users.User;
 @NoArgsConstructor
 public class FeedbackUserRequestDTO {
 
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String rank;
-    @NotNull
+    @NotNull(message = "{not.null.message}")
     private Integer council_id;
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String strengths;
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String toImprove;
-    @NotNull
+    @NotNull(message = "{not.null.message}")
     private Integer user_id;
 
 }

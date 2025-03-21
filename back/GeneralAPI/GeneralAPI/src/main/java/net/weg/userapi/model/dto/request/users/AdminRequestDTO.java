@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdminRequestDTO {
 
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String name;
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "{not.blank.message}")
+    @Email(message = "{email.message}")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String password;
 }

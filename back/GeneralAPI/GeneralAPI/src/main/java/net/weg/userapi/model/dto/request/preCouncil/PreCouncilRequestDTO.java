@@ -13,7 +13,7 @@ import net.weg.userapi.model.entity.council.Council;
 @NoArgsConstructor
 public class PreCouncilRequestDTO {
 
-    @NotNull
+    @NotNull(message = "{not.null.message}")
     private Integer council_id;
 
 }
