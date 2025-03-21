@@ -27,4 +27,12 @@ public class PreCouncil {
     @OneToMany(mappedBy = "preCouncil")
     private List<PreCouncilSection> preCouncilSectionList;
 
+    @Override
+    public String toString() {
+        return "PreCouncil{" +
+                "id=" + id +
+                ", council=" + council.getId() +
+                ", preCouncilSectionList=" + preCouncilSectionList +
+                '}';
+    }
 }

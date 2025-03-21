@@ -42,4 +42,11 @@ public class Student extends User {
         return Objects.hash(getId());
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + "\nStudent{" +
+                "isRepresentant=" + isRepresentant +
+                ", frequency=" + frequency +
+                '}';
+    }
 }

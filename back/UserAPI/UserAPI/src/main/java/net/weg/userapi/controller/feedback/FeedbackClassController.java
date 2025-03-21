@@ -48,7 +48,7 @@ public class FeedbackClassController {
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<List<FeedbackClassResponseDTO>> getAllFeedbackClassByClass(Integer id) {
+    public ResponseEntity<List<FeedbackClassResponseDTO>> getAllFeedbackClassByClass(@PathVariable Integer id) {
         return new ResponseEntity<>(service.getFeedbackClassByClassId(id), HttpStatus.OK);
     }
 

@@ -3,6 +3,7 @@ package net.weg.userapi.service.council;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.model.dto.request.council.CouncilRequestDTO;
 import net.weg.userapi.model.dto.response.council.CouncilResponseDTO;
+import net.weg.userapi.model.entity.Class;
 import net.weg.userapi.model.entity.annotation.Annotation;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.repository.CouncilRepository;
@@ -29,12 +30,8 @@ public class CouncilService {
     public CouncilResponseDTO createCouncil(CouncilRequestDTO councilRequestDTO) {
         Council council = modelMapper.map(councilRequestDTO, Council.class);
 
-        System.out.println(councilRequestDTO.getTeachers_id());
-
         council.setAClass(classService.findClassEntity(councilRequestDTO.getClass_id())); //SETAR CLASSE
         council.setTeachers(teacherService.getTeachersByIdList(councilRequestDTO.getTeachers_id())); //SETAR PROFESSOR
-
-        System.out.println(council.getTeachers().size());
 
         Council councilSaved = repository.save(council);
 
@@ -80,7 +77,5 @@ public class CouncilService {
 
         return council.getAnnotations();
     }
-
-
 
 }

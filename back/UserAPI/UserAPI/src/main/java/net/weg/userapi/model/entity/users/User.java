@@ -29,4 +29,13 @@ public abstract class User {
     @OneToMany(mappedBy = "user")
     private List<FeedbackUser> feedbackUsers;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", imageKey=" + imageKey +
+                '}';
+    }
 }

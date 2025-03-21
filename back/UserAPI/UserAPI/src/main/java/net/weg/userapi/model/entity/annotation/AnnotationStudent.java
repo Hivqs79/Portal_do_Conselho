@@ -19,4 +19,10 @@ public class AnnotationStudent extends Annotation {
     @ManyToOne
     private Student student;
 
+    @Override
+    public String toString() {
+        return super.toString() + "\nAnnotationStudent{" +
+                "student=" + student +
+                '}';
+    }
 }

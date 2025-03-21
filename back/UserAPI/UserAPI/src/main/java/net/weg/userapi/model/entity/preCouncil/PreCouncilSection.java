@@ -31,4 +31,14 @@ public class PreCouncilSection {
     @Column(nullable = false)
     private String toImprove;
 
+    @Override
+    public String toString() {
+        return "PreCouncilSection{" +
+                "id=" + id +
+                ", topic='" + topic + '\'' +
+                ", description='" + description + '\'' +
+                ", strengths='" + strengths + '\'' +
+                ", toImprove='" + toImprove + '\'' +
+                '}';
+    }
 }

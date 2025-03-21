@@ -44,4 +44,13 @@ public class Class {
     @OneToMany(mappedBy = "aClass")
     private List<Council> councils;
 
+    @Override
+    public String toString() {
+        return "Class{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", area=" + area.toString() +
+                ", course='" + course + '\'' +
+                '}';
+    }
 }

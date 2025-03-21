@@ -19,4 +19,8 @@ public class FeedbackUser extends Feedback {
     @ManyToOne
     private User user;
 
+    @Override
+    public String toString() {
+        return super.toString() + "FeedbackUser{}";
+    }
 }

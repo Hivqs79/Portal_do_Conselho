@@ -25,4 +25,15 @@ public abstract class Feedback {
 
     @Column(nullable = false)
     private String toImprove;
+
+    @Override
+    public String toString() {
+        return "Feedback{" +
+                "id=" + id +
+                ", rank='" + rank + '\'' +
+                ", council=" + council.getId() +
+                ", strengths='" + strengths + '\'' +
+                ", toImprove='" + toImprove + '\'' +
+                '}';
+    }
 }

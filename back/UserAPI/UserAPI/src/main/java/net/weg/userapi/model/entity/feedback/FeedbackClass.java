@@ -14,4 +14,8 @@ import net.weg.userapi.model.entity.Class;
 @PrimaryKeyJoinColumn(name = "feedback_id")
 public class FeedbackClass extends Feedback {
 
+    @Override
+    public String toString() {
+        return super.toString() + "\nFeedbackClass{}";
+    }
 }

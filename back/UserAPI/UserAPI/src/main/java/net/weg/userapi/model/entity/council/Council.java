@@ -50,4 +50,15 @@ public class Council {
     @OneToOne(mappedBy = "council")
     private PreCouncil preCouncil;
 
+    @Override
+    public String toString() {
+        return "Council{" +
+                "id=" + id +
+                ", date=" + date +
+                ", time=" + time +
+                ", aClass=" + aClass +
+                ", teachers=" + teachers +
+                ", preCouncil=" + preCouncil +
+                '}';
+    }
 }

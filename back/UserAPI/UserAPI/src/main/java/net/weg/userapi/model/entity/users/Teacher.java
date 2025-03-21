@@ -42,4 +42,8 @@ public class Teacher extends User {
         return Objects.hash(getId()); // Implementação do hashCode para consistência
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

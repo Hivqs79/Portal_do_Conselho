@@ -13,5 +13,8 @@ import net.weg.userapi.model.entity.Class;
 @PrimaryKeyJoinColumn(name = "annotation_id")
 public class AnnotationClass extends Annotation {
 
-
+    @Override
+    public String toString() {
+        return super.toString() + "\nAnnotationClass{}";
+    }
 }

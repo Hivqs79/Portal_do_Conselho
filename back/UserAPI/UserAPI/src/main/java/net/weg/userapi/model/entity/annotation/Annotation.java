@@ -31,5 +31,16 @@ public abstract class Annotation {
     @ManyToOne
     private Teacher teacher;
 
-
+    @Override
+    public String toString() {
+        return "Annotation{" +
+                "id=" + id +
+                ", rank='" + rank + '\'' +
+                ", strengths='" + strengths + '\'' +
+                ", toImprove='" + toImprove + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", council=" + council.getId() +
+                ", teacher=" + teacher.getName() +
+                '}';
+    }
 }

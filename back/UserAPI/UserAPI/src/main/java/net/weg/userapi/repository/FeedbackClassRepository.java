@@ -9,6 +9,5 @@ import java.util.List;
 
 public interface FeedbackClassRepository extends JpaRepository<FeedbackClass, Integer> {
 
-    List<FeedbackClass> getAllByCouncil_aClass_Id(Integer id);
 }
 

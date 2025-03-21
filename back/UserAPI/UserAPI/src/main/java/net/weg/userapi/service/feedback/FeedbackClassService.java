@@ -81,12 +81,15 @@ public class FeedbackClassService {
 
     public List<FeedbackClassResponseDTO> getFeedbackClassByClassId(Integer id) {
         Class aClass = classService.findClassEntity(id);
-        System.out.println(aClass.toString());
-
+        List<FeedbackClassResponseDTO> responseDTOS = new ArrayList<>();
         List<FeedbackClass> list = repository.findAll();
-        System.out.println(list.getFirst());
-        System.out.println(list.getFirst().getCouncil());
 
-        return new ArrayList<>();
+        list.forEach(feedbackClass -> {
+            if (feedbackClass.getCouncil().getAClass().equals(aClass)){
+                responseDTOS.add(modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class));
+            }
+        });
+
+        return responseDTOS;
     }
 }
