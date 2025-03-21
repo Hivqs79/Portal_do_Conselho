@@ -35,7 +35,7 @@ public class AdminService {
     }
 
     public Admin findAdminEntity(Integer id) {
-        return repository.findById(id).orElseThrow(UserNotFoundException::new);
+        return repository.findById(id).orElseThrow(() -> new UserNotFoundException("Admin user not found"));
     }
 
     public Page<AdminResponseDTO> pageAdmin(Pageable pageable) {

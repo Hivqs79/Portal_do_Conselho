@@ -2,6 +2,7 @@ package net.weg.userapi.service.annotations;
 
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
+import net.weg.userapi.exception.exceptions.AnnotationNotFoundException;
 import net.weg.userapi.model.dto.request.annotation.AnnotationClassRequestDTO;
 import net.weg.userapi.model.dto.response.annotation.AnnotationClassResponseDTO;
 import net.weg.userapi.model.dto.response.annotation.AnnotationStudentResponseDTO;
@@ -50,7 +51,7 @@ public class AnnotationClassService {
     }
 
     public AnnotationClass findAnnotationEntity(Integer id) {
-        return repository.findById(id).orElseThrow(NoSuchElementException::new);
+        return repository.findById(id).orElseThrow(() -> new AnnotationNotFoundException("Class annotation not found"));
     }
 
     public Page<AnnotationClassResponseDTO> pageAnnotationClass(Pageable pageable) {

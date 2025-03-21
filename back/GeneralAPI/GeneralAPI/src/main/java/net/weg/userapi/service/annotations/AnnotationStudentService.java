@@ -2,6 +2,8 @@ package net.weg.userapi.service.annotations;
 
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
+import net.weg.userapi.exception.exceptions.AnnotationNotFoundException;
+import net.weg.userapi.exception.exceptions.UserNotAssociatedException;
 import net.weg.userapi.model.dto.request.annotation.AnnotationStudentRequestDTO;
 import net.weg.userapi.model.dto.response.annotation.AnnotationStudentResponseDTO;
 import net.weg.userapi.model.entity.annotation.AnnotationStudent;
@@ -35,11 +37,11 @@ public class AnnotationStudentService {
         Council council = councilService.findCouncilEntity(annotationStudentRequestDTO.getCouncil_id());
 
         if (!council.getTeachers().contains(teacherService.findTeacherEntity(annotationStudentRequestDTO.getTeacher_id()))) {
-            throw new RuntimeException("O PROFESSOR NAO ESTÁ RELACIONADO AO CONSELHO");
+            throw new UserNotAssociatedException("The teacher is not associated with this council");
         }
 
         if (!council.getAClass().getStudents().contains(studentService.findStudentEntity(annotationStudentRequestDTO.getStudent_id()))) {
-            throw new RuntimeException("O ALUNO NAO ESTÁ RELACIONADO AO CONSELHO");
+            throw new UserNotAssociatedException("The student is not associated with this council");
         }
 
         annotationStudent.setCouncil(council); //SETAR CONSELHO
@@ -59,7 +61,7 @@ public class AnnotationStudentService {
     }
 
     public AnnotationStudent findAnnotationEntity(Integer id) {
-        return repository.findById(id).orElseThrow(NoSuchElementException::new);
+        return repository.findById(id).orElseThrow(() -> new AnnotationNotFoundException("Student annotation not found"));
     }
 
     public Page<AnnotationStudentResponseDTO> pageAnnotationStudent(Pageable pageable) {

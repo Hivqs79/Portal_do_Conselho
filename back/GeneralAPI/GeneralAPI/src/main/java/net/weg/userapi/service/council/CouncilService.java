@@ -1,6 +1,7 @@
 package net.weg.userapi.service.council;
 
 import lombok.AllArgsConstructor;
+import net.weg.userapi.exception.exceptions.CouncilNotFoundException;
 import net.weg.userapi.model.dto.request.council.CouncilRequestDTO;
 import net.weg.userapi.model.dto.response.council.CouncilResponseDTO;
 import net.weg.userapi.model.entity.Class;
@@ -45,7 +46,7 @@ public class CouncilService {
     }
 
     public Council findCouncilEntity(Integer id) {
-        return repository.findById(id).orElseThrow(NoSuchElementException::new);
+        return repository.findById(id).orElseThrow(() -> new CouncilNotFoundException("Council not found"));
     }
 
     public Page<CouncilResponseDTO> pageCouncil(Pageable pageable) {

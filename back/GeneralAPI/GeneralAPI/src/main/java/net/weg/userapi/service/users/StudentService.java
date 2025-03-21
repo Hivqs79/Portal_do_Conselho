@@ -3,6 +3,8 @@ package net.weg.userapi.service.users;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import net.weg.userapi.exception.exceptions.KafkaException;
+import net.weg.userapi.exception.exceptions.UserNotFoundException;
 import net.weg.userapi.model.KafkaMessage;
 import net.weg.userapi.model.dto.request.users.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
@@ -49,7 +51,7 @@ public class StudentService {
     }
 
     public Student findStudentEntity(Integer id) {
-        return repository.findById(id).orElseThrow(NoSuchElementException::new);
+        return repository.findById(id).orElseThrow(() -> new UserNotFoundException("Student user not found"));
     }
 
     public Page<StudentResponseDTO> pageStudent(Pageable pageable) {
@@ -90,8 +92,7 @@ public class StudentService {
 
             kafkaProducerService.sendMessage("student", jsonMessage);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to serialize KafkaMessage object", e);
+            throw new KafkaException("Failed to serialize KafkaMessage object" + e);
         }
     }
 

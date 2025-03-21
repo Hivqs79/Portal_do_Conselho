@@ -2,6 +2,7 @@ package net.weg.userapi.service.feedback;
 
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
+import net.weg.userapi.exception.exceptions.FeedbackNotFoundException;
 import net.weg.userapi.model.dto.request.feedback.FeedbackUserRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
 import net.weg.userapi.model.entity.council.Council;
@@ -51,7 +52,7 @@ public class FeedbackUserService {
     }
 
     public FeedbackUser findFeedbackEntity(Integer id) {
-        return repository.findById(id).orElseThrow(NoSuchElementException::new);
+        return repository.findById(id).orElseThrow(() -> new FeedbackNotFoundException("User feedback not found") );
     }
 
     public Page<FeedbackUserResponseDTO> pageFeedbackUser(Pageable pageable) {

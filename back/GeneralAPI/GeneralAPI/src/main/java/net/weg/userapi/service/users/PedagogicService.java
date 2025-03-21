@@ -35,7 +35,7 @@ public class PedagogicService {
     }
 
     public Pedagogic findPedagogicEntity(Integer id) {
-        return repository.findById(id).orElseThrow(UserNotFoundException::new);
+        return repository.findById(id).orElseThrow(() -> new UserNotFoundException("Pedagogic user not found"));
     }
 
     public Page<PedagogicResponseDTO> pagePedagogic(Pageable pageable) {

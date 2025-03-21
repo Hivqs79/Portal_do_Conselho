@@ -1,6 +1,7 @@
 package net.weg.userapi.service;
 
 import lombok.AllArgsConstructor;
+import net.weg.userapi.exception.exceptions.ClassNotFoundException;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
 import net.weg.userapi.model.dto.request.ClassRequestDTO;
 import net.weg.userapi.model.dto.response.ClassResponseDTO;
@@ -47,7 +48,7 @@ public class ClassService {
     }
 
     public Class findClassEntity(Integer id) {
-        return repository.findById(id).orElseThrow(UserNotFoundException::new);
+        return repository.findById(id).orElseThrow(() -> new ClassNotFoundException("Class not found"));
     }
 
     public Page<ClassResponseDTO> pageClass(Pageable pageable) {

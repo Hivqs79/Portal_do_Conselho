@@ -42,7 +42,7 @@ public class TeacherService {
     }
 
     public Teacher findTeacherEntity(Integer id) {
-        return repository.findById(id).orElseThrow(UserNotFoundException::new);
+        return repository.findById(id).orElseThrow(() -> new UserNotFoundException("Teacher user not found"));
     }
 
     public Page<TeacherResponseDTO> pageTeacher(Pageable pageable) {

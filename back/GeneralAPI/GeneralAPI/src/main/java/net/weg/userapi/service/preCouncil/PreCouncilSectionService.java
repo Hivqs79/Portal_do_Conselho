@@ -1,6 +1,7 @@
 package net.weg.userapi.service.preCouncil;
 
 import lombok.AllArgsConstructor;
+import net.weg.userapi.exception.exceptions.PreCouncilSectionNotFoundException;
 import net.weg.userapi.model.dto.request.preCouncil.PreCouncilSectionRequestDTO;
 import net.weg.userapi.model.dto.response.preCouncil.PreCouncilSectionResponseDTO;
 import net.weg.userapi.model.entity.preCouncil.PreCouncilSection;
@@ -37,7 +38,7 @@ public class PreCouncilSectionService {
     }
 
     public PreCouncilSection findPreCouncilSectionEntity(Integer id) {
-        return repository.findById(id).orElseThrow(NoSuchElementException::new);
+        return repository.findById(id).orElseThrow(() -> new PreCouncilSectionNotFoundException("Pre council section not found"));
     }
 
     public Page<PreCouncilSectionResponseDTO> pagePreCouncilSection(Pageable pageable) {

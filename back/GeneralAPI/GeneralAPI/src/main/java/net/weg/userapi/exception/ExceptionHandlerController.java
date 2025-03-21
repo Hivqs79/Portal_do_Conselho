@@ -1,7 +1,10 @@
 package net.weg.userapi.exception;
 
+import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
 import net.weg.userapi.model.dto.response.ExceptionResponseDTO;
+import net.weg.userapi.model.dto.response.ValidationResponseDTO;
+import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,35 +15,48 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
+@AllArgsConstructor
 public class ExceptionHandlerController {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {
+    private MessageSource messageSource;
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ExceptionResponseDTO> handleUserNotFoundException(RuntimeException ex, WebRequest request) {
         ExceptionResponseDTO response = new ExceptionResponseDTO(
-                LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
-                "Not Found",
+                "Entity not found",
                 ex.getMessage(),
-                request.getDescription(false).replace("uri=", "")
+                request.getDescription(false).replace("uri=", ""),
+                ex.getClass(),
+                LocalDateTime.now()
         );
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex, WebRequest request) {
-        String errorMessage = ex.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .reduce("", (acc, error) -> acc + error + "; ");
+    public ResponseEntity<ValidationResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex, WebRequest request) {
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> {
+                    String message = messageSource.getMessage(error, request.getLocale());
+                    return error.getField() + ": " + message;
+                })
+                .collect(Collectors.toList());
 
-        ExceptionResponseDTO response = new ExceptionResponseDTO(
-                LocalDateTime.now(),
+        ValidationResponseDTO response = new ValidationResponseDTO(
                 HttpStatus.BAD_REQUEST.value(),
-                "Validation Error",
-                errorMessage,
-                request.getDescription(false).replace("uri=", "")
+                "Erro de validação",
+                errors,
+                request.getDescription(false).replace("uri=", ""),
+                ex.getClass(),
+                LocalDateTime.now()
         );
+
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -49,38 +65,40 @@ public class ExceptionHandlerController {
         String errorMessage = "Database error: " + ex.getMostSpecificCause().getMessage();
 
         ExceptionResponseDTO response = new ExceptionResponseDTO(
-                LocalDateTime.now(),
                 HttpStatus.CONFLICT.value(),
-                "Database Error",
+                "Database error",
                 errorMessage,
-                request.getDescription(false).replace("uri=", "")
+                request.getDescription(false).replace("uri=", ""),
+                ex.getClass(),
+                LocalDateTime.now()
         );
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ExceptionResponseDTO> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
-        String errorMessage = "Area content error: " + ex.getMostSpecificCause().getMessage();
+        String errorMessage = "Area input content error: " + ex.getMostSpecificCause().getMessage();
 
         ExceptionResponseDTO response = new ExceptionResponseDTO(
-                LocalDateTime.now(),
                 HttpStatus.CONFLICT.value(),
                 "Area content error",
                 errorMessage,
-                request.getDescription(false).replace("uri=", "")
+                request.getDescription(false).replace("uri=", ""),
+                ex.getClass(),
+                LocalDateTime.now()
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponseDTO> handleGenericException(Exception ex, WebRequest request) {
-        System.out.println("EXEÇÃO DA CLASSE: " + ex.getClass());
         ExceptionResponseDTO response = new ExceptionResponseDTO(
-                LocalDateTime.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Internal Server Error",
                 ex.getMessage(),
-                request.getDescription(false).replace("uri=", "")
+                request.getDescription(false).replace("uri=", ""),
+                ex.getClass(),
+                LocalDateTime.now()
         );
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
