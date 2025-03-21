@@ -1,15 +1,13 @@
 package net.weg.userapi.service.annotations;
 
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.AnnotationNotFoundException;
 import net.weg.userapi.model.dto.request.annotation.AnnotationClassRequestDTO;
 import net.weg.userapi.model.dto.response.annotation.AnnotationClassResponseDTO;
-import net.weg.userapi.model.dto.response.annotation.AnnotationStudentResponseDTO;
 import net.weg.userapi.model.entity.annotation.AnnotationClass;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.repository.AnnotationClassRepository;
-import net.weg.userapi.service.ClassService;
+import net.weg.userapi.service.classes.ClassService;
 import net.weg.userapi.service.council.CouncilService;
 import net.weg.userapi.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
@@ -18,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor

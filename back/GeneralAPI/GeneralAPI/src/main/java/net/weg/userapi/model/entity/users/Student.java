@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.weg.userapi.model.entity.Class;
+import net.weg.userapi.model.entity.classes.Class;
 
 import java.util.List;
 import java.util.Objects;

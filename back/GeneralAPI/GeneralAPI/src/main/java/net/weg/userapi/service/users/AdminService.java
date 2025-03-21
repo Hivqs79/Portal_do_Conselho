@@ -6,7 +6,7 @@ import net.weg.userapi.model.dto.request.users.AdminRequestDTO;
 import net.weg.userapi.model.dto.response.users.AdminResponseDTO;
 import net.weg.userapi.model.entity.users.Admin;
 import net.weg.userapi.repository.AdminRepository;
-import net.weg.userapi.service.KafkaProducerService;
+import net.weg.userapi.service.kafka.KafkaProducerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

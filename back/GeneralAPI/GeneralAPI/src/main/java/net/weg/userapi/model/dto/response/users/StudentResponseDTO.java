@@ -3,7 +3,7 @@ package net.weg.userapi.model.dto.response.users;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.weg.userapi.model.dto.response.ClassResponseDTO;
+import net.weg.userapi.model.dto.response.classes.ClassResponseDTO;
 
 import java.util.List;
 import java.util.UUID;

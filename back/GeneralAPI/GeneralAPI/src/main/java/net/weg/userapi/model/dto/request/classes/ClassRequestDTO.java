@@ -1,4 +1,4 @@
-package net.weg.userapi.model.dto.request;
+package net.weg.userapi.model.dto.request.classes;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

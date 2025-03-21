@@ -1,9 +1,8 @@
 package net.weg.userapi.exception;
 
 import lombok.AllArgsConstructor;
-import net.weg.userapi.exception.exceptions.UserNotFoundException;
-import net.weg.userapi.model.dto.response.ExceptionResponseDTO;
-import net.weg.userapi.model.dto.response.ValidationResponseDTO;
+import net.weg.userapi.model.dto.response.exceptions.ExceptionResponseDTO;
+import net.weg.userapi.model.dto.response.exceptions.ValidationResponseDTO;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

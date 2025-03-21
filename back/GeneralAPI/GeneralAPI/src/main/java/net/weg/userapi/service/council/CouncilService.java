@@ -4,20 +4,17 @@ import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.CouncilNotFoundException;
 import net.weg.userapi.model.dto.request.council.CouncilRequestDTO;
 import net.weg.userapi.model.dto.response.council.CouncilResponseDTO;
-import net.weg.userapi.model.entity.Class;
 import net.weg.userapi.model.entity.annotation.Annotation;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.repository.CouncilRepository;
-import net.weg.userapi.service.ClassService;
+import net.weg.userapi.service.classes.ClassService;
 import net.weg.userapi.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor

@@ -1,15 +1,12 @@
 package net.weg.userapi.service.feedback;
 
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.FeedbackNotFoundException;
 import net.weg.userapi.model.dto.request.feedback.FeedbackUserRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.model.entity.feedback.FeedbackUser;
-import net.weg.userapi.model.entity.users.User;
 import net.weg.userapi.repository.FeedbackUserRepository;
-import net.weg.userapi.service.ClassService;
 import net.weg.userapi.service.council.CouncilService;
 import net.weg.userapi.service.users.StudentService;
 import net.weg.userapi.service.users.UserService;
@@ -19,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service

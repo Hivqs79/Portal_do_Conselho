@@ -1,4 +1,4 @@
-package net.weg.userapi.service;
+package net.weg.userapi.service.kafka;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

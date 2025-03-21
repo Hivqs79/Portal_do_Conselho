@@ -1,4 +1,4 @@
-package net.weg.userapi.model;
+package net.weg.userapi.service.kafka;
 
 import lombok.Data;
 

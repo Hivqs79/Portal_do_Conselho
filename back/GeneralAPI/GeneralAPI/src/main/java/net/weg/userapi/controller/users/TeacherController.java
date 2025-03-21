@@ -2,7 +2,7 @@ package net.weg.userapi.controller.users;
 
 import lombok.AllArgsConstructor;
 import net.weg.userapi.model.dto.request.users.TeacherRequestDTO;
-import net.weg.userapi.model.dto.response.ClassResponseDTO;
+import net.weg.userapi.model.dto.response.classes.ClassResponseDTO;
 import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
 import net.weg.userapi.service.users.TeacherService;
 import org.springframework.data.domain.Page;

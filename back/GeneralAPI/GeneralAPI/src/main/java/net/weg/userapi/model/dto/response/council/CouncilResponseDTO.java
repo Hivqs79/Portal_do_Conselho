@@ -3,7 +3,7 @@ package net.weg.userapi.model.dto.response.council;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.weg.userapi.model.dto.response.ClassResponseDTO;
+import net.weg.userapi.model.dto.response.classes.ClassResponseDTO;
 import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
 
 import java.time.LocalDate;

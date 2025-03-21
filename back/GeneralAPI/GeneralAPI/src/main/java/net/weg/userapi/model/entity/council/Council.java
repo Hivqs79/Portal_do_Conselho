@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.weg.userapi.model.entity.Class;
+import net.weg.userapi.model.entity.classes.Class;
 import net.weg.userapi.model.entity.annotation.Annotation;
 import net.weg.userapi.model.entity.feedback.Feedback;
 import net.weg.userapi.model.entity.preCouncil.PreCouncil;

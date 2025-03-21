@@ -5,23 +5,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.KafkaException;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
-import net.weg.userapi.model.KafkaMessage;
+import net.weg.userapi.service.kafka.KafkaMessage;
 import net.weg.userapi.model.dto.request.users.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
-import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
-import net.weg.userapi.model.entity.Class;
+import net.weg.userapi.model.entity.classes.Class;
 import net.weg.userapi.model.entity.users.Student;
-import net.weg.userapi.model.entity.users.Teacher;
 import net.weg.userapi.repository.StudentRepository;
-import net.weg.userapi.service.ClassService;
-import net.weg.userapi.service.KafkaProducerService;
+import net.weg.userapi.service.classes.ClassService;
+import net.weg.userapi.service.kafka.KafkaProducerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service

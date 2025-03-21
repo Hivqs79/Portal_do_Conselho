@@ -1,11 +1,11 @@
-package net.weg.userapi.controller;
+package net.weg.userapi.controller.classes;
 
 import lombok.AllArgsConstructor;
-import net.weg.userapi.model.dto.request.ClassRequestDTO;
-import net.weg.userapi.model.dto.response.ClassResponseDTO;
+import net.weg.userapi.model.dto.request.classes.ClassRequestDTO;
+import net.weg.userapi.model.dto.response.classes.ClassResponseDTO;
 import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
 import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
-import net.weg.userapi.service.ClassService;
+import net.weg.userapi.service.classes.ClassService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;

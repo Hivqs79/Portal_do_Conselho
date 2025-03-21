@@ -1,16 +1,17 @@
-package net.weg.userapi.model.dto.response;
+package net.weg.userapi.model.dto.response.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @Data
-public class ExceptionResponseDTO {
+public class ValidationResponseDTO {
     private int status;
     private String error;
-    private String message;
+    private List<String> message;
     private String path;
     private Class aClass;
     private LocalDateTime timestamp;

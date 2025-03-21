@@ -1,4 +1,4 @@
-package net.weg.userapi.model.dto.response;
+package net.weg.userapi.model.dto.response.classes;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
