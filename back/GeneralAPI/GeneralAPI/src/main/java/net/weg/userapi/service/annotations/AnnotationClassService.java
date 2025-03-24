@@ -22,7 +22,6 @@ import java.time.OffsetDateTime;
 public class AnnotationClassService {
 
     private AnnotationClassRepository repository;
-    private ClassService classService;
     private TeacherService teacherService;
     private CouncilService councilService;
     private ModelMapper modelMapper;

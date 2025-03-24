@@ -1,6 +1,8 @@
 package net.weg.userapi.service.classes;
 
 import lombok.AllArgsConstructor;
+import net.kaczmarzyk.spring.data.jpa.domain.Like;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import net.weg.userapi.exception.exceptions.ClassNotFoundException;
 import net.weg.userapi.model.dto.request.classes.ClassRequestDTO;
 import net.weg.userapi.model.dto.response.classes.ClassResponseDTO;
@@ -11,7 +13,10 @@ import net.weg.userapi.repository.ClassRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +27,14 @@ public class ClassService {
 
     private ClassRepository repository;
     private ModelMapper modelMapper;
+
+    public List<ClassResponseDTO> findClassSpec(Specification<Class> spec) {
+        try {
+            return repository.findAll(spec).stream().map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class)).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException("Error executing specification search", e);
+        }
+    }
 
     public List<StudentResponseDTO> getStudentsByClass(Integer class_id) {
         Class aClass = findClassEntity(class_id);
@@ -70,7 +83,7 @@ public class ClassService {
         return classResponseDTO;
     }
 
-    public void mockarClass (List<ClassRequestDTO> classRequestDTOS) {
+    public void mockarClass(List<ClassRequestDTO> classRequestDTOS) {
         List<Class> classes = classRequestDTOS.stream().map(classRequestDTO -> modelMapper.map(classRequestDTO, Class.class)).collect(Collectors.toList());
         repository.saveAll(classes);
     }

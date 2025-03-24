@@ -27,14 +27,12 @@ public class StudentRequestDTO {
     @NotNull(message = "{not.null.message}")
     private Boolean isRepresentant;
 
-    private Double frequency;
+    @NotNull
+    private List<Integer> classes_id;
 
     //Podem ser nulo
 
     private UUID imageKey;
-
-    @NotNull
-    private List<Integer> classes_id;
-
+    private Double frequency;
 
 }

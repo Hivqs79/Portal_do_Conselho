@@ -1,13 +1,21 @@
 package net.weg.userapi.controller.classes;
 
 import lombok.AllArgsConstructor;
+import net.kaczmarzyk.spring.data.jpa.domain.Equal;
+import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
+import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
+import net.kaczmarzyk.spring.data.jpa.domain.Like;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import net.weg.userapi.model.dto.request.classes.ClassRequestDTO;
 import net.weg.userapi.model.dto.response.classes.ClassResponseDTO;
 import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
 import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
+import net.weg.userapi.model.entity.classes.Class;
 import net.weg.userapi.service.classes.ClassService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +29,20 @@ import java.util.List;
 public class ClassController {
 
     private ClassService service;
+
+
+    @GetMapping("/spec")
+    public List<ClassResponseDTO> searchClasses(
+            @And({
+                    @Spec(path = "name", spec = Like.class),
+                    @Spec(path = "area", spec = Like.class),
+                    @Spec(path = "course", spec = Like.class),
+                    @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class),
+                    @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)
+            }) Specification<Class> spec) {
+
+        return service.findClassSpec(spec);
+    }
 
     @PostMapping
     public ResponseEntity<ClassResponseDTO> postClass(@RequestBody @Validated ClassRequestDTO classRequestDTO) {
