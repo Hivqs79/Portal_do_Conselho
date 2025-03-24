@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Box, Checkbox, FormControlLabel, Radio, RadioGroup, Typography } from "@mui/material";
 import { useThemeContext } from "@/hooks/useTheme";
 import OpacityHex from "@/hooks/OpacityHex";
@@ -101,7 +101,10 @@ export default function SelectTable({ selectType, name, rows, value, setSelected
                                     label={null} 
                                     />                            
                                     )}
-                            <Typography variant={windowWidth < 640 ? "sm_text_regular" : "lg_text_regular"}>{row.name}</Typography>
+                            <Typography 
+                                variant={windowWidth < 640 ? "sm_text_regular" : "lg_text_regular"}
+                                onClick={() => selectType === "single" ? (setRadioSelectedItem && setRadioSelectedItem(row.id)) : handleCheckboxChange(row.id.toString())}
+                                >{row.name}</Typography>
                         </Box>
                     ))}
                 </RadioGroup>

@@ -6,12 +6,16 @@ import { ThemeProviderContext, useThemeContext } from "@/hooks/useTheme";
 import { Box, ThemeProvider } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { ReactElement, useEffect } from "react";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 export default function InnerLayout({ children }: { children: ReactElement }) {
   return (
     <ThemeProviderContext>
       <RoleProvider>
-        <CoreLayout>{children}</CoreLayout>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <CoreLayout>{children}</CoreLayout>
+        </LocalizationProvider>
       </RoleProvider>
     </ThemeProviderContext>
   );

@@ -1,6 +1,6 @@
 "use client";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Box, Button, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useWindowWidth } from "@react-hook/window-size";
 import { useState } from "react";
 
@@ -47,29 +47,5 @@ export default function SwapButton({ button1Text, button2Text, onClickButton1, o
                 {button2Text}
             </Typography>
         </Button>
-        // <Box bgcolor={terciaryColor}>
-        //     <Button 
-        //         onClick={() => {
-        //             setButton1Focused(true);
-        //             onClickButton1();
-        //         }}
-        //         variant="contained"
-        //         color={button1Focused ? "primary" : "terciary"}
-        //         className="w-1/2 !shadow-none"
-        //     >
-        //         {button1Text}
-        //     </Button>
-        //     <Button 
-        //         onClick={() => {
-        //             setButton1Focused(false);
-        //             onClickButton2();
-        //         }} 
-        //         variant="contained"
-        //         color={!button1Focused ? "primary" : "terciary"}
-        //         className="w-1/2 !shadow-none"
-        //     >
-        //         {button2Text}
-        //     </Button>
-        // </Box>
     );
 }
