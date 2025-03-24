@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import net.weg.userapi.model.entity.council.Council;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -25,6 +27,23 @@ public abstract class Feedback {
 
     @Column(nullable = false)
     private String toImprove;
+
+    @Column(name = "create_date", nullable = false)
+    private LocalDateTime createDate;
+
+    @Column(name = "update_date", nullable = false)
+    private LocalDateTime updateDate;
+
+    @PrePersist
+    public void onPrePersist() {
+        this.setCreateDate(LocalDateTime.now());
+        this.setUpdateDate(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.setUpdateDate(LocalDateTime.now());
+    }
 
     @Override
     public String toString() {

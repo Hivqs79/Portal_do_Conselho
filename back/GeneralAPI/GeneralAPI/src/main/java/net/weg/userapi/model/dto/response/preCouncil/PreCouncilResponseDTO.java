@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.dto.response.council.CouncilResponseDTO;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,4 +14,6 @@ public class PreCouncilResponseDTO {
 
     private Integer id;
     private CouncilResponseDTO council;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 }

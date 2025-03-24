@@ -7,6 +7,7 @@ import net.weg.userapi.model.dto.response.council.CouncilResponseDTO;
 import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
 import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Data
@@ -17,9 +18,10 @@ public class AnnotationStudentResponseDTO {
     private String rank;
     private String strengths;
     private String toImprove;
-    private OffsetDateTime releaseDate;
     private TeacherResponseDTO teacher;
     private StudentResponseDTO student;
     private CouncilResponseDTO council;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.model.entity.users.Teacher;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -22,14 +23,29 @@ public abstract class Annotation {
     private String strengths;
     @Column(nullable = false)
     private String toImprove;
-    @Column(nullable = false)
-    private OffsetDateTime releaseDate;
 
     @ManyToOne
     private Council council;
 
     @ManyToOne
     private Teacher teacher;
+
+    @Column(name = "create_date", nullable = false)
+    private LocalDateTime createDate;
+
+    @Column(name = "update_date", nullable = false)
+    private LocalDateTime updateDate;
+
+    @PrePersist
+    public void onPrePersist() {
+        this.setCreateDate(LocalDateTime.now());
+        this.setUpdateDate(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.setUpdateDate(LocalDateTime.now());
+    }
 
     @Override
     public String toString() {
@@ -38,7 +54,6 @@ public abstract class Annotation {
                 ", rank='" + rank + '\'' +
                 ", strengths='" + strengths + '\'' +
                 ", toImprove='" + toImprove + '\'' +
-                ", releaseDate=" + releaseDate +
                 ", council=" + council.getId() +
                 ", teacher=" + teacher.getName() +
                 '}';

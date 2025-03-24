@@ -7,6 +7,7 @@ import net.weg.userapi.model.dto.response.classes.ClassResponseDTO;
 import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -18,10 +19,10 @@ public class CouncilResponseDTO {
     private Integer id;
     private LocalDate date;
     private LocalTime time;
-
     private ClassResponseDTO aClass;
-
     private List<TeacherResponseDTO> teachers;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 
 
 }

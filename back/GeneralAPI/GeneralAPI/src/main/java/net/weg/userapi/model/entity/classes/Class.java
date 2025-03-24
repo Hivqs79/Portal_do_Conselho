@@ -11,6 +11,7 @@ import net.weg.userapi.model.entity.users.Student;
 import net.weg.userapi.model.entity.users.Teacher;
 import net.weg.userapi.model.enums.ClassAreaENUM;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -43,6 +44,23 @@ public class Class {
 
     @OneToMany(mappedBy = "aClass")
     private List<Council> councils;
+
+    @Column(name = "create_date", nullable = false)
+    private LocalDateTime createDate;
+
+    @Column(name = "update_date", nullable = false)
+    private LocalDateTime updateDate;
+
+    @PrePersist
+    public void onPrePersist() {
+        this.setCreateDate(LocalDateTime.now());
+        this.setUpdateDate(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.setUpdateDate(LocalDateTime.now());
+    }
 
     @Override
     public String toString() {

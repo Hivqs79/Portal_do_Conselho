@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Entity
 @Table(name = "preCouncilSection")
@@ -31,6 +33,22 @@ public class PreCouncilSection {
     @Column(nullable = false)
     private String toImprove;
 
+    @Column(name = "create_date", nullable = false)
+    private LocalDateTime createDate;
+
+    @Column(name = "update_date", nullable = false)
+    private LocalDateTime updateDate;
+
+    @PrePersist
+    public void onPrePersist() {
+        this.setCreateDate(LocalDateTime.now());
+        this.setUpdateDate(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.setUpdateDate(LocalDateTime.now());
+    }
     @Override
     public String toString() {
         return "PreCouncilSection{" +

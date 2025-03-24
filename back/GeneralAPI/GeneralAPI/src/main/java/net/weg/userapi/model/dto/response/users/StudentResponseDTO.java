@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.dto.response.classes.ClassResponseDTO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,4 +20,6 @@ public class StudentResponseDTO {
     private Double frequency;
     private UUID imageKey;
     private List<ClassResponseDTO> classes;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 }

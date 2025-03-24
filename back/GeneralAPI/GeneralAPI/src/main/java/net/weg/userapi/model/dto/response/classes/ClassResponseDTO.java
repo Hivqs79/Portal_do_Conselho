@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,4 +15,6 @@ public class ClassResponseDTO {
     private String name;
     private String area;
     private String course;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 }

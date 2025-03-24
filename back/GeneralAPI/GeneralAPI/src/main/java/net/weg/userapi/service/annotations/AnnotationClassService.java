@@ -34,7 +34,6 @@ public class AnnotationClassService {
 
         annotationClass.setTeacher(teacherService.findTeacherEntity(annotationClassRequestDTO.getTeacher_id())); //SETAR PROFESSOR
         annotationClass.setCouncil(council); //SETAR CONSELHO
-        annotationClass.setReleaseDate(OffsetDateTime.now()); //SETAR HORARIO
 
         AnnotationClass annotationSaved = repository.save(annotationClass);
 

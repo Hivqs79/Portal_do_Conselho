@@ -47,7 +47,6 @@ public class AnnotationStudentService {
         annotationStudent.setCouncil(council); //SETAR CONSELHO
         annotationStudent.setStudent(studentService.findStudentEntity(annotationStudentRequestDTO.getStudent_id())); //SETAR ALUNO
         annotationStudent.setTeacher(teacherService.findTeacherEntity(annotationStudentRequestDTO.getTeacher_id())); //SETAR PROFESSOR
-        annotationStudent.setReleaseDate(OffsetDateTime.now()); //SETAR DATA
 
         AnnotationStudent annotationSaved = repository.save(annotationStudent);
 

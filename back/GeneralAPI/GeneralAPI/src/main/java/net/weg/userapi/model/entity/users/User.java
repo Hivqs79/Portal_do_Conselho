@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import net.weg.userapi.model.entity.feedback.FeedbackUser;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +26,23 @@ public abstract class User {
 
     @Column(nullable = true)
     private UUID imageKey;
+
+    @Column(name = "create_date", nullable = false)
+    private LocalDateTime createDate;
+
+    @Column(name = "update_date", nullable = false)
+    private LocalDateTime updateDate;
+
+    @PrePersist
+    public void onPrePersist() {
+        this.setCreateDate(LocalDateTime.now());
+        this.setUpdateDate(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.setUpdateDate(LocalDateTime.now());
+    }
 
     @OneToMany(mappedBy = "user")
     private List<FeedbackUser> feedbackUsers;

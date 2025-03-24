@@ -7,6 +7,8 @@ import net.weg.userapi.model.dto.response.council.CouncilResponseDTO;
 import net.weg.userapi.model.dto.response.users.UserResponseDTO;
 import net.weg.userapi.model.entity.users.User;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,5 +19,7 @@ public class FeedbackUserResponseDTO {
     private String strengths;
     private String toImprove;
     private UserResponseDTO user;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 
 }

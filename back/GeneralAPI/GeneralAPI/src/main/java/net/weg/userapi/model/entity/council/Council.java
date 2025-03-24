@@ -12,6 +12,7 @@ import net.weg.userapi.model.entity.preCouncil.PreCouncil;
 import net.weg.userapi.model.entity.users.Teacher;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -49,6 +50,23 @@ public class Council {
 
     @OneToOne(mappedBy = "council")
     private PreCouncil preCouncil;
+
+    @Column(name = "create_date", nullable = false)
+    private LocalDateTime createDate;
+
+    @Column(name = "update_date", nullable = false)
+    private LocalDateTime updateDate;
+
+    @PrePersist
+    public void onPrePersist() {
+        this.setCreateDate(LocalDateTime.now());
+        this.setUpdateDate(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.setUpdateDate(LocalDateTime.now());
+    }
 
     @Override
     public String toString() {
