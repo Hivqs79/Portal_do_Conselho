@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactElement;
 }>) {  
   return (
-    <html lang="pt">
+    <html className="antialiased" lang="pt">
       <InnerLayout>{children}</InnerLayout>
     </html>
   );

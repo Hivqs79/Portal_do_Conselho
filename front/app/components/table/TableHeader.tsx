@@ -9,7 +9,6 @@ import Search from "./Search";
 import Rank from "../rank/Rank";
 import { Decryptor } from "@/encryption/Decryptor";
 import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
-import CommentariesModal from "../Modals/CommentariesModal";
 
 interface TableHeaderProps {
   variant: "Table" | "council";
@@ -106,7 +105,7 @@ export default function TableHeader({
           className="max-w-[1024px] rounded-t-big"
         >
           <tr className="w-full flex flex-wrap gap-5 justify-between items-center p-3 lg:px-6">
-            <th className="flex w-full md:w-[250px] p-0">
+            <th className="flex flex-1 w-full md:w-[250px] p-0">
               <Typography variant="sm_text_bold" color={whiteColor}>
                 Feedback da turma no geral
               </Typography>

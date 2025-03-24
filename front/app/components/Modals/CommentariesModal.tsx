@@ -1,9 +1,6 @@
 "use client";
 import { useThemeContext } from "@/hooks/useTheme";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Modal,
   Typography,
@@ -11,8 +8,7 @@ import {
 import { IoClose } from "react-icons/io5";
 import Icon from "../Icon";
 import { useEffect } from "react";
-import Anotation from "../Anotation";
-import { IoIosArrowUp } from "react-icons/io";
+import AccordionComponent from "../AccordionComponent";
 import OpacityHex from "@/hooks/OpacityHex";
 
 interface CommentariesModalProps {
@@ -96,7 +92,8 @@ export default function CommentariesModal({
           >
             <span className="flex rounded-big flex-col max-h-[550px] p-2 gap-2 overflow-y-scroll">
               {anotations.map((anotation: any, index: number) => (
-                <Anotation
+                <AccordionComponent
+                  type="council"
                   key={index}
                   name={anotation.name}
                   rank={verifyRank(anotation.rank)}

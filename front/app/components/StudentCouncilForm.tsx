@@ -214,7 +214,7 @@ export default function StudentCouncilForm({
                 />
               </span>
             </span>
-            <span className="lg:hidden">
+            <span className="lg:hidden w-full">
               <Button
                 variant="contained"
                 sx={{ width: "100%" }}

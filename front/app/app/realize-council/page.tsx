@@ -12,6 +12,7 @@ import { Encryptor } from "@/encryption/Encryptor";
 import OpacityHex from "@/hooks/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, Typography } from "@mui/material";
+import { useWindowWidth } from "@react-hook/window-size";
 import { useState, useEffect } from "react";
 
 type UserComment = {
@@ -52,7 +53,7 @@ export default function RealizeCouncil() {
   const [actualRank, setActualRank] = useState<
     "none" | "average" | "excellent" | "good" | "critical"
   >("none");
-
+  const windowSize = useWindowWidth();
   const [isModalTeacherOpen, setIsModalTeacherOpen] = useState(false);
   const [isModalStudentOpen, setIsModalStudentOpen] = useState(false);
   const [isCancelCouncilOpen, setIsCancelCouncilOpen] = useState(false);
@@ -364,12 +365,12 @@ export default function RealizeCouncil() {
         text={`da turma: ${data ? data["council-form"].class.name : ""}`}
       />
       <Box
-        className={`rounded-big m-0 flex justify-center items-center outline-[16px] outline`}
+        className={`rounded-big m-0 flex justify-center items-center sm:outline-[16px] sm:outline`}
         style={{ outlineColor: OpacityHex(constrastColor, 0.1) }}
       >
         <Box
           borderColor={colorByModeSecondary}
-          className="rounded-big border-2 w-full p-5 m-0"
+          className="rounded-big sm:border-2 w-full p-5 m-0"
           bgcolor={backgroundColor}
         >
           <Box
@@ -426,7 +427,7 @@ export default function RealizeCouncil() {
               color="terciary"
               onClick={() => cancelCouncil()}
             >
-              <Typography variant="lg_text_bold" color={textBlackolor}>
+              <Typography variant={windowSize < 600 ? "sm_text_bold" : "lg_text_bold"} color={textBlackolor}>
                 Cancelar Conselho
               </Typography>
             </Button>
@@ -436,7 +437,7 @@ export default function RealizeCouncil() {
               color="primary"
               onClick={() => OpenfinalizeCouncilModal()}
             >
-              <Typography variant="lg_text_bold" color={whiteColor}>
+              <Typography variant={windowSize < 600 ? "sm_text_bold" : "lg_text_bold"} color={whiteColor}>
                 Terminar Conselho
               </Typography>
             </Button>
