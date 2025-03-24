@@ -87,7 +87,10 @@ export default function Anotation({
             {name}
           </Typography>
           {isOpen && (
-            <span className="flex items-center gap-5">
+            <span
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center gap-5 cursor-default"
+            >
               <Typography variant="lg_text_bold" color={whiteColor}>
                 Classificação da turma:
               </Typography>

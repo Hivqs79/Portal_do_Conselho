@@ -345,11 +345,15 @@ export default function RealizeCouncil() {
     setIsRealizeCouncilOpen(false);
   };
 
-  const closeCancleCouncilModal = () => {
+  const CancelCouncil = () => {
     setIsLoadingOpen(true);
     setTimeout(() => {
       setIsLoadingOpen(false);
     }, 2000);
+    setIsCancelCouncilOpen(false);
+  };
+
+  const closeCancleCouncilModal = () => {
     setIsCancelCouncilOpen(false);
   };
 
@@ -468,6 +472,7 @@ export default function RealizeCouncil() {
           confirmColor="red"
           description="Você tem certeza que deseja cancelar este conselho? Ao fazer isso ele voltará para a lista de conselhos a fazer e todo o progresso será perdido."
           onClose={closeCancleCouncilModal}
+          onCloseButton={CancelCouncil}
         />
       )) ||
         (isRealizelCouncilOpen && (
