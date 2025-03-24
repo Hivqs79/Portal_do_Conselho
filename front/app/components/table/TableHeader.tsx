@@ -28,7 +28,7 @@ export default function TableHeader({
 }: TableHeaderProps) {
   const [actualRank, setActualRank] = useState(data);
 
-  const { primaryColor, whiteColor, textDarkColor } = useThemeContext();
+  const { primaryColor, whiteColor, textDarkColor, colorByMode, colorByModeSecondary } = useThemeContext();
   const {
     filterButton,
     orderButton,
@@ -102,12 +102,12 @@ export default function TableHeader({
     return (
       <>
         <thead
-          style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
-          className="max-w-[1024px] rounded-big"
+          style={{ backgroundColor: primaryColor, boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}` }}
+          className="max-w-[1024px] rounded-t-big"
         >
           <tr className="w-full flex flex-wrap gap-5 justify-between items-center p-3 lg:px-6">
             <th className="flex w-full md:w-[250px] p-0">
-              <Typography variant="sm_text_bold" color="white">
+              <Typography variant="sm_text_bold" color={whiteColor}>
                 Feedback da turma no geral
               </Typography>
             </th>

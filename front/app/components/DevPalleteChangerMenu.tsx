@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import Icon from "./Icon";
 import { IoIosArrowUp } from "react-icons/io";
+import { colors } from "@/theme/BrandColors";
 
 export default function DevPalleteChangerMenu() {
     const {backgroundColor, constrastColor, primaryColor, changeThemeMode, changePallete, getThemeMode } = useThemeContext();
@@ -41,11 +42,11 @@ export default function DevPalleteChangerMenu() {
                         <Icon IconPassed={IoClose} />
                     </Box>
                     <RadioGroup value={color} onChange={handleChangeColor}>
-                        {["blue", "green", "red", "orange", "pink", "purple", "yellow", "gray"].map((color, index) => {
+                        {Object.entries(colors.pallete).map((color, index) => {
                             return <FormControlLabel          
-                                label={<Typography variant="sm_text_regular">{color}</Typography>} 
-                                value={color}   
-                                key={index}         
+                                label={<Typography variant="sm_text_regular">{color[0]}</Typography>} 
+                                value={color[0]}   
+                                key={index}
                                 control={<Radio />}
                             />
                         })}          

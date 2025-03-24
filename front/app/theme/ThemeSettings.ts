@@ -51,9 +51,7 @@ const whiteColor = colors.whiteColor;
 const blackColor = colors.blackColor;
 
 export default class ThemeSettings {
-
   public static getThemeMode(): "dark" | "light" {
-    
     const mode = localStorage.getItem("mode");
     const isDarkMode = document.documentElement.classList.contains("dark");
     if (mode === "dark" && !isDarkMode) {
@@ -132,12 +130,12 @@ export default class ThemeSettings {
     if (!multiplier) {
       localStorage.setItem("fontMultiplier", "1");
       return 1;
-    } 
+    }
     return parseFloat(multiplier);
   }
 
   public static changeFontSize(multiplier: number) {
-    localStorage.setItem("fontMultiplier", multiplier.toString());        
+    localStorage.setItem("fontMultiplier", multiplier.toString());
   }
 
   public static getFontFamilyText() {
@@ -145,12 +143,12 @@ export default class ThemeSettings {
     if (!fontFamilyText) {
       localStorage.setItem("fontFamilyText", "Poppins");
       return "Poppins";
-    } 
+    }
     return fontFamilyText;
   }
 
   public static changeFontFamilyText(fontFamilyText: string) {
-    localStorage.setItem("fontFamilyText", fontFamilyText);        
+    localStorage.setItem("fontFamilyText", fontFamilyText);
   }
 
   public static getFontFamilyTitle() {
@@ -158,19 +156,19 @@ export default class ThemeSettings {
     if (!fontFamilyText) {
       localStorage.setItem("fontFamilyTitle", "Inter");
       return "Lora";
-    } 
+    }
     return fontFamilyText;
   }
 
   public static changeFontFamilyTitle(fontFamilyText: string) {
-    localStorage.setItem("fontFamilyTitle", fontFamilyText);        
+    localStorage.setItem("fontFamilyTitle", fontFamilyText);
   }
-  
 
   public static createThemePallete() {
     const themeBase = createTheme({});
     const primary_color = BrandColors.primary_color;
     const secondary_color = BrandColors.secondary_color;
+    const redDanger = colors.redDanger;
     const terciary_color = BrandColors.terciary_color;
     const colorByMode = this.getColorByMode();
     const fontMultiplier = this.getFontSize();
@@ -214,6 +212,12 @@ export default class ThemeSettings {
             contrastText: this.getBetterContrast(terciary_color),
           },
         }),
+        error: {
+          main: redDanger,
+          light: this.lighterColor(redDanger),
+          dark: this.darkerColor(redDanger),
+          contrastText: this.getBetterContrast(redDanger),
+        },
       },
       typography: {
         h1_title: {
@@ -369,16 +373,18 @@ export default class ThemeSettings {
         MuiOutlinedInput: {
           styleOverrides: {
             root: {
-              "&:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline": {
-                borderColor: colorByMode,
-                borderWidth: "2px",
-                color: this.getContrastThemeColor(),
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: colorByMode,
-                borderWidth: "2px",
-                boxShadow: "2px 2px 4px 1px" + colorByMode + "77",
-              },
+              "&:hover:not(.Mui-focused):not(.Mui-error) .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: colorByMode,
+                  borderWidth: "2px",
+                  color: this.getContrastThemeColor(),
+                },
+              "&.Mui-focused:not(.Mui-error) .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: colorByMode,
+                  borderWidth: "2px",
+                  boxShadow: "2px 2px 4px 1px" + colorByMode + "77",
+                },
               color: this.getContrastThemeColor(),
             },
             notchedOutline: {
@@ -406,22 +412,19 @@ export default class ThemeSettings {
               padding: "8px 24px",
             },
           },
-        }, 
+        },
         MuiModal: {
           styleOverrides: {
             root: {
-              zIndex: 25,
-            }, 
-            backdrop: {
-              zIndex: 20,
-            }           
-          }
+              zIndex: 80,
+            },
+          },
         },
         MuiPaper: {
           styleOverrides: {
             root: {
               zIndex: 25,
-            },        
+            },
           },
         },
         MuiPaginationItem: {
@@ -455,9 +458,16 @@ export default class ThemeSettings {
           styleOverrides: {
             root: {
               textTransform: "none",
-            }
-          }
-        }
+            },
+          },
+        },
+        MuiAccordion: {
+          styleOverrides: {
+            root: {
+              borderRadius: "16px !important",
+            },
+          },
+        },
       },
     });
   }

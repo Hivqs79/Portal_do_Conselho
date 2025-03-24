@@ -1,6 +1,9 @@
 "use client";
 import AvaliationInputs from "@/components/council/AvaliationInputs";
 import CommentariesModal from "@/components/Modals/CommentariesModal";
+import ConfirmChanges from "@/components/Modals/ConfirmChanges";
+import ConfirmMessagesModal from "@/components/Modals/ConfirmMessagesModal";
+import LoadingModal from "@/components/Modals/LoadingModal";
 import StudentCouncilForm from "@/components/StudentCouncilForm";
 import TableHeader from "@/components/table/TableHeader";
 import Title from "@/components/Title";
@@ -13,26 +16,21 @@ import { useState, useEffect } from "react";
 
 type UserComment = {
   name: string;
-  rank?: string;
+  rank: string;
   positiveContent: string;
   negativeContent: string;
 };
 
 type User = {
   name: string;
-  frequencia: number;
+  frequencia?: number;
   imageKey: string;
-  negativeContent: string;
-  positiveContent: string;
-  rank: string;
+  rank?: string;
   comments: UserComment[];
 };
 
 type CouncilClass = {
   name: string;
-  positiveContent: string;
-  negativeContent: string;
-  rank: string;
   teacherAnotations: TeacherAnnotation[];
 };
 
@@ -57,6 +55,26 @@ export default function RealizeCouncil() {
 
   const [isModalTeacherOpen, setIsModalTeacherOpen] = useState(false);
   const [isModalStudentOpen, setIsModalStudentOpen] = useState(false);
+  const [isCancelCouncilOpen, setIsCancelCouncilOpen] = useState(false);
+  const [isRealizelCouncilOpen, setIsRealizeCouncilOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isLoadingOpen, setIsLoadingOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState<{
+    title: string;
+    message: string;
+    error: boolean;
+  }>({
+    title: "",
+    message: "",
+    error: false,
+  });
+  const {
+    constrastColor,
+    backgroundColor,
+    colorByModeSecondary,
+    whiteColor,
+    textBlackolor,
+  } = useThemeContext();
 
   useEffect(() => {
     const fetchCouncilContent = async () => {
@@ -128,9 +146,6 @@ export default function RealizeCouncil() {
     }
   };
 
-  const { constrastColor, backgroundColor, primaryColor, whiteColor } =
-    useThemeContext();
-
   const openTeacherModal = () => {
     setIsModalTeacherOpen(true);
   };
@@ -147,6 +162,197 @@ export default function RealizeCouncil() {
     setIsModalStudentOpen(false);
   };
 
+  function finalizeCouncil() {
+    const ClassRank = getDecryptedData("rank");
+    const ClassnegativeContent = getDecryptedData("negativeContent");
+    const ClasspositiveContent = getDecryptedData("positiveContent");
+
+    let studentsData: { [key: string]: any } = {};
+    let councilClassName: string = "";
+
+    const savedData = localStorage.getItem("studentsData");
+    if (data) {
+      councilClassName = data["council-form"].class.name;
+      if (savedData) {
+        const decryptedData = Decryptor(savedData);
+        if (decryptedData) {
+          studentsData = decryptedData;
+        } else {
+          studentsData = [];
+        }
+      }
+      console.log("Conselho finalizado com sucesso!");
+      console.log("data: ", data);
+      console.log(
+        "Final json: ",
+        formatFinalCouncilJson(
+          ClassRank,
+          ClassnegativeContent,
+          ClasspositiveContent,
+          studentsData,
+          councilClassName
+        )
+      );
+      setModalMessage({
+        title: "Conselho finalizado com sucesso!",
+        message:
+          "O conselhoi foi finalizado com sucesso, vá até a página de liberação de conselhos para visualá-lo.",
+        error: false,
+      });
+      setIsLoadingOpen(true);
+      setTimeout(() => {
+        setIsConfirmModalOpen(true);
+        setIsRealizeCouncilOpen(false);
+        setIsLoadingOpen(false);
+        setTimeout(() => {
+          setIsConfirmModalOpen(false);
+        }, 2000);
+      }, 2000);
+    }
+  }
+
+  function verifyCouncil() {
+    console.log("oi aaa");
+    const ClassRank = getDecryptedData("rank");
+    const ClassnegativeContent = getDecryptedData("negativeContent");
+    const ClasspositiveContent = getDecryptedData("positiveContent");
+
+    let studentsData: { [key: string]: any } = {};
+    let councilClassName: string = "";
+
+    const savedData = localStorage.getItem("studentsData");
+    if (data) {
+      councilClassName = data["council-form"].class.name;
+      if (savedData) {
+        const decryptedData = Decryptor(savedData);
+        if (decryptedData) {
+          studentsData = decryptedData;
+        } else {
+          studentsData = [];
+        }
+      }
+      if (
+        ClassRank === "none" ||
+        ClassnegativeContent === "" ||
+        ClasspositiveContent === ""
+      ) {
+        setModalMessage({
+          title: "Erro ao finalizar o Conselho",
+          message: "Voce deve preencher todos os campos da turma!",
+          error: true,
+        });
+        return false;
+      }
+      for (let i = 0; i < data["council-form"].users.length; i++) {
+        const userName = data["council-form"].users[i].name;
+        if (studentsData[userName] === undefined) {
+          console.log("Você deve preencer o aluno: ", userName);
+          return false;
+        } else if (
+          studentsData[userName].frequencia === 0 ||
+          studentsData[userName].rank === "none" ||
+          studentsData[userName].positiveContent === "" ||
+          studentsData[userName].negativeContent === ""
+        ) {
+          setModalMessage({
+            title: "Erro ao finalizar o Conselho",
+            message: "Aluno incompleto: " + userName,
+            error: true,
+          });
+          return false;
+        }
+      }
+      return true;
+    }
+  }
+
+  function cancelCouncil() {
+    setIsCancelCouncilOpen(true);
+  }
+
+  function formatFinalCouncilJson(
+    ClassRank: string,
+    ClassnegativeContent: string,
+    ClasspositiveContent: string,
+    studentsData: { [key: string]: any },
+    councilClassName: string
+  ): any {
+    const studentsArray = Object.keys(studentsData).map((studentName) => {
+      return {
+        name: studentName,
+        frequencia: studentsData[studentName].frequencia,
+        rank: studentsData[studentName].rank,
+        positiveContent: studentsData[studentName].positiveContent,
+        negativeContent: studentsData[studentName].negativeContent,
+      };
+    });
+
+    const formattedData = {
+      "council-form": {
+        class: {
+          name: councilClassName,
+          ClassRank: ClassRank,
+          ClassnegativeContent: ClassnegativeContent,
+          ClasspositiveContent: ClasspositiveContent,
+        },
+        users: studentsArray,
+      },
+    };
+
+    return formattedData;
+  }
+
+  function verifyRank() {
+    if (data) {
+      const rank = data["council-form"].users[currentStudentIndex].rank;
+      if (rank === undefined || rank === null) {
+        return "none";
+      }
+      return rank as "none" | "average" | "excellent" | "good" | "critical";
+    }
+    return "none";
+  }
+
+  function verifyFrequency() {
+    if (data) {
+      const frequency =
+        data["council-form"].users[currentStudentIndex].frequencia;
+      if (frequency === undefined || frequency === null) {
+        return 0;
+      }
+      return frequency;
+    }
+    return 0;
+  }
+
+  const OpenfinalizeCouncilModal = () => {
+    const result = verifyCouncil();
+    if (result) {
+      openRealizeCouncilModal();
+    } else {
+      setIsConfirmModalOpen(true);
+      setTimeout(() => {
+        setIsConfirmModalOpen(false);
+      }, 2000);
+    }
+  };
+
+  const openRealizeCouncilModal = () => {
+    setIsRealizeCouncilOpen(true);
+  };
+
+  const closeRealizeCouncilModal = () => {
+    setIsRealizeCouncilOpen(false);
+  };
+
+  const closeCancleCouncilModal = () => {
+    setIsLoadingOpen(true);
+    setTimeout(() => {
+      setIsLoadingOpen(false);
+    }, 2000);
+    setIsCancelCouncilOpen(false);
+  };
+
   return (
     <Box>
       <Title
@@ -154,16 +360,16 @@ export default function RealizeCouncil() {
         text={`da turma: ${data ? data["council-form"].class.name : ""}`}
       />
       <Box
-        className="rounded-big m-0 flex justify-center items-center outline-[16px] outline"
+        className={`rounded-big m-0 flex justify-center items-center outline-[16px] outline`}
         style={{ outlineColor: OpacityHex(constrastColor, 0.1) }}
       >
         <Box
-          borderColor={primaryColor}
+          borderColor={colorByModeSecondary}
           className="rounded-big border-2 w-full p-5 m-0"
           bgcolor={backgroundColor}
         >
           <Box
-            style={{ borderColor: primaryColor }}
+            style={{ borderColor: colorByModeSecondary }}
             className="w-full overflow-hidden rounded-t-big flex flex-col gap-6"
           >
             <div>
@@ -193,39 +399,44 @@ export default function RealizeCouncil() {
                     ? data["council-form"].users[currentStudentIndex].name
                     : ""
                 }
-                frequencia={
-                  data
-                    ? data["council-form"].users[currentStudentIndex].frequencia
-                    : 0
-                }
+                frequencia={verifyFrequency()}
                 comments=""
                 negativeContent={negativeContent}
                 positiveContent={positiveContent}
-                rank={
-                  data
-                    ? (data["council-form"].users[currentStudentIndex].rank as
-                        | "none"
-                        | "average"
-                        | "excellent"
-                        | "good"
-                        | "critical")
-                    : "none"
-                }
+                rank={verifyRank()}
                 onNext={handleNextStudent}
                 onPrevious={handlePreviousStudent}
                 openCommentsModal={openStudentModal}
+                imageKey={
+                  data
+                    ? data["council-form"].users[currentStudentIndex].imageKey
+                    : ""
+                }
               />
             </div>
           </Box>
-          <Button
-            className="w-full !mt-5 !rounded-normal"
-            variant="contained"
-            color="primary"
-          >
-            <Typography variant="lg_text_bold" color={whiteColor}>
-              Terminar Conselho
-            </Typography>
-          </Button>
+          <Box className="flex gap-10">
+            <Button
+              className="w-full !mt-5 !rounded-normal"
+              variant="contained"
+              color="terciary"
+              onClick={() => cancelCouncil()}
+            >
+              <Typography variant="lg_text_bold" color={textBlackolor}>
+                Cancelar Conselho
+              </Typography>
+            </Button>
+            <Button
+              className="w-full !mt-5 !rounded-normal"
+              variant="contained"
+              color="primary"
+              onClick={() => OpenfinalizeCouncilModal()}
+            >
+              <Typography variant="lg_text_bold" color={whiteColor}>
+                Terminar Conselho
+              </Typography>
+            </Button>
+          </Box>
         </Box>
       </Box>
       {isModalTeacherOpen && (
@@ -248,6 +459,37 @@ export default function RealizeCouncil() {
           onClose={closeStudentModal}
         />
       )}
+      {(isCancelCouncilOpen && (
+        <ConfirmChanges
+          confirmButtonText="Cancelar Conselho"
+          title="Cancelar Conselho"
+          confirmText="Confirmar cancelamento do conselho atual"
+          secondDescription="Para você cancelar o conselho, voce precisa escrever a frase abaixo no campo de texto para confirmar o cancelamento do conselho atual"
+          confirmColor="red"
+          description="Você tem certeza que deseja cancelar este conselho? Ao fazer isso ele voltará para a lista de conselhos a fazer e todo o progresso será perdido."
+          onClose={closeCancleCouncilModal}
+        />
+      )) ||
+        (isRealizelCouncilOpen && (
+          <ConfirmChanges
+            confirmButtonText="Terminar conselho"
+            title="Finalizar Conselho"
+            confirmText="Confirmar término do conselho atual"
+            secondDescription="Para você finalizar o conselho, voce precisa escrever a frase abaixo no campo de texto para confirmar a finalização do conselho atual"
+            confirmColor="green"
+            description="Você tem certeza que deseja finalizar este conselho? Verifique se a turma e todos os alunos estão com suas anotações corretas e prontas para entrega."
+            onClose={closeRealizeCouncilModal}
+            onCloseButton={finalizeCouncil}
+          />
+        ))}
+      {isConfirmModalOpen && (
+        <ConfirmMessagesModal
+          title={modalMessage.title}
+          description={modalMessage.message}
+          error={modalMessage.error}
+        />
+      )}
+      {isLoadingOpen && <LoadingModal />}
     </Box>
   );
 }

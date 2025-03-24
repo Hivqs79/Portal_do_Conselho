@@ -68,7 +68,7 @@ export default function TextareaComponent({
           <div
             style={{
               background: backgroundColor,
-              border: `2px solid ${primaryColor}`,
+              border: `2px solid ${colorByModeSecondary}`,
             }}
             className="rounded-normal p-1 mt-3 min-h-[200px] "
           >
@@ -89,7 +89,7 @@ export default function TextareaComponent({
                   onClick={() => copyTextArea()}
                   className="absolute bottom-1 right-2"
                 >
-                  <Icon color={primaryColor} IconPassed={IoCopyOutline} />
+                  <Icon color={colorByModeSecondary} IconPassed={IoCopyOutline} />
                 </span>
               )}
             </span>
@@ -133,7 +133,7 @@ export default function TextareaComponent({
         <div
           style={{
             background: backgroundColor,
-            border: `2px solid ${primaryColor}`,
+            border: `2px solid ${colorByModeSecondary}`,
           }}
           className="rounded-normal p-1 mt-3 min-h-[200px] "
         >

@@ -40,6 +40,7 @@ export default function Rank({
 
   const [selectedRank, setSelectedRank] = useState(type);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [hover, setHover] = useState(false);
 
   useEffect(() => {
     setSelectedRank(type);
@@ -58,9 +59,9 @@ export default function Rank({
   ) => {
     setSelectedRank(newRank);
     if (onRankChange) {
-      onRankChange(newRank); // Passa o novo rank para o componente pai
-      const encryptedRank = Encryptor({ rank: newRank }); // Criptografa o rank
-      localStorage.setItem("rank", encryptedRank); // Salva no localStorage
+      onRankChange(newRank);
+      const encryptedRank = Encryptor({ rank: newRank });
+      localStorage.setItem("rank", encryptedRank);
     }
     handleClose();
   };
@@ -142,7 +143,7 @@ export default function Rank({
                 (key) => (
                   <div
                     key={key}
-                    className="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition"
+                    className="rankHover flex items-center gap-2 p-2 rounded-lg cursor-pointer transition"
                     onClick={() => handleSelect(key)}
                   >
                     {rank[key]}{" "}
@@ -171,7 +172,10 @@ export default function Rank({
               Rank:
             </Typography>
             <span
-              style={{ borderColor: primaryGrayColor, color: constrastColor }}
+              style={{
+                borderColor: colorByModeSecondary,
+                color: constrastColor,
+              }}
               className="cursor-pointer flex items-center gap-1 border-[2px] rounded-normal w-[120px]"
               onClick={handleClick}
             >
@@ -195,7 +199,7 @@ export default function Rank({
                 (key) => (
                   <div
                     key={key}
-                    className="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition"
+                    className="rankHover flex items-center gap-2 p-2 rounded-lg cursor-pointer transition"
                     onClick={() => handleSelectNormalRank(key)}
                   >
                     {rank[key]}{" "}

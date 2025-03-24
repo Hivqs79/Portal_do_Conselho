@@ -11,7 +11,6 @@ import AutoSaveIndicator from "./AutoSaveIndicator";
 import { useState, useEffect, useRef } from "react";
 import { Decryptor } from "@/encryption/Decryptor";
 import { Encryptor } from "@/encryption/Encryptor";
-import CommentariesModal from "./Modals/CommentariesModal";
 
 interface StudentCouncilFormProps {
   student: string;
@@ -19,6 +18,7 @@ interface StudentCouncilFormProps {
   rank: "excellent" | "good" | "average" | "critical" | "none";
   positiveContent: string;
   negativeContent: string;
+  imageKey: File | string | null;
   comments: string;
   onNext: () => void;
   onPrevious: () => void;
@@ -32,9 +32,10 @@ export default function StudentCouncilForm({
   positiveContent: initialPositiveContent,
   negativeContent: initialNegativeContent,
   comments,
+  imageKey,
   onNext,
   onPrevious,
-  openCommentsModal
+  openCommentsModal,
 }: StudentCouncilFormProps) {
   const [frequenciaAtualizada, setFrequenciaAtual] =
     useState(initialFrequencia);
@@ -62,7 +63,6 @@ export default function StudentCouncilForm({
   const [isDisable, setDisable] = useState(false);
   const isInitialMount = useRef(true);
 
-  // Carrega os dados do localStorage quando o student muda
   useEffect(() => {
     setFrequencia(initialFrequencia);
     setPositiveContent(initialPositiveContent);
@@ -86,7 +86,6 @@ export default function StudentCouncilForm({
     }
   }, [student]);
 
-  // Função para salvar no localStorage
   const saveToLocalStorage = () => {
     setDisable(true);
     setIsSaving(true);
@@ -111,7 +110,6 @@ export default function StudentCouncilForm({
     }, 1000);
   };
 
-  // Monitora alterações e salva após um tempo de inatividade
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
@@ -162,7 +160,7 @@ export default function StudentCouncilForm({
   return (
     <>
       <div
-        style={{ borderColor: primaryColor }}
+        style={{ borderColor: colorByModeSecondary }}
         className="relative w-full border-2 rounded-big p-5 px-9 xl:px-16 flex flex-col gap-5 pb-10 lg:pb-5"
       >
         <div className="flex flex-wrap lg:flex-nowrap gap-5 lg:gap-10 justify-center">
@@ -173,7 +171,11 @@ export default function StudentCouncilForm({
                 {student}
               </Typography>
             </div>
-            <Photo classname="lg:w-[250px] mx-auto" rounded={false} />
+            <Photo
+              classname="lg:w-[250px] mx-auto"
+              photo={imageKey}
+              rounded={false}
+            />
             <span className="flex flex-col justify-center items-center gap-4 w-full">
               <span className="flex justify-between w-full items-center flex-wrap gap-y-4 gap-x-4">
                 <Typography variant="lg_text_bold" color={colorByModeSecondary}>
@@ -182,7 +184,7 @@ export default function StudentCouncilForm({
                 <div className="relative flex items-center">
                   <input
                     style={{
-                      borderColor: primaryColor,
+                      borderColor: colorByModeSecondary,
                       color: OpacityHex(constrastColor, 0.7),
                       paddingRight: "20px",
                     }}
@@ -237,7 +239,7 @@ export default function StudentCouncilForm({
             </span>
           </div>
           <div
-            style={{ backgroundColor: primaryColor }}
+            style={{ backgroundColor: colorByModeSecondary }}
             className="hidden lg:block w-[.2rem] rounded-full h-[550px]"
           ></div>
           <div className="w-full flex justify-between flex-col gap-5 lg:h-[550px]">
@@ -264,7 +266,7 @@ export default function StudentCouncilForm({
               className="absolute left-[-12px] lg:left-[-10] xl:left-0 top-1/3 lg:top-1/2 -translate-y-1/2 cursor-pointer"
             >
               <Icon
-                color={primaryColor}
+                color={colorByModeSecondary}
                 className="text-6xl"
                 IconPassed={IoIosArrowBack}
               />
@@ -274,7 +276,7 @@ export default function StudentCouncilForm({
               className="absolute right-[-12px] lg:right-[-10] xl:right-0 top-1/3 lg:top-1/2 -translate-y-1/2 cursor-pointer"
             >
               <Icon
-                color={primaryColor}
+                color={colorByModeSecondary}
                 className="text-6xl"
                 IconPassed={IoIosArrowForward}
               />
@@ -300,10 +302,7 @@ export default function StudentCouncilForm({
             </span>
           </>
         )}
-        <div className="absolute bottom-2 left-3 lg:hidden lg:bottom-[20px]">
-          <AutoSaveIndicator saved={!isSaving} />
-        </div>
-        <div className="absolute hidden lg:block right-[4rem] top-5">
+        <div className="absolute bottom-2 left-3 lg:bottom-auto lg:left-auto lg:right-[2.5rem] lg:top-5 xl:right-[4rem]">
           <AutoSaveIndicator saved={!isSaving} />
         </div>
       </div>

@@ -17,7 +17,6 @@ export default function Profile() {
     colorByModeSecondary,
     constrastColor,
     textBlackolor,
-    redDanger,
   } = useThemeContext();
 
   const [isStudent, setRole] = useState(true);
