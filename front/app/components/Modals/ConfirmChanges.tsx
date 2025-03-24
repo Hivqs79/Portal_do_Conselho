@@ -10,8 +10,10 @@ interface ConfirmChangesProps {
   title: string;
   description: string;
   secondDescription: string;
+  confirmButtonText: string;
   confirmText: string;
   confirmColor: "red" | "green";
+  onCloseButton?: () => void;
   onClose: () => void;
 }
 
@@ -21,6 +23,8 @@ export default function ConfirmChanges({
   secondDescription,
   confirmText,
   confirmColor,
+  confirmButtonText,
+  onCloseButton,
   onClose,
 }: ConfirmChangesProps) {
   const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
@@ -66,8 +70,12 @@ export default function ConfirmChanges({
 
   function handleConfirmClick() {
     if (inputRef.current?.value === spanValue) {
-      alert("Cancelamento efetuado com sucesso!");
-      onClose();
+      if (onCloseButton) {
+        console.log("teste")
+        onCloseButton();
+      } else {
+        onClose();
+      }
       return true;
     } else {
       setIsValid(false);
@@ -138,7 +146,7 @@ export default function ConfirmChanges({
                 color="primary"
               >
                 <Typography variant="lg_text_bold" color={whiteColor}>
-                  Cancelar Conselho
+                  {confirmButtonText}
                 </Typography>
               </Button>
             </Box>

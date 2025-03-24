@@ -461,6 +461,13 @@ export default class ThemeSettings {
             },
           },
         },
+        MuiAccordion: {
+          styleOverrides: {
+            root: {
+              borderRadius: "16px !important",
+            },
+          },
+        },
       },
     });
   }

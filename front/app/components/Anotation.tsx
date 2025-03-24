@@ -1,11 +1,17 @@
 "use client";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Box, Popover, Typography } from "@mui/material";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Box,
+  Typography,
+} from "@mui/material";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Icon from "./Icon";
-import { useEffect, useRef, useState } from "react";
-import Rank from "./rank/Rank";
 import TextareaComponent from "./input/TextareaComponent";
+import Rank from "./rank/Rank";
+import { useState } from "react";
 
 interface AnotationProps {
   name: string;
@@ -20,12 +26,9 @@ export default function Anotation({
   positiveContent,
   negativeContent,
 }: AnotationProps) {
-  const [isOpenInputs, setIsOpenInputs] = useState(false);
-  const { primaryColor, whiteColor, backgroundColor, colorByModeSecondary } = useThemeContext();
-
-  const showIputs = () => {
-    setIsOpenInputs(true);
-  };
+  const { primaryColor, whiteColor, backgroundColor, colorByModeSecondary } =
+    useThemeContext();
+  const [isOpen, setIsOpen] = useState(false);
 
   const translateRank = (rank: string) => {
     switch (rank) {
@@ -42,88 +45,90 @@ export default function Anotation({
     }
   };
 
-  const closeIputs = () => {
-    setIsOpenInputs(false);
-  };
-
   return (
-    <>
-      <Box>
-        <Box
-          style={{ backgroundColor: primaryColor }}
-          className={`flex justify-between items-center rounded-big p-5 ${
-            isOpenInputs ? "rounded-b-none" : ""
-          }`}
-        >
+    <Accordion
+      sx={{
+        border: `2px solid ${primaryColor}`,
+        borderRadius: "16px",
+        backgroundColor: backgroundColor,
+        "&:before": {
+          display: "none",
+        },
+        "&.Mui-expanded": {
+          margin: "4px !important",
+        },
+      }}
+    >
+      <AccordionSummary
+        onClick={() => setIsOpen(!isOpen)}
+        expandIcon={
+          <Icon
+            IconPassed={IoIosArrowDown}
+            color={whiteColor}
+            className="text-[2.5rem]"
+          />
+        }
+        sx={{
+          backgroundColor: primaryColor,
+          color: whiteColor,
+          padding: "8px",
+          borderRadius: "8px",
+          "&.Mui-expanded": {
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
+            "& .MuiAccordionSummary-content": {
+              margin: "0px !important",
+            },
+          },
+        }}
+      >
+        <span className="flex justify-between items-center w-full mx-5">
           <Typography variant="lg_text_bold" color={whiteColor}>
             {name}
           </Typography>
-          {!isOpenInputs ? (
-            <span onClick={showIputs}>
-              <Icon
-                color={whiteColor}
-                className="text-[2.5rem]"
-                IconPassed={IoIosArrowDown}
-              />
-            </span>
-          ) : (
-            <span className="flex gap-5 justify-end items-center">
-              <span className="flex items-center gap-5">
-                <Typography variant="lg_text_bold" color={whiteColor}>
-                  Classificação da turma:
-                </Typography>
-                <span title={translateRank(rank)}>
-                  <Rank
-                    outline={true}
-                    popover={false}
-                    type={
-                      rank as
-                        | "excellent"
-                        | "good"
-                        | "average"
-                        | "critical"
-                        | "none"
-                    }
-                  />
-                </span>
-              </span>
-              <span onClick={closeIputs}>
-                <Icon
-                  color={whiteColor}
-                  className="text-[2.5rem]"
-                  IconPassed={IoIosArrowUp}
+          {isOpen && (
+            <span className="flex items-center gap-5">
+              <Typography variant="lg_text_bold" color={whiteColor}>
+                Classificação da turma:
+              </Typography>
+              <span title={translateRank(rank)}>
+                <Rank
+                  outline={true}
+                  popover={false}
+                  type={
+                    rank as
+                      | "excellent"
+                      | "good"
+                      | "average"
+                      | "critical"
+                      | "none"
+                  }
                 />
               </span>
             </span>
           )}
+        </span>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Box className="flex gap-10 p-2">
+          <TextareaComponent
+            readonly={true}
+            title="Pontos Positivos"
+            content={positiveContent}
+            copyButton={true}
+          />
+          <div
+            style={{ backgroundColor: colorByModeSecondary }}
+            className="hidden lg:block w-[.2rem] h-[255px]"
+          ></div>
+          <TextareaComponent
+            readonly={true}
+            title="Pontos a Melhorar"
+            content={negativeContent}
+            copyButton={true}
+          />
         </Box>
-        {isOpenInputs && (
-          <Box
-            style={{
-              backgroundColor: backgroundColor,
-              borderColor: primaryColor,
-            }}
-            className="p-5 border-2 flex flex-wrap gap-6 md:flex-nowrap rounded-b-big"
-          >
-            <TextareaComponent
-              readonly={true}
-              title="Pontos Positivos"
-              content={positiveContent}
-              copyButton={true}
-            />
-            <div
-              style={{ backgroundColor: colorByModeSecondary }}
-              className="hidden lg:block w-[.2rem] h-[255px]"
-            ></div>
-            <TextareaComponent
-              readonly={true}
-              title="Pontos a Melhorar"
-              content={negativeContent}
-              copyButton={true}
-            />
-          </Box>
-        )}
-      </Box>
-    </>
+      </AccordionDetails>
+    </Accordion>
   );
 }

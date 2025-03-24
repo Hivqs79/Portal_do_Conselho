@@ -2,6 +2,8 @@
 import AvaliationInputs from "@/components/council/AvaliationInputs";
 import CommentariesModal from "@/components/Modals/CommentariesModal";
 import ConfirmChanges from "@/components/Modals/ConfirmChanges";
+import ConfirmMessagesModal from "@/components/Modals/ConfirmMessagesModal";
+import LoadingModal from "@/components/Modals/LoadingModal";
 import StudentCouncilForm from "@/components/StudentCouncilForm";
 import TableHeader from "@/components/table/TableHeader";
 import Title from "@/components/Title";
@@ -53,7 +55,19 @@ export default function RealizeCouncil() {
 
   const [isModalTeacherOpen, setIsModalTeacherOpen] = useState(false);
   const [isModalStudentOpen, setIsModalStudentOpen] = useState(false);
-  const [isUniversalModalOpen, setIsUniversalModalOpen] = useState(false);
+  const [isCancelCouncilOpen, setIsCancelCouncilOpen] = useState(false);
+  const [isRealizelCouncilOpen, setIsRealizeCouncilOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isLoadingOpen, setIsLoadingOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState<{
+    title: string;
+    message: string;
+    error: boolean;
+  }>({
+    title: "",
+    message: "",
+    error: false,
+  });
   const {
     constrastColor,
     backgroundColor,
@@ -157,39 +171,14 @@ export default function RealizeCouncil() {
     let councilClassName: string = "";
 
     const savedData = localStorage.getItem("studentsData");
-    if (savedData) {
-      const decryptedData = Decryptor(savedData);
-      if (decryptedData) {
-        studentsData = decryptedData;
-      } else {
-        studentsData = [];
-      }
-    }
-
     if (data) {
       councilClassName = data["council-form"].class.name;
-      if (
-        ClassRank === "none" ||
-        ClassnegativeContent === "" ||
-        ClasspositiveContent === ""
-      ) {
-        console.log("Você deve preencher todos os campos da turma!");
-        return;
-      }
-
-      for (let i = 0; i < data["council-form"].users.length; i++) {
-        const userName = data["council-form"].users[i].name;
-        if (studentsData[userName] === undefined) {
-          console.log("Você deve preencer o aluno: ", userName);
-          return;
-        } else if (
-          studentsData[userName].frequencia === 0 ||
-          studentsData[userName].rank === "none" ||
-          studentsData[userName].positiveContent === "" ||
-          studentsData[userName].negativeContent === ""
-        ) {
-          console.log("Aluno incompleto: ", userName);
-          return;
+      if (savedData) {
+        const decryptedData = Decryptor(savedData);
+        if (decryptedData) {
+          studentsData = decryptedData;
+        } else {
+          studentsData = [];
         }
       }
       console.log("Conselho finalizado com sucesso!");
@@ -204,12 +193,81 @@ export default function RealizeCouncil() {
           councilClassName
         )
       );
-      return;
+      setModalMessage({
+        title: "Conselho finalizado com sucesso!",
+        message:
+          "O conselhoi foi finalizado com sucesso, vá até a página de liberação de conselhos para visualá-lo.",
+        error: false,
+      });
+      setIsLoadingOpen(true);
+      setTimeout(() => {
+        setIsConfirmModalOpen(true);
+        setIsRealizeCouncilOpen(false);
+        setIsLoadingOpen(false);
+        setTimeout(() => {
+          setIsConfirmModalOpen(false);
+        }, 2000);
+      }, 2000);
+    }
+  }
+
+  function verifyCouncil() {
+    console.log("oi aaa");
+    const ClassRank = getDecryptedData("rank");
+    const ClassnegativeContent = getDecryptedData("negativeContent");
+    const ClasspositiveContent = getDecryptedData("positiveContent");
+
+    let studentsData: { [key: string]: any } = {};
+    let councilClassName: string = "";
+
+    const savedData = localStorage.getItem("studentsData");
+    if (data) {
+      councilClassName = data["council-form"].class.name;
+      if (savedData) {
+        const decryptedData = Decryptor(savedData);
+        if (decryptedData) {
+          studentsData = decryptedData;
+        } else {
+          studentsData = [];
+        }
+      }
+      if (
+        ClassRank === "none" ||
+        ClassnegativeContent === "" ||
+        ClasspositiveContent === ""
+      ) {
+        setModalMessage({
+          title: "Erro ao finalizar o Conselho",
+          message: "Voce deve preencher todos os campos da turma!",
+          error: true,
+        });
+        return false;
+      }
+      for (let i = 0; i < data["council-form"].users.length; i++) {
+        const userName = data["council-form"].users[i].name;
+        if (studentsData[userName] === undefined) {
+          console.log("Você deve preencer o aluno: ", userName);
+          return false;
+        } else if (
+          studentsData[userName].frequencia === 0 ||
+          studentsData[userName].rank === "none" ||
+          studentsData[userName].positiveContent === "" ||
+          studentsData[userName].negativeContent === ""
+        ) {
+          setModalMessage({
+            title: "Erro ao finalizar o Conselho",
+            message: "Aluno incompleto: " + userName,
+            error: true,
+          });
+          return false;
+        }
+      }
+      return true;
     }
   }
 
   function cancelCouncil() {
-    setIsUniversalModalOpen(true);
+    setIsCancelCouncilOpen(true);
   }
 
   function formatFinalCouncilJson(
@@ -267,8 +325,32 @@ export default function RealizeCouncil() {
     return 0;
   }
 
-  const closeUniversalModal = () => {
-    setIsUniversalModalOpen(false);
+  const OpenfinalizeCouncilModal = () => {
+    const result = verifyCouncil();
+    if (result) {
+      openRealizeCouncilModal();
+    } else {
+      setIsConfirmModalOpen(true);
+      setTimeout(() => {
+        setIsConfirmModalOpen(false);
+      }, 2000);
+    }
+  };
+
+  const openRealizeCouncilModal = () => {
+    setIsRealizeCouncilOpen(true);
+  };
+
+  const closeRealizeCouncilModal = () => {
+    setIsRealizeCouncilOpen(false);
+  };
+
+  const closeCancleCouncilModal = () => {
+    setIsLoadingOpen(true);
+    setTimeout(() => {
+      setIsLoadingOpen(false);
+    }, 2000);
+    setIsCancelCouncilOpen(false);
   };
 
   return (
@@ -348,7 +430,7 @@ export default function RealizeCouncil() {
               className="w-full !mt-5 !rounded-normal"
               variant="contained"
               color="primary"
-              onClick={() => finalizeCouncil()}
+              onClick={() => OpenfinalizeCouncilModal()}
             >
               <Typography variant="lg_text_bold" color={whiteColor}>
                 Terminar Conselho
@@ -377,16 +459,37 @@ export default function RealizeCouncil() {
           onClose={closeStudentModal}
         />
       )}
-      {isUniversalModalOpen && (
+      {(isCancelCouncilOpen && (
         <ConfirmChanges
+          confirmButtonText="Cancelar Conselho"
           title="Cancelar Conselho"
           confirmText="Confirmar cancelamento do conselho atual"
           secondDescription="Para você cancelar o conselho, voce precisa escrever a frase abaixo no campo de texto para confirmar o cancelamento do conselho atual"
-          confirmColor="green"
+          confirmColor="red"
           description="Você tem certeza que deseja cancelar este conselho? Ao fazer isso ele voltará para a lista de conselhos a fazer e todo o progresso será perdido."
-          onClose={closeUniversalModal}
+          onClose={closeCancleCouncilModal}
+        />
+      )) ||
+        (isRealizelCouncilOpen && (
+          <ConfirmChanges
+            confirmButtonText="Terminar conselho"
+            title="Finalizar Conselho"
+            confirmText="Confirmar término do conselho atual"
+            secondDescription="Para você finalizar o conselho, voce precisa escrever a frase abaixo no campo de texto para confirmar a finalização do conselho atual"
+            confirmColor="green"
+            description="Você tem certeza que deseja finalizar este conselho? Verifique se a turma e todos os alunos estão com suas anotações corretas e prontas para entrega."
+            onClose={closeRealizeCouncilModal}
+            onCloseButton={finalizeCouncil}
+          />
+        ))}
+      {isConfirmModalOpen && (
+        <ConfirmMessagesModal
+          title={modalMessage.title}
+          description={modalMessage.message}
+          error={modalMessage.error}
         />
       )}
+      {isLoadingOpen && <LoadingModal />}
     </Box>
   );
 }

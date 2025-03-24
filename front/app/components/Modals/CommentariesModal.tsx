@@ -1,10 +1,19 @@
 "use client";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Box, Modal, Typography } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Modal,
+  Typography,
+} from "@mui/material";
 import { IoClose } from "react-icons/io5";
 import Icon from "../Icon";
 import { useEffect } from "react";
 import Anotation from "../Anotation";
+import { IoIosArrowUp } from "react-icons/io";
+import OpacityHex from "@/hooks/OpacityHex";
 
 interface CommentariesModalProps {
   onClose: () => void;
@@ -82,10 +91,10 @@ export default function CommentariesModal({
             </span>
           </Box>
           <Box
-            style={{ backgroundColor: terciaryColor }}
+            style={{ backgroundColor: OpacityHex(colorByModeSecondary, 0.2) }}
             className="p-2 mt-8 rounded-big"
           >
-            <span className="flex rounded-big flex-col max-h-[550px] p-2 gap-5 overflow-y-scroll">
+            <span className="flex rounded-big flex-col max-h-[550px] p-2 gap-2 overflow-y-scroll">
               {anotations.map((anotation: any, index: number) => (
                 <Anotation
                   key={index}
@@ -98,7 +107,7 @@ export default function CommentariesModal({
             </span>
           </Box>
         </div>
-        </Modal>
+      </Modal>
     </>
   );
 }
