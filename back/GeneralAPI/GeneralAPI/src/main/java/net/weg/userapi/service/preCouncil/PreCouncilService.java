@@ -5,22 +5,31 @@ import net.weg.userapi.exception.exceptions.PreCouncilNotFoundException;
 import net.weg.userapi.exception.exceptions.PreCouncilSectionNotFoundException;
 import net.weg.userapi.model.dto.request.preCouncil.PreCouncilRequestDTO;
 import net.weg.userapi.model.dto.response.preCouncil.PreCouncilResponseDTO;
+import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
 import net.weg.userapi.model.entity.preCouncil.PreCouncil;
+import net.weg.userapi.model.entity.users.Teacher;
 import net.weg.userapi.repository.PreCouncilRepository;
 import net.weg.userapi.service.council.CouncilService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
 import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
 public class PreCouncilService {
-    
+
     private PreCouncilRepository repository;
     private CouncilService councilService;
     private ModelMapper modelMapper;
+
+    public Page<PreCouncilResponseDTO> findPreCouncilSpec(Specification<PreCouncil> spec, Pageable pageable) {
+        Page<PreCouncil> preCouncils = repository.findAll(spec, pageable);
+        return preCouncils.map(preCouncil -> modelMapper.map(preCouncil, PreCouncilResponseDTO.class));
+    }
 
     public PreCouncilResponseDTO createPreCouncil(PreCouncilRequestDTO preCouncilRequestDTO) {
         PreCouncil preCouncil = modelMapper.map(preCouncilRequestDTO, PreCouncil.class);
@@ -64,5 +73,5 @@ public class PreCouncilService {
         repository.delete(preCouncil);
         return preCouncilResponseDTO;
     }
-    
+
 }

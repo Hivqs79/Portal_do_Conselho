@@ -28,12 +28,9 @@ public class ClassService {
     private ClassRepository repository;
     private ModelMapper modelMapper;
 
-    public List<ClassResponseDTO> findClassSpec(Specification<Class> spec) {
-        try {
-            return repository.findAll(spec).stream().map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class)).collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new RuntimeException("Error executing specification search", e);
-        }
+    public Page<ClassResponseDTO> findClassSpec(Specification<Class> spec, Pageable pageable) {
+        Page<Class> classes = repository.findAll(spec, pageable);
+        return classes.map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class));
     }
 
     public List<StudentResponseDTO> getStudentsByClass(Integer class_id) {

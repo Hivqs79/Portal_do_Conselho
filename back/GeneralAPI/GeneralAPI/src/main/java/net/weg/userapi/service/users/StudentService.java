@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.KafkaException;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
+import net.weg.userapi.model.dto.response.users.PedagogicResponseDTO;
+import net.weg.userapi.model.entity.users.Pedagogic;
 import net.weg.userapi.service.kafka.KafkaMessage;
 import net.weg.userapi.model.dto.request.users.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
@@ -16,6 +18,7 @@ import net.weg.userapi.service.kafka.KafkaProducerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +33,11 @@ public class StudentService {
     private ModelMapper modelMapper;
     private KafkaProducerService kafkaProducerService;
     private final ObjectMapper objectMapper;
+
+    public Page<StudentResponseDTO> findStudentSpec(Specification<Student> spec, Pageable pageable) {
+        Page<Student> students = repository.findAll(spec, pageable);
+        return students.map(student -> modelMapper.map(student, StudentResponseDTO.class));
+    }
 
     public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {
         Student student = modelMapper.map(studentRequestDTO, Student.class);

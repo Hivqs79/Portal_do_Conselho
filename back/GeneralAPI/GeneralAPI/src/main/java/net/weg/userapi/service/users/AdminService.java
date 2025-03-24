@@ -3,13 +3,16 @@ package net.weg.userapi.service.users;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
 import net.weg.userapi.model.dto.request.users.AdminRequestDTO;
+import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
 import net.weg.userapi.model.dto.response.users.AdminResponseDTO;
+import net.weg.userapi.model.entity.feedback.FeedbackUser;
 import net.weg.userapi.model.entity.users.Admin;
 import net.weg.userapi.repository.AdminRepository;
 import net.weg.userapi.service.kafka.KafkaProducerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +24,11 @@ public class AdminService {
     private AdminRepository repository;
     private ModelMapper modelMapper;
     private KafkaProducerService kafkaProducerService;
+
+    public Page<AdminResponseDTO> findAdminSpec(Specification<Admin> spec, Pageable pageable) {
+        Page<Admin> admins = repository.findAll(spec, pageable);
+        return admins.map(admin -> modelMapper.map(admin, AdminResponseDTO.class));
+    }
 
     public AdminResponseDTO createAdmin(AdminRequestDTO adminRequestDTO) {
         Admin admin = modelMapper.map(adminRequestDTO, Admin.class);

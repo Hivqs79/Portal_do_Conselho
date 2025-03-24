@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.AnnotationNotFoundException;
 import net.weg.userapi.model.dto.request.annotation.AnnotationClassRequestDTO;
 import net.weg.userapi.model.dto.response.annotation.AnnotationClassResponseDTO;
+import net.weg.userapi.model.dto.response.classes.ClassResponseDTO;
 import net.weg.userapi.model.entity.annotation.AnnotationClass;
+import net.weg.userapi.model.entity.classes.Class;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.repository.AnnotationClassRepository;
 import net.weg.userapi.service.classes.ClassService;
@@ -13,6 +15,7 @@ import net.weg.userapi.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -25,6 +28,11 @@ public class AnnotationClassService {
     private TeacherService teacherService;
     private CouncilService councilService;
     private ModelMapper modelMapper;
+
+    public Page<AnnotationClassResponseDTO> findAnnotationClassSpec(Specification<AnnotationClass> spec, Pageable pageable) {
+        Page<AnnotationClass> annotationClasses = repository.findAll(spec, pageable);
+        return annotationClasses.map(annotationClass -> modelMapper.map(annotationClass, AnnotationClassResponseDTO.class));
+    }
 
     public AnnotationClassResponseDTO createAnnotationClass(AnnotationClassRequestDTO annotationClassRequestDTO) {
         AnnotationClass annotationClass = modelMapper.map(annotationClassRequestDTO, AnnotationClass.class);

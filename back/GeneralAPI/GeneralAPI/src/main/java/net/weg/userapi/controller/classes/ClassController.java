@@ -31,17 +31,20 @@ public class ClassController {
     private ClassService service;
 
 
-    @GetMapping("/spec")
-    public List<ClassResponseDTO> searchClasses(
+    @GetMapping
+    public Page<ClassResponseDTO> searchClasses(
             @And({
+                    @Spec(path = "id", spec = Equal.class),
                     @Spec(path = "name", spec = Like.class),
                     @Spec(path = "area", spec = Like.class),
                     @Spec(path = "course", spec = Like.class),
                     @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class),
+                    @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class),
+                    @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class),
                     @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)
-            }) Specification<Class> spec) {
+            }) Specification<Class> spec, Pageable pageable) {
 
-        return service.findClassSpec(spec);
+        return service.findClassSpec(spec, pageable);
     }
 
     @PostMapping
@@ -72,11 +75,6 @@ public class ClassController {
     @GetMapping("/student/{id}")
     public ResponseEntity<List<StudentResponseDTO>> getStudentByClass(@PathVariable Integer id) {
         return new ResponseEntity<>(service.getStudentsByClass(id), HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<ClassResponseDTO>> getAllClass(Pageable pageable) {
-        return new ResponseEntity<>(service.pageClass(pageable), HttpStatus.OK);
     }
 
     @PostMapping("/mock")

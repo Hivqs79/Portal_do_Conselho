@@ -3,8 +3,10 @@ package net.weg.userapi.service.feedback;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.FeedbackNotFoundException;
 import net.weg.userapi.model.dto.request.feedback.FeedbackUserRequestDTO;
+import net.weg.userapi.model.dto.response.feedback.FeedbackClassResponseDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
 import net.weg.userapi.model.entity.council.Council;
+import net.weg.userapi.model.entity.feedback.FeedbackClass;
 import net.weg.userapi.model.entity.feedback.FeedbackUser;
 import net.weg.userapi.repository.FeedbackUserRepository;
 import net.weg.userapi.service.council.CouncilService;
@@ -13,6 +15,7 @@ import net.weg.userapi.service.users.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +30,11 @@ public class FeedbackUserService {
     private CouncilService councilService;
     private ModelMapper modelMapper;
     private StudentService studentService;
+
+    public Page<FeedbackUserResponseDTO> findFeedbackUserSpec(Specification<FeedbackUser> spec, Pageable pageable) {
+        Page<FeedbackUser> feedbackUsers = repository.findAll(spec, pageable);
+        return feedbackUsers.map(feedbackUser -> modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class));
+    }
 
     public FeedbackUserResponseDTO createFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO) {
         FeedbackUser feedbackUser = modelMapper.map(feedbackUserRequestDTO, FeedbackUser.class);

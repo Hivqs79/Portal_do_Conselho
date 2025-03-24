@@ -3,8 +3,10 @@ package net.weg.userapi.service.council;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.CouncilNotFoundException;
 import net.weg.userapi.model.dto.request.council.CouncilRequestDTO;
+import net.weg.userapi.model.dto.response.annotation.AnnotationStudentResponseDTO;
 import net.weg.userapi.model.dto.response.council.CouncilResponseDTO;
 import net.weg.userapi.model.entity.annotation.Annotation;
+import net.weg.userapi.model.entity.annotation.AnnotationStudent;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.repository.CouncilRepository;
 import net.weg.userapi.service.classes.ClassService;
@@ -12,6 +14,7 @@ import net.weg.userapi.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +27,11 @@ public class CouncilService {
     private ModelMapper modelMapper;
     private ClassService classService;
     private TeacherService teacherService;
+
+    public Page<CouncilResponseDTO> findCouncilSpec(Specification<Council> spec, Pageable pageable) {
+        Page<Council> councils = repository.findAll(spec, pageable);
+        return councils.map(council -> modelMapper.map(council, CouncilResponseDTO.class));
+    }
 
     public CouncilResponseDTO createCouncil(CouncilRequestDTO councilRequestDTO) {
         Council council = modelMapper.map(councilRequestDTO, Council.class);

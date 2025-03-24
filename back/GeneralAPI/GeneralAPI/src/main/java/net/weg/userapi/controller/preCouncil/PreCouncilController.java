@@ -1,11 +1,21 @@
 package net.weg.userapi.controller.preCouncil;
 
 import lombok.AllArgsConstructor;
+import net.kaczmarzyk.spring.data.jpa.domain.Equal;
+import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
+import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
+import net.kaczmarzyk.spring.data.jpa.domain.Like;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import net.weg.userapi.model.dto.request.preCouncil.PreCouncilRequestDTO;
+import net.weg.userapi.model.dto.response.feedback.FeedbackClassResponseDTO;
 import net.weg.userapi.model.dto.response.preCouncil.PreCouncilResponseDTO;
+import net.weg.userapi.model.entity.feedback.FeedbackClass;
+import net.weg.userapi.model.entity.preCouncil.PreCouncil;
 import net.weg.userapi.service.preCouncil.PreCouncilService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +27,20 @@ import org.springframework.web.bind.annotation.*;
 public class PreCouncilController {
 
     private PreCouncilService service;
+
+    @GetMapping
+    public Page<PreCouncilResponseDTO> searchPreCouncil(
+            @And({
+                    @Spec(path = "id", spec = Equal.class),
+                    @Spec(path = "council.aClass.name", params = "councilClassName", spec = Like.class),
+                    @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class),
+                    @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class),
+                    @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class),
+                    @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)
+            }) Specification<PreCouncil> spec, Pageable pageable) {
+
+        return service.findPreCouncilSpec(spec, pageable);
+    }
 
     @PostMapping
     public ResponseEntity<PreCouncilResponseDTO> postPreCouncil(@RequestBody @Validated PreCouncilRequestDTO preCouncilRequestDTO) {
@@ -36,11 +60,6 @@ public class PreCouncilController {
     @GetMapping("/{id}")
     public ResponseEntity<PreCouncilResponseDTO> getPreCouncil(@PathVariable Integer id) {
         return new ResponseEntity<>(service.findPreCouncil(id), HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<PreCouncilResponseDTO>> getAllPreCouncil(Pageable pageable) {
-        return new ResponseEntity<>(service.pagePreCouncil(pageable), HttpStatus.OK);
     }
     
 }

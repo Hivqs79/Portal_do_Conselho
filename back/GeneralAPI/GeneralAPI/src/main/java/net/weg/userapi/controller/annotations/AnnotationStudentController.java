@@ -1,11 +1,21 @@
 package net.weg.userapi.controller.annotations;
 
 import lombok.AllArgsConstructor;
+import net.kaczmarzyk.spring.data.jpa.domain.Equal;
+import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
+import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
+import net.kaczmarzyk.spring.data.jpa.domain.Like;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import net.weg.userapi.model.dto.request.annotation.AnnotationStudentRequestDTO;
+import net.weg.userapi.model.dto.response.annotation.AnnotationClassResponseDTO;
 import net.weg.userapi.model.dto.response.annotation.AnnotationStudentResponseDTO;
+import net.weg.userapi.model.entity.annotation.AnnotationClass;
+import net.weg.userapi.model.entity.annotation.AnnotationStudent;
 import net.weg.userapi.service.annotations.AnnotationStudentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +27,22 @@ import org.springframework.web.bind.annotation.*;
 public class AnnotationStudentController {
 
     private AnnotationStudentService service;
+
+    @GetMapping
+    public Page<AnnotationStudentResponseDTO> searchAnnotationStudent (
+            @And({
+                    @Spec(path = "id", spec = Equal.class),
+                    @Spec(path = "rank", spec = Like.class),
+                    @Spec(path = "strengths", spec = Like.class),
+                    @Spec(path = "toImprove", spec = Like.class),
+                    @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class),
+                    @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class),
+                    @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class),
+                    @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)
+            }) Specification<AnnotationStudent> spec, Pageable pageable) {
+
+        return service.findAnnotationStudentSpec(spec, pageable);
+    }
 
     @PostMapping
     public ResponseEntity<AnnotationStudentResponseDTO> postAnnotationStudent(@RequestBody @Validated AnnotationStudentRequestDTO pedagogicRequestDTO) {
@@ -41,11 +67,6 @@ public class AnnotationStudentController {
     @GetMapping("/by/{id}")
     public ResponseEntity<Page<AnnotationStudentResponseDTO>> getAnnotationByOneStudent(@PathVariable Integer id, Pageable pageable) {
         return new ResponseEntity<>(service.pageAnnotationsByStudent(id, pageable), HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<AnnotationStudentResponseDTO>> getAllAnnotationStudent(Pageable pageable) {
-        return new ResponseEntity<>(service.pageAnnotationStudent(pageable), HttpStatus.OK);
     }
     
 }
