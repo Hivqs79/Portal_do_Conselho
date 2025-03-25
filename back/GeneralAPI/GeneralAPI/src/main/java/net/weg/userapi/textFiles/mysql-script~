@@ -4,7 +4,6 @@ use userapi_db;
 show tables;
 
 -- DESCRIBE
-DESCRIBE customization;
 DESCRIBE user;
 DESCRIBE admin;
 DESCRIBE teacher;
@@ -133,32 +132,32 @@ INSERT INTO class (area, course, create_date, name, update_date) VALUES
 ('MECANICA', 'Técnico em Mecânica Automotiva', '2023-03-10 14:00:00', 'MT73', '2023-04-05 16:45:00'),
 ('TI', 'Técnico em Informática', '2023-04-05 08:45:00', 'MI74', '2023-05-10 10:30:00');
 
-INSERT INTO user (create_date, email, name, password, update_date) VALUES
-('2023-01-05 08:30:00', 'alice.silva@example.com', 'Alice Silva', 'Senha@123', '2023-01-05 08:30:00'),
-('2023-01-10 09:15:00', 'bruno.oliveira@example.com', 'Bruno Oliveira', 'Senha@456', '2023-01-12 10:20:00'),
-('2023-01-15 10:00:00', 'carla.santos@example.com', 'Carla Santos', 'Senha@789', '2023-01-18 11:30:00'),
-('2023-01-20 11:45:00', 'diego.pereira@example.com', 'Diego Pereira', 'Senha@101', '2023-01-22 14:15:00'),
-('2023-01-25 14:30:00', 'elaine.costa@example.com', 'Elaine Costa', 'Senha@202', '2023-01-28 16:45:00'),
-('2023-02-01 15:20:00', 'fabio.martins@example.com', 'Fábio Martins', 'Senha@303', '2023-02-05 09:10:00'),
-('2023-02-05 16:10:00', 'gabriela.fernandes@example.com', 'Gabriela Fernandes', 'Senha@404', '2023-02-10 11:25:00'),
-('2023-02-10 09:45:00', 'henrique.gomes@example.com', 'Henrique Gomes', 'Senha@505', '2023-02-15 13:40:00'),
-('2023-02-15 11:30:00', 'isabela.rodrigues@example.com', 'Isabela Rodrigues', 'Senha@606', '2023-02-20 15:55:00'),
-('2023-02-20 13:15:00', 'joao.almeida@example.com', 'João Almeida', 'Senha@707', '2023-02-25 17:10:00'),
-('2023-02-25 14:50:00', 'karina.lima@example.com', 'Karina Lima', 'Senha@808', '2023-03-02 18:25:00'),
-('2023-03-01 16:35:00', 'leonardo.souza@example.com', 'Leonardo Souza', 'Senha@909', '2023-03-06 19:40:00'),
-('2023-03-05 10:20:00', 'mariana.ribeiro@example.com', 'Mariana Ribeiro', 'Senha@1010', '2023-03-10 20:55:00'),
-('2023-03-10 12:05:00', 'nelson.barbosa@example.com', 'Nelson Barbosa', 'Senha@1111', '2023-03-15 22:10:00'),
-('2023-03-15 13:50:00', 'olivia.cunha@example.com', 'Olivia Cunha', 'Senha@1212', '2023-03-20 23:25:00'),
-('2023-03-20 15:35:00', 'paulo.mendes@example.com', 'Paulo Mendes', 'Senha@1313', '2023-03-25 08:40:00'),
-('2023-03-25 17:20:00', 'quenia.nascimento@example.com', 'Quenia Nascimento', 'Senha@1414', '2023-03-30 09:55:00'),
-('2023-04-01 09:05:00', 'rafael.cardoso@example.com', 'Rafael Cardoso', 'Senha@1515', '2023-04-06 11:10:00'),
-('2023-04-05 10:50:00', 'sandra.machado@example.com', 'Sandra Machado', 'Senha@1616', '2023-04-10 12:25:00'),
-('2023-04-10 12:35:00', 'thiago.ferreira@example.com', 'Thiago Ferreira', 'Senha@1717', '2023-04-15 13:40:00'),
-('2023-04-15 14:20:00', 'ursula.andrade@example.com', 'Ursula Andrade', 'Senha@1818', '2023-04-20 14:55:00'),
-('2023-04-20 16:05:00', 'vinicius.campos@example.com', 'Vinicius Campos', 'Senha@1919', '2023-04-25 16:10:00'),
-('2023-04-25 17:50:00', 'wanda.teixeira@example.com', 'Wanda Teixeira', 'Senha@2020', '2023-04-30 17:25:00'),
-('2023-05-01 08:35:00', 'xavier.rocha@example.com', 'Xavier Rocha', 'Senha@2121', '2023-05-06 18:40:00'),
-('2023-05-05 10:20:00', 'yara.miranda@example.com', 'Yara Miranda', 'Senha@2222', '2023-05-10 19:55:00');
+INSERT INTO user (create_date, email, image_key, name, password, update_date) VALUES
+('2023-01-05 08:30:00', 'alice.silva@example.com', UNHEX('1234567890ABCDEF1234567890ABCDEF'), 'Alice Silva', 'Senha@123', '2023-01-05 08:30:00'),
+('2023-01-10 09:15:00', 'bruno.oliveira@example.com', UNHEX('2234567890ABCDEF1234567890ABCDEF'), 'Bruno Oliveira', 'Senha@456', '2023-01-12 10:20:00'),
+('2023-01-15 10:00:00', 'carla.santos@example.com', UNHEX('3234567890ABCDEF1234567890ABCDEF'), 'Carla Santos', 'Senha@789', '2023-01-18 11:30:00'),
+('2023-01-20 11:45:00', 'diego.pereira@example.com', NULL, 'Diego Pereira', 'Senha@101', '2023-01-22 14:15:00'),
+('2023-01-25 14:30:00', 'elaine.costa@example.com', UNHEX('4234567890ABCDEF1234567890ABCDEF'), 'Elaine Costa', 'Senha@202', '2023-01-28 16:45:00'),
+('2023-02-01 15:20:00', 'fabio.martins@example.com', NULL, 'Fábio Martins', 'Senha@303', '2023-02-05 09:10:00'),
+('2023-02-05 16:10:00', 'gabriela.fernandes@example.com', UNHEX('5234567890ABCDEF1234567890ABCDEF'), 'Gabriela Fernandes', 'Senha@404', '2023-02-10 11:25:00'),
+('2023-02-10 09:45:00', 'henrique.gomes@example.com', NULL, 'Henrique Gomes', 'Senha@505', '2023-02-15 13:40:00'),
+('2023-02-15 11:30:00', 'isabela.rodrigues@example.com', UNHEX('6234567890ABCDEF1234567890ABCDEF'), 'Isabela Rodrigues', 'Senha@606', '2023-02-20 15:55:00'),
+('2023-02-20 13:15:00', 'joao.almeida@example.com', NULL, 'João Almeida', 'Senha@707', '2023-02-25 17:10:00'),
+('2023-02-25 14:50:00', 'karina.lima@example.com', UNHEX('7234567890ABCDEF1234567890ABCDEF'), 'Karina Lima', 'Senha@808', '2023-03-02 18:25:00'),
+('2023-03-01 16:35:00', 'leonardo.souza@example.com', NULL, 'Leonardo Souza', 'Senha@909', '2023-03-06 19:40:00'),
+('2023-03-05 10:20:00', 'mariana.ribeiro@example.com', UNHEX('8234567890ABCDEF1234567890ABCDEF'), 'Mariana Ribeiro', 'Senha@1010', '2023-03-10 20:55:00'),
+('2023-03-10 12:05:00', 'nelson.barbosa@example.com', NULL, 'Nelson Barbosa', 'Senha@1111', '2023-03-15 22:10:00'),
+('2023-03-15 13:50:00', 'olivia.cunha@example.com', UNHEX('9234567890ABCDEF1234567890ABCDEF'), 'Olivia Cunha', 'Senha@1212', '2023-03-20 23:25:00'),
+('2023-03-20 15:35:00', 'paulo.mendes@example.com', NULL, 'Paulo Mendes', 'Senha@1313', '2023-03-25 08:40:00'),
+('2023-03-25 17:20:00', 'quenia.nascimento@example.com', UNHEX('A234567890ABCDEF1234567890ABCDEF'), 'Quenia Nascimento', 'Senha@1414', '2023-03-30 09:55:00'),
+('2023-04-01 09:05:00', 'rafael.cardoso@example.com', NULL, 'Rafael Cardoso', 'Senha@1515', '2023-04-06 11:10:00'),
+('2023-04-05 10:50:00', 'sandra.machado@example.com', UNHEX('B234567890ABCDEF1234567890ABCDEF'), 'Sandra Machado', 'Senha@1616', '2023-04-10 12:25:00'),
+('2023-04-10 12:35:00', 'thiago.ferreira@example.com', NULL, 'Thiago Ferreira', 'Senha@1717', '2023-04-15 13:40:00'),
+('2023-04-15 14:20:00', 'ursula.andrade@example.com', UNHEX('C234567890ABCDEF1234567890ABCDEF'), 'Ursula Andrade', 'Senha@1818', '2023-04-20 14:55:00'),
+('2023-04-20 16:05:00', 'vinicius.campos@example.com', NULL, 'Vinicius Campos', 'Senha@1919', '2023-04-25 16:10:00'),
+('2023-04-25 17:50:00', 'wanda.teixeira@example.com', UNHEX('D234567890ABCDEF1234567890ABCDEF'), 'Wanda Teixeira', 'Senha@2020', '2023-04-30 17:25:00'),
+('2023-05-01 08:35:00', 'xavier.rocha@example.com', NULL, 'Xavier Rocha', 'Senha@2121', '2023-05-06 18:40:00'),
+('2023-05-05 10:20:00', 'yara.miranda@example.com', UNHEX('E234567890ABCDEF1234567890ABCDEF'), 'Yara Miranda', 'Senha@2222', '2023-05-10 19:55:00');
 
 INSERT INTO student (frequency, is_representant, user_id) VALUES
 (85.5, 0, 1),  -- Alice Silva
@@ -231,3 +230,6 @@ INSERT INTO teacher_class (teacher_id, class_id) VALUES
 (22, 2);  -- Vinicius Campos
 
 -- Turma 3 (TI - MI74) - Fica sem professores (como solicitado)
+
+
+

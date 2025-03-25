@@ -30,9 +30,6 @@ public class StudentRequestDTO {
     @NotNull
     private List<Long> classes_id;
 
-    //Podem ser nulo
-
-    private UUID imageKey;
     private Double frequency;
 
 }
