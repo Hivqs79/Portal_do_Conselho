@@ -6,14 +6,15 @@ import { ThemeProviderContext, useThemeContext } from "@/hooks/useTheme";
 import { Box, ThemeProvider } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { ReactElement, useEffect } from "react";
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider, usePickersTranslations } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import 'dayjs/locale/pt-br';
 
 export default function InnerLayout({ children }: { children: ReactElement }) {
   return (
     <ThemeProviderContext>
       <RoleProvider>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
           <CoreLayout>{children}</CoreLayout>
         </LocalizationProvider>
       </RoleProvider>
@@ -51,21 +52,19 @@ function CoreLayout({ children }: { children: ReactElement }) {
     }
   }, [role, setRole]);
 
-  return (
-    <ThemeProvider theme={theme}>
-      <body style={{ backgroundColor: backgroundColor, overflowX: "hidden" }}>
-        {!isLoginPage ? (
-          <>
-            <Header variant={role} />
-            <Box className="flex flex-col mb-24 mx-[15%]">
-              {children}
-            </Box>
-          </>
-        ) : (
-          <>{children}</>
-        )}
-        <DevPalleteChangerMenu />
-      </body>
-    </ThemeProvider>
+  return (    
+      <ThemeProvider theme={theme}>
+        <body style={{ backgroundColor: backgroundColor, overflowX: "hidden" }}>
+          {!isLoginPage ? (
+            <>
+              <Header variant={role} />
+              <Box className="flex flex-col mb-24 mx-[5%] sm:mx-[15%]">{children}</Box>
+            </>
+          ) : (
+            <>{children}</>
+          )}
+          <DevPalleteChangerMenu />
+        </body>
+      </ThemeProvider>
   );
 }

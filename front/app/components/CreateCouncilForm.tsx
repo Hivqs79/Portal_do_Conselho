@@ -1,115 +1,146 @@
 import {
-    Box,
-    Button,
-    Icon,
-    InputAdornment,
-    TextField,
-    Typography,
+  Box,
+  Button,
+  Icon,
+  InputAdornment,
+  TextField,
+  Typography,
 } from "@mui/material";
 import SelectTable from "./table/SelectTable";
-import { createElement, Dispatch, ElementType, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Teacher } from "@/interfaces/Teacher";
 import Class from "@/interfaces/Class";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useThemeContext } from "@/hooks/useTheme";
 import { TimePicker } from "@mui/x-date-pickers";
-// import Icon from "./Icon";
-import { RiCalendarScheduleLine } from "react-icons/ri";
-import { FaRegClock } from "react-icons/fa";
+import { FaRegCalendarAlt, FaRegClock } from "react-icons/fa";
+import dayjs from "dayjs";
+import { useWindowWidth } from "@react-hook/window-size";
+import ConfirmCouncilModal from "./ConfirmCouncilModal";
 
 interface CreateCouncilFormProps {
-    selectedTeachers: { [key: string]: boolean };
-    selectedClass: number | null;
-    setSelectedTeachers: Dispatch<SetStateAction<{ [key: string]: boolean }>>;
-    setSelectedClass: Dispatch<SetStateAction<number | null>>;
-    teachers: Teacher[];
-    classExistents: Class[];
+  selectedTeachers: { [key: string]: boolean };
+  selectedClass: number | null;
+  setSelectedTeachers: Dispatch<SetStateAction<{ [key: string]: boolean }>>;
+  setSelectedClass: Dispatch<SetStateAction<number | null>>;
+  teachers: Teacher[];
+  classExistents: Class[];
+  setDate: Dispatch<SetStateAction<dayjs.Dayjs>>;
+  setTime: Dispatch<SetStateAction<dayjs.Dayjs>>;
+  date: dayjs.Dayjs;
+  time: dayjs.Dayjs;
 }
 
 export default function CreateCouncilForm({
-    selectedTeachers,
-    selectedClass,
-    setSelectedTeachers,
-    setSelectedClass,
-    teachers,
-    classExistents,
+  selectedTeachers,
+  selectedClass,
+  setSelectedTeachers,
+  setSelectedClass,
+  teachers,
+  classExistents,
+  setDate,
+  setTime,
+  date,
+  time,
 }: CreateCouncilFormProps) {
-    const { primaryColor, whiteColor } = useThemeContext();
+  const { primaryColor, colorByMode, whiteColor } = useThemeContext();
+  const windowWidth = useWindowWidth();
+  const [openConfirm, setOpenConfirm] = useState(false);
 
-    return (
-        <Box
-            style={{ borderColor: primaryColor }}
-            className="outline-component flex flex-col rounded-big p-8 gap-8 border-[2px]"
-        >
-            <Box className="flex flex-row w-full justify-between gap-8">
-                <Box className="flex flex-col w-full gap-4">
-                    <Typography color="primary" variant="xl_text_bold">
-                        Data do conselho
-                    </Typography>
-                    <DatePicker
-                        label="Data do conselho"
-                        slots={{
-                            openPickerIcon: Icon,
-                        }}
-                        slotProps={{
-                            openPickerIcon: {
-                                style: { color: primaryColor },
-                                component: RiCalendarScheduleLine,
-                            },
-                        }}
-                    />
-                </Box>
-                <div
-                    style={{ backgroundColor: primaryColor }}
-                    className="block w-[2px]"
-                />
-                <Box className="flex flex-col w-full gap-4">
-                    <Typography color="primary" variant="xl_text_bold">
-                        Horário do conselho
-                    </Typography>
-                    <TimePicker
-                        label="Horário do conselho"
-                        slots={{
-                            openPickerIcon: Icon,
-                        }}
-                        slotProps={{
-                            openPickerIcon: {
-                                style: { color: primaryColor },
-                                component: FaRegClock,
-                            },
-                        }}
-                    />
-                </Box>
-            </Box>
-            <Box className="flex flex-col gap-12">
-                <Box className="flex flex-col gap-4">
-                    <Typography color="primary" variant="xl_text_bold">
-                        Turma
-                    </Typography>
-                    <SelectTable
-                        value={selectedClass}
-                        setRadioSelectedItem={setSelectedClass}
-                        name="Lista de Turmas"
-                        rows={classExistents}
-                        selectType="single"
-                    />
-                </Box>
-                <Box className="flex flex-col gap-4">
-                    <Typography color="primary" variant="xl_text_bold">
-                        Professores
-                    </Typography>
-                    <SelectTable
-                        value={selectedTeachers}
-                        setSelectedItems={setSelectedTeachers}
-                        name="Lista de professores"
-                        rows={teachers}
-                        selectType="multiple"
-                    />
-                </Box>
-                <Button variant="contained" color="primary">
-                    <Typography variant="xl_text_regular" color={whiteColor}>Salvar e revisar o conselho</Typography>
-                </Button>
-            </Box>
+  return (
+    <Box
+      style={{ borderColor: primaryColor }}
+      className="outline-component flex flex-col rounded-big sm:p-8 gap-8 sm:border-[2px]"
+    >
+      <Box className="flex flex-col md:flex-row w-full justify-between gap-8">
+        <Box className="flex flex-col w-full gap-4">
+          <Typography color={colorByMode} variant="xl_text_bold">
+            Data do conselho
+          </Typography>
+          <DatePicker
+            label="Data do conselho"
+            minDate={dayjs().add(1, "day")}
+            onChange={(e) => e && setDate(e)}
+            slots={{    
+              openPickerIcon: Icon,
+            }}
+            slotProps={{
+              openPickerIcon: {
+                style: { color: colorByMode },
+                component: FaRegCalendarAlt,
+              },
+            }}
+          />
         </Box>
-    );
+        <div
+          style={{ backgroundColor: primaryColor }}
+          className="hidden md:block w-[2px]"
+        />
+        <Box className="flex flex-col w-full gap-4">
+          <Typography color={colorByMode} variant="xl_text_bold">
+            Horário do conselho
+          </Typography>
+          <TimePicker
+            label="Horário do conselho"
+            onChange={(e) => e && setTime(e)}
+            slots={{
+              openPickerIcon: Icon,
+            }}
+            slotProps={{
+              openPickerIcon: {
+                style: { color: colorByMode },
+                component: FaRegClock,
+              },
+            }}
+          />
+        </Box>
+      </Box>
+      <Box className="flex flex-col gap-12">
+        <Box className="flex flex-col gap-4">
+          <Typography color={colorByMode} variant="xl_text_bold">
+            Turma
+          </Typography>
+          <SelectTable
+            value={selectedClass}
+            setRadioSelectedItem={setSelectedClass}
+            name="Lista de Turmas"
+            rows={classExistents}
+            selectType="single"
+          />
+        </Box>
+        <Box className="flex flex-col gap-4">
+          <Typography color={colorByMode} variant="xl_text_bold">
+            Professores
+          </Typography>
+          <SelectTable
+            value={selectedTeachers}
+            setSelectedItems={setSelectedTeachers}
+            name="Lista de professores"
+            rows={teachers}
+            selectType="multiple"
+          />
+        </Box>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setOpenConfirm(true)}
+        >
+          <Typography
+            variant={windowWidth < 640 ? "md_text_regular" : "xl_text_regular"}
+            color={whiteColor}
+          >
+            Salvar e revisar o conselho
+          </Typography>
+        </Button>
+      </Box>
+      <ConfirmCouncilModal
+        open={openConfirm}
+        close={() => setOpenConfirm(false)}
+        date={date}
+        time={time}
+        teachers={Array.from(teachers).filter((teacher) => selectedTeachers[teacher.id])}
+        classSelected={classExistents.find((c) => c.id === selectedClass)!}
+      />
+    </Box>
+  );
 }

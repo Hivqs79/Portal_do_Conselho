@@ -79,7 +79,7 @@ export default function SelectTable({ selectType, name, rows, value, setSelected
                     {Array.isArray(rows) && rows.map((row, i) => (
                         <Box 
                             style={{ borderColor: OpacityHex(primaryColor, 0.2) }} 
-                            className={`flex items-centerw-full px-6 py-5 ` + (i !== rows.length - 1 ? "border-b-[1px]" : "")} key={row.id}
+                            className={`flex items-centerw-full px-2 py-5 ` + (i !== rows.length - 1 ? "border-b-[1px]" : "")} key={row.id}
                         >
                             {selectType === "multiple" ? (
                                 <Checkbox

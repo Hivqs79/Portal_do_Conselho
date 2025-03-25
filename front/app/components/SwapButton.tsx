@@ -17,7 +17,7 @@ export default function SwapButton({ button1Text, button2Text, onClickButton1, o
     const windowWidth = useWindowWidth();
 
     return (
-        <Button style={{ backgroundColor: terciaryColor }} className="relative flex flex-row items-center !rounded-lg w-full z-10 h-12">
+        <Button style={{ backgroundColor: terciaryColor }} className="relative !p-0 flex flex-row items-center !rounded-lg w-full z-10 h-12 !mb-8">
             <div 
                 style={{ backgroundColor: primaryColor }} 
                 className={`absolute z-20 top-0 left-0 w-[50%] h-12 rounded-lg transition-transform duration-300 ease-in-out ${button1Focused ? 'translate-x-0' : 'translate-x-full'}`} 

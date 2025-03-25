@@ -32,6 +32,12 @@
   border-radius: 16px;
 }
 
+@media screen and (max-width: 640px) {
+  .outline-component {
+    outline: none;
+  }
+}
+
 /* Estiliza a barra de rolagem */
 ::-webkit-scrollbar {
   z-index: 1;
