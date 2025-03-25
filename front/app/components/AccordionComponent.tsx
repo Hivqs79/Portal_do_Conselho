@@ -70,7 +70,7 @@ export default function AccordionComponent({
         expandIcon={
           <Icon
             IconPassed={IoIosArrowDown}
-            color={outlined ? primaryColor : whiteColor}
+            color={outlined ? colorByModeSecondary : whiteColor}
             className="text-[2.5rem]"
           />
         }
