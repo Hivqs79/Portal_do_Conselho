@@ -9,13 +9,7 @@ import net.weg.userapi.model.entity.users.User;
 import net.weg.userapi.model.enums.*;
 import net.weg.userapi.repository.CustomizationRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -24,20 +18,16 @@ public class CustomizationService {
     private CustomizationRepository repository;
     private ModelMapper modelMapper;
 
-    public Page<CustomizationResponseDTO> findCustomizationSpec(Specification<Customization> spec, Pageable pageable) {
-        Page<Customization> customizations = repository.findAll(spec, pageable);
-        return customizations.map(customization -> modelMapper.map(customization, CustomizationResponseDTO.class));
-    }
 
-    public CustomizationResponseDTO createCustomization(CustomizationRequestDTO customizationRequestDTO) {
-        Customization customization = modelMapper.map(customizationRequestDTO, Customization.class);
-        Customization customizationSaved = repository.save(customization);
-        return modelMapper.map(customizationSaved, CustomizationResponseDTO.class);
-    }
-
-    public void setDefault(User user) {
-        repository.save(
+    public Customization setDefault(User user) {
+        return repository.save(
                 Customization.builder()
+                        .modeTheme(ModeThemeENUM.LIGHT)
+                        .pallete(PalleteENUM.BLUE)
+                        .textFont(TextFont.POPPINS)
+                        .titleFont(TitleFont.LORA)
+                        .fontSize(FontSizeENUM.FONT1)
+                        .user(user)
                         .build()
         );
     }
@@ -52,29 +42,11 @@ public class CustomizationService {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Customization not found"));
     }
 
-    public Page<CustomizationResponseDTO> pageCustomization(Pageable pageable) {
-        Page<Customization> customizationPage = repository.findAll(pageable);
-
-        return customizationPage.map(customization -> modelMapper.map(customization, CustomizationResponseDTO.class));
-    }
-
-    public CustomizationResponseDTO updateCustomization(CustomizationRequestDTO customizationRequestDTO, Long id) {
-        Customization customization = findCustomizationEntity(id);
+    public CustomizationResponseDTO updateCustomization(CustomizationRequestDTO customizationRequestDTO, Long user_id) {
+        Customization customization = repository.findByUser_Id(user_id).orElseThrow(() -> new UserNotFoundException("User not found"));
         modelMapper.map(customizationRequestDTO, customization);
         Customization updatedCustomization = repository.save(customization);
         return modelMapper.map(updatedCustomization, CustomizationResponseDTO.class);
-    }
-
-    public CustomizationResponseDTO deleteCustomization(Long id) {
-        Customization customization = findCustomizationEntity(id);
-        CustomizationResponseDTO customizationResponseDTO = modelMapper.map(customization, CustomizationResponseDTO.class);
-        repository.delete(customization);
-        return customizationResponseDTO;
-    }
-
-    public void mockarCustomization(List<CustomizationRequestDTO> customizationRequestDTOS) {
-        List<Customization> customizations = customizationRequestDTOS.stream().map(customizationRequestDTO -> modelMapper.map(customizationRequestDTO, Customization.class)).collect(Collectors.toList());
-        repository.saveAll(customizations);
     }
 
 }

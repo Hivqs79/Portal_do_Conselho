@@ -28,39 +28,14 @@ public class CustomizationController {
 
     private CustomizationService service;
 
-    @GetMapping
-    public Page<CustomizationResponseDTO> searchCustomization (
-            @And({
-                    @Spec(path = "id", spec = Equal.class),
-            }) Specification<Customization> spec, Pageable pageable) {
-
-        return service.findCustomizationSpec(spec, pageable);
-    }
-
-    @PostMapping
-    public ResponseEntity<CustomizationResponseDTO> postCustomization(@RequestBody @Validated CustomizationRequestDTO customizationRequestDTO) {
-        return new ResponseEntity<>(service.createCustomization(customizationRequestDTO), HttpStatus.OK);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<CustomizationResponseDTO> putCustomization(@RequestBody @Validated CustomizationRequestDTO customizationRequestDTO, @PathVariable Long id) {
-        return new ResponseEntity<>(service.updateCustomization(customizationRequestDTO, id), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<CustomizationResponseDTO> deleteCustomization(@PathVariable Long id) {
-        return new ResponseEntity<>(service.deleteCustomization(id), HttpStatus.OK);
+    @PutMapping("/{user_id}")
+    public ResponseEntity<CustomizationResponseDTO> putCustomization(@RequestBody @Validated CustomizationRequestDTO customizationRequestDTO, @PathVariable Long user_id) {
+        return new ResponseEntity<>(service.updateCustomization(customizationRequestDTO, user_id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CustomizationResponseDTO> getCustomization(@PathVariable Long id) {
         return new ResponseEntity<>(service.findCustomization(id), HttpStatus.OK);
-    }
-
-    @PostMapping("/mock")
-    public ResponseEntity<Void> postAllCustomization(@RequestBody List<CustomizationRequestDTO> customizationRequestDTOS) {
-        service.mockarCustomization(customizationRequestDTOS);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
     
 }

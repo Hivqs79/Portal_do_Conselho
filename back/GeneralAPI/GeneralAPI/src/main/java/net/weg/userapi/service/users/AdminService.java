@@ -36,17 +36,8 @@ public class AdminService {
     public AdminResponseDTO createAdmin(AdminRequestDTO adminRequestDTO) {
         Admin admin = modelMapper.map(adminRequestDTO, Admin.class);
         Admin adminSaved = repository.save(admin);
-        /*
-        customizationService.createCustomization(new CustomizationRequestDTO(
-                ModeThemeENUM.LIGHT,
-                PalleteENUM.BLUE,
-                TextFont.POPPINS,
-                TitleFont.LORA,
-                FontSizeENUM.FONT1,
-                adminSaved.getId()
-        ));
 
-         */
+        adminSaved.setCustomization(customizationService.setDefault(adminSaved));
 
         return modelMapper.map(adminSaved, AdminResponseDTO.class);
     }

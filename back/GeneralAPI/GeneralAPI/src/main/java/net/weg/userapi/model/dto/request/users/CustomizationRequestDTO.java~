@@ -28,4 +28,7 @@ public class CustomizationRequestDTO {
     @NotNull(message = "{not.null.message}")
     private FontSizeENUM fontSize;
 
+    @NotNull(message = "{not.null.message}")
+    private Long userId;
+
 }
