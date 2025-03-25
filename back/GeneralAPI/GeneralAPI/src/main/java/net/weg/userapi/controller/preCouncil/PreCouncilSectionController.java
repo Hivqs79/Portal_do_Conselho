@@ -53,17 +53,17 @@ public class PreCouncilSectionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PreCouncilSectionResponseDTO> putPreCouncil(@RequestBody @Validated PreCouncilSectionRequestDTO preCouncilRequestDTO, @PathVariable Integer id) {
+    public ResponseEntity<PreCouncilSectionResponseDTO> putPreCouncil(@RequestBody @Validated PreCouncilSectionRequestDTO preCouncilRequestDTO, @PathVariable Long id) {
         return new ResponseEntity<>(service.updatePreCouncilSection(preCouncilRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<PreCouncilSectionResponseDTO> deletePreCouncil(@PathVariable Integer id) {
+    public ResponseEntity<PreCouncilSectionResponseDTO> deletePreCouncil(@PathVariable Long id) {
         return new ResponseEntity<>(service.deletePreCouncilSection(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PreCouncilSectionResponseDTO> getPreCouncil(@PathVariable Integer id) {
+    public ResponseEntity<PreCouncilSectionResponseDTO> getPreCouncil(@PathVariable Long id) {
         return new ResponseEntity<>(service.findPreCouncilSection(id), HttpStatus.OK);
     }
 

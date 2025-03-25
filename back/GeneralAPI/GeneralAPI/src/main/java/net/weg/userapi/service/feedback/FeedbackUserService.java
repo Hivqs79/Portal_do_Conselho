@@ -49,13 +49,13 @@ public class FeedbackUserService {
         return modelMapper.map(feedbackSaved, FeedbackUserResponseDTO.class);
     }
 
-    public FeedbackUserResponseDTO findFeedbackUser(Integer id) {
+    public FeedbackUserResponseDTO findFeedbackUser(Long id) {
         FeedbackUser feedbackUser = findFeedbackEntity(id);
 
         return modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class);
     }
 
-    public FeedbackUser findFeedbackEntity(Integer id) {
+    public FeedbackUser findFeedbackEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new FeedbackNotFoundException("User feedback not found") );
     }
 
@@ -65,7 +65,7 @@ public class FeedbackUserService {
         return feedbackUser.map(feedback -> modelMapper.map(feedback, FeedbackUserResponseDTO.class));
     }
 
-    public FeedbackUserResponseDTO updateFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO, Integer id) {
+    public FeedbackUserResponseDTO updateFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO, Long id) {
         FeedbackUser feedbackUser = findFeedbackEntity(id);
         modelMapper.map(feedbackUserRequestDTO, feedbackUser);
 
@@ -75,14 +75,14 @@ public class FeedbackUserService {
         return modelMapper.map(updatedFeedbackUser, FeedbackUserResponseDTO.class);
     }
 
-    public FeedbackUserResponseDTO deleteFeedbackUser(Integer id) {
+    public FeedbackUserResponseDTO deleteFeedbackUser(Long id) {
         FeedbackUser feedbackUser = findFeedbackEntity(id);
         FeedbackUserResponseDTO feedbackUserResponseDTO = modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class);
         repository.delete(feedbackUser);
         return feedbackUserResponseDTO;
     }
 
-    public List<FeedbackUserResponseDTO> getFeedbackUserByUserId(Integer id) {
+    public List<FeedbackUserResponseDTO> getFeedbackUserByUserId(Long id) {
         return repository.getAllByUser_Id(id).stream().map(feedbackUser -> modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class)).collect(Collectors.toList());
     }
 }

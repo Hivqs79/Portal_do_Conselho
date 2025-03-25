@@ -11,9 +11,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PedagogicResponseDTO {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String email;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+    private CustomizationResponseDTO customization;
+
 }

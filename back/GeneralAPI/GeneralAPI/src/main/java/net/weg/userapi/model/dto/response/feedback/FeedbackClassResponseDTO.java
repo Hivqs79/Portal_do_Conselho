@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedbackClassResponseDTO {
-    private Integer id;
+    private Long id;
     private String rank;
     private CouncilResponseDTO council;
     private String strengths;

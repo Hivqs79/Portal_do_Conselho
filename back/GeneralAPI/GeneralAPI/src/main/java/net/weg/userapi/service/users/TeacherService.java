@@ -43,13 +43,13 @@ public class TeacherService {
         return modelMapper.map(teacherSaved, TeacherResponseDTO.class);
     }
 
-    public TeacherResponseDTO findTeacher(Integer id) {
+    public TeacherResponseDTO findTeacher(Long id) {
         Teacher teacherFound = findTeacherEntity(id);
 
         return modelMapper.map(teacherFound, TeacherResponseDTO.class);
     }
 
-    public Teacher findTeacherEntity(Integer id) {
+    public Teacher findTeacherEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new UserNotFoundException("Teacher user not found"));
     }
 
@@ -59,7 +59,7 @@ public class TeacherService {
         return teacherPage.map(teacher -> modelMapper.map(teacher, TeacherResponseDTO.class));
     }
 
-    public TeacherResponseDTO updateTeacher(TeacherRequestDTO teacherRequestDTO, Integer id) {
+    public TeacherResponseDTO updateTeacher(TeacherRequestDTO teacherRequestDTO, Long id) {
         Teacher teacher = findTeacherEntity(id);
         modelMapper.map(teacherRequestDTO, teacher);
 
@@ -69,14 +69,14 @@ public class TeacherService {
         return modelMapper.map(updatedTeacher, TeacherResponseDTO.class);
     }
 
-    public TeacherResponseDTO deleteTeacher(Integer id) {
+    public TeacherResponseDTO deleteTeacher(Long id) {
         Teacher teacher = findTeacherEntity(id);
         TeacherResponseDTO teacherResponseDTO = modelMapper.map(teacher, TeacherResponseDTO.class);
         repository.delete(teacher);
         return teacherResponseDTO;
     }
 
-    public List<ClassResponseDTO> getClassByTeacher(Integer teacher_id) {
+    public List<ClassResponseDTO> getClassByTeacher(Long teacher_id) {
         Teacher teacher = findTeacherEntity(teacher_id);
         return teacher.getClasses().stream().map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class)).collect(Collectors.toList());
     }
@@ -86,11 +86,11 @@ public class TeacherService {
         repository.saveAll(teacher);
     }
 
-    public List<Teacher> getTeachersByIdList(List<Integer> teachers_id) {
+    public List<Teacher> getTeachersByIdList(List<Long> teachers_id) {
         return repository.findAllById(teachers_id);
     }
 
-    public TeacherResponseDTO addTeacherClasss(Integer id, List<Integer> classesId) {
+    public TeacherResponseDTO addTeacherClasss(Long id, List<Long> classesId) {
         Teacher teacher = findTeacherEntity(id);
         List<Class> classes = teacher.getClasses();
 
@@ -106,7 +106,7 @@ public class TeacherService {
         return modelMapper.map(teacher, TeacherResponseDTO.class);
     }
 
-    public TeacherResponseDTO removeTeacherClasss(Integer id, List<Integer> classesId) {
+    public TeacherResponseDTO removeTeacherClasss(Long id, List<Long> classesId) {
         Teacher teacher = findTeacherEntity(id);
         List<Class> classes = teacher.getClasses();
 

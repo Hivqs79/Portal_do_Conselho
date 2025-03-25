@@ -50,22 +50,22 @@ public class AnnotationStudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AnnotationStudentResponseDTO> putAnnotationStudent(@RequestBody @Validated AnnotationStudentRequestDTO pedagogicRequestDTO, @PathVariable Integer id) {
+    public ResponseEntity<AnnotationStudentResponseDTO> putAnnotationStudent(@RequestBody @Validated AnnotationStudentRequestDTO pedagogicRequestDTO, @PathVariable Long id) {
         return new ResponseEntity<>(service.updateAnnotationStudent(pedagogicRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<AnnotationStudentResponseDTO> deleteAnnotationStudent(@PathVariable Integer id) {
+    public ResponseEntity<AnnotationStudentResponseDTO> deleteAnnotationStudent(@PathVariable Long id) {
         return new ResponseEntity<>(service.deleteAnnotationStudent(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AnnotationStudentResponseDTO> getAnnotationStudent(@PathVariable Integer id) {
+    public ResponseEntity<AnnotationStudentResponseDTO> getAnnotationStudent(@PathVariable Long id) {
         return new ResponseEntity<>(service.findAnnotationStudent(id), HttpStatus.OK);
     }
 
     @GetMapping("/by/{id}")
-    public ResponseEntity<Page<AnnotationStudentResponseDTO>> getAnnotationByOneStudent(@PathVariable Integer id, Pageable pageable) {
+    public ResponseEntity<Page<AnnotationStudentResponseDTO>> getAnnotationByOneStudent(@PathVariable Long id, Pageable pageable) {
         return new ResponseEntity<>(service.pageAnnotationsByStudent(id, pageable), HttpStatus.OK);
     }
     

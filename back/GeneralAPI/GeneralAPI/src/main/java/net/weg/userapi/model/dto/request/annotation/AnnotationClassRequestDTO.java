@@ -18,8 +18,8 @@ public class AnnotationClassRequestDTO {
     @NotBlank(message = "{not.blank.message}")
     private String toImprove;
     @NotNull(message = "{not.null.message}")
-    private Integer teacher_id;
+    private Long teacher_id;
     @NotNull(message = "{not.null.message}")
-    private Integer council_id;
+    private Long council_id;
 
 }

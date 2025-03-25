@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ClassResponseDTO {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String area;
     private String course;

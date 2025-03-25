@@ -49,13 +49,13 @@ public class StudentService {
         return modelMapper.map(studentSaved, StudentResponseDTO.class);
     }
 
-    public StudentResponseDTO findStudent(Integer id) {
+    public StudentResponseDTO findStudent(Long id) {
         Student studentFound = findStudentEntity(id);
 
         return modelMapper.map(studentFound, StudentResponseDTO.class);
     }
 
-    public Student findStudentEntity(Integer id) {
+    public Student findStudentEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new UserNotFoundException("Student user not found"));
     }
 
@@ -65,7 +65,7 @@ public class StudentService {
         return studentPage.map(student -> modelMapper.map(student, StudentResponseDTO.class));
     }
 
-    public StudentResponseDTO updateStudent(StudentRequestDTO studentRequestDTO, Integer id) {
+    public StudentResponseDTO updateStudent(StudentRequestDTO studentRequestDTO, Long id) {
         Student student = findStudentEntity(id);
         modelMapper.map(studentRequestDTO, student);
 
@@ -75,7 +75,7 @@ public class StudentService {
         return modelMapper.map(updatedStudent, StudentResponseDTO.class);
     }
 
-    public StudentResponseDTO deleteStudent(Integer id) {
+    public StudentResponseDTO deleteStudent(Long id) {
         Student student = findStudentEntity(id);
         StudentResponseDTO studentResponseDTO = modelMapper.map(student, StudentResponseDTO.class);
         repository.delete(student);
@@ -101,7 +101,7 @@ public class StudentService {
         }
     }
 
-    public StudentResponseDTO addStudentClasss(Integer id, List<Integer> classesId) {
+    public StudentResponseDTO addStudentClasss(Long id, List<Long> classesId) {
         Student student = findStudentEntity(id);
         List<Class> classes = student.getClasses();
 
@@ -117,7 +117,7 @@ public class StudentService {
         return modelMapper.map(student, StudentResponseDTO.class);
     }
 
-    public StudentResponseDTO removeStudentClasss(Integer id, List<Integer> classesId) {
+    public StudentResponseDTO removeStudentClasss(Long id, List<Long> classesId) {
         Student student = findStudentEntity(id);
         List<Class> classes = student.getClasses();
 

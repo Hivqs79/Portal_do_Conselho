@@ -33,12 +33,12 @@ public class ClassService {
         return classes.map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class));
     }
 
-    public List<StudentResponseDTO> getStudentsByClass(Integer class_id) {
+    public List<StudentResponseDTO> getStudentsByClass(Long class_id) {
         Class aClass = findClassEntity(class_id);
         return aClass.getStudents().stream().map(student -> modelMapper.map(student, StudentResponseDTO.class)).collect(Collectors.toList());
     }
 
-    public List<TeacherResponseDTO> getTeacherByClass(Integer class_id) {
+    public List<TeacherResponseDTO> getTeacherByClass(Long class_id) {
         Class aClass = findClassEntity(class_id);
         return aClass.getTeachers().stream().map(teacher -> modelMapper.map(teacher, TeacherResponseDTO.class)).collect(Collectors.toList());
     }
@@ -50,13 +50,13 @@ public class ClassService {
         return modelMapper.map(classesSaved, ClassResponseDTO.class);
     }
 
-    public ClassResponseDTO findClass(Integer id) {
+    public ClassResponseDTO findClass(Long id) {
         Class classesFound = findClassEntity(id);
 
         return modelMapper.map(classesFound, ClassResponseDTO.class);
     }
 
-    public Class findClassEntity(Integer id) {
+    public Class findClassEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new ClassNotFoundException("Class not found"));
     }
 
@@ -66,14 +66,14 @@ public class ClassService {
         return classesPage.map(classes -> modelMapper.map(classes, ClassResponseDTO.class));
     }
 
-    public ClassResponseDTO updateClass(ClassRequestDTO classesRequestDTO, Integer id) {
+    public ClassResponseDTO updateClass(ClassRequestDTO classesRequestDTO, Long id) {
         Class classes = findClassEntity(id);
         modelMapper.map(classesRequestDTO, classes);
         Class updatedClass = repository.save(classes);
         return modelMapper.map(updatedClass, ClassResponseDTO.class);
     }
 
-    public ClassResponseDTO deleteClass(Integer id) {
+    public ClassResponseDTO deleteClass(Long id) {
         Class classes = findClassEntity(id);
         ClassResponseDTO classResponseDTO = modelMapper.map(classes, ClassResponseDTO.class);
         repository.delete(classes);
@@ -85,7 +85,7 @@ public class ClassService {
         repository.saveAll(classes);
     }
 
-    public List<Class> getClassesByIdList(List<Integer> classes_id) {
+    public List<Class> getClassesByIdList(List<Long> classes_id) {
         return repository.findAllById(classes_id);
     }
 

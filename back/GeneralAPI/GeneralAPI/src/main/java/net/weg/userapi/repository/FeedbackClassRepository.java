@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.Collection;
 import java.util.List;
 
-public interface FeedbackClassRepository extends JpaRepository<FeedbackClass, Integer>, JpaSpecificationExecutor<FeedbackClass> {
+public interface FeedbackClassRepository extends JpaRepository<FeedbackClass, Long>, JpaSpecificationExecutor<FeedbackClass> {
 
 }
 

@@ -15,7 +15,7 @@ public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -32,6 +32,9 @@ public abstract class User {
 
     @Column(name = "update_date", nullable = false)
     private LocalDateTime updateDate;
+
+    @OneToOne(mappedBy = "user")
+    private Customization customization;
 
     @PrePersist
     public void onPrePersist() {

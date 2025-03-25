@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedbackUserResponseDTO {
-    private Integer id;
+    private Long id;
     private String rank;
     private CouncilResponseDTO council;
     private String strengths;

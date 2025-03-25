@@ -26,10 +26,10 @@ public class Council {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    private LocalDate date;
-    private LocalTime time;
+    @Column(nullable = false)
+    private LocalDateTime startDateTime;
 
     @ManyToOne
     private Class aClass;
@@ -72,8 +72,6 @@ public class Council {
     public String toString() {
         return "Council{" +
                 "id=" + id +
-                ", date=" + date +
-                ", time=" + time +
                 ", aClass=" + aClass +
                 ", teachers=" + teachers +
                 ", preCouncil=" + preCouncil +

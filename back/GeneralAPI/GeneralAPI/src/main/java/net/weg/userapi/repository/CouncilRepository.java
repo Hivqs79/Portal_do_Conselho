@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface CouncilRepository extends JpaRepository<Council, Integer>, JpaSpecificationExecutor<Council> {
-    List<Council> getAllByaClass_Id(Integer id);
+public interface CouncilRepository extends JpaRepository<Council, Long>, JpaSpecificationExecutor<Council> {
 }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PreCouncilResponseDTO {
 
-    private Integer id;
+    private Long id;
     private CouncilResponseDTO council;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;

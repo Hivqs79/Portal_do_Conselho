@@ -52,32 +52,32 @@ public class TeacherController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TeacherResponseDTO> putTeacher(@RequestBody @Validated TeacherRequestDTO teacherRequestDTO, @PathVariable Integer id) {
+    public ResponseEntity<TeacherResponseDTO> putTeacher(@RequestBody @Validated TeacherRequestDTO teacherRequestDTO, @PathVariable Long id) {
         return new ResponseEntity<>(service.updateTeacher(teacherRequestDTO, id), HttpStatus.OK);
     }
 
     @PatchMapping("/add-class/{id}")
-    public ResponseEntity<TeacherResponseDTO> addTeacherClasses(@RequestBody List<Integer> classes_id, @PathVariable Integer id) {
+    public ResponseEntity<TeacherResponseDTO> addTeacherClasses(@RequestBody List<Long> classes_id, @PathVariable Long id) {
         return new ResponseEntity<>(service.addTeacherClasss(id, classes_id), HttpStatus.OK);
     }
 
     @PatchMapping("/remove-class/{id}")
-    public ResponseEntity<TeacherResponseDTO> removeTeacherClasses(@RequestBody List<Integer> classes_id, @PathVariable Integer id) {
+    public ResponseEntity<TeacherResponseDTO> removeTeacherClasses(@RequestBody List<Long> classes_id, @PathVariable Long id) {
         return new ResponseEntity<>(service.removeTeacherClasss(id, classes_id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<TeacherResponseDTO> deleteTeacher(@PathVariable Integer id) {
+    public ResponseEntity<TeacherResponseDTO> deleteTeacher(@PathVariable Long id) {
         return new ResponseEntity<>(service.deleteTeacher(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TeacherResponseDTO> getTeacher(@PathVariable Integer id) {
+    public ResponseEntity<TeacherResponseDTO> getTeacher(@PathVariable Long id) {
         return new ResponseEntity<>(service.findTeacher(id), HttpStatus.OK);
     }
 
     @GetMapping("/classes/{id}")
-    public ResponseEntity<List<ClassResponseDTO>> getClassesByTeacher(@PathVariable Integer id) {
+    public ResponseEntity<List<ClassResponseDTO>> getClassesByTeacher(@PathVariable Long id) {
         return new ResponseEntity<>(service.getClassByTeacher(id), HttpStatus.OK);
     }
 

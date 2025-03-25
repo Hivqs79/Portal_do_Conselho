@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentResponseDTO {
-    private Integer id;
+    private Long id;
     private String name;
     private String email;
     private Boolean isRepresentant;
@@ -22,4 +22,5 @@ public class StudentResponseDTO {
     private List<ClassResponseDTO> classes;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+    private CustomizationResponseDTO customization;
 }

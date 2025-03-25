@@ -3,10 +3,12 @@ package net.weg.userapi.service.users;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
 import net.weg.userapi.model.dto.request.users.AdminRequestDTO;
+import net.weg.userapi.model.dto.request.users.CustomizationRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
 import net.weg.userapi.model.dto.response.users.AdminResponseDTO;
 import net.weg.userapi.model.entity.feedback.FeedbackUser;
 import net.weg.userapi.model.entity.users.Admin;
+import net.weg.userapi.model.enums.*;
 import net.weg.userapi.repository.AdminRepository;
 import net.weg.userapi.service.kafka.KafkaProducerService;
 import org.modelmapper.ModelMapper;
@@ -24,6 +26,7 @@ public class AdminService {
     private AdminRepository repository;
     private ModelMapper modelMapper;
     private KafkaProducerService kafkaProducerService;
+    private CustomizationService customizationService;
 
     public Page<AdminResponseDTO> findAdminSpec(Specification<Admin> spec, Pageable pageable) {
         Page<Admin> admins = repository.findAll(spec, pageable);
@@ -33,16 +36,28 @@ public class AdminService {
     public AdminResponseDTO createAdmin(AdminRequestDTO adminRequestDTO) {
         Admin admin = modelMapper.map(adminRequestDTO, Admin.class);
         Admin adminSaved = repository.save(admin);
+        /*
+        customizationService.createCustomization(new CustomizationRequestDTO(
+                ModeThemeENUM.LIGHT,
+                PalleteENUM.BLUE,
+                TextFont.POPPINS,
+                TitleFont.LORA,
+                FontSizeENUM.FONT1,
+                adminSaved.getId()
+        ));
+
+         */
+
         return modelMapper.map(adminSaved, AdminResponseDTO.class);
     }
 
-    public AdminResponseDTO findAdmin(Integer id) {
+    public AdminResponseDTO findAdmin(Long id) {
         Admin adminFound = findAdminEntity(id);
 
         return modelMapper.map(adminFound, AdminResponseDTO.class);
     }
 
-    public Admin findAdminEntity(Integer id) {
+    public Admin findAdminEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new UserNotFoundException("Admin user not found"));
     }
 
@@ -52,14 +67,14 @@ public class AdminService {
         return adminPage.map(admin -> modelMapper.map(admin, AdminResponseDTO.class));
     }
 
-    public AdminResponseDTO updateAdmin(AdminRequestDTO adminRequestDTO, Integer id) {
+    public AdminResponseDTO updateAdmin(AdminRequestDTO adminRequestDTO, Long id) {
         Admin admin = findAdminEntity(id);
         modelMapper.map(adminRequestDTO, admin);
         Admin updatedAdmin = repository.save(admin);
         return modelMapper.map(updatedAdmin, AdminResponseDTO.class);
     }
 
-    public AdminResponseDTO deleteAdmin(Integer id) {
+    public AdminResponseDTO deleteAdmin(Long id) {
         Admin admin = findAdminEntity(id);
         AdminResponseDTO adminResponseDTO = modelMapper.map(admin, AdminResponseDTO.class);
         repository.delete(admin);

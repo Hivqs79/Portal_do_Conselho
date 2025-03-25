@@ -35,13 +35,13 @@ public class PedagogicService {
         return modelMapper.map(pedagogicSaved, PedagogicResponseDTO.class);
     }
 
-    public PedagogicResponseDTO findPedagogic(Integer id) {
+    public PedagogicResponseDTO findPedagogic(Long id) {
         Pedagogic pedagogicFound = findPedagogicEntity(id);
 
         return modelMapper.map(pedagogicFound, PedagogicResponseDTO.class);
     }
 
-    public Pedagogic findPedagogicEntity(Integer id) {
+    public Pedagogic findPedagogicEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new UserNotFoundException("Pedagogic user not found"));
     }
 
@@ -51,14 +51,14 @@ public class PedagogicService {
         return pedagogicPage.map(pedagogic -> modelMapper.map(pedagogic, PedagogicResponseDTO.class));
     }
 
-    public PedagogicResponseDTO updatePedagogic(PedagogicRequestDTO pedagogicRequestDTO, Integer id) {
+    public PedagogicResponseDTO updatePedagogic(PedagogicRequestDTO pedagogicRequestDTO, Long id) {
         Pedagogic pedagogic = findPedagogicEntity(id);
         modelMapper.map(pedagogicRequestDTO, pedagogic);
         Pedagogic updatedPedagogic = repository.save(pedagogic);
         return modelMapper.map(updatedPedagogic, PedagogicResponseDTO.class);
     }
 
-    public PedagogicResponseDTO deletePedagogic(Integer id) {
+    public PedagogicResponseDTO deletePedagogic(Long id) {
         Pedagogic pedagogic = findPedagogicEntity(id);
         PedagogicResponseDTO pedagogicResponseDTO = modelMapper.map(pedagogic, PedagogicResponseDTO.class);
         repository.delete(pedagogic);

@@ -51,27 +51,27 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudentResponseDTO> putStudent(@RequestBody @Validated StudentRequestDTO studentRequestDTO, @PathVariable Integer id) {
+    public ResponseEntity<StudentResponseDTO> putStudent(@RequestBody @Validated StudentRequestDTO studentRequestDTO, @PathVariable Long id) {
         return new ResponseEntity<>(service.updateStudent(studentRequestDTO, id), HttpStatus.OK);
     }
 
     @PatchMapping("/add-class/{id}")
-    public ResponseEntity<StudentResponseDTO> addStudentClasses(@RequestBody List<Integer> classes_id, @PathVariable Integer id) {
+    public ResponseEntity<StudentResponseDTO> addStudentClasses(@RequestBody List<Long> classes_id, @PathVariable Long id) {
         return new ResponseEntity<>(service.addStudentClasss(id, classes_id), HttpStatus.OK);
     }
 
     @PatchMapping("/remove-class/{id}")
-    public ResponseEntity<StudentResponseDTO> removeStudentClasses(@RequestBody List<Integer> classes_id, @PathVariable Integer id) {
+    public ResponseEntity<StudentResponseDTO> removeStudentClasses(@RequestBody List<Long> classes_id, @PathVariable Long id) {
         return new ResponseEntity<>(service.removeStudentClasss(id, classes_id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<StudentResponseDTO> deleteStudent(@PathVariable Integer id) {
+    public ResponseEntity<StudentResponseDTO> deleteStudent(@PathVariable Long id) {
         return new ResponseEntity<>(service.deleteStudent(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudentResponseDTO> getStudent(@PathVariable Integer id) {
+    public ResponseEntity<StudentResponseDTO> getStudent(@PathVariable Long id) {
         return new ResponseEntity<>(service.findStudent(id), HttpStatus.OK);
     }
 

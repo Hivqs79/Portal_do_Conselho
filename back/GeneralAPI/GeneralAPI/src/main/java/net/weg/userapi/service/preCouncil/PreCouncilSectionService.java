@@ -39,13 +39,13 @@ public class PreCouncilSectionService {
         return modelMapper.map(preCouncilSectionSaved, PreCouncilSectionResponseDTO.class);
     }
 
-    public PreCouncilSectionResponseDTO findPreCouncilSection(Integer id) {
+    public PreCouncilSectionResponseDTO findPreCouncilSection(Long id) {
         PreCouncilSection preCouncilSection = findPreCouncilSectionEntity(id);
 
         return modelMapper.map(preCouncilSection, PreCouncilSectionResponseDTO.class);
     }
 
-    public PreCouncilSection findPreCouncilSectionEntity(Integer id) {
+    public PreCouncilSection findPreCouncilSectionEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new PreCouncilSectionNotFoundException("Pre council section not found"));
     }
 
@@ -55,7 +55,7 @@ public class PreCouncilSectionService {
         return preCouncilSection.map(annotation -> modelMapper.map(annotation, PreCouncilSectionResponseDTO.class));
     }
 
-    public PreCouncilSectionResponseDTO updatePreCouncilSection(PreCouncilSectionRequestDTO preCouncilSectionRequestDTO, Integer id) {
+    public PreCouncilSectionResponseDTO updatePreCouncilSection(PreCouncilSectionRequestDTO preCouncilSectionRequestDTO, Long id) {
         PreCouncilSection preCouncilSection = findPreCouncilSectionEntity(id);
         modelMapper.map(preCouncilSectionRequestDTO, preCouncilSection);
 
@@ -65,7 +65,7 @@ public class PreCouncilSectionService {
         return modelMapper.map(updatedPreCouncilSection, PreCouncilSectionResponseDTO.class);
     }
 
-    public PreCouncilSectionResponseDTO deletePreCouncilSection(Integer id) {
+    public PreCouncilSectionResponseDTO deletePreCouncilSection(Long id) {
         PreCouncilSection preCouncilSection = findPreCouncilSectionEntity(id);
         PreCouncilSectionResponseDTO preCouncilSectionResponseDTO = modelMapper.map(preCouncilSection, PreCouncilSectionResponseDTO.class);
         repository.delete(preCouncilSection);

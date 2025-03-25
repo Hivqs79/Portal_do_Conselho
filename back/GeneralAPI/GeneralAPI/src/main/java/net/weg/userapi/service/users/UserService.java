@@ -15,7 +15,7 @@ public class UserService {
 
     private UserRepository repository;
 
-    public User findUserEntity(Integer id) {
+    public User findUserEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new UserNotFoundException("User entity not found"));
     }
 

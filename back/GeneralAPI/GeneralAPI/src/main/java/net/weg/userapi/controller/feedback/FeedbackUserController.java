@@ -52,22 +52,22 @@ public class FeedbackUserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FeedbackUserResponseDTO> putFeedbackUser(@RequestBody @Validated FeedbackUserRequestDTO pedagogicRequestDTO, @PathVariable Integer id) {
+    public ResponseEntity<FeedbackUserResponseDTO> putFeedbackUser(@RequestBody @Validated FeedbackUserRequestDTO pedagogicRequestDTO, @PathVariable Long id) {
         return new ResponseEntity<>(service.updateFeedbackUser(pedagogicRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<FeedbackUserResponseDTO> deleteFeedbackUser(@PathVariable Integer id) {
+    public ResponseEntity<FeedbackUserResponseDTO> deleteFeedbackUser(@PathVariable Long id) {
         return new ResponseEntity<>(service.deleteFeedbackUser(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FeedbackUserResponseDTO> getFeedbackUser(@PathVariable Integer id) {
+    public ResponseEntity<FeedbackUserResponseDTO> getFeedbackUser(@PathVariable Long id) {
         return new ResponseEntity<>(service.findFeedbackUser(id), HttpStatus.OK);
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<List<FeedbackUserResponseDTO>> getAllFeedbackUserByUser(@PathVariable Integer id) {
+    public ResponseEntity<List<FeedbackUserResponseDTO>> getAllFeedbackUserByUser(@PathVariable Long id) {
         return new ResponseEntity<>(service.getFeedbackUserByUserId(id), HttpStatus.OK);
     }
     

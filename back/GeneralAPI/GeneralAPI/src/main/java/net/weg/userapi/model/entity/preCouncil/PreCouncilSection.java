@@ -18,7 +18,7 @@ public class PreCouncilSection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(nullable = false)

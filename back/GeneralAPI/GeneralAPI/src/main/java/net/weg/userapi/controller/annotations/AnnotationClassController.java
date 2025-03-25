@@ -50,17 +50,17 @@ public class AnnotationClassController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AnnotationClassResponseDTO> putAnnotationClass(@RequestBody @Validated AnnotationClassRequestDTO pedagogicRequestDTO, @PathVariable Integer id) {
+    public ResponseEntity<AnnotationClassResponseDTO> putAnnotationClass(@RequestBody @Validated AnnotationClassRequestDTO pedagogicRequestDTO, @PathVariable Long id) {
         return new ResponseEntity<>(service.updateAnnotationClass(pedagogicRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<AnnotationClassResponseDTO> deleteAnnotationClass(@PathVariable Integer id) {
+    public ResponseEntity<AnnotationClassResponseDTO> deleteAnnotationClass(@PathVariable Long id) {
         return new ResponseEntity<>(service.deleteAnnotationClass(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AnnotationClassResponseDTO> getAnnotationClass(@PathVariable Integer id) {
+    public ResponseEntity<AnnotationClassResponseDTO> getAnnotationClass(@PathVariable Long id) {
         return new ResponseEntity<>(service.findAnnotationClass(id), HttpStatus.OK);
     }
     

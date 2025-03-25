@@ -51,17 +51,17 @@ public class PedagogicController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PedagogicResponseDTO> putPedagogic(@RequestBody @Validated PedagogicRequestDTO pedagogicRequestDTO, @PathVariable Integer id) {
+    public ResponseEntity<PedagogicResponseDTO> putPedagogic(@RequestBody @Validated PedagogicRequestDTO pedagogicRequestDTO, @PathVariable Long id) {
         return new ResponseEntity<>(service.updatePedagogic(pedagogicRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<PedagogicResponseDTO> deletePedagogic(@PathVariable Integer id) {
+    public ResponseEntity<PedagogicResponseDTO> deletePedagogic(@PathVariable Long id) {
         return new ResponseEntity<>(service.deletePedagogic(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PedagogicResponseDTO> getPedagogic(@PathVariable Integer id) {
+    public ResponseEntity<PedagogicResponseDTO> getPedagogic(@PathVariable Long id) {
         return new ResponseEntity<>(service.findPedagogic(id), HttpStatus.OK);
     }
 

@@ -47,13 +47,13 @@ public class AnnotationClassService {
         return modelMapper.map(annotationSaved, AnnotationClassResponseDTO.class);
     }
 
-    public AnnotationClassResponseDTO findAnnotationClass(Integer id) {
+    public AnnotationClassResponseDTO findAnnotationClass(Long id) {
         AnnotationClass annotationClass = findAnnotationEntity(id);
 
         return modelMapper.map(annotationClass, AnnotationClassResponseDTO.class);
     }
 
-    public AnnotationClass findAnnotationEntity(Integer id) {
+    public AnnotationClass findAnnotationEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new AnnotationNotFoundException("Class annotation not found"));
     }
 
@@ -63,7 +63,7 @@ public class AnnotationClassService {
         return annotationClass.map(annotation -> modelMapper.map(annotation, AnnotationClassResponseDTO.class));
     }
 
-    public AnnotationClassResponseDTO updateAnnotationClass(AnnotationClassRequestDTO annotationClassRequestDTO, Integer id) {
+    public AnnotationClassResponseDTO updateAnnotationClass(AnnotationClassRequestDTO annotationClassRequestDTO, Long id) {
         AnnotationClass annotationClass = findAnnotationEntity(id);
         modelMapper.map(annotationClassRequestDTO, annotationClass);
 
@@ -76,7 +76,7 @@ public class AnnotationClassService {
         return modelMapper.map(updatedAnnotationClass, AnnotationClassResponseDTO.class);
     }
 
-    public AnnotationClassResponseDTO deleteAnnotationClass(Integer id) {
+    public AnnotationClassResponseDTO deleteAnnotationClass(Long id) {
         AnnotationClass annotationClass = findAnnotationEntity(id);
         AnnotationClassResponseDTO annotationClassResponseDTO = modelMapper.map(annotationClass, AnnotationClassResponseDTO.class);
         repository.delete(annotationClass);

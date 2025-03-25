@@ -16,9 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 public class CouncilResponseDTO {
 
-    private Integer id;
-    private LocalDate date;
-    private LocalTime time;
+    private Long id;
+    private LocalDateTime startDateTime;
     private ClassResponseDTO aClass;
     private List<TeacherResponseDTO> teachers;
     private LocalDateTime createDate;

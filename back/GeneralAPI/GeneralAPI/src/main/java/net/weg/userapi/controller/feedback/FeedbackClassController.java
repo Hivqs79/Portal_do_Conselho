@@ -54,22 +54,22 @@ public class FeedbackClassController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FeedbackClassResponseDTO> putFeedbackClass(@RequestBody @Validated FeedbackClassRequestDTO pedagogicRequestDTO, @PathVariable Integer id) {
+    public ResponseEntity<FeedbackClassResponseDTO> putFeedbackClass(@RequestBody @Validated FeedbackClassRequestDTO pedagogicRequestDTO, @PathVariable Long id) {
         return new ResponseEntity<>(service.updateFeedbackClass(pedagogicRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<FeedbackClassResponseDTO> deleteFeedbackClass(@PathVariable Integer id) {
+    public ResponseEntity<FeedbackClassResponseDTO> deleteFeedbackClass(@PathVariable Long id) {
         return new ResponseEntity<>(service.deleteFeedbackClass(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FeedbackClassResponseDTO> getFeedbackClass(@PathVariable Integer id) {
+    public ResponseEntity<FeedbackClassResponseDTO> getFeedbackClass(@PathVariable Long id) {
         return new ResponseEntity<>(service.findFeedbackClass(id), HttpStatus.OK);
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<List<FeedbackClassResponseDTO>> getAllFeedbackClassByClass(@PathVariable Integer id) {
+    public ResponseEntity<List<FeedbackClassResponseDTO>> getAllFeedbackClassByClass(@PathVariable Long id) {
         return new ResponseEntity<>(service.getFeedbackClassByClassId(id), HttpStatus.OK);
     }
 

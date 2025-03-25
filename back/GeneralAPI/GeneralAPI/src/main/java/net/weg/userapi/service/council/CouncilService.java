@@ -44,13 +44,13 @@ public class CouncilService {
         return modelMapper.map(councilSaved, CouncilResponseDTO.class);
     }
 
-    public CouncilResponseDTO findCouncil(Integer id) {
+    public CouncilResponseDTO findCouncil(Long id) {
         Council council = findCouncilEntity(id);
 
         return modelMapper.map(council, CouncilResponseDTO.class);
     }
 
-    public Council findCouncilEntity(Integer id) {
+    public Council findCouncilEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new CouncilNotFoundException("Council not found"));
     }
 
@@ -60,7 +60,7 @@ public class CouncilService {
         return council.map(annotation -> modelMapper.map(annotation, CouncilResponseDTO.class));
     }
 
-    public CouncilResponseDTO updateCouncil(CouncilRequestDTO councilRequestDTO, Integer id) {
+    public CouncilResponseDTO updateCouncil(CouncilRequestDTO councilRequestDTO, Long id) {
         Council council = findCouncilEntity(id);
         modelMapper.map(councilRequestDTO, council);
 
@@ -71,14 +71,14 @@ public class CouncilService {
         return modelMapper.map(updatedCouncil, CouncilResponseDTO.class);
     }
 
-    public CouncilResponseDTO deleteCouncil(Integer id) {
+    public CouncilResponseDTO deleteCouncil(Long id) {
         Council council = findCouncilEntity(id);
         CouncilResponseDTO councilResponseDTO = modelMapper.map(council, CouncilResponseDTO.class);
         repository.delete(council);
         return councilResponseDTO;
     }
 
-    public List<Annotation> getAllAnnotations(Integer id) {
+    public List<Annotation> getAllAnnotations(Long id) {
         Council council = findCouncilEntity(id);
 
         return council.getAnnotations();

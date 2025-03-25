@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface FeedbackUserRepository extends JpaRepository<FeedbackUser, Integer>, JpaSpecificationExecutor<FeedbackUser> {
-    List<FeedbackUser> getAllByUser_Id(Integer id);
+public interface FeedbackUserRepository extends JpaRepository<FeedbackUser, Long>, JpaSpecificationExecutor<FeedbackUser> {
+    List<FeedbackUser> getAllByUser_Id(Long id);
 }

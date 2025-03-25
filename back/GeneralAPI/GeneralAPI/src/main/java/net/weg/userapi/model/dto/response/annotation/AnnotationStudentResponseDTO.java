@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AnnotationStudentResponseDTO {
-    private Integer id;
+    private Long id;
     private String rank;
     private String strengths;
     private String toImprove;

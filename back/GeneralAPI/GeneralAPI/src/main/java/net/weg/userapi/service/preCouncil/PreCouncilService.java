@@ -41,13 +41,13 @@ public class PreCouncilService {
         return modelMapper.map(preCouncilSaved, PreCouncilResponseDTO.class);
     }
 
-    public PreCouncilResponseDTO findPreCouncil(Integer id) {
+    public PreCouncilResponseDTO findPreCouncil(Long id) {
         PreCouncil preCouncil = findPreCouncilEntity(id);
 
         return modelMapper.map(preCouncil, PreCouncilResponseDTO.class);
     }
 
-    public PreCouncil findPreCouncilEntity(Integer id) {
+    public PreCouncil findPreCouncilEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new PreCouncilNotFoundException("Pre council not found"));
     }
 
@@ -57,7 +57,7 @@ public class PreCouncilService {
         return preCouncil.map(annotation -> modelMapper.map(annotation, PreCouncilResponseDTO.class));
     }
 
-    public PreCouncilResponseDTO updatePreCouncil(PreCouncilRequestDTO preCouncilRequestDTO, Integer id) {
+    public PreCouncilResponseDTO updatePreCouncil(PreCouncilRequestDTO preCouncilRequestDTO, Long id) {
         PreCouncil preCouncil = findPreCouncilEntity(id);
         modelMapper.map(preCouncilRequestDTO, preCouncil);
 
@@ -67,7 +67,7 @@ public class PreCouncilService {
         return modelMapper.map(updatedPreCouncil, PreCouncilResponseDTO.class);
     }
 
-    public PreCouncilResponseDTO deletePreCouncil(Integer id) {
+    public PreCouncilResponseDTO deletePreCouncil(Long id) {
         PreCouncil preCouncil = findPreCouncilEntity(id);
         PreCouncilResponseDTO preCouncilResponseDTO = modelMapper.map(preCouncil, PreCouncilResponseDTO.class);
         repository.delete(preCouncil);

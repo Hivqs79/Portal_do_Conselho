@@ -51,22 +51,22 @@ public class CouncilController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CouncilResponseDTO> putCouncil(@RequestBody @Validated CouncilRequestDTO councilRequestDTO, @PathVariable Integer id) {
+    public ResponseEntity<CouncilResponseDTO> putCouncil(@RequestBody @Validated CouncilRequestDTO councilRequestDTO, @PathVariable Long id) {
         return new ResponseEntity<>(service.updateCouncil(councilRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CouncilResponseDTO> deleteCouncil(@PathVariable Integer id) {
+    public ResponseEntity<CouncilResponseDTO> deleteCouncil(@PathVariable Long id) {
         return new ResponseEntity<>(service.deleteCouncil(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CouncilResponseDTO> getCouncil(@PathVariable Integer id) {
+    public ResponseEntity<CouncilResponseDTO> getCouncil(@PathVariable Long id) {
         return new ResponseEntity<>(service.findCouncil(id), HttpStatus.OK);
     }
 
     @GetMapping("/annotations/{id}")
-    public ResponseEntity<List<Annotation>> getAllAnnotation(@PathVariable Integer id) {
+    public ResponseEntity<List<Annotation>> getAllAnnotation(@PathVariable Long id) {
         return new ResponseEntity<>(service.getAllAnnotations(id), HttpStatus.OK);
     }
 }

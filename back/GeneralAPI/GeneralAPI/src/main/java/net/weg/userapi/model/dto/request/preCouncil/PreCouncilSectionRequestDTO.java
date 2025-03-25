@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class PreCouncilSectionRequestDTO {
 
     @NotNull(message = "{not.null.message}")
-    private Integer preCouncil_id;
+    private Long preCouncil_id;
     @NotBlank(message = "{not.blank.message}")
     private String topic;
     @NotBlank(message = "{not.blank.message}")

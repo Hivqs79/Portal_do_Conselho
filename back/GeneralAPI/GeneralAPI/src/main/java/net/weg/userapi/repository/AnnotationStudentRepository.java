@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface AnnotationStudentRepository extends JpaRepository<AnnotationStudent, Integer>, JpaSpecificationExecutor<AnnotationStudent> {
+public interface AnnotationStudentRepository extends JpaRepository<AnnotationStudent, Long>, JpaSpecificationExecutor<AnnotationStudent> {
 
-    Page<AnnotationStudent> findAllByStudent_Id(Pageable pageable, Integer id);
+    Page<AnnotationStudent> findAllByStudent_Id(Pageable pageable, Long id);
 
 }

@@ -14,7 +14,7 @@ public class FeedbackClassRequestDTO {
     @NotBlank(message = "{not.blank.message}")
     private String rank;
     @NotNull(message = "{not.null.message}")
-    private Integer council_id;
+    private Long council_id;
     @NotBlank(message = "{not.blank.message}")
     private String strengths;
     @NotBlank(message = "{not.blank.message}")

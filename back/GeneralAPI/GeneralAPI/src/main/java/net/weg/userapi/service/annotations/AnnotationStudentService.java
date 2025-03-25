@@ -61,13 +61,13 @@ public class AnnotationStudentService {
         return modelMapper.map(annotationSaved, AnnotationStudentResponseDTO.class);
     }
 
-    public AnnotationStudentResponseDTO findAnnotationStudent(Integer id) {
+    public AnnotationStudentResponseDTO findAnnotationStudent(Long id) {
         AnnotationStudent annotationStudent = findAnnotationEntity(id);
 
         return modelMapper.map(annotationStudent, AnnotationStudentResponseDTO.class);
     }
 
-    public AnnotationStudent findAnnotationEntity(Integer id) {
+    public AnnotationStudent findAnnotationEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new AnnotationNotFoundException("Student annotation not found"));
     }
 
@@ -77,13 +77,13 @@ public class AnnotationStudentService {
         return annotationStudent.map(annotation -> modelMapper.map(annotation, AnnotationStudentResponseDTO.class));
     }
 
-    public Page<AnnotationStudentResponseDTO> pageAnnotationsByStudent(Integer id, Pageable pageable) {
+    public Page<AnnotationStudentResponseDTO> pageAnnotationsByStudent(Long id, Pageable pageable) {
         Page<AnnotationStudent> annotationStudent = repository.findAllByStudent_Id(pageable, id);
 
         return annotationStudent.map(annotation -> modelMapper.map(annotation, AnnotationStudentResponseDTO.class));
     }
 
-    public AnnotationStudentResponseDTO updateAnnotationStudent(AnnotationStudentRequestDTO annotationStudentRequestDTO, Integer id) {
+    public AnnotationStudentResponseDTO updateAnnotationStudent(AnnotationStudentRequestDTO annotationStudentRequestDTO, Long id) {
         AnnotationStudent annotationStudent = findAnnotationEntity(id);
         modelMapper.map(annotationStudentRequestDTO, annotationStudent);
 
@@ -94,7 +94,7 @@ public class AnnotationStudentService {
         return modelMapper.map(updatedAnnotationStudent, AnnotationStudentResponseDTO.class);
     }
 
-    public AnnotationStudentResponseDTO deleteAnnotationStudent(Integer id) {
+    public AnnotationStudentResponseDTO deleteAnnotationStudent(Long id) {
         AnnotationStudent annotationStudent = findAnnotationEntity(id);
         AnnotationStudentResponseDTO annotationStudentResponseDTO = modelMapper.map(annotationStudent, AnnotationStudentResponseDTO.class);
         repository.delete(annotationStudent);

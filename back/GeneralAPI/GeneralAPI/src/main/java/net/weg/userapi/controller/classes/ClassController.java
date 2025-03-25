@@ -53,27 +53,27 @@ public class ClassController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClassResponseDTO> putClass(@RequestBody @Validated ClassRequestDTO classRequestDTO, @PathVariable Integer id) {
+    public ResponseEntity<ClassResponseDTO> putClass(@RequestBody @Validated ClassRequestDTO classRequestDTO, @PathVariable Long id) {
         return new ResponseEntity<>(service.updateClass(classRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ClassResponseDTO> deleteClass(@PathVariable Integer id) {
+    public ResponseEntity<ClassResponseDTO> deleteClass(@PathVariable Long id) {
         return new ResponseEntity<>(service.deleteClass(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClassResponseDTO> getClass(@PathVariable Integer id) {
+    public ResponseEntity<ClassResponseDTO> getClass(@PathVariable Long id) {
         return new ResponseEntity<>(service.findClass(id), HttpStatus.OK);
     }
 
     @GetMapping("/teacher/{id}")
-    public ResponseEntity<List<TeacherResponseDTO>> getTeachersByClass(@PathVariable Integer id) {
+    public ResponseEntity<List<TeacherResponseDTO>> getTeachersByClass(@PathVariable Long id) {
         return new ResponseEntity<>(service.getTeacherByClass(id), HttpStatus.OK);
     }
 
     @GetMapping("/student/{id}")
-    public ResponseEntity<List<StudentResponseDTO>> getStudentByClass(@PathVariable Integer id) {
+    public ResponseEntity<List<StudentResponseDTO>> getStudentByClass(@PathVariable Long id) {
         return new ResponseEntity<>(service.getStudentsByClass(id), HttpStatus.OK);
     }
 

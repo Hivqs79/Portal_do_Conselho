@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PreCouncilSectionResponseDTO {
 
-    private Integer id;
+    private Long id;
     private PreCouncilResponseDTO preCouncil;
     private String topic;
     private String description;

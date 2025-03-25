@@ -5,5 +5,5 @@ import net.weg.userapi.model.entity.users.Pedagogic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface PedagogicRepository extends JpaRepository<Pedagogic, Integer>, JpaSpecificationExecutor<Pedagogic> {
+public interface PedagogicRepository extends JpaRepository<Pedagogic, Long>, JpaSpecificationExecutor<Pedagogic> {
 }

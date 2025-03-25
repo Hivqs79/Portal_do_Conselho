@@ -25,5 +25,5 @@ public class TeacherRequestDTO {
     private String password;
 
     @NotNull
-    private List<Integer> classes_id;
+    private List<Long> classes_id;
 }

@@ -46,13 +46,13 @@ public class FeedbackClassService {
         return modelMapper.map(feedbackSaved, FeedbackClassResponseDTO.class);
     }
 
-    public FeedbackClassResponseDTO findFeedbackClass(Integer id) {
+    public FeedbackClassResponseDTO findFeedbackClass(Long id) {
         FeedbackClass feedbackClass = findFeedbackEntity(id);
 
         return modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class);
     }
 
-    public FeedbackClass findFeedbackEntity(Integer id) {
+    public FeedbackClass findFeedbackEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new FeedbackNotFoundException("Class feedback not found"));
     }
 
@@ -62,7 +62,7 @@ public class FeedbackClassService {
         return feedbackClass.map(feedback -> modelMapper.map(feedback, FeedbackClassResponseDTO.class));
     }
 
-    public FeedbackClassResponseDTO updateFeedbackClass(FeedbackClassRequestDTO feedbackClassRequestDTO, Integer id) {
+    public FeedbackClassResponseDTO updateFeedbackClass(FeedbackClassRequestDTO feedbackClassRequestDTO, Long id) {
         FeedbackClass feedbackClass = findFeedbackEntity(id);
         modelMapper.map(feedbackClassRequestDTO, feedbackClass);
 
@@ -74,7 +74,7 @@ public class FeedbackClassService {
         return modelMapper.map(updatedFeedbackClass, FeedbackClassResponseDTO.class);
     }
 
-    public FeedbackClassResponseDTO deleteFeedbackClass(Integer id) {
+    public FeedbackClassResponseDTO deleteFeedbackClass(Long id) {
         FeedbackClass feedbackClass = findFeedbackEntity(id);
         FeedbackClassResponseDTO feedbackClassResponseDTO = modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class);
         repository.delete(feedbackClass);
@@ -82,7 +82,7 @@ public class FeedbackClassService {
     }
 
 
-    public List<FeedbackClassResponseDTO> getFeedbackClassByClassId(Integer id) {
+    public List<FeedbackClassResponseDTO> getFeedbackClassByClassId(Long id) {
         Class aClass = classService.findClassEntity(id);
         List<FeedbackClassResponseDTO> responseDTOS = new ArrayList<>();
         List<FeedbackClass> list = repository.findAll();

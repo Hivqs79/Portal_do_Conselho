@@ -28,7 +28,7 @@ public class StudentRequestDTO {
     private Boolean isRepresentant;
 
     @NotNull
-    private List<Integer> classes_id;
+    private List<Long> classes_id;
 
     //Podem ser nulo
 

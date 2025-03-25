@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -15,13 +16,12 @@ import java.util.List;
 public class CouncilRequestDTO {
 
     @NotNull(message = "{not.null.message}")
-    private LocalDate date;
-    @NotNull(message = "{not.null.message}")
-    private LocalTime time;
-    @NotNull(message = "{not.null.message}")
-    private Integer class_id;
+    private LocalDateTime startDateTime;
 
-    private List<Integer> teachers_id;
+    @NotNull(message = "{not.null.message}")
+    private Long class_id;
+
+    private List<Long> teachers_id;
 
 
 }
