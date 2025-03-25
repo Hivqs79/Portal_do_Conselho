@@ -412,11 +412,14 @@ export default function RealizeCouncil() {
                 onNext={handleNextStudent}
                 onPrevious={handlePreviousStudent}
                 openCommentsModal={openStudentModal}
-                imageKey={
-                  data
-                    ? data["council-form"].users[currentStudentIndex].imageKey
-                    : ""
-                }
+                // imageKey={
+                //   data
+                //     ? data["council-form"].users[currentStudentIndex].id_user
+                //     : ""
+                // }
+                 //TODO: Continuar configurando a integração com a aws
+                 //TODO: Trocar o campo de imagekey no json para id_user
+                 //TODO: Verificar se a requisição está funcionando
               />
             </div>
           </Box>

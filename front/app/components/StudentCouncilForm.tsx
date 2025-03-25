@@ -18,7 +18,7 @@ interface StudentCouncilFormProps {
   rank: "excellent" | "good" | "average" | "critical" | "none";
   positiveContent: string;
   negativeContent: string;
-  imageKey: File | string | null;
+  id_user?: number
   comments: string;
   onNext: () => void;
   onPrevious: () => void;
@@ -32,7 +32,7 @@ export default function StudentCouncilForm({
   positiveContent: initialPositiveContent,
   negativeContent: initialNegativeContent,
   comments,
-  imageKey,
+  id_user,
   onNext,
   onPrevious,
   openCommentsModal,
@@ -173,7 +173,7 @@ export default function StudentCouncilForm({
             </div>
             <Photo
               classname="lg:w-[250px] mx-auto"
-              photo={imageKey}
+              idUser={1}
               rounded={false}
             />
             <span className="flex flex-col justify-center items-center gap-4 w-full">
