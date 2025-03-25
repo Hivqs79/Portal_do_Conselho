@@ -47,8 +47,8 @@ public class FeedbackUserController {
     }
 
     @GetMapping("/council/{id}")
-    public ResponseEntity<Page<FeedbackUserResponseDTO>> searchFeedbackUserByCouncil(@PathVariable Long id, Pageable pageable) {
-        return new ResponseEntity<>(service.searchFeedbackUserByCouncil(id, pageable), HttpStatus.OK);
+    public Page<FeedbackUserResponseDTO> searchFeedbackUserByCouncil( @PathVariable Long id, Pageable pageable) {
+        return null;
     }
 
     @PostMapping
@@ -75,5 +75,5 @@ public class FeedbackUserController {
     public ResponseEntity<List<FeedbackUserResponseDTO>> getAllFeedbackUserByUser(@PathVariable Long id) {
         return new ResponseEntity<>(service.getFeedbackUserByUserId(id), HttpStatus.OK);
     }
-
+    
 }

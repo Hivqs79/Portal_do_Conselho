@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class PedagogicService {
 
     private PedagogicRepository repository;
+    private CustomizationService customizationService;
     private ModelMapper modelMapper;
 
     public Page<PedagogicResponseDTO> findPedagogicSpec(Specification<Pedagogic> spec, Pageable pageable) {
@@ -31,6 +32,7 @@ public class PedagogicService {
     public PedagogicResponseDTO createPedagogic(PedagogicRequestDTO pedagogicRequestDTO) {
         Pedagogic pedagogic = modelMapper.map(pedagogicRequestDTO, Pedagogic.class);
         Pedagogic pedagogicSaved = repository.save(pedagogic);
+        pedagogicSaved.setCustomization(customizationService.setDefault(pedagogicSaved));
 
         return modelMapper.map(pedagogicSaved, PedagogicResponseDTO.class);
     }

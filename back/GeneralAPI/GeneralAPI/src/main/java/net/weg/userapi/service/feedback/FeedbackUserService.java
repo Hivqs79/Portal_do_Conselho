@@ -85,4 +85,9 @@ public class FeedbackUserService {
     public List<FeedbackUserResponseDTO> getFeedbackUserByUserId(Long id) {
         return repository.getAllByUser_Id(id).stream().map(feedbackUser -> modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class)).collect(Collectors.toList());
     }
+
+    public Page<FeedbackUserResponseDTO> searchFeedbackUserByCouncil(Long id, Pageable pageable) {
+        return repository.findAllByCouncil_Id(id, pageable).map(feedbackUser -> modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class));
+    }
+
 }

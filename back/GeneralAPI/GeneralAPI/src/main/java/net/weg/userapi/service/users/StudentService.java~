@@ -44,8 +44,8 @@ public class StudentService {
         Student student = modelMapper.map(studentRequestDTO, Student.class);
 
         student.setClasses(classService.getClassesByIdList(studentRequestDTO.getClasses_id()));
+
         Student studentSaved = repository.save(student);
-        studentSaved.setCustomization(customizationService.setDefault(studentSaved));
 
         this.sendStudentEvent(student, "POST");
         return modelMapper.map(studentSaved, StudentResponseDTO.class);

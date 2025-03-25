@@ -26,6 +26,7 @@ public class TeacherService {
 
     private TeacherRepository repository;
     private ClassService classService;
+    private CustomizationService customizationService;
     private ModelMapper modelMapper;
 
     public Page<TeacherResponseDTO> findTeacherSpec(Specification<Teacher> spec, Pageable pageable) {
@@ -37,8 +38,8 @@ public class TeacherService {
         Teacher teacher = modelMapper.map(teacherRequestDTO, Teacher.class);
 
         teacher.setClasses(classService.getClassesByIdList(teacherRequestDTO.getClasses_id()));
-
         Teacher teacherSaved = repository.save(teacher);
+        teacherSaved.setCustomization(customizationService.setDefault(teacherSaved));
 
         return modelMapper.map(teacherSaved, TeacherResponseDTO.class);
     }

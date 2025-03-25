@@ -39,6 +39,7 @@ public class FeedbackClassController {
                     @Spec(path = "rank", spec = Like.class),
                     @Spec(path = "strengths", spec = Like.class),
                     @Spec(path = "toImprove", spec = Like.class),
+                    @Spec(path = "council.aClass.name", params = "className", spec = Like.class),
                     @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class),
                     @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class),
                     @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class),

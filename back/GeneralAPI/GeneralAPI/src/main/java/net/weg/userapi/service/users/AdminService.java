@@ -24,9 +24,8 @@ import java.util.stream.Collectors;
 public class AdminService {
 
     private AdminRepository repository;
-    private ModelMapper modelMapper;
-    private KafkaProducerService kafkaProducerService;
     private CustomizationService customizationService;
+    private ModelMapper modelMapper;
 
     public Page<AdminResponseDTO> findAdminSpec(Specification<Admin> spec, Pageable pageable) {
         Page<Admin> admins = repository.findAll(spec, pageable);

@@ -21,5 +21,4 @@ public class StudentResponseDTO {
     private List<ClassResponseDTO> classes;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-    private CustomizationResponseDTO customization;
 }
