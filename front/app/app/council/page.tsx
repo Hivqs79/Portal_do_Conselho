@@ -1,6 +1,7 @@
 "use client";
 import CreateCouncilForm from "@/components/CreateCouncilForm";
 import SwapButton from "@/components/SwapButton";
+import Table from "@/components/table/Table";
 import Title from "@/components/Title";
 import Class from "@/interfaces/Class";
 import { Teacher } from "@/interfaces/Teacher";
@@ -16,8 +17,19 @@ export default function Council() {
     [key: string]: boolean;
   }>({});
   const [date, setDate] = useState<dayjs.Dayjs>(dayjs().add(1, "day"));
-  const [time, setTime] = useState<dayjs.Dayjs>();
+  const [time, setTime] = useState<dayjs.Dayjs>(dayjs().add(1, "hour"));
   const [isCreate, setIsCreate] = useState<boolean>(true);
+
+  const rowButtons: TableRowButtons = {
+		realizeButton: true,
+    visualizeIconButton: true,
+    rank: true
+	}
+	const headerButtons: TableHeaderButtons = {
+		searchInput: true,
+		orderButton: true,
+		filterButton: true		
+	}
 
   useEffect(() => {
     const fetchTeachers = async () => {
@@ -63,7 +75,78 @@ export default function Council() {
           time={time}
         />
       ) : (
-        <></>
+        <Table
+          content={{
+            headers: [
+              {
+                name: "Turma",
+                key: "turmaNome",
+              },
+              {
+                name: "Data",
+                key: "data",
+              },
+              {
+                name: "Horário",
+                key: "horario",
+              },
+            ],
+            content: [
+              {
+                turmaNome: "Turma A",
+                data: "10/03/2025",
+                horario: "8:00",
+              },
+              {
+                turmaNome: "Turma B",
+                data: "11/03/2025",
+                horario: "8:00",
+              },
+              {
+                turmaNome: "Turma C",
+                data: "12/03/2025",
+                horario: "8:00",
+              },
+              {
+                turmaNome: "Turma A",
+                data: "10/03/2025",
+                horario: "8:00",
+              },
+              {
+                turmaNome: "Turma B",
+                data: "11/03/2025",
+                horario: "8:00",
+              },
+              {
+                turmaNome: "Turma C",
+                data: "12/03/2025",
+                horario: "8:00",
+              },
+            ],
+            pageable: {
+              pageNumber: 0,
+              pageSize: 10,
+              sort: {
+                sorted: false,
+                unsorted: true,
+                empty: true,
+              },
+              offset: 0,
+              paged: true,
+              unpaged: false,
+              totalElements: 6,
+              totalPages: 1,
+              last: true,
+              first: true,
+              size: 10,
+              number: 0,
+              numberOfElements: 6,
+              empty: false,
+            },
+          }}          
+          headerButtons={headerButtons}
+          rowButtons={rowButtons}
+        />
       )}
       <Button
         onClick={() => {
