@@ -1,19 +1,9 @@
 package net.weg.userapi.controller.users;
 
 import lombok.AllArgsConstructor;
-import net.kaczmarzyk.spring.data.jpa.domain.Equal;
-import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
-import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
-import net.kaczmarzyk.spring.data.jpa.domain.Like;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import net.weg.userapi.model.dto.request.users.CustomizationRequestDTO;
 import net.weg.userapi.model.dto.response.users.CustomizationResponseDTO;
-import net.weg.userapi.model.entity.users.Customization;
 import net.weg.userapi.service.users.CustomizationService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

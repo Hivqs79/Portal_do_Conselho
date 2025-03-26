@@ -3,7 +3,6 @@ package net.weg.userapi.service.feedback;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.FeedbackNotFoundException;
 import net.weg.userapi.model.dto.request.feedback.FeedbackClassRequestDTO;
-import net.weg.userapi.model.dto.response.council.CouncilResponseDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackClassResponseDTO;
 import net.weg.userapi.model.entity.classes.Class;
 import net.weg.userapi.model.entity.council.Council;
@@ -59,12 +58,6 @@ public class FeedbackClassService {
 
     public FeedbackClass findFeedbackEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new FeedbackNotFoundException("Class feedback not found"));
-    }
-
-    public Page<FeedbackClassResponseDTO> pageFeedbackClass(Pageable pageable) {
-        Page<FeedbackClass> feedbackClass = repository.findAll(pageable);
-
-        return feedbackClass.map(feedback -> modelMapper.map(feedback, FeedbackClassResponseDTO.class));
     }
 
     public FeedbackClassResponseDTO updateFeedbackClass(FeedbackClassRequestDTO feedbackClassRequestDTO, Long id) {

@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.model.entity.users.Teacher;
+import net.weg.userapi.model.enums.RankENUM;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 
 @Entity
 @Data
@@ -17,8 +17,9 @@ public abstract class Annotation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String rank;
+    @Enumerated(EnumType.STRING)
+    private RankENUM rank;
+
     @Column(nullable = false)
     private String strengths;
     @Column(nullable = false)

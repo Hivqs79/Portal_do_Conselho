@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.entity.council.Council;
-import net.weg.userapi.model.entity.feedback.FeedbackClass;
 import net.weg.userapi.model.entity.users.Student;
 import net.weg.userapi.model.entity.users.Teacher;
 import net.weg.userapi.model.enums.ClassAreaENUM;

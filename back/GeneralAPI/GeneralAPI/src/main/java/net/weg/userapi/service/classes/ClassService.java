@@ -1,8 +1,6 @@
 package net.weg.userapi.service.classes;
 
 import lombok.AllArgsConstructor;
-import net.kaczmarzyk.spring.data.jpa.domain.Like;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import net.weg.userapi.exception.exceptions.ClassNotFoundException;
 import net.weg.userapi.model.dto.request.classes.ClassRequestDTO;
 import net.weg.userapi.model.dto.response.classes.ClassResponseDTO;
@@ -15,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,12 +54,6 @@ public class ClassService {
 
     public Class findClassEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new ClassNotFoundException("Class not found"));
-    }
-
-    public Page<ClassResponseDTO> pageClass(Pageable pageable) {
-        Page<Class> classesPage = repository.findAll(pageable);
-
-        return classesPage.map(classes -> modelMapper.map(classes, ClassResponseDTO.class));
     }
 
     public ClassResponseDTO updateClass(ClassRequestDTO classesRequestDTO, Long id) {

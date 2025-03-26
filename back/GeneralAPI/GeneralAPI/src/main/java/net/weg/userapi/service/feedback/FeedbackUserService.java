@@ -60,12 +60,6 @@ public class FeedbackUserService {
         return repository.findById(id).orElseThrow(() -> new FeedbackNotFoundException("User feedback not found") );
     }
 
-    public Page<FeedbackUserResponseDTO> pageFeedbackUser(Pageable pageable) {
-        Page<FeedbackUser> feedbackUser = repository.findAll(pageable);
-
-        return feedbackUser.map(feedback -> modelMapper.map(feedback, FeedbackUserResponseDTO.class));
-    }
-
     public FeedbackUserResponseDTO updateFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO, Long id) {
         FeedbackUser feedbackUser = findFeedbackEntity(id);
         modelMapper.map(feedbackUserRequestDTO, feedbackUser);

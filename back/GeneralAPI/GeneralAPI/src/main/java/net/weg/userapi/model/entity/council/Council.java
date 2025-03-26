@@ -11,9 +11,7 @@ import net.weg.userapi.model.entity.feedback.Feedback;
 import net.weg.userapi.model.entity.preCouncil.PreCouncil;
 import net.weg.userapi.model.entity.users.Teacher;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @Builder

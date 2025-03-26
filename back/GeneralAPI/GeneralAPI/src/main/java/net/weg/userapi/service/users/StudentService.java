@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.KafkaException;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
-import net.weg.userapi.model.dto.response.users.PedagogicResponseDTO;
-import net.weg.userapi.model.entity.users.Pedagogic;
 import net.weg.userapi.service.kafka.KafkaMessage;
 import net.weg.userapi.model.dto.request.users.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
@@ -47,7 +45,7 @@ public class StudentService {
         Student studentSaved = repository.save(student);
         studentSaved.setCustomization(customizationService.setDefault(studentSaved));
 
-        this.sendStudentEvent(student, "POST");
+        //this.sendStudentEvent(student, "POST");
         return modelMapper.map(studentSaved, StudentResponseDTO.class);
     }
 
@@ -59,12 +57,6 @@ public class StudentService {
 
     public Student findStudentEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new UserNotFoundException("Student user not found"));
-    }
-
-    public Page<StudentResponseDTO> pageStudent(Pageable pageable) {
-        Page<Student> studentPage = repository.findAll(pageable);
-
-        return studentPage.map(student -> modelMapper.map(student, StudentResponseDTO.class));
     }
 
     public StudentResponseDTO updateStudent(StudentRequestDTO studentRequestDTO, Long id) {

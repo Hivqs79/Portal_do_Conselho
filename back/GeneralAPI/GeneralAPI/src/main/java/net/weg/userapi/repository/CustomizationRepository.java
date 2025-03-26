@@ -1,8 +1,6 @@
 package net.weg.userapi.repository;
 
 import net.weg.userapi.model.entity.users.Customization;
-import net.weg.userapi.model.entity.users.User;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

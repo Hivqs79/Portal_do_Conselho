@@ -2,12 +2,9 @@ package net.weg.userapi.service.preCouncil;
 
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.PreCouncilNotFoundException;
-import net.weg.userapi.exception.exceptions.PreCouncilSectionNotFoundException;
 import net.weg.userapi.model.dto.request.preCouncil.PreCouncilRequestDTO;
 import net.weg.userapi.model.dto.response.preCouncil.PreCouncilResponseDTO;
-import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
 import net.weg.userapi.model.entity.preCouncil.PreCouncil;
-import net.weg.userapi.model.entity.users.Teacher;
 import net.weg.userapi.repository.PreCouncilRepository;
 import net.weg.userapi.service.council.CouncilService;
 import org.modelmapper.ModelMapper;
@@ -15,8 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -49,12 +44,6 @@ public class PreCouncilService {
 
     public PreCouncil findPreCouncilEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new PreCouncilNotFoundException("Pre council not found"));
-    }
-
-    public Page<PreCouncilResponseDTO> pagePreCouncil(Pageable pageable) {
-        Page<PreCouncil> preCouncil = repository.findAll(pageable);
-
-        return preCouncil.map(annotation -> modelMapper.map(annotation, PreCouncilResponseDTO.class));
     }
 
     public PreCouncilResponseDTO updatePreCouncil(PreCouncilRequestDTO preCouncilRequestDTO, Long id) {

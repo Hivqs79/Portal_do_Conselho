@@ -17,7 +17,6 @@ public class StudentResponseDTO {
     private String name;
     private String email;
     private Boolean isRepresentant;
-    private List<ClassResponseDTO> classes;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 }

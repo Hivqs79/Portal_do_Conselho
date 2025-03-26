@@ -1,11 +1,8 @@
 package net.weg.userapi.repository;
 
-import net.weg.userapi.model.entity.classes.Class;
 import net.weg.userapi.model.entity.feedback.FeedbackUser;
-import net.weg.userapi.model.entity.users.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Range;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

@@ -3,6 +3,7 @@ package net.weg.userapi.model.entity.feedback;
 import jakarta.persistence.*;
 import lombok.Data;
 import net.weg.userapi.model.entity.council.Council;
+import net.weg.userapi.model.enums.RankENUM;
 
 import java.time.LocalDateTime;
 
@@ -15,8 +16,8 @@ public abstract class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String rank;
+    @Enumerated(EnumType.STRING)
+    private RankENUM rank;
 
     @ManyToOne
     @JoinColumn(nullable = false)
