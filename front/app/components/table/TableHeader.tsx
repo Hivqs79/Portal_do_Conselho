@@ -14,7 +14,7 @@ interface TableHeaderProps {
   variant: "Table" | "council";
   headers: TableHeaderContent[];
   headerButtons: TableHeaderButtons;
-  data?: any;
+  rank?: any;
   openCommentsModal?: (open: boolean) => void;
 }
 
@@ -22,10 +22,10 @@ export default function TableHeader({
   variant,
   headers,
   headerButtons,
-  data,
+  rank,
   openCommentsModal,
 }: TableHeaderProps) {
-  const [actualRank, setActualRank] = useState(data);
+  const [actualRank, setActualRank] = useState(rank);
 
   const { primaryColor, whiteColor, textDarkColor, colorByMode, colorByModeSecondary } = useThemeContext();
   const {

@@ -172,16 +172,16 @@ export default function StudentCouncilForm({
               </Typography>
             </div>
             <Photo
-              classname="lg:w-[250px] mx-auto"
+              classname="max-w-[200px] max-h-[290] w-[350px] sm:max-w-[250px] mx-auto"
               idUser={1}
               rounded={false}
             />
             <span className="flex flex-col justify-center items-center gap-4 w-full">
-              <span className="flex justify-between w-full items-center flex-wrap gap-y-4 gap-x-4">
+              <span className="flex flex-col sm:flex-row justify-between w-full items-start sm:items-center flex-wrap gap-y-4 gap-x-4">
                 <Typography variant="lg_text_bold" color={colorByModeSecondary}>
                   Frequência:
                 </Typography>
-                <div className="relative flex items-center">
+                <div className="relative flex items-center w-full sm:w-auto">
                   <input
                     style={{
                       borderColor: colorByModeSecondary,
@@ -194,7 +194,7 @@ export default function StudentCouncilForm({
                     onChange={handleFrequenciaChange}
                     min={0}
                     max={100}
-                    className="text-center bg-none bg-transparent appearance-none border-2 w-[120px] font-bold h-[40px] flex justify-center items-center rounded-small [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none outline-none"
+                    className="text-center bg-none bg-transparent rounded-normal appearance-none border-2 w-full sm:w-[120px] font-bold h-[48px] flex justify-center items-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none outline-none"
                   />
                   <span
                     style={{ color: OpacityHex(constrastColor, 0.7) }}

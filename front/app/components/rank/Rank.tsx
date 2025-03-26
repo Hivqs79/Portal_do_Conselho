@@ -30,7 +30,6 @@ export default function Rank({
   onRankChange,
 }: RankProps) {
   const {
-    primaryGrayColor,
     colorByModeSecondary,
     constrastColor,
     secondaryColor,
@@ -40,7 +39,6 @@ export default function Rank({
 
   const [selectedRank, setSelectedRank] = useState(type);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [hover, setHover] = useState(false);
 
   useEffect(() => {
     setSelectedRank(type);
@@ -164,7 +162,7 @@ export default function Rank({
     if (popover) {
       return (
         <>
-          <div className="inline-flex justify-between items-center flex-wrap gap-3 w-full">
+          <div className="inline-flex flex-col sm:flex-row justify-between items-start sm:items-center flex-wrap gap-3 w-full">
             <Typography
               variant="lg_text_bold"
               style={{ color: colorByModeSecondary }}
@@ -176,7 +174,7 @@ export default function Rank({
                 borderColor: colorByModeSecondary,
                 color: constrastColor,
               }}
-              className="cursor-pointer flex items-center gap-1 border-[2px] rounded-normal w-[120px]"
+              className="cursor-pointer w-full flex justify-center p-1 sm:justify-start items-center gap-1 border-[2px] rounded-normal sm:w-[120px]"
               onClick={handleClick}
             >
               {rank[selectedRank]}

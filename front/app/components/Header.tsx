@@ -83,10 +83,11 @@ export default function Header({ variant }: HeaderProps) {
         </Link>
       </Box>
       <Box className="flex flex-row items-center">
-        {/* TODO: substitute for a component of UserImage */}
+        {/* //TODO: substitute for a component of UserImage */}
         <div className="w-12 h-12 flex justify-center items-center rounded-full">
           <Link href={"/profile"}>
-            <Photo photo={""} rounded={true} classname="w-full h-full" />
+            <Photo idUser={1} rounded={true} classname="w-full h-full" /> 
+            {/* //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO */}
           </Link>
         </div>
         <Box className="flex flex-col justify-center items-start ml-2">
