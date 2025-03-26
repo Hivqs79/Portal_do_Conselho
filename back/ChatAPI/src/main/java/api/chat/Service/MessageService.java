@@ -3,8 +3,12 @@ package api.chat.Service;
 import api.chat.Entities.Dto.MessageDto;
 import api.chat.Entities.Message;
 import api.chat.Repositorys.MessageRepository;
+import api.chat.Service.kafka.KafkaProducerService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -12,9 +16,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import org.modelmapper.ModelMapper;
+
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class MessageService {
 
     private final MessageRepository repository;
@@ -23,11 +29,14 @@ public class MessageService {
     @Autowired
     private RoomConversationService roomConversationService;
 
+    private KafkaProducerService kafkaProducerService;
+    private final ObjectMapper objectMapper;
 
 
 
-    public Message sendMessage(MessageDto dto) {
+    public Message sendMessage(MessageDto dto) throws JsonProcessingException {
         Message message = dto.conversorMessage(userService, roomConversationService);
+        kafkaProducerService.sendMessage("room" + message.getRoomConversation().getId(), objectMapper.writeValueAsString(message));
         return repository.save(message);
     }
 
@@ -44,5 +53,7 @@ public class MessageService {
         Optional<List<Message>> messages = Optional.ofNullable(repository.findAllByRoomConversation_Id(roomId));
         return messages.get();
     }
+
+
 
 }

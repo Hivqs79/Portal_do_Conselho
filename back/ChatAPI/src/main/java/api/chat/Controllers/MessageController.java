@@ -3,23 +3,26 @@ package api.chat.Controllers;
 import api.chat.Entities.Dto.MessageDto;
 import api.chat.Entities.Message;
 import api.chat.Service.MessageService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/message")
 @AllArgsConstructor
 public class MessageController {
 
     private MessageService service;
-    //sadasdasdasdsadasd
 
-    @PostMapping("/postMessage")
-    public ResponseEntity<Message> sendMessage(@RequestBody MessageDto dto){
+    @PostMapping()
+    public ResponseEntity<Message> sendMessage(@RequestBody MessageDto dto) throws JsonProcessingException {
         Message message = service.sendMessage(dto);
         return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
@@ -30,7 +33,7 @@ public class MessageController {
     }
 
     @GetMapping("/findMessage/{idMessage}")
-    public ResponseEntity<Message> findMessageById(@PathVariable Long idMessage){
+    public ResponseEntity<Message> findMessageById(@DestinationVariable Long idMessage){
         Message message = service.findMessageById(idMessage);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
