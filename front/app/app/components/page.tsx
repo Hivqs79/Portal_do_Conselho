@@ -91,7 +91,7 @@ export default function Components() {
       maxWidth={"lg"}
       className="flex flex-col gap-8 justify-start items-center min-h-screen"
     >
-      <Box className="flex flex-row gap-8 justify-center items-center">
+      {/* <Box className="flex flex-row gap-8 justify-center items-center">
         <Box className="flex flex-col gap-4">
           <Button variant="contained" color="primary" sx={{ width: 300 }}>
             Teste Primary
@@ -259,7 +259,7 @@ export default function Components() {
       </Box>
  
       <Photo idUser={1} rounded={false} classname="w-20 h-20" />
-      <Photo idUser={1} rounded={true} classname="w-20 h-20" />
+      <Photo idUser={1} rounded={true} classname="w-20 h-20" /> */}
       <Box
         style={{ backgroundColor: OpacityHex(colorByModeSecondary, 0.2) }}
         className="p-2 mt-32 rounded-big w-full"
@@ -271,7 +271,7 @@ export default function Components() {
               key={index}
               name={anotation.name}
               description={anotation.description}
-              outlined={true}
+              outlined={false}
             />
           ))}
         </span>

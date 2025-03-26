@@ -468,6 +468,13 @@ export default class ThemeSettings {
             },
           },
         },
+        MuiAccordionDetails: {
+          styleOverrides: {
+            root: {
+              padding: "8px !important",
+            },
+          },
+        },
       },
     });
   }

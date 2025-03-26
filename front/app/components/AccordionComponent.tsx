@@ -128,7 +128,17 @@ export default function AccordionComponent({
       </AccordionSummary>
       <AccordionDetails
         className="rounded-b-big"
-        sx={{ backgroundColor: backgroundColor }}
+        sx={{
+          backgroundColor: backgroundColor,
+          borderStyle: "solid",
+          borderTop: outlined ? "2px solid" : "none",
+          borderColor: colorByModeSecondary,
+          borderTopWidth: "2px !important",
+          //.css-6am6c7-MuiAccordionDetails-root
+          ".css-6am6c7-MuiAccordionDetails-root": {
+            padding: "8px 8px 8px !important",
+          },
+        }}
       >
         {type === "council" && (
           <Box className="flex gap-10 p-2">
