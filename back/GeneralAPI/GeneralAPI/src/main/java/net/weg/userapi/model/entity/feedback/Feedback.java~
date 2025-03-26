@@ -16,6 +16,9 @@ public abstract class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private RankENUM rank;
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private Council council;
@@ -41,6 +44,7 @@ public abstract class Feedback {
     public String toString() {
         return "Feedback{" +
                 "id=" + id +
+                ", rank='" + rank + '\'' +
                 ", council=" + council.getId() +
                 ", strengths='" + strengths + '\'' +
                 ", toImprove='" + toImprove + '\'' +

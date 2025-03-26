@@ -5,8 +5,8 @@ import net.weg.userapi.exception.exceptions.FeedbackNotFoundException;
 import net.weg.userapi.model.dto.request.feedback.FeedbackUserRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
 import net.weg.userapi.model.entity.council.Council;
-import net.weg.userapi.model.entity.feedback.FeedbackUser;
-import net.weg.userapi.repository.FeedbackUserRepository;
+import net.weg.userapi.model.entity.feedback.FeedbackStudent;
+import net.weg.userapi.repository.FeedbackStudentRepository;
 import net.weg.userapi.service.council.CouncilService;
 import net.weg.userapi.service.users.UserService;
 import org.modelmapper.ModelMapper;
@@ -22,14 +22,14 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class FeedbackUserService {
 
-    private FeedbackUserRepository repository;
+    private FeedbackStudentRepository repository;
     private UserService userService;
     private CouncilService councilService;
     private ModelMapper modelMapper;
 
-    public Page<FeedbackUserResponseDTO> findFeedbackUserSpec(Specification<FeedbackUser> spec, Pageable pageable) {
-        Page<FeedbackUser> feedbackUsers = repository.findAll(spec, pageable);
-        return feedbackUsers.map(feedbackUser -> modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class));
+    public Page<FeedbackUserResponseDTO> findFeedbackUserSpec(Specification<FeedbackStudent> spec, Pageable pageable) {
+        Page<FeedbackStudent> feedbackUsers = repository.findAll(spec, pageable);
+        return feedbackUsers.map(feedbackStudent -> modelMapper.map(feedbackStudent, FeedbackUserResponseDTO.class));
     }
 
     public FeedbackUserResponseDTO createFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO) {
@@ -38,62 +38,62 @@ public class FeedbackUserService {
             throw new RuntimeException("User feedback already exists");
         }
 
-        FeedbackUser feedbackUser = modelMapper.map(feedbackUserRequestDTO, FeedbackUser.class);
+        FeedbackStudent feedbackStudent = modelMapper.map(feedbackUserRequestDTO, FeedbackStudent.class);
 
         Council council = councilService.findCouncilEntity(feedbackUserRequestDTO.getCouncil_id());
 
-        feedbackUser.setUser(userService.findUserEntity(feedbackUserRequestDTO.getUser_id())); //SETAR USUARIO
-        feedbackUser.setCouncil(council); //SETAR CONSELHO
+        feedbackStudent.setUser(userService.findUserEntity(feedbackUserRequestDTO.getUser_id())); //SETAR USUARIO
+        feedbackStudent.setCouncil(council); //SETAR CONSELHO
 
-        FeedbackUser feedbackSaved = repository.save(feedbackUser);
+        FeedbackStudent feedbackSaved = repository.save(feedbackStudent);
 
         return modelMapper.map(feedbackSaved, FeedbackUserResponseDTO.class);
     }
 
     public FeedbackUserResponseDTO findFeedbackUser(Long id) {
-        FeedbackUser feedbackUser = findFeedbackEntity(id);
+        FeedbackStudent feedbackStudent = findFeedbackEntity(id);
 
-        return modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class);
+        return modelMapper.map(feedbackStudent, FeedbackUserResponseDTO.class);
     }
 
-    public FeedbackUser findFeedbackEntity(Long id) {
+    public FeedbackStudent findFeedbackEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new FeedbackNotFoundException("User feedback not found") );
     }
 
     public FeedbackUserResponseDTO updateFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO, Long id) {
-        FeedbackUser feedbackUser = findFeedbackEntity(id);
-        modelMapper.map(feedbackUserRequestDTO, feedbackUser);
+        FeedbackStudent feedbackStudent = findFeedbackEntity(id);
+        modelMapper.map(feedbackUserRequestDTO, feedbackStudent);
 
-        feedbackUser.setUser(userService.findUserEntity(feedbackUserRequestDTO.getUser_id()));
+        feedbackStudent.setUser(userService.findUserEntity(feedbackUserRequestDTO.getUser_id()));
 
-        FeedbackUser updatedFeedbackUser = repository.save(feedbackUser);
-        return modelMapper.map(updatedFeedbackUser, FeedbackUserResponseDTO.class);
+        FeedbackStudent updatedFeedbackStudent = repository.save(feedbackStudent);
+        return modelMapper.map(updatedFeedbackStudent, FeedbackUserResponseDTO.class);
     }
 
     public FeedbackUserResponseDTO deleteFeedbackUser(Long id) {
-        FeedbackUser feedbackUser = findFeedbackEntity(id);
-        FeedbackUserResponseDTO feedbackUserResponseDTO = modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class);
-        repository.delete(feedbackUser);
+        FeedbackStudent feedbackStudent = findFeedbackEntity(id);
+        FeedbackUserResponseDTO feedbackUserResponseDTO = modelMapper.map(feedbackStudent, FeedbackUserResponseDTO.class);
+        repository.delete(feedbackStudent);
         return feedbackUserResponseDTO;
     }
 
     public List<FeedbackUserResponseDTO> getFeedbackUserByUserId(Long id) {
-        return repository.getAllByUser_Id(id).stream().map(feedbackUser -> modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class)).collect(Collectors.toList());
+        return repository.getAllByUser_Id(id).stream().map(feedbackStudent -> modelMapper.map(feedbackStudent, FeedbackUserResponseDTO.class)).collect(Collectors.toList());
     }
 
     public Page<FeedbackUserResponseDTO> searchFeedbackUserByCouncil(Long id, Pageable pageable) {
-        return repository.findAllByCouncil_Id(id, pageable).map(feedbackUser -> modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class));
+        return repository.findAllByCouncil_Id(id, pageable).map(feedbackStudent -> modelMapper.map(feedbackStudent, FeedbackUserResponseDTO.class));
     }
 
     public FeedbackUserResponseDTO updateFeedbackUserView(Long id) {
-        FeedbackUser feedbackUser = findFeedbackEntity(id);
-        feedbackUser.setViewed(true);
-        return modelMapper.map(repository.save(feedbackUser), FeedbackUserResponseDTO.class);
+        FeedbackStudent feedbackStudent = findFeedbackEntity(id);
+        feedbackStudent.setViewed(true);
+        return modelMapper.map(repository.save(feedbackStudent), FeedbackUserResponseDTO.class);
     }
 
     public FeedbackUserResponseDTO updateFeedbackUserSatisfied(Long id, boolean satisfied) {
-        FeedbackUser feedbackUser = findFeedbackEntity(id);
-        feedbackUser.setSatisfied(satisfied);
-        return modelMapper.map(repository.save(feedbackUser), FeedbackUserResponseDTO.class);
+        FeedbackStudent feedbackStudent = findFeedbackEntity(id);
+        feedbackStudent.setSatisfied(satisfied);
+        return modelMapper.map(repository.save(feedbackStudent), FeedbackUserResponseDTO.class);
     }
 }

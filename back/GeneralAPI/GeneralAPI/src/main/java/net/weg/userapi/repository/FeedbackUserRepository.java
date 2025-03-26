@@ -1,5 +1,6 @@
 package net.weg.userapi.repository;
 
+import net.weg.userapi.model.entity.feedback.FeedbackStudent;
 import net.weg.userapi.model.entity.feedback.FeedbackUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

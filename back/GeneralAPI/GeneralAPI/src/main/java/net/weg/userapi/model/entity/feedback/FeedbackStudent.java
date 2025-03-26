@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.entity.users.Student;
-import net.weg.userapi.model.entity.users.User;
+import net.weg.userapi.model.enums.RankENUM;
 
 import java.time.LocalDateTime;
 
@@ -14,10 +14,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "feedback_id")
-public class FeedbackUser extends Feedback {
+public class FeedbackStudent extends Feedback {
+
+    @Enumerated(EnumType.STRING)
+    private RankENUM rank;
 
     @ManyToOne
-    private User user;
+    private Student student;
+
+    @Column(nullable = false)
+    private Double frequency;
 
     @Column(nullable = false)
     private boolean isViewed;
@@ -27,8 +33,9 @@ public class FeedbackUser extends Feedback {
 
     @Override
     public String toString() {
-        return "FeedbackUser{" +
-                "user=" + user.getName() +
+        return "FeedbackStudent{" +
+                "student=" + student.getName() +
+                ", frequency=" + frequency +
                 ", isViewed=" + isViewed +
                 ", isSatisfied=" + isSatisfied +
                 '}';

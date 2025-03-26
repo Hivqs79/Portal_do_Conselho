@@ -9,7 +9,7 @@ import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import net.weg.userapi.model.dto.request.feedback.FeedbackUserRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
-import net.weg.userapi.model.entity.feedback.FeedbackUser;
+import net.weg.userapi.model.entity.feedback.FeedbackStudent;
 import net.weg.userapi.service.feedback.FeedbackUserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +39,7 @@ public class FeedbackUserController {
                     @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class),
                     @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class),
                     @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)
-            }) Specification<FeedbackUser> spec, Pageable pageable) {
+            }) Specification<FeedbackStudent> spec, Pageable pageable) {
 
         return service.findFeedbackUserSpec(spec, pageable);
     }

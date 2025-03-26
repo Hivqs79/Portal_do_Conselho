@@ -2,7 +2,7 @@ package net.weg.userapi.model.entity.users;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import net.weg.userapi.model.entity.feedback.FeedbackUser;
+import net.weg.userapi.model.entity.feedback.FeedbackStudent;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,7 +47,7 @@ public abstract class User {
     }
 
     @OneToMany(mappedBy = "user")
-    private List<FeedbackUser> feedbackUsers;
+    private List<FeedbackStudent> feedbackStudents;
 
     @Override
     public String toString() {
