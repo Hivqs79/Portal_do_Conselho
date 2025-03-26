@@ -23,7 +23,6 @@ function CoreLayout({ children }: { children: ReactElement }) {
     backgroundColor,
     primaryColor,
     secondaryColor,
-    colorByModeSecondary,
     terciaryColor,
   } = useThemeContext();
   const { role, setRole } = useRoleContext();
@@ -44,7 +43,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
 
   useEffect(() => {
     if (role === "") {
-      setRole("admin");
+      setRole("supervisor");
     }
   }, [role, setRole]);
 

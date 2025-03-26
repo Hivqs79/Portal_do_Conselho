@@ -7,24 +7,28 @@ import { useEffect, useState, useRef } from "react"; // Adicione useRef
 import OpacityHex from "@/hooks/OpacityHex";
 
 interface ConfirmChangesProps {
+  type: "default" | "confirmText";
   title: string;
   description: string;
-  secondDescription: string;
-  confirmButtonText: string;
-  confirmText: string;
-  confirmColor: "red" | "green";
-  onCloseButton?: () => void;
+  secondDescription?: string;
+  confirmButtonText?: string;
+  confirmText?: string;
+  confirmColor?: "red" | "green";
+  firstConfirmButton?: () => void;
+  secondConfirmButton?: () => void;
   onClose: () => void;
 }
 
 export default function ConfirmChanges({
+  type,
   title,
   description,
   secondDescription,
   confirmText,
   confirmColor,
   confirmButtonText,
-  onCloseButton,
+  firstConfirmButton,
+  secondConfirmButton,
   onClose,
 }: ConfirmChangesProps) {
   const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
@@ -70,9 +74,9 @@ export default function ConfirmChanges({
 
   function handleConfirmClick() {
     if (inputRef.current?.value === spanValue) {
-      if (onCloseButton) {
-        console.log("teste")
-        onCloseButton();
+      if (secondConfirmButton) {
+        console.log("teste");
+        secondConfirmButton();
       } else {
         onClose();
       }
@@ -140,7 +144,9 @@ export default function ConfirmChanges({
                 </Typography>
               </Button>
               <Button
-                onClick={() => openConfirmDelete()}
+                onClick={() =>
+                  type === "default" ? firstConfirmButton?.() : openConfirmDelete()
+                }
                 className="w-full"
                 variant="contained"
                 color="primary"
@@ -195,9 +201,8 @@ export default function ConfirmChanges({
               <TextField
                 inputRef={inputRef}
                 autoComplete="off"
-                id="outlined-search"
+                id="outlined-basic"
                 label="Confirmar frase"
-                type="search"
                 error={isValid ? false : true}
                 helperText={
                   isValid

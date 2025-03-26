@@ -61,7 +61,7 @@ export default function AccordionComponent({
           display: "none",
         },
         "&.Mui-expanded": {
-          margin: "4px !important",
+          margin: "4px 0 !important",
         },
       }}
     >
@@ -90,7 +90,7 @@ export default function AccordionComponent({
           },
         }}
       >
-        <span className="flex justify-between items-center w-full mx-5">
+        <Box className="flex justify-between items-center w-full mx-5">
           <Typography
             variant="lg_text_bold"
             color={outlined ? colorByModeSecondary : whiteColor}
@@ -98,7 +98,7 @@ export default function AccordionComponent({
             {name}
           </Typography>
           {isOpen && type === "council" && (
-            <span
+            <Box
               onClick={(e) => e.stopPropagation()}
               className="flex items-center gap-5 cursor-default"
             >
@@ -108,7 +108,7 @@ export default function AccordionComponent({
               >
                 Classificação da turma:
               </Typography>
-              <span title={translateRank(rank as string)}>
+              <Box title={translateRank(rank as string)}>
                 <Rank
                   outline={true}
                   popover={false}
@@ -121,10 +121,10 @@ export default function AccordionComponent({
                       | "none"
                   }
                 />
-              </span>
-            </span>
+              </Box>
+            </Box>
           )}
-        </span>
+        </Box>
       </AccordionSummary>
       <AccordionDetails
         className="rounded-b-big"
@@ -134,10 +134,7 @@ export default function AccordionComponent({
           borderTop: outlined ? "2px solid" : "none",
           borderColor: colorByModeSecondary,
           borderTopWidth: "2px !important",
-          //.css-6am6c7-MuiAccordionDetails-root
-          ".css-6am6c7-MuiAccordionDetails-root": {
-            padding: "8px 8px 8px !important",
-          },
+          paddingLeft: "16px !important",
         }}
       >
         {type === "council" && (
@@ -162,7 +159,7 @@ export default function AccordionComponent({
         )}
         {type === "default" && (
           <Box className="flex gap-10 p-2">
-            <Typography variant="md_text_regular">{description}</Typography>
+            <Typography variant="lg_text_regular">{description}</Typography>
           </Box>
         )}
       </AccordionDetails>

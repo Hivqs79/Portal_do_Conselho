@@ -417,9 +417,9 @@ export default function RealizeCouncil() {
                 //     ? data["council-form"].users[currentStudentIndex].id_user
                 //     : ""
                 // }
-                 //TODO: Continuar configurando a integração com a aws
-                 //TODO: Trocar o campo de imagekey no json para id_user
-                 //TODO: Verificar se a requisição está funcionando
+                //TODO: Continuar configurando a integração com a aws
+                //TODO: Trocar o campo de imagekey no json para id_user
+                //TODO: Verificar se a requisição está funcionando
               />
             </div>
           </Box>
@@ -430,7 +430,10 @@ export default function RealizeCouncil() {
               color="terciary"
               onClick={() => cancelCouncil()}
             >
-              <Typography variant={windowSize < 600 ? "sm_text_bold" : "lg_text_bold"} color={textBlackolor}>
+              <Typography
+                variant={windowSize < 600 ? "sm_text_bold" : "lg_text_bold"}
+                color={textBlackolor}
+              >
                 Cancelar Conselho
               </Typography>
             </Button>
@@ -440,7 +443,10 @@ export default function RealizeCouncil() {
               color="primary"
               onClick={() => OpenfinalizeCouncilModal()}
             >
-              <Typography variant={windowSize < 600 ? "sm_text_bold" : "lg_text_bold"} color={whiteColor}>
+              <Typography
+                variant={windowSize < 600 ? "sm_text_bold" : "lg_text_bold"}
+                color={whiteColor}
+              >
                 Terminar Conselho
               </Typography>
             </Button>
@@ -469,6 +475,7 @@ export default function RealizeCouncil() {
       )}
       {(isCancelCouncilOpen && (
         <ConfirmChanges
+          type="confirmText"
           confirmButtonText="Cancelar Conselho"
           title="Cancelar Conselho"
           confirmText="Confirmar cancelamento do conselho atual"
@@ -476,11 +483,12 @@ export default function RealizeCouncil() {
           confirmColor="red"
           description="Você tem certeza que deseja cancelar este conselho? Ao fazer isso ele voltará para a lista de conselhos a fazer e todo o progresso será perdido."
           onClose={closeCancleCouncilModal}
-          onCloseButton={CancelCouncil}
+          secondConfirmButton={CancelCouncil}
         />
       )) ||
         (isRealizelCouncilOpen && (
           <ConfirmChanges
+            type="confirmText"
             confirmButtonText="Terminar conselho"
             title="Finalizar Conselho"
             confirmText="Confirmar término do conselho atual"
@@ -488,7 +496,7 @@ export default function RealizeCouncil() {
             confirmColor="green"
             description="Você tem certeza que deseja finalizar este conselho? Verifique se a turma e todos os alunos estão com suas anotações corretas e prontas para entrega."
             onClose={closeRealizeCouncilModal}
-            onCloseButton={finalizeCouncil}
+            secondConfirmButton={finalizeCouncil}
           />
         ))}
       {isConfirmModalOpen && (

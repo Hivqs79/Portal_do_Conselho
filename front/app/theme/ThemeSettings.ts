@@ -370,9 +370,19 @@ export default class ThemeSettings {
             },
           },
         },
+        //Mudar somente border radios para 8px e não 4 .css-4ux6g8-MuiButtonBase-root-MuiButton-root
+        MuiButton: {
+          styleOverrides: {
+            root: {
+              borderRadius: "8px",
+              textTransform: "none",
+            },
+          },
+        },
         MuiOutlinedInput: {
           styleOverrides: {
             root: {
+              borderRadius: "8px",
               "&:hover:not(.Mui-focused):not(.Mui-error) .MuiOutlinedInput-notchedOutline":
                 {
                   borderColor: colorByMode,
@@ -451,13 +461,6 @@ export default class ThemeSettings {
           styleOverrides: {
             root: {
               fill: this.getContrastThemeColor(),
-            },
-          },
-        },
-        MuiButton: {
-          styleOverrides: {
-            root: {
-              textTransform: "none",
             },
           },
         },
