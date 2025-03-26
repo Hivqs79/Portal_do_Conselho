@@ -30,6 +30,4 @@ public class StudentRequestDTO {
     @NotNull
     private List<Long> classes_id;
 
-    private Double frequency;
-
 }

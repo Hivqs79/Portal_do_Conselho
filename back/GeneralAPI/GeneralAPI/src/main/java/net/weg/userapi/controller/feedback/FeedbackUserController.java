@@ -52,13 +52,23 @@ public class FeedbackUserController {
     }
 
     @PostMapping
-    public ResponseEntity<FeedbackUserResponseDTO> postFeedbackUser(@RequestBody @Validated FeedbackUserRequestDTO pedagogicRequestDTO) {
-        return new ResponseEntity<>(service.createFeedbackUser(pedagogicRequestDTO), HttpStatus.OK);
+    public ResponseEntity<FeedbackUserResponseDTO> postFeedbackUser(@RequestBody @Validated FeedbackUserRequestDTO feedbackUserRequestDTO) {
+        return new ResponseEntity<>(service.createFeedbackUser(feedbackUserRequestDTO), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FeedbackUserResponseDTO> putFeedbackUser(@RequestBody @Validated FeedbackUserRequestDTO pedagogicRequestDTO, @PathVariable Long id) {
-        return new ResponseEntity<>(service.updateFeedbackUser(pedagogicRequestDTO, id), HttpStatus.OK);
+    public ResponseEntity<FeedbackUserResponseDTO> putFeedbackUser(@RequestBody @Validated FeedbackUserRequestDTO feedbackUserRequestDTO, @PathVariable Long id) {
+        return new ResponseEntity<>(service.updateFeedbackUser(feedbackUserRequestDTO, id), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}/view")
+    public ResponseEntity<FeedbackUserResponseDTO> patchFeedbackUserView(@PathVariable Long id) {
+        return new ResponseEntity<>(service.updateFeedbackUserView(id), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}/satisfied/{satisfied}")
+    public ResponseEntity<FeedbackUserResponseDTO> patchFeedbackUserSatisfied(@PathVariable Long id, @PathVariable(name = "satisfied") boolean satisfied) {
+        return new ResponseEntity<>(service.updateFeedbackUserSatisfied(id, satisfied), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

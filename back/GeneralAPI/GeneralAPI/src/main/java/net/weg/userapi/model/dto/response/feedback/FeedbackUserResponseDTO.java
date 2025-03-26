@@ -1,5 +1,6 @@
 package net.weg.userapi.model.dto.response.feedback;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,9 @@ public class FeedbackUserResponseDTO {
     private String strengths;
     private String toImprove;
     private UserResponseDTO user;
+    private Double frequency;
+    private boolean isViewed;
+    private boolean isSatisfied;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 

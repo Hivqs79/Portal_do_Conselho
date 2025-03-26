@@ -19,8 +19,6 @@ public class Student extends User {
     @Column(nullable = false)
     private Boolean isRepresentant;
 
-    private Double frequency;
-
     @ManyToMany
     @JoinTable(
             name = "student_class",
@@ -46,7 +44,6 @@ public class Student extends User {
     public String toString() {
         return super.toString() + "\nStudent{" +
                 "isRepresentant=" + isRepresentant +
-                ", frequency=" + frequency +
                 '}';
     }
 }

@@ -11,5 +11,7 @@ import java.util.List;
 
 public interface FeedbackClassRepository extends JpaRepository<FeedbackClass, Long>, JpaSpecificationExecutor<FeedbackClass> {
 
+    boolean existsFeedbackClassByCouncil_Id(Long council_id);
+
 }
 

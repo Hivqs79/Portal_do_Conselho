@@ -1,20 +1,12 @@
 package net.weg.userapi.model.entity.feedback;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.PrimaryKeyJoinColumn;
-
-import java.time.LocalDateTime;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "feedback_id")
 public class FeedbackClass extends Feedback {
 
-    @PrePersist
-    public void onPrePersist() {
-        this.setCreateDate(LocalDateTime.now());
-        this.setUpdateDate(LocalDateTime.now());
-    }
     @Override
     public String toString() {
         return super.toString() + "\nFeedbackClass{}";

@@ -1,13 +1,12 @@
 package net.weg.userapi.model.entity.feedback;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.entity.users.User;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -19,8 +18,26 @@ public class FeedbackUser extends Feedback {
     @ManyToOne
     private User user;
 
+    @Column(nullable = false)
+    private Double frequency;
+
+    @Column(nullable = false)
+    private boolean isViewed;
+
+    @Column(nullable = false)
+    private boolean isSatisfied;
+
     @Override
     public String toString() {
         return super.toString() + "FeedbackUser{}";
     }
+
+    @PrePersist
+    public void onPrePersist() {
+        this.setCreateDate(LocalDateTime.now());
+        this.setUpdateDate(LocalDateTime.now());
+        this.setViewed(false);
+        this.setSatisfied(false);
+    }
+
 }

@@ -35,6 +35,11 @@ public class FeedbackClassService {
     }
 
     public FeedbackClassResponseDTO createFeedbackClass(FeedbackClassRequestDTO feedbackClassRequestDTO) {
+
+        if (repository.existsFeedbackClassByCouncil_Id(feedbackClassRequestDTO.getCouncil_id())) {
+            throw new RuntimeException("Class feedback already exists");
+        }
+
         FeedbackClass feedbackClass = modelMapper.map(feedbackClassRequestDTO, FeedbackClass.class);
 
         Council council = councilService.findCouncilEntity(feedbackClassRequestDTO.getCouncil_id());

@@ -16,6 +16,7 @@ import net.weg.userapi.model.entity.users.User;
 @NoArgsConstructor
 public class FeedbackUserRequestDTO {
 
+    @NotBlank(message = "{not.blank.message}")
     private String rank;
     @NotNull(message = "{not.null.message}")
     private Long council_id;

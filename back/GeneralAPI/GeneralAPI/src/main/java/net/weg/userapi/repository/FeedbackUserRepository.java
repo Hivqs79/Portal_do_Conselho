@@ -15,4 +15,7 @@ public interface FeedbackUserRepository extends JpaRepository<FeedbackUser, Long
     List<FeedbackUser> getAllByUser_Id(Long id);
 
     Page<FeedbackUser> findAllByCouncil_Id(Long id, Pageable pageable);
+
+    boolean existsFeedbackUserByCouncil_IdAndAndUser_Id(Long council_id, Long user_id);
+
 }
