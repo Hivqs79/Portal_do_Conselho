@@ -1,7 +1,7 @@
-import { TableHeaderContent } from "./TableHeaderContent";
-import { TableRowContent } from "./TableRowContent";
+import TableCouncilRow from "./TableCouncilRow";
 
-export interface TableContentPageable {
+export interface TableContent {
+    content: TableCouncilRow[];
     pageNumber: number;
     pageSize: number;
     sort: {
@@ -20,11 +20,4 @@ export interface TableContentPageable {
     number: number;
     numberOfElements: number;
     empty: boolean;
-}
-
-export interface TableContent {
-    headers: TableHeaderContent[];
-    content: TableRowContent[];
-    pageable: TableContentPageable;
-    
 }

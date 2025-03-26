@@ -27,6 +27,9 @@ interface CreateCouncilFormProps {
   setTime: Dispatch<SetStateAction<dayjs.Dayjs>>;
   date: dayjs.Dayjs;
   time: dayjs.Dayjs;
+  setSearchTeachers: Dispatch<SetStateAction<string>>;
+  setSearchClass:  Dispatch<SetStateAction<string>>;
+  submitForm: () => void;
 }
 
 export default function CreateCouncilForm({
@@ -40,6 +43,9 @@ export default function CreateCouncilForm({
   setTime,
   date,
   time,
+  setSearchTeachers,
+  setSearchClass,
+  submitForm,
 }: CreateCouncilFormProps) {
   const { primaryColor, colorByMode, whiteColor } = useThemeContext();
   const windowWidth = useWindowWidth();
@@ -58,6 +64,7 @@ export default function CreateCouncilForm({
           <DatePicker
             label="Data do conselho"
             minDate={dayjs().add(1, "day")}
+            value={date}
             onChange={(e) => e && setDate(e)}
             slots={{    
               openPickerIcon: Icon,
@@ -81,6 +88,7 @@ export default function CreateCouncilForm({
           <TimePicker
             label="Horário do conselho"
             onChange={(e) => e && setTime(e)}
+            value={time}
             slots={{
               openPickerIcon: Icon,
             }}
@@ -104,6 +112,7 @@ export default function CreateCouncilForm({
             name="Lista de Turmas"
             rows={classExistents}
             selectType="single"
+            setSearch={setSearchClass}
           />
         </Box>
         <Box className="flex flex-col gap-4">
@@ -116,6 +125,7 @@ export default function CreateCouncilForm({
             name="Lista de professores"
             rows={teachers}
             selectType="multiple"
+            setSearch={setSearchTeachers}
           />
         </Box>
         <Button
@@ -138,6 +148,7 @@ export default function CreateCouncilForm({
         time={time}
         teachers={Array.from(teachers).filter((teacher) => selectedTeachers[teacher.id])}
         classSelected={classExistents.find((c) => c.id === selectedClass)!}
+        confirmFunction={submitForm}
       />
     </Box>
   );

@@ -14,9 +14,10 @@ interface SelectTableProps {
     value: { [key: string]: boolean } | number | null;
     setSelectedItems?: Dispatch<SetStateAction<{ [key: string]: boolean }>>;
     setRadioSelectedItem?: Dispatch<SetStateAction<number | null>>;
+    setSearch?: Dispatch<SetStateAction<string>>;
 }
 
-export default function SelectTable({ selectType, name, rows, value, setSelectedItems, setRadioSelectedItem }: SelectTableProps) {
+export default function SelectTable({ selectType, name, rows, value, setSelectedItems, setRadioSelectedItem, setSearch }: SelectTableProps) {
     const { primaryColor, backgroundColor, whiteColor, terciaryColor } = useThemeContext();
     const windowWidth = useWindowWidth();
 
@@ -65,7 +66,7 @@ export default function SelectTable({ selectType, name, rows, value, setSelected
                     <Typography variant={windowWidth < 640 ? "md_text_regular" : "xl_text_regular"} color={whiteColor}>{name}</Typography>
                 </Box>
                 <Box>
-                    <Search />
+                    <Search setSearch={setSearch}/>
                 </Box>
             </Box>
             <Box 
@@ -80,6 +81,7 @@ export default function SelectTable({ selectType, name, rows, value, setSelected
                         <Box 
                             style={{ borderColor: OpacityHex(primaryColor, 0.2) }} 
                             className={`flex items-centerw-full px-2 py-5 ` + (i !== rows.length - 1 ? "border-b-[1px]" : "")} key={row.id}
+                            onClick={() => selectType === "single" ? (setRadioSelectedItem && setRadioSelectedItem(row.id)) : handleCheckboxChange(row.id.toString())}
                         >
                             {selectType === "multiple" ? (
                                 <Checkbox
@@ -103,7 +105,6 @@ export default function SelectTable({ selectType, name, rows, value, setSelected
                                     )}
                             <Typography 
                                 variant={windowWidth < 640 ? "sm_text_regular" : "lg_text_regular"}
-                                onClick={() => selectType === "single" ? (setRadioSelectedItem && setRadioSelectedItem(row.id)) : handleCheckboxChange(row.id.toString())}
                                 >{row.name}</Typography>
                         </Box>
                     ))}

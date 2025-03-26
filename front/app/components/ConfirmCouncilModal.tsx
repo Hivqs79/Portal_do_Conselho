@@ -16,6 +16,7 @@ interface ConfirmCouncilModalProps {
   time: dayjs.Dayjs;
   teachers: Teacher[];
   classSelected: Class;
+  confirmFunction: () => void;
 }
 
 export default function ConfirmCouncilModal({
@@ -25,6 +26,7 @@ export default function ConfirmCouncilModal({
   time,
   teachers,
   classSelected,
+  confirmFunction,
 }: ConfirmCouncilModalProps) {
   const {
     primaryColor,
@@ -152,7 +154,10 @@ export default function ConfirmCouncilModal({
             </Button>
             <Button
               variant="contained"
-              onClick={() => close()}
+              onClick={() => {
+                close();
+                confirmFunction();
+              }}
               className="h-fit w-full"
               color="primary"
             >
