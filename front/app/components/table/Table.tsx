@@ -8,6 +8,8 @@ import { TableContent } from "@/interfaces/TableContent";
 import { TableRowContent } from "@/interfaces/TableRowContent";
 import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
 import TableCouncilRow from "@/interfaces/TableCouncilRow";
+import { TableHeaderButtons } from "@/interfaces/TableHeaderButtons";
+import { TableRowButtons } from "@/interfaces/TableRowButtons";
 
 interface TableProps {
   tableContent: TableContent,
@@ -26,7 +28,7 @@ export default function Table({
   const [search, setSearch] = useState("");    
   headerButtons.setSearch = setSearch;
   headerButtons.searchValue = search;
-
+  
   return (
     <div className="w-full flex justify-center items-start overflow-hidden outline-component">
       <Box

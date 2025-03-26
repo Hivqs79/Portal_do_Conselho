@@ -86,7 +86,6 @@ export default function SelectTable({ selectType, name, rows, value, setSelected
                             {selectType === "multiple" ? (
                                 <Checkbox
                                 checked={!!(value as { [key: string]: boolean })[row.id]}
-                                onChange={() => handleCheckboxChange(row.id.toString())}
                                 className="!mr-2"
                                 />
                                 ) : (
@@ -96,7 +95,6 @@ export default function SelectTable({ selectType, name, rows, value, setSelected
                                         <Radio 
                                         className="!ml-2" 
                                         checked={value === row.id} 
-                                        onChange={() => setRadioSelectedItem && setRadioSelectedItem(row.id)}
                                         />
                                     }
                                     className="!mr-2"

@@ -9,6 +9,7 @@ import Search from "./Search";
 import Rank from "../rank/Rank";
 import { Decryptor } from "@/encryption/Decryptor";
 import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
+import { TableHeaderButtons } from "@/interfaces/TableHeaderButtons";
 
 interface TableHeaderProps {
   variant: "Table" | "council";

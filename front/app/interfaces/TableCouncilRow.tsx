@@ -7,5 +7,5 @@ export default interface TableCouncilRow extends TableRowContent {
     turmaNome: string,
     startDateTime: Date
     teachers: Teacher[],
-    aclass: Class[]
+    aclass: Class
 }

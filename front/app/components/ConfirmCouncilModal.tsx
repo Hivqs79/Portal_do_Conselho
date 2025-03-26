@@ -100,24 +100,37 @@ export default function ConfirmCouncilModal({
             <Typography color={colorByMode} variant="xl_text_bold">
               Professores
             </Typography>
-            <Box
-              style={{ backgroundColor: primaryColor }}
-              className="flex flex-col gap-4 w-full rounded-lg p-4 mt-4"
-            >
-              {teachers.map((teacher, index) => (
-                <Typography
-                  key={teacher.id}
-                  color={whiteColor}
-                  variant="md_text_regular"
-                >
-                  {index + 1} - {teacher.name}
-                </Typography>
-              ))}
-              {teachers.length === 0 && (
-                <Typography color={whiteColor} variant="md_text_regular">
-                  Nenhum professor selecionado
-                </Typography>
-              )}
+            <Box style={{ backgroundColor: primaryColor }} className="p-4 mt-4 rounded-lg">
+              <Box
+                className="flex flex-col gap-4 w-full max-h-48 overflow-y-auto"
+                sx={{
+                  "&::-webkit-scrollbar": {
+                    width: "4px",
+                  },
+                  "&::-webkit-scrollbar-track": {
+                    background: primaryColor,
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    background: whiteColor,
+                    borderRadius: "4px",
+                  },
+                }}
+              >
+                {teachers.map((teacher, index) => (
+                  <Typography
+                    key={teacher.id}
+                    color={whiteColor}
+                    variant="md_text_regular"
+                  >
+                    {index + 1} - {teacher.name}
+                  </Typography>
+                ))}
+                {teachers.length === 0 && (
+                  <Typography color={whiteColor} variant="md_text_regular">
+                    Nenhum professor selecionado
+                  </Typography>
+                )}
+              </Box>
             </Box>
           </Box>
           <Box className="w-full">

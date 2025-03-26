@@ -1,7 +1,10 @@
-interface TableRowButtons {
+import TableCouncilRow from "./TableCouncilRow";
+
+export interface TableRowButtons {
     rank?: boolean;
     realizeButton?: boolean;
     visualizeIconButton?: boolean;
+    onClickVisualize?: (row: TableCouncilRow) => void;
     visualizeButton?: boolean;
     editButton?: boolean;
     deleteButton?: boolean;

@@ -1,4 +1,4 @@
-interface TableHeaderButtons {
+export interface TableHeaderButtons {
   searchInput?: boolean;
   setSearch?: (term: string) => void;
   searchValue?: string;

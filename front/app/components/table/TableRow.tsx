@@ -13,6 +13,8 @@ import { IoClose } from "react-icons/io5";
 import { FaRegClock } from "react-icons/fa";
 import OpacityHex from "@/hooks/OpacityHex";
 import { Typography } from "@mui/material";
+import dayjs from "dayjs";
+import { TableRowButtons } from "@/interfaces/TableRowButtons";
 
 interface TableRowProps {
   content: TableCouncilRow;
@@ -29,20 +31,19 @@ export default function TableRow({
     realizeButton,
     visualizeIconButton,
     visualizeButton,
+    onClickVisualize,
     editButton,
     deleteButton,
     seeButton,
     anotationButton,
     closeButton,
     releasedButton,
-    releaseButton
+    releaseButton,
   } = rowButtons;
 
   // useEffect(() => {
   //   setSelectedRank(content.rank);
   // }, [content.rank]);
-  console.log(content);
-
   
   return (
     <>
@@ -53,21 +54,21 @@ export default function TableRow({
           }}
           className={`${content.className} flex rounded-b-big justify-between items-center p-3 w-full`}
       >
-        {(content as TableCouncilRow).turmaNome && (          
+        {(content as TableCouncilRow).aclass.name && (          
           <td style={{ color: constrastColor }} className="flex-1">
-              <Typography variant="lg_text_regular">{(content as TableCouncilRow).turmaNome}</Typography>
+              <Typography variant="lg_text_regular">{(content as TableCouncilRow).aclass.name}</Typography>
           </td>
         )}
-        {(content as TableCouncilRow).data && (          
+        {(content as TableCouncilRow).startDateTime && (              
           <td style={{ color: constrastColor }} className="hidden md:flex-1 md:flex text-center lg:justify-center">
-              <Typography variant="lg_text_regular">{(content as TableCouncilRow).data.toDateString()}</Typography>
+              <Typography variant="lg_text_regular">{dayjs((content as TableCouncilRow).startDateTime).format("DD/MM/YYYY")}</Typography>
           </td>
         )}
-          {/* {content.horario && (
-            <td style={{ color: constrastColor }} className="hidden lg:flex-1 lg:flex text-center justify-center">
-                <Typography variant="lg_text_regular">{content.horario}</Typography>
-            </td>            
-          )} */}
+        {(content as TableCouncilRow).startDateTime && (
+          <td style={{ color: constrastColor }} className="hidden lg:flex-1 lg:flex text-center justify-center">
+              <Typography variant="lg_text_regular">{dayjs((content as TableCouncilRow).startDateTime).format("HH:mm")}</Typography>
+          </td>            
+        )}
 
           <td className="flex justify-end items-center w-2/5 lg:w-1/3 gap-2 sm:gap-4">
             {/* {rank && (
@@ -76,7 +77,7 @@ export default function TableRow({
               </span>              
             )}                         */}
 
-            {(visualizeButton || seeButton || visualizeIconButton) && <TableButton text={(seeButton ? "Olhar" : "Visualizar")} onlyIcon={visualizeIconButton} icon={FaRegEye}/>}
+            {(visualizeButton || seeButton || visualizeIconButton) && <TableButton onClick={() => onClickVisualize && onClickVisualize(content)} text={(seeButton ? "Olhar" : "Visualizar")} onlyIcon={visualizeIconButton} icon={FaRegEye}/>}
             
             {realizeButton && <TableButton text="Realizar" onlyTextInBigSize={true} icon={PiPlayBold} />}
 

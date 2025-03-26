@@ -10,6 +10,10 @@ import { Teacher } from "@/interfaces/Teacher";
 import { Box, Button } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { TableRowButtons } from "@/interfaces/TableRowButtons";
+import { TableHeaderButtons } from "@/interfaces/TableHeaderButtons";
+import TableCouncilRow from "@/interfaces/TableCouncilRow";
+import ConfirmCouncilModal from "@/components/ConfirmCouncilModal";
 
 export default function Council() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -17,15 +21,19 @@ export default function Council() {
   const [selectedClass, setSelectedClass] = useState<number | null>(null);
   const [selectedTeachers, setSelectedTeachers] = useState<{[key: string]: boolean;}>({});
   const [date, setDate] = useState<dayjs.Dayjs>(dayjs().add(1, "day"));
-  const [time, setTime] = useState<dayjs.Dayjs>(dayjs().add(1, "hour"));
+  const [time, setTime] = useState<dayjs.Dayjs>(dayjs());
   const [councils, setCouncils] = useState<TableContent>();
   const [isCreate, setIsCreate] = useState<boolean>(true);
   const [searchTeachers, setSearchTeachers] = useState<string>("");
   const [searchClass, setSearchClass] = useState<string>("");
+  const [visualizedCouncil, setVisualizedCouncil] = useState<TableCouncilRow | null>(null);
 
   const rowButtons: TableRowButtons = {
     realizeButton: true,
     visualizeIconButton: true,
+    onClickVisualize: (row: TableCouncilRow) => {
+      setVisualizedCouncil(row);
+    },
   };
   const headerButtons: TableHeaderButtons = {
     searchInput: true,
@@ -46,19 +54,20 @@ export default function Council() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        startDateTime: date.add(time.get("hour"), "hour").add(-3, "hour").add(time.get("minute"), "minute").toISOString(),
+        startDateTime: date.format("YYYY-MM-DD") + "T" + time.format("HH:mm:ss"),
         class_id: selectedClass,
         teachers_id: Object.keys(selectedTeachers),
       }),
     });
-    const data = await response.json();
-    console.log(data);    
-    resetInputs();
+    response.json().then((data) => {
+      console.log(data);
+      // resetInputs();
+    });
   };
 
   const resetInputs = () => {
     setDate(dayjs().add(1, "day"));
-    setTime(dayjs().add(1, "hour"));
+    setTime(dayjs());
     setSelectedTeachers({});
     setSearchClass("");
     setSearchTeachers("");
@@ -67,7 +76,7 @@ export default function Council() {
   useEffect(() => {
     const fetchTeachers = async () => {
       const response = await fetch(
-        "http://localhost:8081/class/teacher/" + selectedClass
+        "http://localhost:8081/class/teacher/" + (selectedClass ? selectedClass : "")
       );
       const data = await response.json();
       setTeachers(data);
@@ -78,7 +87,7 @@ export default function Council() {
   useEffect(() => {
     const fetchClass = async () => {
       const response = await fetch(
-        "http://localhost:8081/class" + "?name=" + searchClass
+        "http://localhost:8081/class" + (searchClass ? "?name=" + searchClass : "")
       );
       const data = await response.json();
       setSelectedClass(data.content[0] && data.content[0].id);
@@ -109,7 +118,7 @@ export default function Council() {
         onClickButton2={() => {
           setIsCreate(false);
           setSearchClass("");
-          setSearchTeachers("");
+          setSearchTeachers("");        
         }}
       />
       {isCreate ? (
@@ -129,12 +138,23 @@ export default function Council() {
           submitForm={createCouncil}
         />
       ) : (
+        <>
         <Table
           tableContent={councils ? councils : {} as TableContent}
           headers={headers}
           headerButtons={headerButtons}
           rowButtons={rowButtons}
-        />
+          />
+          <ConfirmCouncilModal
+            open={visualizedCouncil !== null}
+            close={() => setVisualizedCouncil(null)}
+            date={visualizedCouncil ? dayjs(visualizedCouncil.startDateTime) : dayjs()}
+            time={visualizedCouncil ? dayjs(visualizedCouncil.startDateTime) : dayjs()}
+            teachers={visualizedCouncil ? visualizedCouncil.teachers : []}
+            classSelected={visualizedCouncil ? visualizedCouncil.aclass : {} as Class}
+            confirmFunction={() => {setVisualizedCouncil(null);}}
+          />
+          </>
       )}
     </Box>
   );
