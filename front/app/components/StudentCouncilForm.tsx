@@ -1,7 +1,7 @@
 "use client";
 import OpacityHex from "@/hooks/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Rank from "./rank/Rank";
 import Photo from "./profile/Photo";
 import TextareaComponent from "./input/TextareaComponent";
@@ -159,18 +159,18 @@ export default function StudentCouncilForm({
 
   return (
     <>
-      <div
+      <Box
         style={{ borderColor: colorByModeSecondary }}
         className="relative w-full border-2 rounded-big p-5 px-9 xl:px-16 flex flex-col gap-5 pb-10 lg:pb-5"
       >
-        <div className="flex flex-wrap lg:flex-nowrap gap-5 lg:gap-10 justify-center">
-          <div className="flex flex-col justify-between items-start gap-5 h-[550px]">
-            <div className="flex flex-wrap justify-between items-center gap-4">
+        <Box className="flex flex-wrap lg:flex-nowrap gap-5 lg:gap-10 justify-center">
+          <Box className="flex flex-col justify-between items-start gap-5 h-[550px]">
+            <Box className="flex flex-wrap justify-between items-center gap-4">
               <Typography variant="lg_text_bold" color={constrastColor}>
                 <span style={{ color: colorByModeSecondary }}>Aluno:</span>{" "}
                 {student}
               </Typography>
-            </div>
+            </Box>
             <Photo
               classname="max-w-[200px] max-h-[290] w-[350px] sm:max-w-[250px] mx-auto"
               idUser={1}
@@ -181,7 +181,7 @@ export default function StudentCouncilForm({
                 <Typography variant="lg_text_bold" color={colorByModeSecondary}>
                   Frequência:
                 </Typography>
-                <div className="relative flex items-center w-full sm:w-auto">
+                <Box className="relative flex items-center w-full sm:w-auto">
                   <input
                     style={{
                       borderColor: colorByModeSecondary,
@@ -202,7 +202,7 @@ export default function StudentCouncilForm({
                   >
                     %
                   </span>
-                </div>
+                </Box>
               </span>
               <span className="w-full">
                 <Rank
@@ -237,12 +237,12 @@ export default function StudentCouncilForm({
                 </Typography>
               </Button>
             </span>
-          </div>
-          <div
+          </Box>
+          <Box
             style={{ backgroundColor: colorByModeSecondary }}
             className="hidden lg:block w-[.2rem] rounded-full h-[550px]"
-          ></div>
-          <div className="w-full flex justify-between flex-col gap-5 lg:h-[550px]">
+          ></Box>
+          <Box className="w-full flex justify-between flex-col gap-5 lg:h-[550px]">
             <TextareaComponent
               title="Pontos Positivos"
               readonly={false}
@@ -257,8 +257,8 @@ export default function StudentCouncilForm({
               value={negativeContent}
               onChange={(e) => setNegativeContent(e.target.value)}
             />
-          </div>
-        </div>
+          </Box>
+        </Box>
         {!isDisable ? (
           <>
             <span
@@ -302,10 +302,10 @@ export default function StudentCouncilForm({
             </span>
           </>
         )}
-        <div className="absolute bottom-2 left-3 lg:bottom-auto lg:left-auto lg:right-[2.5rem] lg:top-5 xl:right-[4rem]">
+        <Box className="absolute bottom-2 left-3 lg:bottom-auto lg:left-auto lg:right-[2.5rem] lg:top-5 xl:right-[4rem]">
           <AutoSaveIndicator saved={!isSaving} />
-        </div>
-      </div>
+        </Box>
+      </Box>
     </>
   );
 }

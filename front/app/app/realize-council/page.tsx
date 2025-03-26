@@ -377,7 +377,7 @@ export default function RealizeCouncil() {
             style={{ borderColor: colorByModeSecondary }}
             className="w-full overflow-hidden rounded-t-big flex flex-col gap-6"
           >
-            <div>
+            <Box>
               <table className="p-0 m-0 w-full">
                 <TableHeader
                   variant="council"
@@ -396,7 +396,7 @@ export default function RealizeCouncil() {
                 onPositiveChange={handlePositiveChange}
                 onNegativeChange={handleNegativeChange}
               />
-            </div>
+            </Box>
             <div>
               <StudentCouncilForm
                 student={
