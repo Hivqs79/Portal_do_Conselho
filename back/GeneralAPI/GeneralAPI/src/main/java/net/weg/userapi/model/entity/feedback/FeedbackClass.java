@@ -1,11 +1,17 @@
 package net.weg.userapi.model.entity.feedback;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.weg.userapi.model.enums.RankENUM;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "feedback_id")
 public class FeedbackClass extends Feedback {
     @Enumerated(EnumType.STRING)

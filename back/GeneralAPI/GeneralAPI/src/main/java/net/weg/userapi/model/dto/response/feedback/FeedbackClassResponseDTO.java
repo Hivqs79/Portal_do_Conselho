@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.dto.response.council.CouncilResponseDTO;
+import net.weg.userapi.model.enums.RankENUM;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class FeedbackClassResponseDTO {
     private Long id;
-    private String rank;
+    private RankENUM rank;
     private CouncilResponseDTO council;
     private String strengths;
     private String toImprove;

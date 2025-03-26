@@ -3,6 +3,7 @@ package net.weg.userapi.model.entity.users;
 import jakarta.persistence.*;
 import lombok.Data;
 import net.weg.userapi.model.entity.feedback.FeedbackStudent;
+import net.weg.userapi.model.entity.feedback.FeedbackUser;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +36,10 @@ public abstract class User {
     @OneToOne(mappedBy = "user")
     private Customization customization;
 
+
+    @OneToMany(mappedBy = "user")
+    private List<FeedbackUser> feedbackUsers;
+
     @PrePersist
     public void onPrePersist() {
         this.setCreateDate(LocalDateTime.now());
@@ -45,9 +50,6 @@ public abstract class User {
     public void onPreUpdate() {
         this.setUpdateDate(LocalDateTime.now());
     }
-
-    @OneToMany(mappedBy = "user")
-    private List<FeedbackStudent> feedbackStudents;
 
     @Override
     public String toString() {

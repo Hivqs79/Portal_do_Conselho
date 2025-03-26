@@ -39,10 +39,10 @@ public class FeedbackClassService {
             throw new RuntimeException("Class feedback already exists");
         }
 
-        FeedbackClass feedbackClass = modelMapper.map(feedbackClassRequestDTO, FeedbackClass.class);
-
         Council council = councilService.findCouncilEntity(feedbackClassRequestDTO.getCouncil_id());
 
+
+        FeedbackClass feedbackClass = modelMapper.map(feedbackClassRequestDTO, FeedbackClass.class);
         feedbackClass.setCouncil(council); //SETAR CONSELHO
 
         FeedbackClass feedbackSaved = repository.save(feedbackClass);

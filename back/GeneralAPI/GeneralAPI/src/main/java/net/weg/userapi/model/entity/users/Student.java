@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.entity.classes.Class;
+import net.weg.userapi.model.entity.feedback.FeedbackStudent;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +27,9 @@ public class Student extends User {
             inverseJoinColumns= @JoinColumn(name = "class_id", nullable = false)
     )
     private List<Class> classes;
+
+    @OneToMany(mappedBy = "student")
+    private List<FeedbackStudent> feedbackStudent;
 
     @Override
     public boolean equals(Object o) {

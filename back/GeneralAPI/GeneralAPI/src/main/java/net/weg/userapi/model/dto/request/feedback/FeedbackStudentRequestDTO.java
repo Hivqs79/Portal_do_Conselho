@@ -10,8 +10,9 @@ import net.weg.userapi.model.enums.RankENUM;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FeedbackUserRequestDTO {
+public class FeedbackStudentRequestDTO {
 
+    private RankENUM rank;
     @NotNull(message = "{not.null.message}")
     private Long council_id;
     @NotBlank(message = "{not.blank.message}")
@@ -19,7 +20,9 @@ public class FeedbackUserRequestDTO {
     @NotBlank(message = "{not.blank.message}")
     private String toImprove;
     @NotNull(message = "{not.null.message}")
-    private Long user_id;
+    private Long student_id;
+    @NotNull(message = "{not.null.message}")
+    private Double frequency;
 
 
 }
