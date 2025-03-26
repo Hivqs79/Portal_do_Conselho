@@ -72,7 +72,7 @@ export default function Profile() {
         >
           <span className="flex flex-col justify-center items-center gap-5">
             <span className="relative">
-              <Photo rounded={true} classname="h-40 w-40" />
+              <Photo idUser={1} rounded={true} classname="h-40 w-40" />
               <span className="absolute right-0 bottom-0">
                 <Button
                   variant="contained"

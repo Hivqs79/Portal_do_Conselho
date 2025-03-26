@@ -258,8 +258,8 @@ export default function Components() {
         <Rank variant="default" type="critical" outline={false} popover={false} />
       </Box>
  
-      <Photo photo={""} rounded={false} classname="w-20 h-20" />
-      <Photo photo={""} rounded={true} classname="w-20 h-20" />
+      <Photo idUser={1} rounded={false} classname="w-20 h-20" />
+      <Photo idUser={1} rounded={true} classname="w-20 h-20" />
       <Box
         style={{ backgroundColor: OpacityHex(colorByModeSecondary, 0.2) }}
         className="p-2 mt-32 rounded-big w-full"

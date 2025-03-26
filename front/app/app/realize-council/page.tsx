@@ -386,7 +386,7 @@ export default function RealizeCouncil() {
                     onChangeRank: handleRankChange,
                   }}
                   openCommentsModal={openTeacherModal}
-                  data={actualRank}
+                  rank={actualRank}
                 />
               </table>
               <AvaliationInputs

@@ -44,7 +44,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
 
   useEffect(() => {
     if (role === "") {
-      setRole("pedagogic");
+      setRole("admin");
     }
   }, [role, setRole]);
 
