@@ -107,7 +107,7 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
             <Photo
               classname="p-0 m-0 h-[200px] w-[200px]"
               rounded={true}
-              photo={selectedImage ? URL.createObjectURL(selectedImage) : ""}
+              editPhoto={selectedImage}
               profile={true}
             />
             <span className="absolute top-1/2 left-1/2 -translate-x-1/2 w-full h-full bg-black/50 flex justify-center items-center rounded-full -translate-y-1/2">

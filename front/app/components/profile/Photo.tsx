@@ -7,6 +7,7 @@ interface PhotoProps {
   rounded?: boolean;
   idUser?: number;
   profile?: boolean;
+  editPhoto?: File | null;
 }
 
 export default function Photo({
@@ -14,6 +15,7 @@ export default function Photo({
   rounded,
   profile,
   idUser,
+  editPhoto,
 }: PhotoProps) {
   const { secondaryColor, terciaryColor } = useThemeContext();
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
@@ -110,7 +112,7 @@ export default function Photo({
           ? `rounded-full ${classname} ${
               profile ? "max-w-[244px] h-[200px]" : ""
             }`
-          : `${classname}`
+          : `${classname} + rounded-normal`
       }
     />
   );

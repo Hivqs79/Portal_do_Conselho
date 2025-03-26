@@ -38,7 +38,7 @@ export default function Header({ variant }: HeaderProps) {
   return (
     <Box
       style={{ backgroundColor: primaryColor }}
-      className="fixed w-screen py-5 px-6 flex flex-row items-center justify-between z-50"
+      className="fixed w-screen py-5 px-6 flex flex-row items-center justify-between z-[200]"
       ref={boxRef}
     >
       <Box className="flex flex-row items-center">

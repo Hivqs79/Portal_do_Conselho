@@ -79,7 +79,7 @@ export default function Reports() {
                     name={question.question}
                     description={question.answer}
                     type="default"
-                    outlined
+                    // outlined
                   />
                 </Box>
               );

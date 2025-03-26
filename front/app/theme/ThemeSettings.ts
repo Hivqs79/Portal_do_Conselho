@@ -154,7 +154,7 @@ export default class ThemeSettings {
   public static getFontFamilyTitle() {
     const fontFamilyText = localStorage.getItem("fontFamilyTitle");
     if (!fontFamilyText) {
-      localStorage.setItem("fontFamilyTitle", "Inter");
+      localStorage.setItem("fontFamilyTitle", "Lora");
       return "Lora";
     }
     return fontFamilyText;
@@ -405,6 +405,9 @@ export default class ThemeSettings {
         },
         MuiMenu: {
           styleOverrides: {
+            root: {
+              zIndex: 25,
+            },
             paper: {
               backgroundColor: primary_color,
               color: whiteColor,
@@ -426,7 +429,7 @@ export default class ThemeSettings {
         MuiModal: {
           styleOverrides: {
             root: {
-              zIndex: 80,
+              zIndex: 210,
             },
           },
         },
@@ -467,6 +470,7 @@ export default class ThemeSettings {
         MuiAccordion: {
           styleOverrides: {
             root: {
+              zIndex: 10,
               borderRadius: "16px !important",
             },
           },
