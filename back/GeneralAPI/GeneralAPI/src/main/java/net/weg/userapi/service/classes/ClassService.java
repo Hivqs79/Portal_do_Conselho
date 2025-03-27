@@ -63,11 +63,11 @@ public class ClassService {
         return modelMapper.map(updatedClass, ClassResponseDTO.class);
     }
 
-    public ClassResponseDTO deleteClass(Long id) {
+    public ClassResponseDTO disableClass(Long id) {
         Class classes = findClassEntity(id);
-        ClassResponseDTO classResponseDTO = modelMapper.map(classes, ClassResponseDTO.class);
-        repository.delete(classes);
-        return classResponseDTO;
+        classes.setEnabled(false);
+        repository.save(classes);
+        return modelMapper.map(classes, ClassResponseDTO.class);
     }
 
     public void mockarClass(List<ClassRequestDTO> classRequestDTOS) {
