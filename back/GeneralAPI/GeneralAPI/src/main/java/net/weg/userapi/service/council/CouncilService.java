@@ -27,7 +27,7 @@ public class CouncilService {
     private TeacherService teacherService;
 
     public Page<CouncilResponseDTO> findCouncilSpec(Specification<Council> spec, Pageable pageable) {
-        Page<Council> councils = repository.findAll(spec, pageable);
+        Page<Council> councils = repository.getAllByEnabledIsTrue(spec, pageable);
         return councils.map(council -> modelMapper.map(council, CouncilResponseDTO.class));
     }
 

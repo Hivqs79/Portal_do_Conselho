@@ -25,7 +25,7 @@ public class AnnotationClassService {
     private ModelMapper modelMapper;
 
     public Page<AnnotationClassResponseDTO> findAnnotationClassSpec(Specification<AnnotationClass> spec, Pageable pageable) {
-        Page<AnnotationClass> annotationClasses = repository.findAll(spec, pageable);
+        Page<AnnotationClass> annotationClasses = repository.getAllByEnabledIsTrue(spec, pageable);
         return annotationClasses.map(annotationClass -> modelMapper.map(annotationClass, AnnotationClassResponseDTO.class));
     }
 

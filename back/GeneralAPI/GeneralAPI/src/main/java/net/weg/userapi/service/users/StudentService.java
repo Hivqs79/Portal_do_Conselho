@@ -34,7 +34,7 @@ public class StudentService {
     private final ObjectMapper objectMapper;
 
     public Page<StudentResponseDTO> findStudentSpec(Specification<Student> spec, Pageable pageable) {
-        Page<Student> students = repository.findAll(spec, pageable);
+        Page<Student> students = repository.getAllByEnabledIsTrue(spec, pageable);
         return students.map(student -> modelMapper.map(student, StudentResponseDTO.class));
     }
 

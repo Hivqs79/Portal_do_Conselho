@@ -28,7 +28,7 @@ public class TeacherService {
     private ModelMapper modelMapper;
 
     public Page<TeacherResponseDTO> findTeacherSpec(Specification<Teacher> spec, Pageable pageable) {
-        Page<Teacher> teachers = repository.findAll(spec, pageable);
+        Page<Teacher> teachers = repository.getAllByEnabledIsTrue(spec, pageable);
         return teachers.map(teacher -> modelMapper.map(teacher, TeacherResponseDTO.class));
     }
 

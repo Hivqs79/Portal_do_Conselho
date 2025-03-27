@@ -30,7 +30,7 @@ public class FeedbackStudentService {
     private ModelMapper modelMapper;
 
     public Page<FeedbackStudentResponseDTO> findFeedbackStudentSpec(Specification<FeedbackStudent> spec, Pageable pageable) {
-        Page<FeedbackStudent> feedbackStudentes = repository.findAll(spec, pageable);
+        Page<FeedbackStudent> feedbackStudentes = repository.getAllByEnabledIsTrue(spec, pageable);
         return feedbackStudentes.map(feedbackStudent -> modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class));
     }
 

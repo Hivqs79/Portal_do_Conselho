@@ -29,7 +29,7 @@ public class FeedbackUserService {
     private ModelMapper modelMapper;
 
     public Page<FeedbackUserResponseDTO> findFeedbackUserSpec(Specification<FeedbackUser> spec, Pageable pageable) {
-        Page<FeedbackUser> feedbackUseres = repository.findAll(spec, pageable);
+        Page<FeedbackUser> feedbackUseres = repository.getAllByEnabledIsTrue(spec, pageable);
         return feedbackUseres.map(feedbackUser -> modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class));
     }
 

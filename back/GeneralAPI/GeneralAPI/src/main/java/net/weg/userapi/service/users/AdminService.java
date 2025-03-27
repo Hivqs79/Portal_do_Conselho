@@ -23,7 +23,7 @@ public class AdminService {
     private ModelMapper modelMapper;
 
     public Page<AdminResponseDTO> findAdminSpec(Specification<Admin> spec, Pageable pageable) {
-        Page<Admin> admins = repository.findAll(spec, pageable);
+        Page<Admin> admins = repository.getAllByEnabledIsTrue(spec, pageable);
         return admins.map(admin -> modelMapper.map(admin, AdminResponseDTO.class));
     }
 

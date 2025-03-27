@@ -24,7 +24,7 @@ public class PedagogicService {
     private ModelMapper modelMapper;
 
     public Page<PedagogicResponseDTO> findPedagogicSpec(Specification<Pedagogic> spec, Pageable pageable) {
-        Page<Pedagogic> pedagogics = repository.findAll(spec, pageable);
+        Page<Pedagogic> pedagogics = repository.getAllByEnabledIsTrue(spec, pageable);
         return pedagogics.map(pedagogic -> modelMapper.map(pedagogic, PedagogicResponseDTO.class));
     }
 

@@ -29,7 +29,7 @@ public class AnnotationStudentService {
     private ModelMapper modelMapper;
 
     public Page<AnnotationStudentResponseDTO> findAnnotationStudentSpec(Specification<AnnotationStudent> spec, Pageable pageable) {
-        Page<AnnotationStudent> annotationStudents = repository.findAll(spec, pageable);
+        Page<AnnotationStudent> annotationStudents = repository.getAllByEnabledIsTrue(spec, pageable);
         return annotationStudents.map(annotationStudent -> modelMapper.map(annotationStudent, AnnotationStudentResponseDTO.class));
     }
 

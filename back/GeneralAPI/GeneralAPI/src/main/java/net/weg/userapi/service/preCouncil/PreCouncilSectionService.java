@@ -21,7 +21,7 @@ public class PreCouncilSectionService {
     private PreCouncilService preCouncilService;
 
     public Page<PreCouncilSectionResponseDTO> findPreCouncilSectionSpec(Specification<PreCouncilSection> spec, Pageable pageable) {
-        Page<PreCouncilSection> preCouncilSections = repository.findAll(spec, pageable);
+        Page<PreCouncilSection> preCouncilSections = repository.getAllByEnabledIsTrue(spec, pageable);
         return preCouncilSections.map(preCouncilSection -> modelMapper.map(preCouncilSection, PreCouncilSectionResponseDTO.class));
     }
 

@@ -29,7 +29,7 @@ public class FeedbackClassService {
     private ModelMapper modelMapper;
 
     public Page<FeedbackClassResponseDTO> findFeedbackClassSpec(Specification<FeedbackClass> spec, Pageable pageable) {
-        Page<FeedbackClass> feedbackClasses = repository.findAll(spec, pageable);
+        Page<FeedbackClass> feedbackClasses = repository.getAllByEnabledIsTrue(spec, pageable);
         return feedbackClasses.map(feedbackClass -> modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class));
     }
 

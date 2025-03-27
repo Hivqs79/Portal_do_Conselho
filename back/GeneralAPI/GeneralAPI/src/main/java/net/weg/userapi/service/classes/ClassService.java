@@ -25,7 +25,7 @@ public class ClassService {
     private ModelMapper modelMapper;
 
     public Page<ClassResponseDTO> findClassSpec(Specification<Class> spec, Pageable pageable) {
-        Page<Class> classes = repository.findAll(spec, pageable);
+        Page<Class> classes = repository.getAllByEnabledIsTrue(spec, pageable);
         return classes.map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class));
     }
 
