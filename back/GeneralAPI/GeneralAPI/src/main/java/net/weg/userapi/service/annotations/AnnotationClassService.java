@@ -15,8 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
-
 @Service
 @AllArgsConstructor
 public class AnnotationClassService {
@@ -73,11 +71,11 @@ public class AnnotationClassService {
         return modelMapper.map(updatedAnnotationClass, AnnotationClassResponseDTO.class);
     }
 
-    public AnnotationClassResponseDTO deleteAnnotationClass(Long id) {
+    public AnnotationClassResponseDTO disableAnnotationClass(Long id) {
         AnnotationClass annotationClass = findAnnotationEntity(id);
-        AnnotationClassResponseDTO annotationClassResponseDTO = modelMapper.map(annotationClass, AnnotationClassResponseDTO.class);
-        repository.delete(annotationClass);
-        return annotationClassResponseDTO;
+        annotationClass.setEnabled(false);
+        repository.save(annotationClass);
+        return modelMapper.map(annotationClass, AnnotationClassResponseDTO.class);
     }
 
 }

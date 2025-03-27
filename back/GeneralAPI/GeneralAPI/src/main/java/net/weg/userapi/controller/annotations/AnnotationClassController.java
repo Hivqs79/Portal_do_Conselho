@@ -53,8 +53,8 @@ public class AnnotationClassController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<AnnotationClassResponseDTO> deleteAnnotationClass(@PathVariable Long id) {
-        return new ResponseEntity<>(service.deleteAnnotationClass(id), HttpStatus.OK);
+    public ResponseEntity<AnnotationClassResponseDTO> disableAnnotationClass(@PathVariable Long id) {
+        return new ResponseEntity<>(service.disableAnnotationClass(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

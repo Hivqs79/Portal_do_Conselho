@@ -56,11 +56,11 @@ public class PreCouncilService {
         return modelMapper.map(updatedPreCouncil, PreCouncilResponseDTO.class);
     }
 
-    public PreCouncilResponseDTO deletePreCouncil(Long id) {
+    public PreCouncilResponseDTO disablePreCouncil(Long id) {
         PreCouncil preCouncil = findPreCouncilEntity(id);
-        PreCouncilResponseDTO preCouncilResponseDTO = modelMapper.map(preCouncil, PreCouncilResponseDTO.class);
-        repository.delete(preCouncil);
-        return preCouncilResponseDTO;
+        preCouncil.setEnabled(false);
+        repository.save(preCouncil);
+        return modelMapper.map(preCouncil, PreCouncilResponseDTO.class);
     }
 
 }

@@ -69,7 +69,7 @@ public class StudentService {
         return modelMapper.map(updatedStudent, StudentResponseDTO.class);
     }
 
-    public StudentResponseDTO deleteStudent(Long id) {
+    public StudentResponseDTO disableStudent(Long id) {
         Student student = findStudentEntity(id);
         student.setEnabled(false);
         repository.save(student);

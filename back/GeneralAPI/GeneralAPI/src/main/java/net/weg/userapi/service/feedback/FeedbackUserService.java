@@ -2,17 +2,13 @@ package net.weg.userapi.service.feedback;
 
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.FeedbackNotFoundException;
-import net.weg.userapi.exception.exceptions.UserNotAssociatedException;
 import net.weg.userapi.model.dto.request.feedback.FeedbackUserRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.model.entity.feedback.FeedbackUser;
-import net.weg.userapi.model.entity.users.Student;
 import net.weg.userapi.model.entity.users.User;
 import net.weg.userapi.repository.FeedbackUserRepository;
-import net.weg.userapi.service.classes.ClassService;
 import net.weg.userapi.service.council.CouncilService;
-import net.weg.userapi.service.users.StudentService;
 import net.weg.userapi.service.users.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -83,11 +79,11 @@ public class FeedbackUserService {
         return modelMapper.map(updatedFeedbackUser, FeedbackUserResponseDTO.class);
     }
 
-    public FeedbackUserResponseDTO deleteFeedbackUser(Long id) {
+    public FeedbackUserResponseDTO disableFeedbackUser(Long id) {
         FeedbackUser feedbackUser = findFeedbackEntity(id);
-        FeedbackUserResponseDTO feedbackUserResponseDTO = modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class);
-        repository.delete(feedbackUser);
-        return feedbackUserResponseDTO;
+        feedbackUser.setEnabled(false);
+        repository.save(feedbackUser);
+        return modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class);
     }
 
 

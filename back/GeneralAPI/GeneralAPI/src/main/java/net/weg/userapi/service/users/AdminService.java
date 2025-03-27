@@ -53,11 +53,11 @@ public class AdminService {
         return modelMapper.map(updatedAdmin, AdminResponseDTO.class);
     }
 
-    public AdminResponseDTO deleteAdmin(Long id) {
+    public AdminResponseDTO disableAdmin(Long id) {
         Admin admin = findAdminEntity(id);
-        AdminResponseDTO adminResponseDTO = modelMapper.map(admin, AdminResponseDTO.class);
-        repository.delete(admin);
-        return adminResponseDTO;
+        admin.setEnabled(false);
+        repository.save(admin);
+        return modelMapper.map(admin, AdminResponseDTO.class);
     }
 
     public void mockarAdmin (List<AdminRequestDTO> adminRequestDTOS) {

@@ -5,12 +5,10 @@ import net.weg.userapi.exception.exceptions.FeedbackNotFoundException;
 import net.weg.userapi.exception.exceptions.UserNotAssociatedException;
 import net.weg.userapi.model.dto.request.feedback.FeedbackStudentRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackStudentResponseDTO;
-import net.weg.userapi.model.entity.classes.Class;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.model.entity.feedback.FeedbackStudent;
 import net.weg.userapi.model.entity.users.Student;
 import net.weg.userapi.repository.FeedbackStudentRepository;
-import net.weg.userapi.service.classes.ClassService;
 import net.weg.userapi.service.council.CouncilService;
 import net.weg.userapi.service.users.StudentService;
 import org.modelmapper.ModelMapper;
@@ -93,11 +91,11 @@ public class FeedbackStudentService {
         return modelMapper.map(updatedFeedbackStudent, FeedbackStudentResponseDTO.class);
     }
 
-    public FeedbackStudentResponseDTO deleteFeedbackStudent(Long id) {
+    public FeedbackStudentResponseDTO disableFeedbackStudent(Long id) {
         FeedbackStudent feedbackStudent = findFeedbackEntity(id);
-        FeedbackStudentResponseDTO feedbackStudentResponseDTO = modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class);
-        repository.delete(feedbackStudent);
-        return feedbackStudentResponseDTO;
+        feedbackStudent.setEnabled(false);
+        repository.save(feedbackStudent);
+        return modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class);
     }
 
 

@@ -62,11 +62,11 @@ public class TeacherService {
         return modelMapper.map(updatedTeacher, TeacherResponseDTO.class);
     }
 
-    public TeacherResponseDTO deleteTeacher(Long id) {
+    public TeacherResponseDTO disableTeacher(Long id) {
         Teacher teacher = findTeacherEntity(id);
-        TeacherResponseDTO teacherResponseDTO = modelMapper.map(teacher, TeacherResponseDTO.class);
-        repository.delete(teacher);
-        return teacherResponseDTO;
+        teacher.setEnabled(false);
+        repository.save(teacher);
+        return modelMapper.map(teacher, TeacherResponseDTO.class);
     }
 
     public List<ClassResponseDTO> getClassByTeacher(Long teacher_id) {

@@ -55,11 +55,11 @@ public class PreCouncilSectionService {
         return modelMapper.map(updatedPreCouncilSection, PreCouncilSectionResponseDTO.class);
     }
 
-    public PreCouncilSectionResponseDTO deletePreCouncilSection(Long id) {
+    public PreCouncilSectionResponseDTO disablePreCouncilSection(Long id) {
         PreCouncilSection preCouncilSection = findPreCouncilSectionEntity(id);
-        PreCouncilSectionResponseDTO preCouncilSectionResponseDTO = modelMapper.map(preCouncilSection, PreCouncilSectionResponseDTO.class);
-        repository.delete(preCouncilSection);
-        return preCouncilSectionResponseDTO;
+        preCouncilSection.setEnabled(false);
+        repository.save(preCouncilSection);
+        return modelMapper.map(preCouncilSection, PreCouncilSectionResponseDTO.class);
     }
 
 }

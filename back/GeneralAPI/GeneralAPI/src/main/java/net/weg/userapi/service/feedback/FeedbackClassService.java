@@ -74,11 +74,11 @@ public class FeedbackClassService {
         return modelMapper.map(updatedFeedbackClass, FeedbackClassResponseDTO.class);
     }
 
-    public FeedbackClassResponseDTO deleteFeedbackClass(Long id) {
+    public FeedbackClassResponseDTO disableFeedbackClass(Long id) {
         FeedbackClass feedbackClass = findFeedbackEntity(id);
-        FeedbackClassResponseDTO feedbackClassResponseDTO = modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class);
-        repository.delete(feedbackClass);
-        return feedbackClassResponseDTO;
+        feedbackClass.setEnabled(false);
+        repository.save(feedbackClass);
+        return modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class);
     }
 
 

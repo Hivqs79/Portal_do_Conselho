@@ -69,11 +69,11 @@ public class CouncilService {
         return modelMapper.map(updatedCouncil, CouncilResponseDTO.class);
     }
 
-    public CouncilResponseDTO deleteCouncil(Long id) {
+    public CouncilResponseDTO disableCouncil(Long id) {
         Council council = findCouncilEntity(id);
-        CouncilResponseDTO councilResponseDTO = modelMapper.map(council, CouncilResponseDTO.class);
-        repository.delete(council);
-        return councilResponseDTO;
+        council.setEnabled(false);
+        repository.save(council);
+        return modelMapper.map(council, CouncilResponseDTO.class);
     }
 
     public List<Annotation> getAllAnnotations(Long id) {

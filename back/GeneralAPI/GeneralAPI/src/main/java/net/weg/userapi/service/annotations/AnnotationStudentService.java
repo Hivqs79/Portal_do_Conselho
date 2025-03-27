@@ -88,11 +88,11 @@ public class AnnotationStudentService {
         return modelMapper.map(updatedAnnotationStudent, AnnotationStudentResponseDTO.class);
     }
 
-    public AnnotationStudentResponseDTO deleteAnnotationStudent(Long id) {
+    public AnnotationStudentResponseDTO disableAnnotationStudent(Long id) {
         AnnotationStudent annotationStudent = findAnnotationEntity(id);
-        AnnotationStudentResponseDTO annotationStudentResponseDTO = modelMapper.map(annotationStudent, AnnotationStudentResponseDTO.class);
-        repository.delete(annotationStudent);
-        return annotationStudentResponseDTO;
+        annotationStudent.setEnabled(false);
+        repository.save(annotationStudent);
+        return modelMapper.map(annotationStudent, AnnotationStudentResponseDTO.class);
     }
 
 }

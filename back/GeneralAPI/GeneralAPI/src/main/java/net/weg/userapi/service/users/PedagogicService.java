@@ -55,11 +55,11 @@ public class PedagogicService {
         return modelMapper.map(updatedPedagogic, PedagogicResponseDTO.class);
     }
 
-    public PedagogicResponseDTO deletePedagogic(Long id) {
+    public PedagogicResponseDTO disablePedagogic(Long id) {
         Pedagogic pedagogic = findPedagogicEntity(id);
-        PedagogicResponseDTO pedagogicResponseDTO = modelMapper.map(pedagogic, PedagogicResponseDTO.class);
-        repository.delete(pedagogic);
-        return pedagogicResponseDTO;
+        pedagogic.setEnabled(false);
+        repository.save(pedagogic);
+        return modelMapper.map(pedagogic, PedagogicResponseDTO.class);
     }
 
     public void mockarPedagogic(List<PedagogicRequestDTO> pedagogicRequestDTOS) {
