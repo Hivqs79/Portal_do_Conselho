@@ -54,10 +54,9 @@ export default function AccordionComponent({
   return (
     <Accordion
       sx={{
-        border: `2px solid ${colorByModeSecondary}`,
-        borderRadius: "13px !important",
+        boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}`,
         backgroundColor: outlined ? backgroundColor : "transparent",
-        boxShadow: `0px 0px 5px 1px ${colorByModeSecondary}30`,
+        // boxShadow: `0px 0px 5px 1px ${colorByModeSecondary}30`,
         "&:before": {
           display: "none",
         },
@@ -78,10 +77,9 @@ export default function AccordionComponent({
         sx={{
           backgroundColor: outlined ? backgroundColor : primaryColor,
           color: whiteColor,
-          borderColor: outlined ? colorByModeSecondary : "",
-          borderWidth: outlined ? "2px" : "none",
+          boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}`,
           padding: "8px",
-          borderRadius: "8px",
+          borderRadius: "16px",
           "&.Mui-expanded": {
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
@@ -131,10 +129,8 @@ export default function AccordionComponent({
         className="rounded-b-big"
         sx={{
           backgroundColor: "transparent",
-          borderStyle: "solid",
-          borderTop: outlined ? "2px solid" : "none",
+          borderTop: "none",
           borderColor: colorByModeSecondary,
-          borderTopWidth: "2px !important",
           paddingLeft: "16px !important",
         }}
       >

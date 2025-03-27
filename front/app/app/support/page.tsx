@@ -32,81 +32,86 @@ export default function Reports() {
   return (
     <Box>
       <Title textHighlight="Suporte" />
-      <Box className="flex flex-col gap-5">
-        <Typography variant="xl_text_bold" color={colorByModeSecondary}>
-          Nos envie sua mensagem
-        </Typography>
-
-        <Typography variant="md_text_regular">
-          Caso você tenha alguma reclamação ou dúvida, entre em contato conosco,
-          você será atendido assim que possível!!
-        </Typography>
-        <TextField
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          id="outlined-basic"
-          label="Assunto"
-          variant="outlined"
-          fullWidth
-          multiline
-          rows={7}
-        />
-        <Button
-          onClick={openConfirmModal}
-          variant="contained"
-          color="primary"
-          fullWidth
-        >
-          <Typography variant="lg_text_bold" color={whiteColor}>
-            Enviar
+      <Box style={{borderColor: colorByModeSecondary}} className="border-2 p-5 outline-component rounded-big">
+        <Box className="flex flex-col gap-5">
+          <Typography variant="xl_text_bold" color={colorByModeSecondary}>
+            Nos envie sua mensagem
           </Typography>
-        </Button>
-      </Box>
-      <Box className="flex flex-col gap-10 mt-20">
-        <Typography variant="xl_text_bold" color={colorByModeSecondary}>
-          Perguntas Frequentes
-        </Typography>
-        <Box className="flex flex-col gap-2">
-          {frequentlyQuestions.map((question, index) => {
-            if (
-              (role === "leader" &&
-                (question.role === "student" || question.role === "leader")) ||
-              (role !== "leader" && role === question.role)
-            ) {
-              return (
-                <Box key={index}>
-                  <AccordionComponent
-                    name={question.question}
-                    description={question.answer}
-                    type="default"
-                    // outlined
-                  />
-                </Box>
-              );
-            }
-            return null;
-          })}
-        </Box>
-      </Box>
-      {isConfirmOpen && (
-        <>
-          <ConfirmChanges
-            type="default"
-            title="Você concorda em enviar esta mensagem?"
-            description="Você tem certeza da sua mensagem ao envia-lá para nós?"
-            confirmButtonText="Enviar"
-            onClose={() => setIsConfirmOpen(false)}
-            firstConfirmButton={() => sendUserMessage(inputValue)}
+
+          <Typography variant="md_text_regular">
+            Caso você tenha alguma reclamação ou dúvida, entre em contato
+            conosco, você será atendido assim que possível!!
+          </Typography>
+          <TextField
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            id="outlined-basic"
+            label="Assunto"
+            variant="outlined"
+            fullWidth
+            multiline
+            minRows={5}
+            maxRows={15}
           />
-          {isConfirmSendMessage && (
-            <ConfirmMessagesModal
-              title="Mensagem enviada com sucesso!"
-              description="Obrigado por entrar em contato conosco, responderemos em breve!"
-              error={false}
+          <Button
+            onClick={openConfirmModal}
+            variant="contained"
+            color="primary"
+            fullWidth
+          >
+            <Typography variant="lg_text_bold" color={whiteColor}>
+              Enviar
+            </Typography>
+          </Button>
+        </Box>
+        <Box className="flex flex-col gap-10 mt-20">
+          <Typography variant="xl_text_bold" color={colorByModeSecondary}>
+            Perguntas Frequentes
+          </Typography>
+          <Box className="flex flex-col gap-2">
+            {frequentlyQuestions.map((question, index) => {
+              if (
+                (role === "leader" &&
+                  (question.role === "student" ||
+                    question.role === "leader" ||
+                    question.role === "global")) ||
+                (role !== "leader" && role === question.role) ||
+                question.role === "global"
+              ) {
+                return (
+                  <Box key={index}>
+                    <AccordionComponent
+                      name={question.question}
+                      description={question.answer}
+                      type="default"
+                    />
+                  </Box>
+                );
+              }
+              return null;
+            })}
+          </Box>
+        </Box>
+        {isConfirmOpen && (
+          <>
+            <ConfirmChanges
+              type="default"
+              title="Você concorda em enviar esta mensagem?"
+              description="Você tem certeza da sua mensagem ao envia-lá para nós?"
+              confirmButtonText="Enviar"
+              onClose={() => setIsConfirmOpen(false)}
+              firstConfirmButton={() => sendUserMessage(inputValue)}
             />
-          )}
-        </>
-      )}
+            {isConfirmSendMessage && (
+              <ConfirmMessagesModal
+                title="Mensagem enviada com sucesso!"
+                description="Obrigado por entrar em contato conosco, responderemos em breve!"
+                error={false}
+              />
+            )}
+          </>
+        )}
+      </Box>
     </Box>
   );
 }
@@ -117,171 +122,107 @@ const frequentlyQuestions = [
     role: "student",
     question: "Como funciona o pré-conselho e para que ele serve?",
     answer:
-      "O pré-conselho é um espaço onde discutimos dificuldades acadêmicas e comportamentais antes de um possível encaminhamento ao conselho escolar.",
+      "O pré-conselho é um espaço onde a turma em geral responde algumas perguntas sobre professores, infraestrutura e algumas informações do tipo.",
   },
   {
     role: "student",
-    question: "O que acontece se eu for chamado para um conselho disciplinar?",
+    question: "Como eu vejo se meu conselho já foi liberado?",
     answer:
-      "No conselho disciplinar, será discutida sua situação e definidas possíveis ações corretivas ou de suporte.",
-  },
-  {
-    role: "student",
-    question: "Como posso recorrer a uma decisão tomada pelo conselho escolar?",
-    answer:
-      "Você pode solicitar revisão através da secretaria da escola ou com um responsável legal.",
+      "Para visualizar o seu conselho, basta ir à página principal, onde você verá todo o histórico de feedbacks. Se o novo feedback ainda não estiver lá, aguarde, pois ele ainda não foi liberado.",
   },
   {
     role: "student",
     question:
-      "Se eu estiver com dificuldades em uma matéria, o pré-conselho pode me ajudar?",
+      "Como entrar em contato para solicitar uma revisão ou tirar alguma dúvida?",
     answer:
-      "Sim, podemos sugerir reforço escolar, ajustes pedagógicos e um plano de estudo personalizado.",
+      "Você pode mandar uma mensagem diretamente para o pedagógico na página de chat ou verificar se sua dúvida já não foi respondida aqui na página de suporte.",
   },
   {
     role: "student",
-    question: "O conselho escolar decide sobre eventos e atividades na escola?",
+    question:
+      "Quero conversar com algum professor ou aluno, mas não estou conseguindo. O que posso fazer?",
     answer:
-      "Sim, o conselho pode avaliar propostas de eventos e sugerir melhorias para a escola.",
+      "Este sistema foi desenvolvido para ser um gerenciamento dos conselhos e pré-conselhos e não um bate-papo. Sendo assim, a única pessoa liberada para os estudantes conversarem é o pedagógico.",
   },
 
   // Leader
   {
     role: "leader",
-    question:
-      "Como posso levar as demandas da minha turma para o conselho escolar?",
+    question: "Como eu sei se um pré-conselho já foi liberado para responder?",
     answer:
-      "Você pode apresentar as sugestões ou problemas da turma nas reuniões do conselho e buscar soluções junto à equipe pedagógica.",
+      "Basta ir à página de pré-conselho e verificar se existe algum formulário de perguntas para ser respondido. Caso não haja nada, o seu pré-conselho ainda não foi liberado.",
   },
   {
     role: "leader",
     question:
-      "O representante de turma pode participar das decisões do conselho escolar?",
+      "O representante tem algum poder sobre os outros alunos da turma?",
     answer:
-      "Sim, dependendo da pauta, sua participação pode ser fundamental para representar os alunos.",
-  },
-  {
-    role: "leader",
-    question:
-      "Como posso ajudar um colega que foi chamado para um conselho disciplinar?",
-    answer:
-      "Você pode orientá-lo a comparecer e, se necessário, pedir apoio para que ele seja bem representado.",
-  },
-  {
-    role: "leader",
-    question:
-      "Os representantes de turma podem sugerir mudanças nas regras da escola?",
-    answer:
-      "Sim, sugestões bem fundamentadas podem ser levadas ao conselho para avaliação.",
-  },
-  {
-    role: "leader",
-    question:
-      "O que fazer se minha turma tiver uma reclamação sobre um professor?",
-    answer:
-      "Tente conversar diretamente com o professor primeiro. Se o problema persistir, pode ser levado ao conselho pedagógico.",
+      "Não. O representante somente irá falar pela turma, porém, ele continua sendo um aluno como todos os outros.",
   },
 
   // Teacher
   {
     role: "teacher",
-    question: "Quando devo encaminhar um aluno para o pré-conselho?",
+    question:
+      "Quando e qual o limite de tempo que posso fazer anotações para algum aluno no conselho?",
     answer:
-      "Quando identificar dificuldades acadêmicas, emocionais ou comportamentais que possam impactar o desenvolvimento do aluno.",
-  },
-  {
-    role: "teacher",
-    question: "Os professores participam das reuniões do conselho escolar?",
-    answer:
-      "Sim, principalmente em pautas pedagógicas, disciplinares ou para melhorias no ensino.",
-  },
-  {
-    role: "teacher",
-    question: "Quais critérios são considerados para reprovar um aluno?",
-    answer:
-      "São avaliados frequência, notas, participação e envolvimento do aluno no processo de ensino-aprendizagem.",
+      "O campo de anotações para o aluno e turma em um conselho específico fica liberado desde o momento da criação do conselho até a data e hora em que ele foi iniciado. Caso ele seja iniciado, não é mais possível fazer anotações sobre algum aluno ou turma nele.",
   },
   {
     role: "teacher",
     question:
-      "Posso sugerir mudanças no currículo escolar pelo conselho pedagógico?",
+      "Como faço para acessar os feedbacks do pré-conselho relacionados a mim?",
     answer:
-      "Sim, sugestões de melhoria na abordagem pedagógica podem ser levadas ao conselho para avaliação.",
+      "Para visualizar o seu feedback, basta ir à página principal, onde você verá todo o histórico de feedbacks relacionados a você. Se o novo feedback ainda não estiver lá, aguarde, pois ele ainda não foi liberado.",
   },
   {
     role: "teacher",
-    question: "Como posso contribuir para decisões disciplinares no conselho?",
+    question:
+      "Como funciona o sistema de ranks nas anotações para definir os alunos e turmas?",
     answer:
-      "Relatando de forma objetiva o comportamento do aluno em sala e sugerindo soluções baseadas na experiência docente.",
+      "O sistema de ranks nas anotações serve para o pedagógico ter uma noção de como está a situação daquele aluno ou turma com base na sua opinião. Isso ajudará na hora de decidir o feedback final do aluno.",
   },
 
   // Pedagogic
   {
     role: "pedagogic",
-    question: "Quais são os principais objetivos do conselho pedagógico?",
+    question: "Como posso iniciar o andamento de um conselho?",
     answer:
-      "Analisar e propor melhorias nos métodos de ensino, currículo e estratégias pedagógicas.",
+      "Para iniciar o andamento de um conselho, basta ir à página de Conselho e clicar no botão de 'Realizar conselho'. Lá haverá uma lista de todos os conselhos criados que ainda não foram iniciados.",
   },
   {
     role: "pedagogic",
     question:
-      "Como o conselho pode ajudar na inclusão de alunos com necessidades especiais?",
+      "Iniciei um conselho, porém, não consigo voltar para a página de realizar conselho. O que posso fazer?",
     answer:
-      "Discutindo adaptações no ensino e sugerindo recursos para garantir a inclusão e o aprendizado de todos.",
+      "Quando você inicia um conselho, ele se torna sua prioridade principal, e um conselho não pode acontecer ao mesmo tempo que outro. Sendo assim, essa página não fica acessível enquanto há algum conselho sendo realizado. Caso queira voltar para aquela página, será necessário finalizar ou cancelar o conselho que está sendo realizado.",
   },
   {
     role: "pedagogic",
-    question: "O conselho pode propor novas metodologias de ensino?",
+    question: "Para que servem os ranks nas anotações e no conselho?",
     answer:
-      "Sim, o conselho pedagógico pode sugerir e testar novas abordagens educacionais.",
+      "Os ranks servem para definir a situação do aluno ou da turma, conforme a avaliação dos professores. Porém, somente você tem acesso a essa informação, e o rank oficial é aquele definido no feedback final do conselho.",
   },
   {
     role: "pedagogic",
-    question:
-      "Como os pais podem participar das decisões pedagógicas da escola?",
+    question: "Os alunos conseguem ver os ranks deles?",
     answer:
-      "Através de reuniões com a equipe pedagógica e participação no conselho escolar.",
-  },
-  {
-    role: "pedagogic",
-    question:
-      "Como lidar com alunos com dificuldades emocionais no ambiente escolar?",
-    answer:
-      "Encaminhando ao pré-conselho para apoio, conversando com os responsáveis e sugerindo acompanhamento especializado.",
+      "Não. O rank do aluno é uma informação exclusiva da parte pedagógica, utilizada para visualizar a situação em que o aluno se encontra, facilitando a filtragem e a tomada de decisões.",
   },
 
   // Supervisor
   {
     role: "supervisor",
-    question: "Quais são as principais funções do conselho escolar?",
+    question: "O supervisor pode editar algo nos feedbacks?",
     answer:
-      "Gerenciar recursos, definir diretrizes pedagógicas e disciplinares e tomar decisões estratégicas para a escola.",
+      "Não. O supervisor somente pode visualizar o que foi definido pelo pedagógico em relação às turmas e alunos. Ele também pode visualizar os feedbacks que recebeu, porém, nunca editar nenhuma informação.",
   },
+
+  //Global
   {
-    role: "supervisor",
-    question:
-      "Como posso monitorar a efetividade das decisões tomadas nos conselhos?",
+    role: "global",
+    question: "Como eu posso rever o tutorial do sistema?",
     answer:
-      "Acompanhando indicadores como desempenho acadêmico, taxa de evasão e feedback da comunidade escolar.",
-  },
-  {
-    role: "supervisor",
-    question:
-      "O conselho pode intervir em problemas disciplinares recorrentes?",
-    answer:
-      "Sim, pode estabelecer medidas corretivas e propor estratégias para melhorar a convivência escolar.",
-  },
-  {
-    role: "supervisor",
-    question:
-      "Como garantir que as decisões dos conselhos sejam implementadas corretamente?",
-    answer:
-      "Acompanhando o cumprimento das ações e garantindo que todos os envolvidos estejam cientes das decisões.",
-  },
-  {
-    role: "supervisor",
-    question: "O conselho pode solicitar recursos adicionais para a escola?",
-    answer:
-      "Sim, pode solicitar verbas e apoio do governo ou de parceiros para melhorar a infraestrutura e ensino.",
+      "Para visualizar o tutorial novamente, basta acessar as Configurações e clicar na opção 'Tutorial'.",
   },
 ];
