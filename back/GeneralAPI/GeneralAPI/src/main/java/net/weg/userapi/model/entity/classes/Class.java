@@ -38,6 +38,9 @@ public class Class {
 
     private RankENUM lastRank;
 
+    @Column(nullable = false)
+    private boolean enabled;
+
     @ManyToMany(mappedBy = "classes")
     private List<Teacher> teachers;
 
@@ -55,6 +58,7 @@ public class Class {
 
     @PrePersist
     public void onPrePersist() {
+        this.setEnabled(true);
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
     }

@@ -40,6 +40,7 @@ public class FeedbackUser extends Feedback {
         this.setUpdateDate(LocalDateTime.now());
         this.setViewed(false);
         this.setSatisfied(false);
+        this.setEnabled(true);
     }
 
 }

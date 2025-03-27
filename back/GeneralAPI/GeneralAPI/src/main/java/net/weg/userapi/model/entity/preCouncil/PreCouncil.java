@@ -34,10 +34,14 @@ public class PreCouncil {
     @Column(name = "update_date", nullable = false)
     private LocalDateTime updateDate;
 
+    @Column(nullable = false)
+    private boolean enabled;
+
     @PrePersist
     public void onPrePersist() {
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
+        this.setEnabled(true);
     }
 
     @PreUpdate

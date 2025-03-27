@@ -21,6 +21,9 @@ public abstract class Annotation {
     private RankENUM rank;
 
     @Column(nullable = false)
+    private boolean enabled;
+
+    @Column(nullable = false)
     private String strengths;
     @Column(nullable = false)
     private String toImprove;
@@ -41,6 +44,7 @@ public abstract class Annotation {
     public void onPrePersist() {
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
+        this.setEnabled(true);
     }
 
     @PreUpdate

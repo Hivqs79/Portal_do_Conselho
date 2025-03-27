@@ -26,6 +26,9 @@ public abstract class Feedback {
     @Column(nullable = false)
     private String toImprove;
 
+    @Column(nullable = false)
+    private boolean enabled;
+
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
 

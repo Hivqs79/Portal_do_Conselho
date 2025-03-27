@@ -32,9 +32,6 @@ public class Council {
     @ManyToOne
     private Class aClass;
 
-    @Column(nullable = false)
-    private boolean enabled;
-
     @OneToMany(mappedBy = "council")
     private List<Annotation> annotations;
 
@@ -62,7 +59,6 @@ public class Council {
     public void onPrePersist() {
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
-        this.setEnabled(true);
     }
 
     @PreUpdate
