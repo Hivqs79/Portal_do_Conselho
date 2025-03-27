@@ -51,8 +51,8 @@ public class PreCouncilController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<PreCouncilResponseDTO> deletePreCouncil(@PathVariable Long id) {
-        return new ResponseEntity<>(service.deletePreCouncil(id), HttpStatus.OK);
+    public ResponseEntity<PreCouncilResponseDTO> disablePreCouncil(@PathVariable Long id) {
+        return new ResponseEntity<>(service.disablePreCouncil(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

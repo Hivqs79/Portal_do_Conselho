@@ -58,7 +58,7 @@ public class ClassController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ClassResponseDTO> deleteClass(@PathVariable Long id) {
+    public ResponseEntity<ClassResponseDTO> disableClass(@PathVariable Long id) {
         return new ResponseEntity<>(service.disableClass(id), HttpStatus.OK);
     }
 

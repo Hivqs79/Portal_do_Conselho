@@ -54,8 +54,8 @@ public class CouncilController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CouncilResponseDTO> deleteCouncil(@PathVariable Long id) {
-        return new ResponseEntity<>(service.deleteCouncil(id), HttpStatus.OK);
+    public ResponseEntity<CouncilResponseDTO> disableCouncil(@PathVariable Long id) {
+        return new ResponseEntity<>(service.disableCouncil(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

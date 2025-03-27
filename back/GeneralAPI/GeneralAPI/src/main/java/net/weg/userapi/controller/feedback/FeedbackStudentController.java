@@ -58,8 +58,8 @@ public class FeedbackStudentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<FeedbackStudentResponseDTO> deleteFeedbackStudent(@PathVariable Long id) {
-        return new ResponseEntity<>(service.deleteFeedbackStudent(id), HttpStatus.OK);
+    public ResponseEntity<FeedbackStudentResponseDTO> disableFeedbackStudent(@PathVariable Long id) {
+        return new ResponseEntity<>(service.disableFeedbackStudent(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

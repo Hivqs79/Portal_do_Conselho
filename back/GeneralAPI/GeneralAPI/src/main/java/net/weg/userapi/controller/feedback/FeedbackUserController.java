@@ -57,8 +57,8 @@ public class FeedbackUserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<FeedbackUserResponseDTO> deleteFeedbackUser(@PathVariable Long id) {
-        return new ResponseEntity<>(service.deleteFeedbackUser(id), HttpStatus.OK);
+    public ResponseEntity<FeedbackUserResponseDTO> disableFeedbackUser(@PathVariable Long id) {
+        return new ResponseEntity<>(service.disableFeedbackUser(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

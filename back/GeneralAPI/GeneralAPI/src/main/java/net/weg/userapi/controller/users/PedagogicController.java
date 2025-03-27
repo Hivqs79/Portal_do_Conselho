@@ -54,8 +54,8 @@ public class PedagogicController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<PedagogicResponseDTO> deletePedagogic(@PathVariable Long id) {
-        return new ResponseEntity<>(service.deletePedagogic(id), HttpStatus.OK);
+    public ResponseEntity<PedagogicResponseDTO> disablePedagogic(@PathVariable Long id) {
+        return new ResponseEntity<>(service.disablePedagogic(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

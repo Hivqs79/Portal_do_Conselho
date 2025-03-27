@@ -54,8 +54,8 @@ public class AdminController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<AdminResponseDTO> deleteAdmin(@PathVariable Long id) {
-        return new ResponseEntity<>(service.deleteAdmin(id), HttpStatus.OK);
+    public ResponseEntity<AdminResponseDTO> disableAdmin(@PathVariable Long id) {
+        return new ResponseEntity<>(service.disableAdmin(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

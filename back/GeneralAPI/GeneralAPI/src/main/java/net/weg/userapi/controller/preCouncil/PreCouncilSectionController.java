@@ -54,8 +54,8 @@ public class PreCouncilSectionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<PreCouncilSectionResponseDTO> deletePreCouncil(@PathVariable Long id) {
-        return new ResponseEntity<>(service.deletePreCouncilSection(id), HttpStatus.OK);
+    public ResponseEntity<PreCouncilSectionResponseDTO> disablePreCouncil(@PathVariable Long id) {
+        return new ResponseEntity<>(service.disablePreCouncilSection(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
