@@ -10,10 +10,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 
 public interface FeedbackUserRepository extends JpaRepository<FeedbackUser, Long>, JpaSpecificationExecutor<FeedbackUser> {
-    List<FeedbackUser> getAllByUser_Id(Long id);
-
-    Page<FeedbackUser> findAllByCouncil_Id(Long id, Pageable pageable);
 
     boolean existsFeedbackUserByCouncil_IdAndAndUser_Id(Long council_id, Long user_id);
+
+    Page<FeedbackUser> getAllByEnabled(boolean enabled, Pageable pageable);
 
 }
