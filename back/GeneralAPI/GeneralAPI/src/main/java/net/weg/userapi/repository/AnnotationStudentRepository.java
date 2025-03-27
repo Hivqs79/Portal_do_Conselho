@@ -1,9 +1,10 @@
 package net.weg.userapi.repository;
 
-import net.weg.userapi.model.entity.annotation.AnnotationClass;
+import net.weg.userapi.model.entity.annotation.AnnotationStudent;
 import net.weg.userapi.model.entity.annotation.AnnotationStudent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -11,6 +12,10 @@ public interface AnnotationStudentRepository extends JpaRepository<AnnotationStu
 
     Page<AnnotationStudent> findAllByStudent_Id(Pageable pageable, Long id);
 
-    Page<AnnotationStudent> getAllByEnabled(boolean enabled, Pageable pageable);
+    default Page<AnnotationStudent> getAllByEnabledIsTrue(Specification<AnnotationStudent> spec, Pageable pageable) {
+        Specification<AnnotationStudent> enabledSpec = Specification.where(spec)
+                .and((root, query, cb) -> cb.isTrue(root.get("enabled")));
 
+        return findAll(enabledSpec, pageable);
+    }
 }
