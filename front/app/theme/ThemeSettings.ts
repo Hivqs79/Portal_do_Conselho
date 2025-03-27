@@ -482,6 +482,26 @@ export default class ThemeSettings {
             },
           },
         },
+        MuiCheckbox: {
+          styleOverrides: {
+            root: {
+              "& .MuiSvgIcon-root": {
+                fill: colorByMode,
+              },
+              padding: 0,
+            },
+          },
+        },
+        MuiRadio: {
+          styleOverrides: {
+            root: {
+              "& .MuiSvgIcon-root": {
+                fill: colorByMode,
+              },
+              padding: 0,
+            },
+          },
+        },
       },
     });
   }

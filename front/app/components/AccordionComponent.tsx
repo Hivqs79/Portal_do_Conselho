@@ -6,11 +6,10 @@ import {
   AccordionDetails,
   Box,
   Typography,
+  Checkbox,
 } from "@mui/material";
 import { IoIosArrowDown } from "react-icons/io";
 import Icon from "./Icon";
-import TextareaComponent from "./input/TextareaComponent";
-import Rank from "./rank/Rank";
 import { useState } from "react";
 
 interface AnotationProps {
@@ -18,45 +17,33 @@ interface AnotationProps {
   outlined?: boolean;
   name: string;
   description?: string;
-  rank?: string;
-  positiveContent?: string;
-  negativeContent?: string;
+  onChange?: () => void; // Adicionado
+  checked?: boolean; // Adicionado
 }
 
 export default function AccordionComponent({
   type,
   name,
   description,
-  rank,
-  positiveContent,
-  negativeContent,
   outlined,
+  onChange,
+  checked,
 }: AnotationProps) {
-  const { primaryColor, whiteColor, backgroundColor, colorByModeSecondary } =
-    useThemeContext();
+  const {
+    primaryColor,
+    whiteColor,
+    backgroundColor,
+    colorByModeSecondary,
+    terciaryColor,
+    colorByMode,
+  } = useThemeContext();
   const [isOpen, setIsOpen] = useState(false);
-
-  const translateRank = (rank: string) => {
-    switch (rank) {
-      case "excellent":
-        return "Excelente";
-      case "good":
-        return "Bom";
-      case "average":
-        return "Mediano";
-      case "critical":
-        return "Crítico";
-      case "none":
-        return "Nenhum rank";
-    }
-  };
 
   return (
     <Accordion
       sx={{
         boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}`,
         backgroundColor: outlined ? backgroundColor : "transparent",
-        // boxShadow: `0px 0px 5px 1px ${colorByModeSecondary}30`,
         "&:before": {
           display: "none",
         },
@@ -87,42 +74,35 @@ export default function AccordionComponent({
               margin: "0px !important",
             },
           },
+          "&.Mui-focusVisible": {
+            backgroundColor: outlined
+              ? backgroundColor + " !important"
+              : "transparent !important",
+          },
         }}
       >
-        <Box className="flex justify-between items-center w-full mx-5">
-          <Typography
-            variant="lg_text_bold"
-            color={outlined ? colorByModeSecondary : whiteColor}
-          >
-            {name}
-          </Typography>
-          {isOpen && type === "council" && (
-            <Box
-              onClick={(e) => e.stopPropagation()}
-              className="flex items-center gap-5 cursor-default"
+        <Box className="flex justify-between items-center w-full mx-2">
+          <Box className="flex items-center gap-2">
+            {type === "notification" && (
+              <Checkbox
+                onClick={(e) => e.stopPropagation()}
+                onChange={onChange}
+                checked={checked}
+                className="!mr-2"
+                sx={{
+                  "& .MuiSvgIcon-root": {
+                    fill: outlined ? colorByMode : terciaryColor,
+                  },
+                }}
+              />
+            )}
+            <Typography
+              variant="lg_text_bold"
+              color={outlined ? colorByMode : whiteColor}
             >
-              <Typography
-                variant="lg_text_bold"
-                color={outlined ? colorByModeSecondary : whiteColor}
-              >
-                Classificação da turma:
-              </Typography>
-              <Box title={translateRank(rank as string)}>
-                <Rank
-                  outline={true}
-                  popover={false}
-                  type={
-                    rank as
-                      | "excellent"
-                      | "good"
-                      | "average"
-                      | "critical"
-                      | "none"
-                  }
-                />
-              </Box>
-            </Box>
-          )}
+              {name}
+            </Typography>
+          </Box>
         </Box>
       </AccordionSummary>
       <AccordionDetails
@@ -131,30 +111,10 @@ export default function AccordionComponent({
           backgroundColor: "transparent",
           borderTop: "none",
           borderColor: colorByModeSecondary,
-          paddingLeft: "16px !important",
+          paddingLeft: "8px !important",
         }}
       >
-        {type === "council" && (
-          <Box className="flex gap-10 p-2">
-            <TextareaComponent
-              readonly={true}
-              title="Pontos Positivos"
-              content={positiveContent}
-              copyButton={true}
-            />
-            <div
-              style={{ backgroundColor: colorByModeSecondary }}
-              className="hidden lg:block w-[.2rem] h-[255px]"
-            ></div>
-            <TextareaComponent
-              readonly={true}
-              title="Pontos a Melhorar"
-              content={negativeContent}
-              copyButton={true}
-            />
-          </Box>
-        )}
-        {type === "default" && (
+        {type !== "council" && (
           <Box className="flex gap-10 p-2">
             <Typography variant="lg_text_regular">{description}</Typography>
           </Box>
