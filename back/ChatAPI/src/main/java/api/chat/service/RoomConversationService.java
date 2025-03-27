@@ -1,23 +1,20 @@
-package api.chat.Service;
+package api.chat.service;
 
-import api.chat.Entities.Dto.RoomConversationDto;
-import api.chat.Entities.RoomConversation;
-import api.chat.Repositorys.MessageRepository;
-import api.chat.Repositorys.RoomConversationRepository;
+import api.chat.entities.dto.RoomConversationDto;
+import api.chat.entities.RoomConversation;
+import api.chat.repositorys.RoomConversationRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+/**
+ * @author Vinícius Eduardo dos Santos
+ */
 public class RoomConversationService {
-
 
     private MessageService messageService;
     private RoomConversationRepository repositoryRoom;

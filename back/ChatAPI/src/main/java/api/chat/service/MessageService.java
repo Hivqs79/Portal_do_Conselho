@@ -1,12 +1,11 @@
-package api.chat.Service;
+package api.chat.service;
 
-import api.chat.Entities.Dto.MessageDto;
-import api.chat.Entities.Message;
-import api.chat.Repositorys.MessageRepository;
-import api.chat.Service.kafka.KafkaProducerService;
+import api.chat.entities.dto.MessageDto;
+import api.chat.entities.Message;
+import api.chat.repositorys.MessageRepository;
+import api.chat.service.kafka.KafkaProducerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +15,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import org.modelmapper.ModelMapper;
 
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+/**
+ * @author Vinícius Eduardo dos Santos
+ */
 public class MessageService {
 
     private final MessageRepository repository;
@@ -29,7 +30,7 @@ public class MessageService {
     @Autowired
     private RoomConversationService roomConversationService;
 
-    private KafkaProducerService kafkaProducerService;
+    private final KafkaProducerService kafkaProducerService;
     private final ObjectMapper objectMapper;
 
 

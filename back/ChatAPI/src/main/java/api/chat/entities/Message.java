@@ -1,4 +1,4 @@
-package api.chat.Entities;
+package api.chat.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,6 +10,9 @@ import java.time.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+/**
+ * @author Vinícius Eduardo dos Santos
+ */
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

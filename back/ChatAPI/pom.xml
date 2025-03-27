@@ -36,9 +36,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.5.0</version> <!-- Verifique a versão mais recente no repositório Maven -->
         </dependency>
 
         <!-- MySQL Driver (para conexão com o banco de dados MySQL) -->

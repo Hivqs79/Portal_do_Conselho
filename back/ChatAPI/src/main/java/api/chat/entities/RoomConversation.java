@@ -1,4 +1,4 @@
-package api.chat.Entities;
+package api.chat.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -7,15 +7,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+/**
+ * @author Vinícius Eduardo dos Santos
+ */
 public class RoomConversation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

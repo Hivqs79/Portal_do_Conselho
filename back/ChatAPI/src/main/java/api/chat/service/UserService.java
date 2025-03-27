@@ -1,7 +1,7 @@
-package api.chat.Service;
+package api.chat.service;
 
-import api.chat.Entities.User;
-import api.chat.Repositorys.UserRepository;
+import api.chat.entities.User;
+import api.chat.repositorys.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +10,9 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+/**
+ * @author Vinícius Eduardo dos Santos
+ */
 public class UserService {
 
     private UserRepository repository;

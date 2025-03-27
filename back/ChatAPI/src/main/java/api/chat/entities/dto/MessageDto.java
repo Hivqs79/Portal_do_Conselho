@@ -1,21 +1,18 @@
-package api.chat.Entities.Dto;
+package api.chat.entities.dto;
 
-import api.chat.Entities.Message;
-import api.chat.Entities.RoomConversation;
-import api.chat.Repositorys.UserRepository;
-import api.chat.Service.RoomConversationService;
-import api.chat.Service.UserService;
+import api.chat.entities.Message;
+import api.chat.service.RoomConversationService;
+import api.chat.service.UserService;
 import lombok.*;
 
-import java.text.SimpleDateFormat;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * @author Vinícius Eduardo dos Santos
+ */
 public class MessageDto {
 
     private String content;

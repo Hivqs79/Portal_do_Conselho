@@ -1,4 +1,4 @@
-package api.chat.Service.kafka;
+package api.chat.service.kafka;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;

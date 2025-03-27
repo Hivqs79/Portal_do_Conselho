@@ -1,4 +1,4 @@
-package api.chat.Entities;
+package api.chat.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -15,6 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Table(name = "users")
+/**
+ * @author Vinícius Eduardo dos Santos
+ */
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
