@@ -44,6 +44,7 @@ public class FeedbackClassService {
 
         FeedbackClass feedbackClass = modelMapper.map(feedbackClassRequestDTO, FeedbackClass.class);
         feedbackClass.setCouncil(council); //SETAR CONSELHO
+        council.getAClass().setLastRank(feedbackClass.getRank());
 
         FeedbackClass feedbackSaved = repository.save(feedbackClass);
 
@@ -67,6 +68,7 @@ public class FeedbackClassService {
         Council council = councilService.findCouncilEntity(feedbackClassRequestDTO.getCouncil_id());
 
         feedbackClass.setCouncil(council); //SETAR CONSELHO
+        council.getAClass().setLastRank(feedbackClass.getRank());
 
         FeedbackClass updatedFeedbackClass = repository.save(feedbackClass);
         return modelMapper.map(updatedFeedbackClass, FeedbackClassResponseDTO.class);
@@ -86,7 +88,7 @@ public class FeedbackClassService {
         List<FeedbackClass> list = repository.findAll();
 
         list.forEach(feedbackClass -> {
-            if (feedbackClass.getCouncil().getAClass().equals(aClass)){
+            if (feedbackClass.getCouncil().getAClass().equals(aClass)) {
                 responseDTOS.add(modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class));
             }
         });

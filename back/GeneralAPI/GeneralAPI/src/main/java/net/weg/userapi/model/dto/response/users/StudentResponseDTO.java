@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.dto.response.classes.ClassResponseDTO;
+import net.weg.userapi.model.enums.RankENUM;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +18,7 @@ public class StudentResponseDTO {
     private String name;
     private String email;
     private Boolean isRepresentant;
+    private RankENUM lastRank;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 }

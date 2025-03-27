@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.entity.classes.Class;
 import net.weg.userapi.model.entity.feedback.FeedbackStudent;
+import net.weg.userapi.model.enums.RankENUM;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +20,7 @@ public class Student extends User {
 
     @Column(nullable = false)
     private Boolean isRepresentant;
+    private RankENUM lastRank;
 
     @ManyToMany
     @JoinTable(

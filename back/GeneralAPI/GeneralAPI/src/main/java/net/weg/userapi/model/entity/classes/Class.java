@@ -9,6 +9,7 @@ import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.model.entity.users.Student;
 import net.weg.userapi.model.entity.users.Teacher;
 import net.weg.userapi.model.enums.ClassAreaENUM;
+import net.weg.userapi.model.enums.RankENUM;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,6 +35,8 @@ public class Class {
 
     @Column(nullable = false)
     private String course;
+
+    private RankENUM lastRank;
 
     @ManyToMany(mappedBy = "classes")
     private List<Teacher> teachers;

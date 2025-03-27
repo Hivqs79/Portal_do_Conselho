@@ -52,6 +52,7 @@ public class FeedbackStudentService {
         FeedbackStudent feedbackStudent = modelMapper.map(feedbackStudentRequestDTO, FeedbackStudent.class);
         feedbackStudent.setCouncil(council); //SETAR CONSELHO
         feedbackStudent.setStudent(student); //SETAR ESTUDANTE
+        student.setLastRank(feedbackStudent.getRank());
 
         FeedbackStudent feedbackSaved = repository.save(feedbackStudent);
 
@@ -86,6 +87,7 @@ public class FeedbackStudentService {
         }
 
         feedbackStudent.setStudent(student); //SETAR ESTUDANTE
+        student.setLastRank(feedbackStudent.getRank());
 
         FeedbackStudent updatedFeedbackStudent = repository.save(feedbackStudent);
         return modelMapper.map(updatedFeedbackStudent, FeedbackStudentResponseDTO.class);
