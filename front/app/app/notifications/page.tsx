@@ -105,6 +105,7 @@ export default function Notifications() {
                 name={notification.title}
                 description={notification.description}
                 outlined
+                viwed={notification.viwed}
                 onChange={() => handleSelectNotification(index)}
                 checked={selectedNotifications.includes(index)}
               />
@@ -117,9 +118,9 @@ export default function Notifications() {
 }
 
 const notifications = [
-  { title: "Notificação 1", description: "Lorem ipsum dolor sit amet." },
-  { title: "Notificação 2", description: "Consectetur adipisicing elit." },
-  { title: "Notificação 3", description: "Ad dolore cum expedita pariatur." },
-  { title: "Notificação 4", description: "Aliquam unde sunt nihil ex." },
-  { title: "Notificação 5", description: "Voluptate beatae exercitationem!" },
+  { viwed: true, title: "Notificação 1", description: "Lorem ipsum dolor sit amet." },
+  { viwed: false, title: "Notificação 2", description: "Consectetur adipisicing elit." },
+  { viwed: false, title: "Notificação 3", description: "Ad dolore cum expedita pariatur." },
+  { viwed: true, title: "Notificação 4", description: "Aliquam unde sunt nihil ex." },
+  { viwed: false, title: "Notificação 5", description: "Voluptate beatae exercitationem!" },
 ];

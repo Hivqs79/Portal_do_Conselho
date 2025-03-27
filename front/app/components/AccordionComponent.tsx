@@ -11,14 +11,16 @@ import {
 import { IoIosArrowDown } from "react-icons/io";
 import Icon from "./Icon";
 import { useState } from "react";
+import OpacityHex from "@/hooks/OpacityHex";
 
 interface AnotationProps {
   type: "default" | "notification" | "council";
   outlined?: boolean;
   name: string;
   description?: string;
-  onChange?: () => void; // Adicionado
-  checked?: boolean; // Adicionado
+  onChange?: () => void;
+  checked?: boolean;
+  viwed?: boolean;
 }
 
 export default function AccordionComponent({
@@ -28,6 +30,7 @@ export default function AccordionComponent({
   outlined,
   onChange,
   checked,
+  viwed,
 }: AnotationProps) {
   const {
     primaryColor,
@@ -62,7 +65,11 @@ export default function AccordionComponent({
           />
         }
         sx={{
-          backgroundColor: outlined ? backgroundColor : primaryColor,
+          backgroundColor: outlined
+            ? viwed
+              ? terciaryColor
+              : backgroundColor
+            : primaryColor,
           color: whiteColor,
           boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}`,
           padding: "8px",
