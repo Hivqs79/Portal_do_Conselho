@@ -42,6 +42,7 @@ export default function ConfirmMessagesModal({
               IconPassed={error ? IoClose : FaCheck}
               color={error ? "red" : "green"}
               className="text-4xl"
+              cursor="cursor-default"
             />
           </div>
         </Box>

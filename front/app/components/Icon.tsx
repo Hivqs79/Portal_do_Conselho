@@ -28,6 +28,6 @@ export default function Icon({ IconPassed, color, colorButton, isButton = false,
             <IconPassed style={inlineStyle} className={`${cursor + " "}` + className}/>
         </Button>
     ) : (
-        <IconPassed style={inlineStyle} className={"cursor-pointer " + className}/>
+        <IconPassed style={inlineStyle} className={" " + cursor + " " + className}/>
     );
 }

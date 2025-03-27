@@ -12,10 +12,18 @@ export default function Reports() {
   const { colorByModeSecondary, whiteColor } = useThemeContext();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isConfirmSendMessage, setIsConfirmSendMessage] = useState(false);
+  const [isErrorMessage, setIsErrorMessage] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const { role } = useRoleContext();
 
   const openConfirmModal = () => {
+    if (inputValue.trim() === "" || inputValue.trim().length < 10) {
+      setIsErrorMessage(true);
+      setTimeout(() => {
+        setIsErrorMessage(false);
+      }, 3000);
+      return;
+    }
     setIsConfirmOpen(true);
   };
 
@@ -32,7 +40,10 @@ export default function Reports() {
   return (
     <Box>
       <Title textHighlight="Suporte" />
-      <Box style={{borderColor: colorByModeSecondary}} className="border-2 p-5 outline-component rounded-big">
+      <Box
+        style={{ borderColor: colorByModeSecondary }}
+        className="border-2 p-5 outline-component rounded-big"
+      >
         <Box className="flex flex-col gap-5">
           <Typography variant="xl_text_bold" color={colorByModeSecondary}>
             Nos envie sua mensagem
@@ -57,6 +68,7 @@ export default function Reports() {
             onClick={openConfirmModal}
             variant="contained"
             color="primary"
+            sx={{ height: 50 }}
             fullWidth
           >
             <Typography variant="lg_text_bold" color={whiteColor}>
@@ -110,6 +122,13 @@ export default function Reports() {
               />
             )}
           </>
+        )}
+        {isErrorMessage && (
+          <ConfirmMessagesModal
+            title="Erro ao enviar a mensagem"
+            description="Você deve preencher o formulário com no mínimo 10 caracteres!"
+            error={true}
+          />
         )}
       </Box>
     </Box>
