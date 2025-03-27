@@ -4,52 +4,42 @@ import {
   Icon,
   Typography,
 } from "@mui/material";
-import SelectTable from "./table/SelectTable";
-import { Dispatch, SetStateAction, useState } from "react";
-import { Teacher } from "@/interfaces/Teacher";
-import Class from "@/interfaces/Class";
+import SelectTable from "../table/SelectTable";
+import { useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useThemeContext } from "@/hooks/useTheme";
 import { TimePicker } from "@mui/x-date-pickers";
 import { FaRegCalendarAlt, FaRegClock } from "react-icons/fa";
 import dayjs from "dayjs";
 import { useWindowWidth } from "@react-hook/window-size";
-import ConfirmCouncilModal from "./ConfirmCouncilModal";
+import ConfirmCouncilModal from "./CouncilModal";
+import { CouncilForm } from "@/interfaces/CouncilForm";
 
 interface CreateCouncilFormProps {
-  selectedTeachers: { [key: string]: boolean };
-  selectedClass: number | null;
-  setSelectedTeachers: Dispatch<SetStateAction<{ [key: string]: boolean }>>;
-  setSelectedClass: Dispatch<SetStateAction<number | null>>;
-  teachers: Teacher[];
-  classExistents: Class[];
-  setDate: Dispatch<SetStateAction<dayjs.Dayjs>>;
-  setTime: Dispatch<SetStateAction<dayjs.Dayjs>>;
-  date: dayjs.Dayjs;
-  time: dayjs.Dayjs;
-  setSearchTeachers: Dispatch<SetStateAction<string>>;
-  setSearchClass:  Dispatch<SetStateAction<string>>;
-  submitForm: () => void;
+  concilInformation: CouncilForm;
 }
 
 export default function CreateCouncilForm({
-  selectedTeachers,
-  selectedClass,
-  setSelectedTeachers,
-  setSelectedClass,
-  teachers,
-  classExistents,
-  setDate,
-  setTime,
-  date,
-  time,
-  setSearchTeachers,
-  setSearchClass,
-  submitForm,
+  concilInformation
 }: CreateCouncilFormProps) {
   const { primaryColor, colorByMode, whiteColor } = useThemeContext();
   const windowWidth = useWindowWidth();
   const [openConfirm, setOpenConfirm] = useState(false);
+  const {
+    selectedTeachers,
+    selectedClass,
+    setSelectedTeachers,
+    setSelectedClass,
+    teachers,
+    classExistents,
+    setDate,
+    setTime,
+    date,
+    time,
+    setSearchTeachers,
+    setSearchClass,
+    submitForm,
+  } = concilInformation;
 
   return (
     <Box
@@ -149,6 +139,7 @@ export default function CreateCouncilForm({
         teachers={Array.from(teachers).filter((teacher) => selectedTeachers[teacher.id])}
         classSelected={classExistents.find((c) => c.id === selectedClass)!}
         confirmFunction={submitForm}
+        variant="confirm"
       />
     </Box>
   );

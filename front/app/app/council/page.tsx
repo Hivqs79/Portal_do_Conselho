@@ -1,5 +1,5 @@
 "use client";
-import CreateCouncilForm from "@/components/CreateCouncilForm";
+import CreateCouncilForm from "@/components/council/CreateCouncilForm";
 import SwapButton from "@/components/SwapButton";
 import Table from "@/components/table/Table";
 import Title from "@/components/Title";
@@ -13,13 +13,14 @@ import { useEffect, useState } from "react";
 import { TableRowButtons } from "@/interfaces/TableRowButtons";
 import { TableHeaderButtons } from "@/interfaces/TableHeaderButtons";
 import TableCouncilRow from "@/interfaces/TableCouncilRow";
-import ConfirmCouncilModal from "@/components/ConfirmCouncilModal";
+import ConfirmCouncilModal from "@/components/council/CouncilModal";
+import { CouncilForm } from "@/interfaces/CouncilForm";
 
 export default function Council() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [classExistents, setClassExistents] = useState<Class[]>([]);
   const [selectedClass, setSelectedClass] = useState<number | null>(null);
-  const [selectedTeachers, setSelectedTeachers] = useState<{[key: string]: boolean;}>({});
+  const [selectedTeachers, setSelectedTeachers] = useState<{ [key: string]: boolean; }>({});
   const [date, setDate] = useState<dayjs.Dayjs>(dayjs().add(1, "day"));
   const [time, setTime] = useState<dayjs.Dayjs>(dayjs());
   const [councils, setCouncils] = useState<TableContent>();
@@ -27,6 +28,7 @@ export default function Council() {
   const [searchTeachers, setSearchTeachers] = useState<string>("");
   const [searchClass, setSearchClass] = useState<string>("");
   const [visualizedCouncil, setVisualizedCouncil] = useState<TableCouncilRow | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const rowButtons: TableRowButtons = {
     realizeButton: true,
@@ -40,14 +42,14 @@ export default function Council() {
     orderButton: true,
     filterButton: true,
   };
-  
+
   const headers: TableHeaderContent[] = [
     { name: "Turma" },
     { name: "Data" },
     { name: "Horário" },
-  ];
+  ];  
 
-  const createCouncil = async () => {    
+  const createCouncil = async () => {
     const response = await fetch("http://localhost:8081/council", {
       method: "POST",
       headers: {
@@ -63,7 +65,7 @@ export default function Council() {
       console.log(data);
       // resetInputs();
     });
-  };
+  };  
 
   const resetInputs = () => {
     setDate(dayjs().add(1, "day"));
@@ -72,6 +74,21 @@ export default function Council() {
     setSearchClass("");
     setSearchTeachers("");
   };
+  const councilInformation: CouncilForm = {
+    selectedTeachers: selectedTeachers,
+    selectedClass: selectedClass,
+    setSelectedTeachers: setSelectedTeachers,
+    setSelectedClass: setSelectedClass,
+    teachers: teachers,
+    classExistents: classExistents,
+    setDate: setDate,
+    setTime: setTime,
+    date: date,
+    time: time,
+    setSearchTeachers: setSearchTeachers,
+    setSearchClass: setSearchClass,
+    submitForm: createCouncil
+  }
 
   useEffect(() => {
     const fetchTeachers = async () => {
@@ -118,43 +135,30 @@ export default function Council() {
         onClickButton2={() => {
           setIsCreate(false);
           setSearchClass("");
-          setSearchTeachers("");        
+          setSearchTeachers("");
         }}
       />
       {isCreate ? (
         <CreateCouncilForm
-          selectedTeachers={selectedTeachers}
-          selectedClass={selectedClass}
-          setSelectedTeachers={setSelectedTeachers}
-          setSelectedClass={setSelectedClass}
-          teachers={teachers}
-          classExistents={classExistents}
-          setDate={setDate}
-          setTime={setTime}
-          date={date}
-          time={time}
-          setSearchTeachers={setSearchTeachers}
-          setSearchClass={setSearchClass}
-          submitForm={createCouncil}
+          concilInformation={councilInformation}
         />
       ) : (
         <>
-        <Table
-          tableContent={councils ? councils : {} as TableContent}
-          headers={headers}
-          headerButtons={headerButtons}
-          rowButtons={rowButtons}
+          <Table
+            tableContent={councils ? councils : {} as TableContent}
+            headers={headers}
+            headerButtons={headerButtons}
+            rowButtons={rowButtons}
           />
           <ConfirmCouncilModal
             open={visualizedCouncil !== null}
             close={() => setVisualizedCouncil(null)}
-            date={visualizedCouncil ? dayjs(visualizedCouncil.startDateTime) : dayjs()}
-            time={visualizedCouncil ? dayjs(visualizedCouncil.startDateTime) : dayjs()}
-            teachers={visualizedCouncil ? visualizedCouncil.teachers : []}
-            classSelected={visualizedCouncil ? visualizedCouncil.aclass : {} as Class}
-            confirmFunction={() => {setVisualizedCouncil(null);}}
-          />
-          </>
+            councilInformation={councilInformation}
+            setEditing={(value: boolean) => setIsEditing(value)}
+            editing={isEditing}
+            variant="details"
+          />          
+        </>
       )}
     </Box>
   );
