@@ -1,9 +1,4 @@
-import {
-  Box,
-  Button,
-  Icon,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Icon, Typography } from "@mui/material";
 import SelectTable from "../table/SelectTable";
 import { useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -12,15 +7,18 @@ import { TimePicker } from "@mui/x-date-pickers";
 import { FaRegCalendarAlt, FaRegClock } from "react-icons/fa";
 import dayjs from "dayjs";
 import { useWindowWidth } from "@react-hook/window-size";
-import ConfirmCouncilModal from "./CouncilModal";
-import { CouncilForm } from "@/interfaces/CouncilForm";
+import CouncilModal from "./CouncilModal";
+import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
+import { count } from "console";
 
 interface CreateCouncilFormProps {
-  concilInformation: CouncilForm;
+  councilInformation: CouncilFormProps;
+  variant: string;
 }
 
-export default function CreateCouncilForm({
-  concilInformation
+export default function CouncilForm({
+  councilInformation,
+  variant,
 }: CreateCouncilFormProps) {
   const { primaryColor, colorByMode, whiteColor } = useThemeContext();
   const windowWidth = useWindowWidth();
@@ -39,7 +37,7 @@ export default function CreateCouncilForm({
     setSearchTeachers,
     setSearchClass,
     submitForm,
-  } = concilInformation;
+  } = councilInformation;
 
   return (
     <Box
@@ -56,7 +54,7 @@ export default function CreateCouncilForm({
             minDate={dayjs().add(1, "day")}
             value={date}
             onChange={(e) => e && setDate(e)}
-            slots={{    
+            slots={{
               openPickerIcon: Icon,
             }}
             slotProps={{
@@ -92,19 +90,21 @@ export default function CreateCouncilForm({
         </Box>
       </Box>
       <Box className="flex flex-col gap-12">
-        <Box className="flex flex-col gap-4">
-          <Typography color={colorByMode} variant="xl_text_bold">
-            Turma
-          </Typography>
-          <SelectTable
-            value={selectedClass}
-            setRadioSelectedItem={setSelectedClass}
-            name="Lista de Turmas"
-            rows={classExistents}
-            selectType="single"
-            setSearch={setSearchClass}
-          />
-        </Box>
+        {variant === "create" && (
+          <Box className="flex flex-col gap-4">
+            <Typography color={colorByMode} variant="xl_text_bold">
+              Turma
+            </Typography>
+            <SelectTable
+              value={selectedClass}
+              setRadioSelectedItem={setSelectedClass}
+              name="Lista de Turmas"
+              rows={classExistents}
+              selectType="single"
+              setSearch={setSearchClass}
+            />
+          </Box>
+        )}
         <Box className="flex flex-col gap-4">
           <Typography color={colorByMode} variant="xl_text_bold">
             Professores
@@ -118,26 +118,28 @@ export default function CreateCouncilForm({
             setSearch={setSearchTeachers}
           />
         </Box>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setOpenConfirm(true)}
-        >
-          <Typography
-            variant={windowWidth < 640 ? "md_text_regular" : "xl_text_regular"}
-            color={whiteColor}
+
+        {variant === "create" && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setOpenConfirm(true)}
           >
-            Salvar e revisar o conselho
-          </Typography>
-        </Button>
+            <Typography
+              variant={
+                windowWidth < 640 ? "md_text_regular" : "xl_text_regular"
+              }
+              color={whiteColor}
+            >
+              Salvar e revisar o conselho
+            </Typography>
+          </Button>
+        )}
       </Box>
-      <ConfirmCouncilModal
+      <CouncilModal
         open={openConfirm}
         close={() => setOpenConfirm(false)}
-        date={date}
-        time={time}
-        teachers={Array.from(teachers).filter((teacher) => selectedTeachers[teacher.id])}
-        classSelected={classExistents.find((c) => c.id === selectedClass)!}
+        councilInformation={councilInformation}
         confirmFunction={submitForm}
         variant="confirm"
       />

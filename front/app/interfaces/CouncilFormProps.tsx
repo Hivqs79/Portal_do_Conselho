@@ -2,8 +2,10 @@ import { Dispatch, SetStateAction } from "react";
 import { Teacher } from "./Teacher";
 import Class from "./Class";
 import dayjs from "dayjs";
+import TableCouncilRow from "./TableCouncilRow";
 
-export interface CouncilForm {
+export interface CouncilFormProps {
+    visualizedCouncil: TableCouncilRow | null;
     selectedTeachers: { [key: string]: boolean };
     selectedClass: number | null;
     setSelectedTeachers: Dispatch<SetStateAction<{ [key: string]: boolean }>>;

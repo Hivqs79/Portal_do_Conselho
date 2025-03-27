@@ -1,5 +1,5 @@
 "use client";
-import CreateCouncilForm from "@/components/council/CreateCouncilForm";
+import CouncilForm from "@/components/council/CouncilForm";
 import SwapButton from "@/components/SwapButton";
 import Table from "@/components/table/Table";
 import Title from "@/components/Title";
@@ -13,8 +13,8 @@ import { useEffect, useState } from "react";
 import { TableRowButtons } from "@/interfaces/TableRowButtons";
 import { TableHeaderButtons } from "@/interfaces/TableHeaderButtons";
 import TableCouncilRow from "@/interfaces/TableCouncilRow";
-import ConfirmCouncilModal from "@/components/council/CouncilModal";
-import { CouncilForm } from "@/interfaces/CouncilForm";
+import CouncilModal from "@/components/council/CouncilModal";
+import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
 
 export default function Council() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -35,6 +35,9 @@ export default function Council() {
     visualizeIconButton: true,
     onClickVisualize: (row: TableCouncilRow) => {
       setVisualizedCouncil(row);
+      setSelectedClass(row.aclass.id);
+      setDate(dayjs(row.startDateTime));
+      setTime(dayjs(row.startDateTime));
     },
   };
   const headerButtons: TableHeaderButtons = {
@@ -50,6 +53,7 @@ export default function Council() {
   ];  
 
   const createCouncil = async () => {
+    console.log("testeCreate");
     const response = await fetch("http://localhost:8081/council", {
       method: "POST",
       headers: {
@@ -58,14 +62,33 @@ export default function Council() {
       body: JSON.stringify({
         startDateTime: date.format("YYYY-MM-DD") + "T" + time.format("HH:mm:ss"),
         class_id: selectedClass,
-        teachers_id: Object.keys(selectedTeachers),
+        teachers_id: Object.keys(selectedTeachers).filter((id) => selectedTeachers[id]).map((id) => parseInt(id)),
       }),
     });
     response.json().then((data) => {
       console.log(data);
-      // resetInputs();
+      resetInputs();
     });
   };  
+
+  const editCouncil = async () => {
+    console.log("testeEdit");
+    const response = await fetch("http://localhost:8081/council/" + visualizedCouncil?.id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        startDateTime: date.format("YYYY-MM-DD") + "T" + time.format("HH:mm:ss"),
+        class_id: selectedClass,
+        teachers_id: Object.keys(selectedTeachers).filter((id) => selectedTeachers[id]).map((id) => parseInt(id)),
+      }),
+    });
+    response.json().then((data) => {
+      console.log(data);
+      resetInputs();
+    });
+  };
 
   const resetInputs = () => {
     setDate(dayjs().add(1, "day"));
@@ -74,7 +97,8 @@ export default function Council() {
     setSearchClass("");
     setSearchTeachers("");
   };
-  const councilInformation: CouncilForm = {
+  const councilInformation: CouncilFormProps = {
+    visualizedCouncil: visualizedCouncil,
     selectedTeachers: selectedTeachers,
     selectedClass: selectedClass,
     setSelectedTeachers: setSelectedTeachers,
@@ -87,7 +111,7 @@ export default function Council() {
     time: time,
     setSearchTeachers: setSearchTeachers,
     setSearchClass: setSearchClass,
-    submitForm: createCouncil
+    submitForm: isEditing ? editCouncil : createCouncil
   }
 
   useEffect(() => {
@@ -99,7 +123,7 @@ export default function Council() {
       setTeachers(data);
     };
     fetchTeachers();
-  }, [selectedClass]);
+  }, [selectedClass, isCreate]);
 
   useEffect(() => {
     const fetchClass = async () => {
@@ -111,7 +135,7 @@ export default function Council() {
       setClassExistents(data.content);
     };
     fetchClass();
-  }, [searchClass]);
+  }, [searchClass, isCreate]);
 
   useEffect(() => {
     const fetchCouncil = async () => {
@@ -123,7 +147,7 @@ export default function Council() {
       console.log(data);
     };
     fetchCouncil();
-  }, []);
+  }, [isCreate]);
 
   return (
     <Box>
@@ -139,8 +163,9 @@ export default function Council() {
         }}
       />
       {isCreate ? (
-        <CreateCouncilForm
-          concilInformation={councilInformation}
+        <CouncilForm
+          councilInformation={councilInformation}
+          variant="create"
         />
       ) : (
         <>
@@ -150,10 +175,11 @@ export default function Council() {
             headerButtons={headerButtons}
             rowButtons={rowButtons}
           />
-          <ConfirmCouncilModal
+          <CouncilModal
             open={visualizedCouncil !== null}
             close={() => setVisualizedCouncil(null)}
-            councilInformation={councilInformation}
+            councilInformation={councilInformation}   
+            confirmFunction={editCouncil}
             setEditing={(value: boolean) => setIsEditing(value)}
             editing={isEditing}
             variant="details"
