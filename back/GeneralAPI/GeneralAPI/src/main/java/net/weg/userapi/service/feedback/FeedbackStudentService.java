@@ -27,7 +27,6 @@ import java.util.List;
 public class FeedbackStudentService {
 
     private FeedbackStudentRepository repository;
-    private ClassService classService;
     private CouncilService councilService;
     private StudentService studentService;
     private ModelMapper modelMapper;
