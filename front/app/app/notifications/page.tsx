@@ -4,6 +4,7 @@ import AccordionComponent from "@/components/AccordionComponent";
 import Title from "@/components/Title";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, Checkbox, Typography } from "@mui/material";
+import PaginationTable from "@/components/table/Pagination";
 
 export default function Notifications() {
   const {
@@ -112,6 +113,8 @@ export default function Notifications() {
             </Box>
           ))}
         </Box>
+        <PaginationTable count={notifications.length} page={1} rowsPerPage={10} setCount={() => void 0} setPage={() => void 0} setRowsPerPage={() => void 0}/>
+          {/* // TODO: implementar paginação integrada com o backend de notificações */}
       </Box>
     </Box>
   );

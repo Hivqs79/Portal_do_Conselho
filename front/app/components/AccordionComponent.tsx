@@ -39,6 +39,7 @@ export default function AccordionComponent({
     colorByModeSecondary,
     terciaryColor,
     colorByMode,
+    secondaryColor,
   } = useThemeContext();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -67,7 +68,7 @@ export default function AccordionComponent({
         sx={{
           backgroundColor: outlined
             ? viwed
-              ? terciaryColor
+              ? OpacityHex(secondaryColor, .18)
               : backgroundColor
             : primaryColor,
           color: whiteColor,
