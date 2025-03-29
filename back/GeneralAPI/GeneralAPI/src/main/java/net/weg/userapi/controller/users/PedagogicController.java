@@ -82,10 +82,4 @@ public class PedagogicController {
         return new ResponseEntity<>(service.findPedagogic(id), HttpStatus.OK);
     }
 
-    @PostMapping("/mock")
-    public ResponseEntity<Void> postAllPedagogic(@RequestBody List<PedagogicRequestDTO> pedagogicRequestDTOS) {
-        service.mockarPedagogic(pedagogicRequestDTOS);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 }

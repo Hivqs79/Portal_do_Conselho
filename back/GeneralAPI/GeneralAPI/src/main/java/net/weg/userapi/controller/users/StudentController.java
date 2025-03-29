@@ -99,11 +99,4 @@ public class StudentController {
         return new ResponseEntity<>(service.findStudent(id), HttpStatus.OK);
     }
 
-    @PostMapping("/mock")
-    public ResponseEntity<Void> postAllStudent(@RequestBody List<StudentRequestDTO> studentRequestDTOS) {
-        service.mockarStudent(studentRequestDTOS);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-
 }
