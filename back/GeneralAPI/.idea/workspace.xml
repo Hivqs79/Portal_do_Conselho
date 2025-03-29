@@ -1,45 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="b37fac53-8a8c-4cf1-9118-34dd52d048c2" name="Changes" comment="" />
+    <list default="true" id="aae07e96-69c1-4165-ac9d-99ecae57c7c2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 1
-}</component>
-  <component name="ProjectId" id="2us6GVKwr5UeaR29cD4uAyZELIN" />
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Hivqs79"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Hivqs79/Portal_do_Conselho.git",
+    "accountId": "01ec2c07-fa77-437b-9326-d7b73969c0b3"
+  }
+}]]></component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2uqoCg8EsAtY4MaAc6Ots0X8GX3" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.GeneralApiApplication.executor": "Run",
     "git-widget-placeholder": "feature/council-management-page",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/pedro_a_wilhelm.EDU_FIESC/Documents/Github/Portal_do_Conselho/back/GeneralAPI/GeneralAPI",
+    "last_opened_file_path": "/home/hivqs79/Documentos/Github/Portal_do_Conselho/back/GeneralAPI/GeneralAPI",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="GeneralApiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="GeneralAPI" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="net.weg.userapi.GeneralApiApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="b37fac53-8a8c-4cf1-9118-34dd52d048c2" name="Changes" comment="" />
-      <created>1743024840254</created>
+      <changelist id="aae07e96-69c1-4165-ac9d-99ecae57c7c2" name="Changes" comment="" />
+      <created>1742985340020</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1743024840254</updated>
-      <workItem from="1743024841448" duration="129000" />
-      <workItem from="1743024978539" duration="96000" />
+      <updated>1742985340020</updated>
+      <workItem from="1742985341300" duration="345000" />
     </task>
     <servers />
   </component>
