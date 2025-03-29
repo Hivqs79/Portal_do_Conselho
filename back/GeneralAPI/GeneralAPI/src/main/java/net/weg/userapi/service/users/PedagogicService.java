@@ -62,8 +62,4 @@ public class PedagogicService {
         return modelMapper.map(pedagogic, PedagogicResponseDTO.class);
     }
 
-    public void mockarPedagogic(List<PedagogicRequestDTO> pedagogicRequestDTOS) {
-        List<Pedagogic> pedagogics = pedagogicRequestDTOS.stream().map(pedagogicRequestDTO -> modelMapper.map(pedagogicRequestDTO, Pedagogic.class)).collect(Collectors.toList());
-        repository.saveAll(pedagogics);
-    }
 }

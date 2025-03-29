@@ -60,8 +60,4 @@ public class AdminService {
         return modelMapper.map(admin, AdminResponseDTO.class);
     }
 
-    public void mockarAdmin (List<AdminRequestDTO> adminRequestDTOS) {
-        List<Admin> admins = adminRequestDTOS.stream().map(adminRequestDTO -> modelMapper.map(adminRequestDTO, Admin.class)).collect(Collectors.toList());
-        repository.saveAll(admins);
-    }
 }

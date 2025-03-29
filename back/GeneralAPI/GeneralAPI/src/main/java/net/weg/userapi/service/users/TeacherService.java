@@ -74,11 +74,6 @@ public class TeacherService {
         return teacher.getClasses().stream().map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class)).collect(Collectors.toList());
     }
 
-    public void mockarTeacher(List<TeacherRequestDTO> teacherRequestDTOS) {
-        List<Teacher> teacher = teacherRequestDTOS.stream().map(teacherRequestDTO -> modelMapper.map(teacherRequestDTO, Teacher.class)).collect(Collectors.toList());
-        repository.saveAll(teacher);
-    }
-
     public List<Teacher> getTeachersByIdList(List<Long> teachers_id) {
         return repository.findAllById(teachers_id);
     }

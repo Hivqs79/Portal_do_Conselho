@@ -76,11 +76,6 @@ public class StudentService {
         return modelMapper.map(student, StudentResponseDTO.class);
     }
 
-    public void mockarStudent(List<StudentRequestDTO> studentRequestDTOS) {
-        List<Student> students = studentRequestDTOS.stream().map(studentRequestDTO -> modelMapper.map(studentRequestDTO, Student.class)).collect(Collectors.toList());
-        repository.saveAll(students);
-    }
-
     public void sendStudentEvent(Student student, String httpMethod) {
         try {
             KafkaMessage message = new KafkaMessage();
