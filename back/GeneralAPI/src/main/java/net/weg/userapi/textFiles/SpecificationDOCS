@@ -1,0 +1,26 @@
+Equal: igualdade exata
+
+Like: contém texto (case-insensitive)
+
+StartingWith: começa com
+
+EndingWith: termina com
+
+GreaterThan, GreaterThanOrEqual: maior que
+
+LessThan, LessThanOrEqual: menor que
+
+In: está em uma lista de valores
+
+Between: entre dois valores
+
+IsNull: é nulo
+
+NotNull: não é nulo
+
+//EXEMPLOS DE REQUISIÇÃO
+@Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class),
+//localhost:8081/class/spec?createdAfter=2025-03-24T00:00:00 Cadastrado depois ou no dia 24 de Março
+
+@Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)
+//localhost:8081/class/spec?updatedBefore=2025-03-24T00:00:00 Alterado antes ou no dia 24 de Março
