@@ -16,6 +16,5 @@ public class AdminResponseDTO {
     private String email;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-    private CustomizationResponseDTO customization;
 
 }

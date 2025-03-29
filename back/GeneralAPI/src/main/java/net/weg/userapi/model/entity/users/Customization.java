@@ -45,5 +45,16 @@ public class Customization {
     @JoinColumn(name = "user_id")
     private User user;
 
-
+    @Override
+    public String toString() {
+        return "Customization{" +
+                "id=" + id +
+                ", modeTheme=" + modeTheme +
+                ", pallete=" + pallete +
+                ", textFont=" + textFont +
+                ", titleFont=" + titleFont +
+                ", fontSize=" + fontSize +
+                ", user=" + user.getName() +
+                '}';
+    }
 }

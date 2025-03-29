@@ -2,15 +2,18 @@ package net.weg.userapi.model.entity.users;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import net.weg.userapi.model.entity.feedback.FeedbackStudent;
 import net.weg.userapi.model.entity.feedback.FeedbackUser;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Data
 @Inheritance(strategy = InheritanceType.JOINED)
+//InheritanceType.SINGLE_TABLE = 1 table w/ all attributes
+//InheritanceType.TABLE_PER_CLASS = 1 table per class
+//InheritanceType.JOINED = 1 super table, and 1 table per subclass w/ FK
 public abstract class User {
 
     @Id
@@ -24,9 +27,6 @@ public abstract class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = true)
-    private UUID imageKey;
-
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
 
@@ -36,10 +36,17 @@ public abstract class User {
     @OneToOne(mappedBy = "user")
     private Customization customization;
 
+    @Column(nullable = false)
+    private boolean enabled;
+
+    @OneToMany(mappedBy = "user")
+    private List<FeedbackUser> feedbackUsers;
+
     @PrePersist
     public void onPrePersist() {
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
+        this.setEnabled(true);
     }
 
     @PreUpdate
@@ -47,16 +54,12 @@ public abstract class User {
         this.setUpdateDate(LocalDateTime.now());
     }
 
-    @OneToMany(mappedBy = "user")
-    private List<FeedbackUser> feedbackUsers;
-
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", imageKey=" + imageKey +
                 '}';
     }
 }

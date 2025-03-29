@@ -1,9 +1,9 @@
 package net.weg.userapi.service.feedback;
 
 import lombok.AllArgsConstructor;
+import net.weg.userapi.exception.exceptions.ClassFeedbackAlreadyExistException;
 import net.weg.userapi.exception.exceptions.FeedbackNotFoundException;
 import net.weg.userapi.model.dto.request.feedback.FeedbackClassRequestDTO;
-import net.weg.userapi.model.dto.response.council.CouncilResponseDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackClassResponseDTO;
 import net.weg.userapi.model.entity.classes.Class;
 import net.weg.userapi.model.entity.council.Council;
@@ -30,16 +30,22 @@ public class FeedbackClassService {
     private ModelMapper modelMapper;
 
     public Page<FeedbackClassResponseDTO> findFeedbackClassSpec(Specification<FeedbackClass> spec, Pageable pageable) {
-        Page<FeedbackClass> feedbackClasses = repository.findAll(spec, pageable);
+        Page<FeedbackClass> feedbackClasses = repository.getAllByEnabledIsTrue(spec, pageable);
         return feedbackClasses.map(feedbackClass -> modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class));
     }
 
     public FeedbackClassResponseDTO createFeedbackClass(FeedbackClassRequestDTO feedbackClassRequestDTO) {
-        FeedbackClass feedbackClass = modelMapper.map(feedbackClassRequestDTO, FeedbackClass.class);
+
+        if (repository.existsFeedbackClassByCouncil_Id(feedbackClassRequestDTO.getCouncil_id())) {
+            throw new ClassFeedbackAlreadyExistException("Class feedback already exists");
+        }
 
         Council council = councilService.findCouncilEntity(feedbackClassRequestDTO.getCouncil_id());
 
+
+        FeedbackClass feedbackClass = modelMapper.map(feedbackClassRequestDTO, FeedbackClass.class);
         feedbackClass.setCouncil(council); //SETAR CONSELHO
+        council.getAClass().setLastRank(feedbackClass.getRank());
 
         FeedbackClass feedbackSaved = repository.save(feedbackClass);
 
@@ -56,12 +62,6 @@ public class FeedbackClassService {
         return repository.findById(id).orElseThrow(() -> new FeedbackNotFoundException("Class feedback not found"));
     }
 
-    public Page<FeedbackClassResponseDTO> pageFeedbackClass(Pageable pageable) {
-        Page<FeedbackClass> feedbackClass = repository.findAll(pageable);
-
-        return feedbackClass.map(feedback -> modelMapper.map(feedback, FeedbackClassResponseDTO.class));
-    }
-
     public FeedbackClassResponseDTO updateFeedbackClass(FeedbackClassRequestDTO feedbackClassRequestDTO, Long id) {
         FeedbackClass feedbackClass = findFeedbackEntity(id);
         modelMapper.map(feedbackClassRequestDTO, feedbackClass);
@@ -69,16 +69,17 @@ public class FeedbackClassService {
         Council council = councilService.findCouncilEntity(feedbackClassRequestDTO.getCouncil_id());
 
         feedbackClass.setCouncil(council); //SETAR CONSELHO
+        council.getAClass().setLastRank(feedbackClass.getRank());
 
         FeedbackClass updatedFeedbackClass = repository.save(feedbackClass);
         return modelMapper.map(updatedFeedbackClass, FeedbackClassResponseDTO.class);
     }
 
-    public FeedbackClassResponseDTO deleteFeedbackClass(Long id) {
+    public FeedbackClassResponseDTO disableFeedbackClass(Long id) {
         FeedbackClass feedbackClass = findFeedbackEntity(id);
-        FeedbackClassResponseDTO feedbackClassResponseDTO = modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class);
-        repository.delete(feedbackClass);
-        return feedbackClassResponseDTO;
+        feedbackClass.setEnabled(false);
+        repository.save(feedbackClass);
+        return modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class);
     }
 
 
@@ -88,7 +89,7 @@ public class FeedbackClassService {
         List<FeedbackClass> list = repository.findAll();
 
         list.forEach(feedbackClass -> {
-            if (feedbackClass.getCouncil().getAClass().equals(aClass)){
+            if (feedbackClass.getCouncil().getAClass().equals(aClass)) {
                 responseDTOS.add(modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class));
             }
         });

@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -29,10 +28,5 @@ public class StudentRequestDTO {
 
     @NotNull
     private List<Long> classes_id;
-
-    //Podem ser nulo
-
-    private UUID imageKey;
-    private Double frequency;
 
 }

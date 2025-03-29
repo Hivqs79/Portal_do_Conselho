@@ -1,19 +1,15 @@
 package net.weg.userapi.controller.users;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
-import net.kaczmarzyk.spring.data.jpa.domain.Equal;
-import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
-import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
-import net.kaczmarzyk.spring.data.jpa.domain.Like;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import net.weg.userapi.model.dto.request.users.CustomizationRequestDTO;
 import net.weg.userapi.model.dto.response.users.CustomizationResponseDTO;
-import net.weg.userapi.model.entity.users.Customization;
 import net.weg.userapi.service.users.CustomizationService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -28,39 +24,23 @@ public class CustomizationController {
 
     private CustomizationService service;
 
-    @GetMapping
-    public Page<CustomizationResponseDTO> searchCustomization (
-            @And({
-                    @Spec(path = "id", spec = Equal.class),
-            }) Specification<Customization> spec, Pageable pageable) {
-
-        return service.findCustomizationSpec(spec, pageable);
-    }
-
-    @PostMapping
-    public ResponseEntity<CustomizationResponseDTO> postCustomization(@RequestBody @Validated CustomizationRequestDTO customizationRequestDTO) {
-        return new ResponseEntity<>(service.createCustomization(customizationRequestDTO), HttpStatus.OK);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<CustomizationResponseDTO> putCustomization(@RequestBody @Validated CustomizationRequestDTO customizationRequestDTO, @PathVariable Long id) {
-        return new ResponseEntity<>(service.updateCustomization(customizationRequestDTO, id), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<CustomizationResponseDTO> deleteCustomization(@PathVariable Long id) {
-        return new ResponseEntity<>(service.deleteCustomization(id), HttpStatus.OK);
+    @PutMapping("/{user_id}")
+    @Operation(method = "PUT", summary = "Update customization", description = "Updates user customization preferences")
+    @ApiResponse(responseCode = "200", description = "Customization updated", content = @Content(schema = @Schema(implementation = CustomizationResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"modeTheme\":\"DARK\",\"pallete\":\"BLUE\",\"textFont\":\"ROBOTO\",\"titleFont\":\"MONTSERRAT\",\"fontSize\":\"MEDIUM\"}")))
+    @ApiResponse(responseCode = "400", description = "Invalid customization data", content = @Content(examples = @ExampleObject(value = "{\"status\":400,\"error\":\"Validation Error\",\"message\":[\"modeTheme: must not be null\",\"pallete: must not be null\"]}")))
+    @ApiResponse(responseCode = "404", description = "User not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<CustomizationResponseDTO> putCustomization(@RequestBody @Validated CustomizationRequestDTO customizationRequestDTO, @Parameter(description = "User ID", example = "1") @PathVariable Long user_id) {
+        return new ResponseEntity<>(service.updateCustomization(customizationRequestDTO, user_id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomizationResponseDTO> getCustomization(@PathVariable Long id) {
+    @Operation(method = "GET", summary = "Get customization", description = "Returns user customization preferences")
+    @ApiResponse(responseCode = "200", description = "Customization found", content = @Content(schema = @Schema(implementation = CustomizationResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"modeTheme\":\"LIGHT\",\"pallete\":\"GREEN\",\"textFont\":\"OPEN_SANS\",\"titleFont\":\"LATO\",\"fontSize\":\"SMALL\"}")))
+    @ApiResponse(responseCode = "404", description = "Customization not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<CustomizationResponseDTO> getCustomization(@Parameter(description = "Customization ID", example = "1") @PathVariable Long id) {
         return new ResponseEntity<>(service.findCustomization(id), HttpStatus.OK);
-    }
-
-    @PostMapping("/mock")
-    public ResponseEntity<Void> postAllCustomization(@RequestBody List<CustomizationRequestDTO> customizationRequestDTOS) {
-        service.mockarCustomization(customizationRequestDTOS);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
     
 }

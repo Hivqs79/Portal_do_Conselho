@@ -1,8 +1,5 @@
 package net.weg.userapi.model.dto.request.users;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,8 +24,5 @@ public class CustomizationRequestDTO {
 
     @NotNull(message = "{not.null.message}")
     private FontSizeENUM fontSize;
-
-    @NotNull(message = "{not.null.message}")
-    private Long userId;
 
 }

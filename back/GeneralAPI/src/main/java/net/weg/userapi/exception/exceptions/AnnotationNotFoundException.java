@@ -1,10 +1,6 @@
 package net.weg.userapi.exception.exceptions;
 
-public class AnnotationNotFoundException extends RuntimeException{
-
-    public AnnotationNotFoundException() {
-        super();
-    }
+public class AnnotationNotFoundException extends RuntimeException {
 
     public AnnotationNotFoundException(String message) {
         super(message);

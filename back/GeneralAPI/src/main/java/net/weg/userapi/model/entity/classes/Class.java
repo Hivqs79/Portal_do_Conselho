@@ -6,10 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.userapi.model.entity.council.Council;
-import net.weg.userapi.model.entity.feedback.FeedbackClass;
 import net.weg.userapi.model.entity.users.Student;
 import net.weg.userapi.model.entity.users.Teacher;
 import net.weg.userapi.model.enums.ClassAreaENUM;
+import net.weg.userapi.model.enums.RankENUM;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,6 +36,11 @@ public class Class {
     @Column(nullable = false)
     private String course;
 
+    private RankENUM lastRank;
+
+    @Column(nullable = false)
+    private boolean enabled;
+
     @ManyToMany(mappedBy = "classes")
     private List<Teacher> teachers;
 
@@ -53,6 +58,7 @@ public class Class {
 
     @PrePersist
     public void onPrePersist() {
+        this.setEnabled(true);
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
     }

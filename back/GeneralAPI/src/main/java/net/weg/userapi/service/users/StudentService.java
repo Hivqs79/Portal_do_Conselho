@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.KafkaException;
 import net.weg.userapi.exception.exceptions.UserNotFoundException;
-import net.weg.userapi.model.dto.response.users.PedagogicResponseDTO;
-import net.weg.userapi.model.entity.users.Pedagogic;
 import net.weg.userapi.service.kafka.KafkaMessage;
 import net.weg.userapi.model.dto.request.users.StudentRequestDTO;
 import net.weg.userapi.model.dto.response.users.StudentResponseDTO;
@@ -30,12 +28,13 @@ public class StudentService {
 
     private StudentRepository repository;
     private ClassService classService;
+    private CustomizationService customizationService;
     private ModelMapper modelMapper;
     private KafkaProducerService kafkaProducerService;
     private final ObjectMapper objectMapper;
 
     public Page<StudentResponseDTO> findStudentSpec(Specification<Student> spec, Pageable pageable) {
-        Page<Student> students = repository.findAll(spec, pageable);
+        Page<Student> students = repository.getAllByEnabledIsTrue(spec, pageable);
         return students.map(student -> modelMapper.map(student, StudentResponseDTO.class));
     }
 
@@ -43,9 +42,10 @@ public class StudentService {
         Student student = modelMapper.map(studentRequestDTO, Student.class);
 
         student.setClasses(classService.getClassesByIdList(studentRequestDTO.getClasses_id()));
-
         Student studentSaved = repository.save(student);
-        this.sendStudentEvent(student, "POST");
+        studentSaved.setCustomization(customizationService.setDefault(studentSaved));
+
+        //this.sendStudentEvent(student, "POST");
         return modelMapper.map(studentSaved, StudentResponseDTO.class);
     }
 
@@ -59,12 +59,6 @@ public class StudentService {
         return repository.findById(id).orElseThrow(() -> new UserNotFoundException("Student user not found"));
     }
 
-    public Page<StudentResponseDTO> pageStudent(Pageable pageable) {
-        Page<Student> studentPage = repository.findAll(pageable);
-
-        return studentPage.map(student -> modelMapper.map(student, StudentResponseDTO.class));
-    }
-
     public StudentResponseDTO updateStudent(StudentRequestDTO studentRequestDTO, Long id) {
         Student student = findStudentEntity(id);
         modelMapper.map(studentRequestDTO, student);
@@ -75,16 +69,11 @@ public class StudentService {
         return modelMapper.map(updatedStudent, StudentResponseDTO.class);
     }
 
-    public StudentResponseDTO deleteStudent(Long id) {
+    public StudentResponseDTO disableStudent(Long id) {
         Student student = findStudentEntity(id);
-        StudentResponseDTO studentResponseDTO = modelMapper.map(student, StudentResponseDTO.class);
-        repository.delete(student);
-        return studentResponseDTO;
-    }
-
-    public void mockarStudent(List<StudentRequestDTO> studentRequestDTOS) {
-        List<Student> students = studentRequestDTOS.stream().map(studentRequestDTO -> modelMapper.map(studentRequestDTO, Student.class)).collect(Collectors.toList());
-        repository.saveAll(students);
+        student.setEnabled(false);
+        repository.save(student);
+        return modelMapper.map(student, StudentResponseDTO.class);
     }
 
     public void sendStudentEvent(Student student, String httpMethod) {

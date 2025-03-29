@@ -12,7 +12,6 @@ public class SpecificationConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        // Adiciona o resolver de specifications
         argumentResolvers.add(new SpecificationArgumentResolver());
     }
 }

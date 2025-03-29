@@ -3,6 +3,7 @@ package net.weg.userapi.model.entity.feedback;
 import jakarta.persistence.*;
 import lombok.Data;
 import net.weg.userapi.model.entity.council.Council;
+import net.weg.userapi.model.enums.RankENUM;
 
 import java.time.LocalDateTime;
 
@@ -15,9 +16,6 @@ public abstract class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String rank;
-
     @ManyToOne
     @JoinColumn(nullable = false)
     private Council council;
@@ -28,17 +26,14 @@ public abstract class Feedback {
     @Column(nullable = false)
     private String toImprove;
 
+    @Column(nullable = false)
+    private boolean enabled;
+
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
 
     @Column(name = "update_date", nullable = false)
     private LocalDateTime updateDate;
-
-    @PrePersist
-    public void onPrePersist() {
-        this.setCreateDate(LocalDateTime.now());
-        this.setUpdateDate(LocalDateTime.now());
-    }
 
     @PreUpdate
     public void onPreUpdate() {
@@ -49,7 +44,6 @@ public abstract class Feedback {
     public String toString() {
         return "Feedback{" +
                 "id=" + id +
-                ", rank='" + rank + '\'' +
                 ", council=" + council.getId() +
                 ", strengths='" + strengths + '\'' +
                 ", toImprove='" + toImprove + '\'' +

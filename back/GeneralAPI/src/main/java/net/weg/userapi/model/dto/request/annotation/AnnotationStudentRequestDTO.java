@@ -5,13 +5,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.weg.userapi.model.enums.RankENUM;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AnnotationStudentRequestDTO {
-    @NotBlank(message = "{not.blank.message}")
-    private String rank;
+    private RankENUM rank;
     @NotBlank(message = "{not.blank.message}")
     private String strengths;
     @NotBlank(message = "{not.blank.message}")

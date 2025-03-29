@@ -2,12 +2,9 @@ package net.weg.userapi.service.preCouncil;
 
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.PreCouncilNotFoundException;
-import net.weg.userapi.exception.exceptions.PreCouncilSectionNotFoundException;
 import net.weg.userapi.model.dto.request.preCouncil.PreCouncilRequestDTO;
 import net.weg.userapi.model.dto.response.preCouncil.PreCouncilResponseDTO;
-import net.weg.userapi.model.dto.response.users.TeacherResponseDTO;
 import net.weg.userapi.model.entity.preCouncil.PreCouncil;
-import net.weg.userapi.model.entity.users.Teacher;
 import net.weg.userapi.repository.PreCouncilRepository;
 import net.weg.userapi.service.council.CouncilService;
 import org.modelmapper.ModelMapper;
@@ -15,8 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -27,7 +22,7 @@ public class PreCouncilService {
     private ModelMapper modelMapper;
 
     public Page<PreCouncilResponseDTO> findPreCouncilSpec(Specification<PreCouncil> spec, Pageable pageable) {
-        Page<PreCouncil> preCouncils = repository.findAll(spec, pageable);
+        Page<PreCouncil> preCouncils = repository.getAllByEnabledIsTrue(spec, pageable);
         return preCouncils.map(preCouncil -> modelMapper.map(preCouncil, PreCouncilResponseDTO.class));
     }
 
@@ -51,12 +46,6 @@ public class PreCouncilService {
         return repository.findById(id).orElseThrow(() -> new PreCouncilNotFoundException("Pre council not found"));
     }
 
-    public Page<PreCouncilResponseDTO> pagePreCouncil(Pageable pageable) {
-        Page<PreCouncil> preCouncil = repository.findAll(pageable);
-
-        return preCouncil.map(annotation -> modelMapper.map(annotation, PreCouncilResponseDTO.class));
-    }
-
     public PreCouncilResponseDTO updatePreCouncil(PreCouncilRequestDTO preCouncilRequestDTO, Long id) {
         PreCouncil preCouncil = findPreCouncilEntity(id);
         modelMapper.map(preCouncilRequestDTO, preCouncil);
@@ -67,11 +56,11 @@ public class PreCouncilService {
         return modelMapper.map(updatedPreCouncil, PreCouncilResponseDTO.class);
     }
 
-    public PreCouncilResponseDTO deletePreCouncil(Long id) {
+    public PreCouncilResponseDTO disablePreCouncil(Long id) {
         PreCouncil preCouncil = findPreCouncilEntity(id);
-        PreCouncilResponseDTO preCouncilResponseDTO = modelMapper.map(preCouncil, PreCouncilResponseDTO.class);
-        repository.delete(preCouncil);
-        return preCouncilResponseDTO;
+        preCouncil.setEnabled(false);
+        repository.save(preCouncil);
+        return modelMapper.map(preCouncil, PreCouncilResponseDTO.class);
     }
 
 }

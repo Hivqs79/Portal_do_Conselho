@@ -16,6 +16,5 @@ public class PedagogicResponseDTO {
     private String email;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-    private CustomizationResponseDTO customization;
 
 }

@@ -1,5 +1,6 @@
 package net.weg.userapi.model.dto.response.feedback;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,11 +15,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class FeedbackUserResponseDTO {
     private Long id;
-    private String rank;
     private CouncilResponseDTO council;
     private String strengths;
     private String toImprove;
     private UserResponseDTO user;
+    private boolean isViewed;
+    private boolean isSatisfied;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 

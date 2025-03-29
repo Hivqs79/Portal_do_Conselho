@@ -11,9 +11,7 @@ import net.weg.userapi.model.entity.feedback.Feedback;
 import net.weg.userapi.model.entity.preCouncil.PreCouncil;
 import net.weg.userapi.model.entity.users.Teacher;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @Builder
@@ -33,6 +31,9 @@ public class Council {
 
     @ManyToOne
     private Class aClass;
+
+    @Column(nullable = false)
+    private boolean enabled;
 
     @OneToMany(mappedBy = "council")
     private List<Annotation> annotations;
@@ -61,6 +62,7 @@ public class Council {
     public void onPrePersist() {
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
+        this.setEnabled(true);
     }
 
     @PreUpdate

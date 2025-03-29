@@ -4,12 +4,9 @@ import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.AnnotationNotFoundException;
 import net.weg.userapi.model.dto.request.annotation.AnnotationClassRequestDTO;
 import net.weg.userapi.model.dto.response.annotation.AnnotationClassResponseDTO;
-import net.weg.userapi.model.dto.response.classes.ClassResponseDTO;
 import net.weg.userapi.model.entity.annotation.AnnotationClass;
-import net.weg.userapi.model.entity.classes.Class;
 import net.weg.userapi.model.entity.council.Council;
 import net.weg.userapi.repository.AnnotationClassRepository;
-import net.weg.userapi.service.classes.ClassService;
 import net.weg.userapi.service.council.CouncilService;
 import net.weg.userapi.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
@@ -17,8 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.time.OffsetDateTime;
 
 @Service
 @AllArgsConstructor
@@ -30,7 +25,7 @@ public class AnnotationClassService {
     private ModelMapper modelMapper;
 
     public Page<AnnotationClassResponseDTO> findAnnotationClassSpec(Specification<AnnotationClass> spec, Pageable pageable) {
-        Page<AnnotationClass> annotationClasses = repository.findAll(spec, pageable);
+        Page<AnnotationClass> annotationClasses = repository.getAllByEnabledIsTrue(spec, pageable);
         return annotationClasses.map(annotationClass -> modelMapper.map(annotationClass, AnnotationClassResponseDTO.class));
     }
 
@@ -76,11 +71,11 @@ public class AnnotationClassService {
         return modelMapper.map(updatedAnnotationClass, AnnotationClassResponseDTO.class);
     }
 
-    public AnnotationClassResponseDTO deleteAnnotationClass(Long id) {
+    public AnnotationClassResponseDTO disableAnnotationClass(Long id) {
         AnnotationClass annotationClass = findAnnotationEntity(id);
-        AnnotationClassResponseDTO annotationClassResponseDTO = modelMapper.map(annotationClass, AnnotationClassResponseDTO.class);
-        repository.delete(annotationClass);
-        return annotationClassResponseDTO;
+        annotationClass.setEnabled(false);
+        repository.save(annotationClass);
+        return modelMapper.map(annotationClass, AnnotationClassResponseDTO.class);
     }
 
 }

@@ -21,6 +21,5 @@ public class CustomizationResponseDTO {
     private TitleFont titleFont;
 
     private FontSizeENUM fontSize;
-    private CustomizationResponseDTO customization;
 
 }

@@ -1,13 +1,24 @@
 package net.weg.userapi.repository;
 
-import net.weg.userapi.model.entity.classes.Class;
+import net.weg.userapi.model.entity.feedback.FeedbackStudent;
 import net.weg.userapi.model.entity.feedback.FeedbackUser;
-import net.weg.userapi.model.entity.users.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
 public interface FeedbackUserRepository extends JpaRepository<FeedbackUser, Long>, JpaSpecificationExecutor<FeedbackUser> {
-    List<FeedbackUser> getAllByUser_Id(Long id);
+
+    boolean existsFeedbackUserByCouncil_IdAndAndUser_Id(Long council_id, Long user_id);
+
+    default Page<FeedbackUser> getAllByEnabledIsTrue(Specification<FeedbackUser> spec, Pageable pageable) {
+        Specification<FeedbackUser> enabledSpec = Specification.where(spec)
+                .and((root, query, cb) -> cb.isTrue(root.get("enabled")));
+
+        return findAll(enabledSpec, pageable);
+    }
+
 }
