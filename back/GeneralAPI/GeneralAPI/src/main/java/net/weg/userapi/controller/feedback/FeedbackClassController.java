@@ -37,7 +37,7 @@ public class FeedbackClassController {
 
     @GetMapping
     @Operation(method = "GET", summary = "Search class feedbacks", description = "Returns paginated class feedbacks with filters")
-    @ApiResponse(responseCode = "200", description = "Feedbacks found", content = @Content(schema = @Schema(implementation = Page.class), examples = @ExampleObject(value = "{\"content\":[{\"id\":1,\"rank\":\"GOLD\",\"strengths\":\"Excellent class dynamics\",\"toImprove\":\"Could use more examples\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}],\"pageable\":{\"pageNumber\":0,\"pageSize\":10,\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true}},\"totalElements\":1,\"totalPages\":1}")))
+    @ApiResponse(responseCode = "200", description = "Feedbacks found", content = @Content(schema = @Schema(implementation = Page.class), examples = @ExampleObject(value = "{\"content\":[{\"id\":1,\"rank\":\"AVERAGE\",\"strengths\":\"Excellent class dynamics\",\"toImprove\":\"Could use more examples\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}],\"pageable\":{\"pageNumber\":0,\"pageSize\":10,\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true}},\"totalElements\":1,\"totalPages\":1}")))
     @ApiResponse(responseCode = "400", description = "Invalid parameters")
     @ApiResponse(responseCode = "500", description = "Server error")
     public Page<FeedbackClassResponseDTO> searchFeedbackClass(@And({@Spec(path = "id", spec = Equal.class), @Spec(path = "rank", spec = Like.class), @Spec(path = "strengths", spec = Like.class), @Spec(path = "toImprove", spec = Like.class), @Spec(path = "council.aClass.name", params = "className", spec = Like.class), @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class), @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class), @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class), @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)}) Specification<FeedbackClass> spec, Pageable pageable) {
@@ -46,7 +46,7 @@ public class FeedbackClassController {
 
     @PostMapping
     @Operation(method = "POST", summary = "Create class feedback", description = "Creates new class feedback")
-    @ApiResponse(responseCode = "200", description = "Feedback created", content = @Content(schema = @Schema(implementation = FeedbackClassResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"rank\":\"SILVER\",\"strengths\":\"Good student engagement\",\"toImprove\":\"Need more challenging exercises\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))
+    @ApiResponse(responseCode = "200", description = "Feedback created", content = @Content(schema = @Schema(implementation = FeedbackClassResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"rank\":\"AVERAGE\",\"strengths\":\"Good student engagement\",\"toImprove\":\"Need more challenging exercises\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))
     @ApiResponse(responseCode = "400", description = "Invalid data", content = @Content(examples = @ExampleObject(value = "{\"status\":400,\"error\":\"Validation Error\",\"message\":[\"strengths: must not be blank\",\"toImprove: must not be blank\",\"council_id: must not be null\"]}")))
     @ApiResponse(responseCode = "404", description = "Council not found")
     @ApiResponse(responseCode = "500", description = "Server error")
@@ -56,7 +56,7 @@ public class FeedbackClassController {
 
     @PutMapping("/{id}")
     @Operation(method = "PUT", summary = "Update class feedback", description = "Updates existing class feedback")
-    @ApiResponse(responseCode = "200", description = "Feedback updated", content = @Content(schema = @Schema(implementation = FeedbackClassResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"rank\":\"BRONZE\",\"strengths\":\"Improved participation\",\"toImprove\":\"Homework delivery\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-02T00:00:00\"}")))
+    @ApiResponse(responseCode = "200", description = "Feedback updated", content = @Content(schema = @Schema(implementation = FeedbackClassResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"rank\":\"AVERAGE\",\"strengths\":\"Improved participation\",\"toImprove\":\"Homework delivery\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-02T00:00:00\"}")))
     @ApiResponse(responseCode = "400", description = "Invalid data")
     @ApiResponse(responseCode = "404", description = "Feedback or council not found")
     @ApiResponse(responseCode = "500", description = "Server error")
@@ -66,7 +66,7 @@ public class FeedbackClassController {
 
     @DeleteMapping("/{id}")
     @Operation(method = "DELETE", summary = "Disable class feedback", description = "Disables class feedback")
-    @ApiResponse(responseCode = "200", description = "Feedback disabled", content = @Content(schema = @Schema(implementation = FeedbackClassResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"rank\":\"GOLD\",\"strengths\":\"Final evaluation\",\"toImprove\":\"None\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-03T00:00:00\"}")))
+    @ApiResponse(responseCode = "200", description = "Feedback disabled", content = @Content(schema = @Schema(implementation = FeedbackClassResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"rank\":\"AVERAGE\",\"strengths\":\"Final evaluation\",\"toImprove\":\"None\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-03T00:00:00\"}")))
     @ApiResponse(responseCode = "404", description = "Feedback not found")
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<FeedbackClassResponseDTO> disableFeedbackClass(@Parameter(description = "Feedback ID", example = "1") @PathVariable Long id) {
@@ -75,7 +75,7 @@ public class FeedbackClassController {
 
     @GetMapping("/{id}")
     @Operation(method = "GET", summary = "Get class feedback", description = "Returns class feedback by ID")
-    @ApiResponse(responseCode = "200", description = "Feedback found", content = @Content(schema = @Schema(implementation = FeedbackClassResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"rank\":\"SILVER\",\"strengths\":\"Good progress\",\"toImprove\":\"More practice needed\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))
+    @ApiResponse(responseCode = "200", description = "Feedback found", content = @Content(schema = @Schema(implementation = FeedbackClassResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"rank\":\"AVERAGE\",\"strengths\":\"Good progress\",\"toImprove\":\"More practice needed\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))
     @ApiResponse(responseCode = "404", description = "Feedback not found")
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<FeedbackClassResponseDTO> getFeedbackClass(@Parameter(description = "Feedback ID", example = "1") @PathVariable Long id) {
@@ -84,7 +84,7 @@ public class FeedbackClassController {
 
     @GetMapping("/find/{id}")
     @Operation(method = "GET", summary = "Get feedbacks by class", description = "Returns all feedbacks for a specific class")
-    @ApiResponse(responseCode = "200", description = "Feedbacks found", content = @Content(schema = @Schema(implementation = List.class), examples = @ExampleObject(value = "[{\"id\":1,\"rank\":\"GOLD\",\"strengths\":\"Excellent class\",\"toImprove\":\"None\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}]")))
+    @ApiResponse(responseCode = "200", description = "Feedbacks found", content = @Content(schema = @Schema(implementation = List.class), examples = @ExampleObject(value = "[{\"id\":1,\"rank\":\"AVERAGE\",\"strengths\":\"Excellent class\",\"toImprove\":\"None\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}]")))
     @ApiResponse(responseCode = "404", description = "Class not found")
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<List<FeedbackClassResponseDTO>> getAllFeedbackClassByClass(@Parameter(description = "Class ID", example = "1") @PathVariable Long id) {
