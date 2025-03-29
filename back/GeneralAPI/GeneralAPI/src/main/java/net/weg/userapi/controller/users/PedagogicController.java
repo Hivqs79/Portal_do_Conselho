@@ -34,7 +34,6 @@ public class PedagogicController {
 
     private PedagogicService service;
 
-    // PedagogicController
     @GetMapping
     @Operation(method = "GET", summary = "Search pedagogics", description = "Returns paginated pedagogics with filters")
     @ApiResponse(responseCode = "200", description = "Pedagogics found", content = @Content(schema = @Schema(implementation = Page.class), examples = @ExampleObject(value = "{\"content\":[{\"id\":1,\"name\":\"Pedagogic\",\"email\":\"pedagogic@email.com\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}],\"pageable\":{\"pageNumber\":0,\"pageSize\":10,\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true}},\"totalElements\":1,\"totalPages\":1}")))
@@ -81,12 +80,6 @@ public class PedagogicController {
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<PedagogicResponseDTO> getPedagogic(@Parameter(description = "Pedagogic ID", example = "1") @PathVariable Long id) {
         return new ResponseEntity<>(service.findPedagogic(id), HttpStatus.OK);
-    }
-
-    @PostMapping("/mock")
-    public ResponseEntity<Void> postAllPedagogic(@RequestBody List<PedagogicRequestDTO> pedagogicRequestDTOS) {
-        service.mockarPedagogic(pedagogicRequestDTOS);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

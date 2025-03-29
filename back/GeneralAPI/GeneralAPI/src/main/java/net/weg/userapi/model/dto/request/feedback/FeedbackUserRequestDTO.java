@@ -21,5 +21,4 @@ public class FeedbackUserRequestDTO {
     @NotNull(message = "{not.null.message}")
     private Long user_id;
 
-
 }

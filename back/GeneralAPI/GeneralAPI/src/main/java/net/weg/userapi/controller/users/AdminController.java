@@ -106,10 +106,4 @@ public class AdminController {
         return new ResponseEntity<>(service.findAdmin(id), HttpStatus.OK);
     }
 
-    @PostMapping("/mock")
-    public ResponseEntity<Void> postAllAdmin(@RequestBody List<AdminRequestDTO> adminRequestDTOS) {
-        service.mockarAdmin(adminRequestDTOS);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 }

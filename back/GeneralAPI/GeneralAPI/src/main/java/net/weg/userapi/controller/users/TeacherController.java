@@ -112,10 +112,4 @@ public class TeacherController {
         return new ResponseEntity<>(service.getClassByTeacher(id), HttpStatus.OK);
     }
 
-    @PostMapping("/mock")
-    public ResponseEntity<Void> postAllTeacher(@RequestBody List<TeacherRequestDTO> teacherRequestDTOS) {
-        service.mockarTeacher(teacherRequestDTOS);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 }
