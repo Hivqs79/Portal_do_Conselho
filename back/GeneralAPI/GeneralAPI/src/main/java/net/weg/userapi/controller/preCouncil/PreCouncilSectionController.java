@@ -44,22 +44,22 @@ public class PreCouncilSectionController {
     }
 
     @PostMapping
-    public ResponseEntity<PreCouncilSectionResponseDTO> postPreCouncil(@RequestBody @Validated PreCouncilSectionRequestDTO preCouncilRequestDTO) {
+    public ResponseEntity<PreCouncilSectionResponseDTO> postPreCouncilSection(@RequestBody @Validated PreCouncilSectionRequestDTO preCouncilRequestDTO) {
         return new ResponseEntity<>(service.createPreCouncilSection(preCouncilRequestDTO), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PreCouncilSectionResponseDTO> putPreCouncil(@RequestBody @Validated PreCouncilSectionRequestDTO preCouncilRequestDTO, @PathVariable Long id) {
+    public ResponseEntity<PreCouncilSectionResponseDTO> putPreCouncilSection(@RequestBody @Validated PreCouncilSectionRequestDTO preCouncilRequestDTO, @PathVariable Long id) {
         return new ResponseEntity<>(service.updatePreCouncilSection(preCouncilRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<PreCouncilSectionResponseDTO> disablePreCouncil(@PathVariable Long id) {
+    public ResponseEntity<PreCouncilSectionResponseDTO> disablePreCouncilSection(@PathVariable Long id) {
         return new ResponseEntity<>(service.disablePreCouncilSection(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PreCouncilSectionResponseDTO> getPreCouncil(@PathVariable Long id) {
+    public ResponseEntity<PreCouncilSectionResponseDTO> getPreCouncilSection(@PathVariable Long id) {
         return new ResponseEntity<>(service.findPreCouncilSection(id), HttpStatus.OK);
     }
 
