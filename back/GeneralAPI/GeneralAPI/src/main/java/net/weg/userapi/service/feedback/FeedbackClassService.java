@@ -1,6 +1,7 @@
 package net.weg.userapi.service.feedback;
 
 import lombok.AllArgsConstructor;
+import net.weg.userapi.exception.exceptions.ClassFeedbackAlreadyExistException;
 import net.weg.userapi.exception.exceptions.FeedbackNotFoundException;
 import net.weg.userapi.model.dto.request.feedback.FeedbackClassRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackClassResponseDTO;
@@ -36,7 +37,7 @@ public class FeedbackClassService {
     public FeedbackClassResponseDTO createFeedbackClass(FeedbackClassRequestDTO feedbackClassRequestDTO) {
 
         if (repository.existsFeedbackClassByCouncil_Id(feedbackClassRequestDTO.getCouncil_id())) {
-            throw new RuntimeException("Class feedback already exists");
+            throw new ClassFeedbackAlreadyExistException("Class feedback already exists");
         }
 
         Council council = councilService.findCouncilEntity(feedbackClassRequestDTO.getCouncil_id());
