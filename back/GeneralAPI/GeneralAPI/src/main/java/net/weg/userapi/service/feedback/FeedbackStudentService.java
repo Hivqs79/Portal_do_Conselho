@@ -2,6 +2,7 @@ package net.weg.userapi.service.feedback;
 
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.FeedbackNotFoundException;
+import net.weg.userapi.exception.exceptions.StudentFeedbackAlreadyExistException;
 import net.weg.userapi.exception.exceptions.UserNotAssociatedException;
 import net.weg.userapi.model.dto.request.feedback.FeedbackStudentRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackStudentResponseDTO;
@@ -37,7 +38,7 @@ public class FeedbackStudentService {
     public FeedbackStudentResponseDTO createFeedbackStudent(FeedbackStudentRequestDTO feedbackStudentRequestDTO) {
 
         if (repository.existsFeedbackStudentByCouncil_IdAndStudent_Id(feedbackStudentRequestDTO.getCouncil_id(), feedbackStudentRequestDTO.getStudent_id())) {
-            throw new RuntimeException("Student feedback already exists");
+            throw new StudentFeedbackAlreadyExistException("Student feedback already exists");
         }
 
         Council council = councilService.findCouncilEntity(feedbackStudentRequestDTO.getCouncil_id());
@@ -71,7 +72,7 @@ public class FeedbackStudentService {
 
         if (repository.existsFeedbackStudentByCouncil_IdAndStudent_Id(feedbackStudentRequestDTO.getCouncil_id(), feedbackStudentRequestDTO.getStudent_id())
                 && !findFeedbackEntity(id).getStudent().equals(studentService.findStudentEntity(feedbackStudentRequestDTO.getStudent_id()))) {
-            throw new RuntimeException("Student feedback already exists");
+            throw new StudentFeedbackAlreadyExistException("Student feedback already exists");
         }
 
         FeedbackStudent feedbackStudent = findFeedbackEntity(id);

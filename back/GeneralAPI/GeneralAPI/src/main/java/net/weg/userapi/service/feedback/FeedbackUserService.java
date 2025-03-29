@@ -2,6 +2,8 @@ package net.weg.userapi.service.feedback;
 
 import lombok.AllArgsConstructor;
 import net.weg.userapi.exception.exceptions.FeedbackNotFoundException;
+import net.weg.userapi.exception.exceptions.StudentFeedbackAlreadyExistException;
+import net.weg.userapi.exception.exceptions.UserFeedbackAlreadyExistException;
 import net.weg.userapi.model.dto.request.feedback.FeedbackUserRequestDTO;
 import net.weg.userapi.model.dto.response.feedback.FeedbackUserResponseDTO;
 import net.weg.userapi.model.entity.council.Council;
@@ -36,7 +38,7 @@ public class FeedbackUserService {
     public FeedbackUserResponseDTO createFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO) {
 
         if (repository.existsFeedbackUserByCouncil_IdAndAndUser_Id(feedbackUserRequestDTO.getCouncil_id(), feedbackUserRequestDTO.getUser_id())) {
-            throw new RuntimeException("Student feedback already exists");
+            throw new StudentFeedbackAlreadyExistException("Student feedback already exists");
         }
 
         Council council = councilService.findCouncilEntity(feedbackUserRequestDTO.getCouncil_id());
@@ -65,7 +67,7 @@ public class FeedbackUserService {
 
         if (repository.existsFeedbackUserByCouncil_IdAndAndUser_Id(feedbackUserRequestDTO.getCouncil_id(), feedbackUserRequestDTO.getUser_id())
                 && !findFeedbackEntity(id).getUser().equals(userService.findUserEntity(feedbackUserRequestDTO.getUser_id()))) {
-            throw new RuntimeException("User feedback already exists");
+            throw new UserFeedbackAlreadyExistException("User feedback already exists");
         }
 
         FeedbackUser feedbackUser = findFeedbackEntity(id);
