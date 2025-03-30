@@ -383,23 +383,47 @@ export default class ThemeSettings {
           styleOverrides: {
             root: {
               borderRadius: "8px",
-              "&:hover:not(.Mui-focused):not(.Mui-error) .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: colorByMode,
-                  borderWidth: "2px",
-                  color: this.getContrastThemeColor(),
-                },
-              "&.Mui-focused:not(.Mui-error) .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: colorByMode,
-                  borderWidth: "2px",
-                  boxShadow: "2px 2px 4px 1px" + colorByMode + "77",
-                },
+              "&:hover:not(.Mui-focused):not(.Mui-error) .MuiOutlinedInput-notchedOutline": {
+                borderColor: colorByMode,
+                borderWidth: "2px",
+                color: this.getContrastThemeColor(),
+              },
+              "&.Mui-focused:not(.Mui-error) .MuiOutlinedInput-notchedOutline": {
+                borderColor: colorByMode,
+                borderWidth: "2px",
+                boxShadow: "2px 2px 4px 1px" + colorByMode + "77",
+              },
+              "&:hover:not(.Mui-focused).Mui-disabled .MuiOutlinedInput-notchedOutline": {
+                borderColor: this.getContrastThemeColor() + "AA",
+                color: this.getContrastThemeColor() + "AA",
+              },
+              "&.Mui-focused .Mui-disabled .MuiOutlinedInput-notchedOutline": {
+                borderColor: this.getContrastThemeColor() + "AA",
+                color: this.getContrastThemeColor() + "AA",
+              },
+              "&.Mui-disabled .MuiOutlinedInput-notchedOutline": {
+                borderColor: this.getContrastThemeColor() + "AA",
+                color: this.getContrastThemeColor() + "AA",
+              },
+              "&.Mui-disabled .MuiOutlinedInput-input": {
+                borderColor: this.getContrastThemeColor() + "AA",
+                textFillColor: this.getContrastThemeColor() + "AA",
+              },
               color: this.getContrastThemeColor(),
             },
             notchedOutline: {
               borderColor: colorByMode,
               borderWidth: "2px",
+            },
+          },
+        },
+        MuiFormLabel: {
+          styleOverrides: {
+            root: {
+              color: this.getContrastThemeColor(),
+              "&.Mui-disabled": {
+                color: this.getContrastThemeColor() + "AA",
+              },
             },
           },
         },

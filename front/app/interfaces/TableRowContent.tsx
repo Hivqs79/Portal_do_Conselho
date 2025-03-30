@@ -1,9 +1,9 @@
 export interface TableRowContent {
-  user?: "teacher" | "student" | "class" | "user";
-  turmaNome?: string;
-  rank?: "excellent" | "good" | "average" | "critical" | "none";
-  frequencia?: number;
   className?: string;
-  data?: string;
-  horario?: string;
 }
+// user?: "teacher" | "student" | "class" | "user";
+// turmaNome?: string;
+// rank?: "excellent" | "good" | "average" | "critical" | "none";
+// frequencia?: number;
+// data?: string;
+// horario?: string;

@@ -1,0 +1,263 @@
+drop database userapi_db;
+use userapi_db;
+
+show tables;
+
+-- DESCRIBE
+DESCRIBE customization;
+DESCRIBE user;
+DESCRIBE admin;
+DESCRIBE teacher;
+DESCRIBE student;
+DESCRIBE pedagogic;
+
+DESCRIBE class;
+DESCRIBE student_class;
+DESCRIBE teacher_class;
+
+DESCRIBE annotation;
+DESCRIBE annotation_class;
+DESCRIBE annotation_student;
+
+DESCRIBE feedback;
+DESCRIBE feedback_class;
+DESCRIBE feedback_user;
+
+DESCRIBE council;
+DESCRIBE council_teacher;
+
+DESCRIBE pre_council;
+DESCRIBE pre_council_section;
+
+-- SELECT
+SELECT * FROM user;
+SELECT * FROM admin;
+SELECT * FROM teacher;
+SELECT * FROM student;
+SELECT * FROM pedagogic;
+
+SELECT * FROM class;
+SELECT * FROM student_class;
+SELECT * FROM teacher_class;
+
+SELECT * FROM annotation;
+SELECT * FROM annotation_class;
+SELECT * FROM annotation_student;
+
+SELECT * FROM feedback;
+SELECT * FROM feedback_class;
+SELECT * FROM feedback_user;
+
+SELECT * FROM council;
+SELECT * FROM council_teacher;
+
+SELECT * FROM pre_council;
+SELECT * FROM pre_council_section;
+
+
+DELIMITER //
+
+CREATE PROCEDURE DeleteAllRecords()
+BEGIN
+    -- Desabilitar chaves estrangeiras temporariamente
+    SET FOREIGN_KEY_CHECKS = 0;
+    SET SQL_SAFE_UPDATES = 0;
+
+    -- Apagar registros e resetar auto_increment para cada tabela
+    DELETE FROM admin;
+    ALTER TABLE admin AUTO_INCREMENT = 1;
+
+    DELETE FROM annotation;
+    ALTER TABLE annotation AUTO_INCREMENT = 1;
+
+    DELETE FROM annotation_class;
+    ALTER TABLE annotation_class AUTO_INCREMENT = 1;
+
+    DELETE FROM annotation_student;
+    ALTER TABLE annotation_student AUTO_INCREMENT = 1;
+
+    DELETE FROM class;
+    ALTER TABLE class AUTO_INCREMENT = 1;
+
+    DELETE FROM council;
+    ALTER TABLE council AUTO_INCREMENT = 1;
+
+    DELETE FROM council_teacher;
+    ALTER TABLE council_teacher AUTO_INCREMENT = 1;
+
+    DELETE FROM feedback;
+    ALTER TABLE feedback AUTO_INCREMENT = 1;
+
+    DELETE FROM feedback_class;
+    ALTER TABLE feedback_class AUTO_INCREMENT = 1;
+
+    DELETE FROM feedback_user;
+    ALTER TABLE feedback_user AUTO_INCREMENT = 1;
+
+    DELETE FROM pedagogic;
+    ALTER TABLE pedagogic AUTO_INCREMENT = 1;
+
+    DELETE FROM pre_council;
+    ALTER TABLE pre_council AUTO_INCREMENT = 1;
+
+    DELETE FROM pre_council_section;
+    ALTER TABLE pre_council_section AUTO_INCREMENT = 1;
+
+    DELETE FROM student;
+    ALTER TABLE student AUTO_INCREMENT = 1;
+
+    DELETE FROM student_class;
+    ALTER TABLE student_class AUTO_INCREMENT = 1;
+
+    DELETE FROM teacher;
+    ALTER TABLE teacher AUTO_INCREMENT = 1;
+
+    DELETE FROM teacher_class;
+    ALTER TABLE teacher_class AUTO_INCREMENT = 1;
+
+    DELETE FROM user;
+    ALTER TABLE user AUTO_INCREMENT = 1;
+
+    -- Reabilitar chaves estrangeiras
+    SET FOREIGN_KEY_CHECKS = 1;
+END //
+
+DELIMITER ;
+
+CALL DeleteAllRecords();
+
+-- INSERT
+
+INSERT INTO class (area, course, create_date, name, update_date, enabled) VALUES
+('ELETROMECANICA', 'Técnico em Eletromecânica', '2023-01-15 09:30:00', 'WU75', '2023-01-15 09:30:00', 1),
+('MECANICA', 'Técnico em Mecânica Automotiva', '2023-03-10 14:00:00', 'MT73', '2023-04-05 16:45:00', 1),
+('TI', 'Técnico em Informática', '2023-04-05 08:45:00', 'MI74', '2023-05-10 10:30:00', 1);
+
+INSERT INTO user (create_date, email, name, password, update_date, enabled) VALUES
+('2023-01-05 08:30:00', 'alice.silva@example.com', 'Alice Silva', 'Senha@123', '2023-01-05 08:30:00', 1),
+('2023-01-10 09:15:00', 'bruno.oliveira@example.com', 'Bruno Oliveira', 'Senha@456', '2023-01-12 10:20:00', 1),
+('2023-01-15 10:00:00', 'carla.santos@example.com', 'Carla Santos', 'Senha@789', '2023-01-18 11:30:00', 1),
+('2023-01-20 11:45:00', 'diego.pereira@example.com', 'Diego Pereira', 'Senha@101', '2023-01-22 14:15:00', 1),
+('2023-01-25 14:30:00', 'elaine.costa@example.com', 'Elaine Costa', 'Senha@202', '2023-01-28 16:45:00', 1),
+('2023-02-01 15:20:00', 'fabio.martins@example.com', 'Fábio Martins', 'Senha@303', '2023-02-05 09:10:00', 1),
+('2023-02-05 16:10:00', 'gabriela.fernandes@example.com', 'Gabriela Fernandes', 'Senha@404', '2023-02-10 11:25:00', 1),
+('2023-02-10 09:45:00', 'henrique.gomes@example.com', 'Henrique Gomes', 'Senha@505', '2023-02-15 13:40:00', 1),
+('2023-02-15 11:30:00', 'isabela.rodrigues@example.com', 'Isabela Rodrigues', 'Senha@606', '2023-02-20 15:55:00', 1),
+('2023-02-20 13:15:00', 'joao.almeida@example.com', 'João Almeida', 'Senha@707', '2023-02-25 17:10:00', 1),
+('2023-02-25 14:50:00', 'karina.lima@example.com', 'Karina Lima', 'Senha@808', '2023-03-02 18:25:00', 1),
+('2023-03-01 16:35:00', 'leonardo.souza@example.com', 'Leonardo Souza', 'Senha@909', '2023-03-06 19:40:00', 1),
+('2023-03-05 10:20:00', 'mariana.ribeiro@example.com', 'Mariana Ribeiro', 'Senha@1010', '2023-03-10 20:55:00', 1),
+('2023-03-10 12:05:00', 'nelson.barbosa@example.com', 'Nelson Barbosa', 'Senha@1111', '2023-03-15 22:10:00', 1),
+('2023-03-15 13:50:00', 'olivia.cunha@example.com', 'Olivia Cunha', 'Senha@1212', '2023-03-20 23:25:00', 1),
+('2023-03-20 15:35:00', 'paulo.mendes@example.com', 'Paulo Mendes', 'Senha@1313', '2023-03-25 08:40:00', 1),
+('2023-03-25 17:20:00', 'quenia.nascimento@example.com', 'Quenia Nascimento', 'Senha@1414', '2023-03-30 09:55:00', 1),
+('2023-04-01 09:05:00', 'rafael.cardoso@example.com', 'Rafael Cardoso', 'Senha@1515', '2023-04-06 11:10:00', 1),
+('2023-04-05 10:50:00', 'sandra.machado@example.com', 'Sandra Machado', 'Senha@1616', '2023-04-10 12:25:00', 1),
+('2023-04-10 12:35:00', 'thiago.ferreira@example.com', 'Thiago Ferreira', 'Senha@1717', '2023-04-15 13:40:00', 1),
+('2023-04-15 14:20:00', 'ursula.andrade@example.com', 'Ursula Andrade', 'Senha@1818', '2023-04-20 14:55:00', 1),
+('2023-04-20 16:05:00', 'vinicius.campos@example.com', 'Vinicius Campos', 'Senha@1919', '2023-04-25 16:10:00', 1),
+('2023-04-25 17:50:00', 'wanda.teixeira@example.com', 'Wanda Teixeira', 'Senha@2020', '2023-04-30 17:25:00', 1),
+('2023-05-01 08:35:00', 'xavier.rocha@example.com', 'Xavier Rocha', 'Senha@2121', '2023-05-06 18:40:00', 1),
+('2023-05-05 10:20:00', 'yara.miranda@example.com', 'Yara Miranda', 'Senha@2222', '2023-05-10 19:55:00', 1),
+('2023-05-10 12:05:00', 'zoe.costa@example.com', 'Zoe Costa', 'Senha@2323', '2023-05-15 20:10:00', 1),
+('2023-05-15 13:50:00', 'zulma.silva@example.com', 'Zulma Silva', 'Senha@2424', '2023-05-20 21:25:00', 1),
+('2023-05-20 15:35:00', 'felipe.santos@example.com', 'Felipe Santos', 'Senha@2525', '2023-05-25 22:40:00', 1),
+('2023-05-25 17:20:00', 'victor.ferreira@example.com', 'Victor Ferreira', 'Senha@2626', '2023-05-30 23:55:00', 1),
+('2023-06-01 09:05:00', 'gilberto.souza@example.com', 'Gilberto Souza', 'Senha@2727', '2023-06-06 11:10:00', 1),
+('2023-06-10 12:35:00', 'esdras.almeida@example.com', 'Esdras Almeida', 'Senha@2828', '2023-06-15 13:40:00', 1),
+('2023-06-15 14:20:00', 'Iana.gomes@example.com', 'Iana Gomes', 'Senha@2929', '2023-06-20 14:55:00', 1),
+('2023-06-20 16:05:00', 'jose.souza@example.com', 'Jose Souza', 'Senha@3030', '2023-06-25 16:10:00', 1),
+('2023-06-25 17:50:00', 'lucia.almeida@example.com', 'Lucia Almeida', 'Senha@3131', '2023-06-30 17:25:00', 1),
+('2023-07-01 08:35:00', 'maria.souza@example.com', 'Maria Souza', 'Senha@3232', '2023-07-06 18:40:00', 1);
+
+INSERT INTO student (is_representant, user_id) VALUES
+(0, 1),  -- Alice Silva
+(1, 2),  -- Bruno Oliveira (representante)
+(0, 3),  -- Carla Santos
+(0, 5),  -- Elaine Costa
+(1, 7),  -- Gabriela Fernandes (representante)
+(0, 9),  -- Isabela Rodrigues
+(0, 11), -- Karina Lima
+(0, 13), -- Mariana Ribeiro
+(1, 15), -- Olivia Cunha (representante)
+(0, 4),  -- Diego Pereira
+(0, 6),  -- Fábio Martins
+(0, 8),  -- Henrique Gomes
+(0, 10), -- João Almeida
+(0, 12), -- Leonardo Souza
+(0, 14), -- Nelson Barbosa
+(0, 17), -- Quenia Nascimento
+(0, 26), -- Zoe Costa
+(0, 27), -- Zulma Silva
+(0, 28), -- Felipe Santos
+(0, 29), -- Victor Ferreira
+(0, 30); -- Gilberto Souza
+
+-- Inserindo professores baseados em usuários existentes
+INSERT INTO teacher (user_id) VALUES
+(16), -- Paulo Mendes
+(18), -- Rafael Cardoso
+(20), -- Thiago Ferreira
+(22), -- Vinicius Campos
+(31), -- Esdras Almeida
+(32), -- Iana Gomes
+(33), -- Jose Souza
+(34), -- Lucia Almeida
+(35); -- Maria Souza
+
+INSERT INTO pedagogic (user_id) VALUES
+(21),  -- Wanda Teixeira
+(23),  -- Xavier Rocha
+(24),  -- Yara Miranda
+(25);  -- (Usuário adicional se existir)
+
+INSERT INTO admin (user_id) VALUES (19);  -- Ursula Andrade como admin
+
+-- Turma 1 (ELETROMECANICA - WU75) - 8 estudantes
+INSERT INTO student_class (student_id, class_id) VALUES
+(1, 1),   -- Alice Silva
+(2, 1),   -- Bruno Oliveira (representante)
+(3, 1),   -- Carla Santos
+(5, 1),   -- Elaine Costa
+(7, 1),   -- Gabriela Fernandes (representante)
+(9, 1),   -- Isabela Rodrigues
+(15, 1),  -- Olivia Cunha (representante)
+(17, 1),  -- Quenia Nascimento
+
+-- Turma 2 (MECANICA - MT73) - 8 estudantes
+(4, 2),   -- Diego Pereira
+(6, 2),   -- Fábio Martins
+(8, 2),   -- Henrique Gomes
+(10, 2),  -- João Almeida
+(11, 2),  -- Karina Lima
+(12, 2),  -- Leonardo Souza
+(13, 2),  -- Mariana Ribeiro
+(14, 2),  -- Nelson Barbosa
+
+-- Turma 3 (TI - MI74) - 5 estudantes
+(26, 3),  -- Zoe Costa
+(27, 3),  -- Zulma Silva
+(28, 3),  -- Felipe Santos
+(29, 3),  -- Victor Ferreira
+(30, 3);  -- Gilberto Souza
+
+-- Alocando todos os professores nas turmas WU75 e MT73
+INSERT INTO teacher_class (teacher_id, class_id) VALUES
+-- Turma 1 (ELETROMECANICA - WU75) - Todos os professores
+(16, 1),  -- Paulo Mendes
+(18, 1),  -- Rafael Cardoso
+(20, 1),  -- Thiago Ferreira
+(22, 1),  -- Vinicius Campos
+
+-- Turma 2 (MECANICA - MT73) - Todos os professores
+(16, 2),  -- Paulo Mendes
+(18, 2),  -- Rafael Cardoso
+(20, 2),  -- Thiago Ferreira
+(22, 2),  -- Vinicius Campos
+
+-- Turma 3 (TI - MI74) - 5 professores
+(31, 3),  -- Esdras Almeida
+(32, 3),  -- Iana Gomes
+(33, 3),  -- Jose Souza
+(34, 3),  -- Lucia Almeida
+(35, 3);  -- Maria Souza

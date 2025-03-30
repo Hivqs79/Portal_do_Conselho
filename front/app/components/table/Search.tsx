@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { useThemeContext } from "@/hooks/useTheme";
 import Icon from "../Icon";
@@ -10,7 +10,7 @@ interface SearchProps {
 export default function Search({ setSearch }: SearchProps) {
     const { primaryColor, secondaryColor } = useThemeContext();
     const [isFocused, setIsFocused] = useState(false); 
-    const inputRef = useRef<HTMLInputElement>(null);
+    const randomId = `search-input-${crypto.randomUUID()}`;
 
     return (
         <>
@@ -18,7 +18,7 @@ export default function Search({ setSearch }: SearchProps) {
 
             <div className="relative w-full max-w-xs cursor-text hidden lg:block">
                 <label
-                    htmlFor="search"
+                    htmlFor={randomId}
                     style={{ backgroundColor: primaryColor }}
                     className={`cursor-text absolute left-4 text-white font-semibold transition-all ${
                         isFocused
@@ -29,8 +29,7 @@ export default function Search({ setSearch }: SearchProps) {
                     Pesquisa
                 </label>
                 <input
-                    id="search"
-                    ref={inputRef}
+                    id={randomId}
                     type="text"
                     style={{ borderColor: secondaryColor }}
                     className="w-full pl-4 pr-10 h-[36px] text-white text-sm font-semibold border-2 rounded-md bg-transparent focus:outline-none"

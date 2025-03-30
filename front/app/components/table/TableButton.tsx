@@ -8,13 +8,15 @@ interface TableButtonProps {
     onlyIcon?: boolean;
     icon?: IconType;
     text?: string;
+    onClick?: () => void;
 }
 
 export default function TableButton ({
     onlyIcon = false,
     onlyTextInBigSize = false,
     icon,
-    text
+    text,
+    onClick
 }: TableButtonProps) {
     const {primaryColor, whiteColor} = useThemeContext();
 
@@ -22,7 +24,7 @@ export default function TableButton ({
     return (
         <>
             {(!onlyIcon) && (
-                <Button variant="contained" color="primary" className="!hidden sm:!flex">
+                <Button variant="contained" color="primary" className="!hidden sm:!flex" onClick={onClick}>
                     <Typography variant="sm_text_bold" color="white">
                         {text}
                     </Typography>
@@ -36,6 +38,7 @@ export default function TableButton ({
                     isButton={true} 
                     colorButton={primaryColor} 
                     classNameButton={ !onlyIcon ? "!block sm:!hidden" : ""}
+                    onClick={onClick}
                 />
             }
             

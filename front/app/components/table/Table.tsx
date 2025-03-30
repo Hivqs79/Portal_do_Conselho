@@ -5,30 +5,30 @@ import TableRow from "./TableRow";
 import { useThemeContext } from "@/hooks/useTheme";
 import TableHeader from "./TableHeader";
 import { TableContent } from "@/interfaces/TableContent";
+import { TableRowContent } from "@/interfaces/TableRowContent";
+import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
+import TableCouncilRow from "@/interfaces/TableCouncilRow";
+import { TableHeaderButtons } from "@/interfaces/TableHeaderButtons";
+import { TableRowButtons } from "@/interfaces/TableRowButtons";
 
 interface TableProps {
-  content: TableContent,
+  tableContent: TableContent,
+  headers: TableHeaderContent[],
   headerButtons?: TableHeaderButtons,
   rowButtons?: TableRowButtons,
 }
 
 export default function Table({ 
-  content, 
+  tableContent, 
+  headers,
   headerButtons ={},
   rowButtons = {}
 }: TableProps) {
   const { primaryColor } = useThemeContext();
   const [search, setSearch] = useState("");    
   headerButtons.setSearch = setSearch;
-
-  const filteredRows = content.content.filter((row) =>
-    row.turmaNome?.toLowerCase().includes(search.toLowerCase())
-    || row.data?.includes(search)
-    || row.horario?.includes(search)
-    || row.rank?.includes(search)
-    || row.user?.toLowerCase().includes(search.toLowerCase())
-  );
-
+  headerButtons.searchValue = search;
+  
   return (
     <div className="w-full flex justify-center items-start overflow-hidden outline-component">
       <Box
@@ -39,12 +39,12 @@ export default function Table({
           <table className="w-full max-w-full">
             <TableHeader 
               variant="Table" 
-              headers={content.headers} 
+              headers={headers} 
               headerButtons={headerButtons}
             />
             <tbody>
-                {filteredRows.length > 0 ? (
-                  filteredRows.map((row, index) => {
+                {tableContent.content.length > 0 ? (
+                  tableContent.content.map((row : TableCouncilRow, index) => {
                     row.className = (index === 0 ? "border-t-0 " : "border-t-2 ");
                       return (
                         <TableRow

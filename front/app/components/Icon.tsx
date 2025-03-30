@@ -11,9 +11,10 @@ interface IconProps {
     colorButton?: string;
     classNameButton?: string;
     cursor?: string;
+    onClick?: () => void;
 }
 
-export default function Icon({ IconPassed, color, colorButton, isButton = false, className = "w-6 h-6", classNameButton, cursor = "cursor-pointer" }: IconProps) {
+export default function Icon({ IconPassed, color, colorButton, isButton = false, className = "w-6 h-6", classNameButton, cursor = "cursor-pointer", onClick }: IconProps) {
     const { constrastColor, blackColor, secondaryColor } = useThemeContext();
 
     const inlineStyle = { color: color || (isButton ? blackColor : constrastColor) };
@@ -24,6 +25,7 @@ export default function Icon({ IconPassed, color, colorButton, isButton = false,
         <Button
             style={inlineStyleButton}
             className={"!rounded-small !w-[36px] md:!w-[53px] !h-[36px] !min-w-[36px] !flex !justify-center !items-center " + classNameButton}            
+            onClick={onClick}
         >
             <IconPassed style={inlineStyle} className={`${cursor + " "}` + className}/>
         </Button>

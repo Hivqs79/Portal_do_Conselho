@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="aae07e96-69c1-4165-ac9d-99ecae57c7c2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/GeneralApiApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/GeneralApiApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/configuration/CorsConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/configuration/KafkaConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/configuration/KafkaConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/configuration/ModelMapperConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/configuration/ModelMapperConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/configuration/SpecificationConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/configuration/SpecificationConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/annotations/AnnotationClassController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/annotations/AnnotationClassController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/annotations/AnnotationStudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/annotations/AnnotationStudentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/classes/ClassController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/classes/ClassController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/council/CouncilController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/council/CouncilController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/feedback/FeedbackClassController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/feedback/FeedbackClassController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/feedback/FeedbackStudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/feedback/FeedbackStudentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/feedback/FeedbackUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/feedback/FeedbackUserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/preCouncil/PreCouncilController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/preCouncil/PreCouncilController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/preCouncil/PreCouncilSectionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/preCouncil/PreCouncilSectionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/users/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/users/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/users/CustomizationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/users/CustomizationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/users/PedagogicController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/users/PedagogicController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/users/StudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/users/StudentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/controller/users/TeacherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/users/TeacherController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/ExceptionHandlerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/ExceptionHandlerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/exceptions/AnnotationNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/exceptions/AnnotationNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/exceptions/ClassFeedbackAlreadyExistException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/exceptions/ClassFeedbackAlreadyExistException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/exceptions/ClassNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/exceptions/ClassNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/exceptions/CouncilNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/exceptions/CouncilNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/exceptions/FeedbackNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/exceptions/FeedbackNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/exceptions/KafkaException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/exceptions/KafkaException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/exceptions/PreCouncilNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/exceptions/PreCouncilNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/exceptions/PreCouncilSectionNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/exceptions/PreCouncilSectionNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/exceptions/StudentFeedbackAlreadyExistException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/exceptions/StudentFeedbackAlreadyExistException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/exceptions/StudentNotAssociatedAtCouncilException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/exceptions/StudentNotAssociatedAtCouncilException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/exceptions/UserFeedbackAlreadyExistException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/exceptions/UserFeedbackAlreadyExistException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/exceptions/UserNotAssociatedException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/exceptions/UserNotAssociatedException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/exception/exceptions/UserNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/exception/exceptions/UserNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/annotation/AnnotationClassRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/annotation/AnnotationClassRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/annotation/AnnotationStudentRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/annotation/AnnotationStudentRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/classes/ClassRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/classes/ClassRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/council/CouncilRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/council/CouncilRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/feedback/FeedbackClassRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/feedback/FeedbackClassRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/feedback/FeedbackStudentRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/feedback/FeedbackStudentRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/feedback/FeedbackUserRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/feedback/FeedbackUserRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/preCouncil/PreCouncilRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/preCouncil/PreCouncilRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/preCouncil/PreCouncilSectionRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/preCouncil/PreCouncilSectionRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/users/AdminRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/users/AdminRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/users/CustomizationRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/users/CustomizationRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/users/PedagogicRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/users/PedagogicRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/users/StudentRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/users/StudentRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/request/users/TeacherRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/users/TeacherRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/annotation/AnnotationClassResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/annotation/AnnotationClassResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/annotation/AnnotationStudentResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/annotation/AnnotationStudentResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/classes/ClassResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/classes/ClassResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/council/CouncilResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/council/CouncilResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/exceptions/ExceptionResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/exceptions/ExceptionResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/exceptions/ValidationResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/exceptions/ValidationResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/feedback/FeedbackClassResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/feedback/FeedbackClassResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/feedback/FeedbackStudentResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/feedback/FeedbackStudentResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/feedback/FeedbackUserResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/feedback/FeedbackUserResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/preCouncil/PreCouncilResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/preCouncil/PreCouncilResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/preCouncil/PreCouncilSectionResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/preCouncil/PreCouncilSectionResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/users/AdminResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/users/AdminResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/users/CustomizationResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/users/CustomizationResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/users/PedagogicResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/users/PedagogicResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/users/StudentResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/users/StudentResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/users/TeacherResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/users/TeacherResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/dto/response/users/UserResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/users/UserResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/annotation/Annotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/annotation/Annotation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/annotation/AnnotationClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/annotation/AnnotationClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/annotation/AnnotationStudent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/annotation/AnnotationStudent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/classes/Class.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/classes/Class.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/council/Council.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/council/Council.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/feedback/Feedback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/feedback/Feedback.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/feedback/FeedbackClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/feedback/FeedbackClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/feedback/FeedbackStudent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/feedback/FeedbackStudent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/feedback/FeedbackUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/feedback/FeedbackUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/preCouncil/PreCouncil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/preCouncil/PreCouncil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/preCouncil/PreCouncilSection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/preCouncil/PreCouncilSection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/users/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/users/Admin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/users/Customization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/users/Customization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/users/Pedagogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/users/Pedagogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/users/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/users/Student.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/users/Teacher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/users/Teacher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/entity/users/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/users/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/enums/ClassAreaENUM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/enums/ClassAreaENUM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/enums/FontSizeENUM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/enums/FontSizeENUM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/enums/ModeThemeENUM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/enums/ModeThemeENUM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/enums/PalleteENUM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/enums/PalleteENUM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/enums/RankENUM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/enums/RankENUM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/enums/TextFont.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/enums/TextFont.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/model/enums/TitleFont.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/enums/TitleFont.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/AdminRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/AdminRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/AnnotationClassRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/AnnotationClassRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/AnnotationStudentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/AnnotationStudentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/ClassRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/ClassRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/CouncilRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/CouncilRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/CustomizationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/CustomizationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/FeedbackClassRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/FeedbackClassRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/FeedbackStudentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/FeedbackStudentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/FeedbackUserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/FeedbackUserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/PedagogicRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/PedagogicRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/PreCouncilRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/PreCouncilRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/PreCouncilSectionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/PreCouncilSectionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/StudentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/StudentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/TeacherRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/TeacherRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/annotations/AnnotationClassService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/annotations/AnnotationClassService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/annotations/AnnotationStudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/annotations/AnnotationStudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/classes/ClassService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/classes/ClassService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/council/CouncilService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/council/CouncilService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/feedback/FeedbackClassService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/feedback/FeedbackClassService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/feedback/FeedbackStudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/feedback/FeedbackStudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/feedback/FeedbackUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/feedback/FeedbackUserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/kafka/KafkaConsumerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/kafka/KafkaConsumerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/kafka/KafkaMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/kafka/KafkaMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/kafka/KafkaProducerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/kafka/KafkaProducerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/preCouncil/PreCouncilSectionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/preCouncil/PreCouncilSectionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/preCouncil/PreCouncilService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/preCouncil/PreCouncilService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/users/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/users/AdminService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/users/CustomizationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/users/CustomizationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/users/PedagogicService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/users/PedagogicService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/users/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/users/StudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/users/TeacherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/users/TeacherService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/service/users/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/users/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/textFiles/Plugins" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/textFiles/Plugins" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/textFiles/SpecificationDOCS" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/textFiles/SpecificationDOCS" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/userapi/textFiles/mysql-script" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/textFiles/mysql-script" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/net/weg/userapi/UserApiApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/net/weg/general_api/UserApiApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docker/aqui_fica_os_dockerfile.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../k8s/aqui_fica_os_yaml.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../k8s/kafka-zookeeper.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../../k8s/kafka-zookeeper.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../scripts/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/run.sh" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Hivqs79&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Hivqs79/Portal_do_Conselho.git&quot;,
+    &quot;accountId&quot;: &quot;01ec2c07-fa77-437b-9326-d7b73969c0b3&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2uqoCg8EsAtY4MaAc6Ots0X8GX3" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.GeneralAPI [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.GeneralAPI [clean,package,-DskipTests].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.GeneralAPI [clean,package,-Dskiptests].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.GeneralAPI [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.GeneralAPI [dependency:tree].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.GeneralAPI [package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.GeneralAPI [validate].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.GeneralApiApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/docker-and-k8s&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/hivqs79/Documentos/Github/Portal_do_Conselho/back/GeneralAPI&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.17859624&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean" />
+      <command value="mvn dependency:tree " />
+      <command value="mvn clean install " />
+      <command value="mvn clean package -DskipTests" />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="GeneralApiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="GeneralAPI" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="net.weg.general_api.GeneralApiApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="aae07e96-69c1-4165-ac9d-99ecae57c7c2" name="Changes" comment="" />
+      <created>1742985340020</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1742985340020</updated>
+      <workItem from="1742985341300" duration="345000" />
+      <workItem from="1743280104591" duration="334000" />
+      <workItem from="1743281879816" duration="3833000" />
+      <workItem from="1743296279787" duration="39000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
