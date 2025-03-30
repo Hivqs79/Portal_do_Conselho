@@ -12,10 +12,10 @@ export interface CouncilFormProps {
     setSelectedClass: Dispatch<SetStateAction<number | null>>;
     teachers: Teacher[];
     classExistents: Class[];
-    setDate: Dispatch<SetStateAction<dayjs.Dayjs>>;
-    setTime: Dispatch<SetStateAction<dayjs.Dayjs>>;
-    date: dayjs.Dayjs;
-    time: dayjs.Dayjs;
+    setDate: Dispatch<SetStateAction<dayjs.Dayjs | null>>;
+    setTime: Dispatch<SetStateAction<dayjs.Dayjs | null>>;
+    date: dayjs.Dayjs | null;
+    time: dayjs.Dayjs | null;
     setSearchTeachers: Dispatch<SetStateAction<string>>;
     setSearchClass: Dispatch<SetStateAction<string>>;
     submitForm: () => void;

@@ -23,10 +23,10 @@ export default function SelectTable({ selectType, name, rows, value, setSelected
 
     const handleCheckboxChange = (id: string) => {
         if (setSelectedItems === undefined) return;
-        setSelectedItems((prevSelectedItems) => ({
-            ...prevSelectedItems,
-            [id]: !prevSelectedItems[id],
-        }));
+        setSelectedItems((prevSelectedItems) => {
+            const { [id]: _, ...rest } = prevSelectedItems;
+            return prevSelectedItems[id] ? rest : { ...prevSelectedItems, [id]: true };
+        });        
     };
 
     const handleSelectAll = () => {

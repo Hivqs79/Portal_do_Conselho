@@ -9,7 +9,7 @@ import { Teacher } from "@/interfaces/Teacher";
 import { SiGoogleclassroom } from "react-icons/si";
 import Class from "@/interfaces/Class";
 import { LuPencilLine } from "react-icons/lu";
-import CouncilForm from "./CouncilForm";
+import CouncilForm from "@/components/council/CouncilForm";
 import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
 import { isArray } from "util";
 
@@ -17,6 +17,7 @@ interface CouncilModalProps {
   open: boolean;
   close: () => void;
   confirmFunction?: () => void;
+  verifyForm?: () => boolean;
   setEditing?: (value: boolean) => void;
   editing?: boolean;
   variant: string;
@@ -27,6 +28,7 @@ export default function CouncilModal({
   open,
   close,
   confirmFunction,
+  verifyForm,
   setEditing,
   editing,
   variant,
@@ -59,7 +61,7 @@ export default function CouncilModal({
       className="flex items-center justify-center"
     >
       <Box
-        className={"p-4 z-30 mx-16 max-w-[800px] rounded-big " + (editing && "mt-24")} 
+        className="p-4 z-50 mx-16 max-w-[800px] rounded-big mt-24"
         style={{ backgroundColor: backgroundColor }}
       >
         <Box className="flex flex-col w-full max-h-[80vh] overflow-y-auto p-8  gap-10">
@@ -104,7 +106,7 @@ export default function CouncilModal({
             </Box>
           </Box>
           {editing && councilInformation ? (
-            <CouncilForm councilInformation={{...councilInformation, selectedTeachers: teachers.}} variant="editing"/>
+            <CouncilForm councilInformation={councilInformation} verifyForm={verifyForm} variant="editing"/>
           ) : (
             <>
               <Box className="flex flex-col md:flex-row md:gap-8">
@@ -230,12 +232,9 @@ export default function CouncilModal({
                 <Button
                   variant="contained"
                   onClick={() => {
-                    close();
-                    if (confirmFunction) {
+                    if (confirmFunction && (verifyForm && verifyForm())) {
+                      close();
                       confirmFunction();
-                    }
-                    if(setEditing) {
-                      setEditing(false);
                     }
                   }}
                   className="h-fit w-full"

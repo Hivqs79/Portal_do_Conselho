@@ -1,28 +1,32 @@
+"use client";
 import { Box, Button, Icon, Typography } from "@mui/material";
 import SelectTable from "../table/SelectTable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useThemeContext } from "@/hooks/useTheme";
 import { TimePicker } from "@mui/x-date-pickers";
 import { FaRegCalendarAlt, FaRegClock } from "react-icons/fa";
 import dayjs from "dayjs";
 import { useWindowWidth } from "@react-hook/window-size";
-import CouncilModal from "./CouncilModal";
+import CouncilModal from "@/components/council/CouncilModal";
 import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
 
 interface CreateCouncilFormProps {
   councilInformation: CouncilFormProps;
+  verifyForm?: () => boolean;
   variant: string;
 }
 
 export default function CouncilForm({
   councilInformation,
-  variant,
+  verifyForm,
+  variant,  
 }: CreateCouncilFormProps) {
   const { primaryColor, colorByMode, whiteColor } = useThemeContext();
   const windowWidth = useWindowWidth();
   const [openConfirm, setOpenConfirm] = useState(false);
   const {
+    visualizedCouncil,
     selectedTeachers,
     selectedClass,
     setSelectedTeachers,
@@ -37,6 +41,12 @@ export default function CouncilForm({
     setSearchClass,
     submitForm,
   } = councilInformation;
+
+  useEffect(() => {
+    if (variant === "editing" && visualizedCouncil) {                 
+      setSelectedTeachers(Object.fromEntries(visualizedCouncil.teachers.map(t => [t.id, true])));
+    }
+  }, []);
 
   return (
     <Box
@@ -122,7 +132,11 @@ export default function CouncilForm({
           <Button
             variant="contained"
             color="primary"
-            onClick={() => setOpenConfirm(true)}
+            onClick={() => {         
+              if (verifyForm && verifyForm()) {
+                setOpenConfirm(true);
+              }     
+            }}
           >
             <Typography
               variant={
