@@ -1,36 +1,36 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: general-api-deployment
+  name: chat-api-deployment
 spec:
   selector:
     matchLabels:
-      app: general-api
+      app: chat-api
   template:
     metadata:
       labels:
-        app: general-api
+        app: chat-api
     spec:
       containers:
-      - name: general-api
-        image: hivqs79/portal-do-conselho_general-api:latest
+      - name: chat-api
+        image: hivqs79/portal-do-conselho_chat-api:latest
         ports:
-        - containerPort: 8081
+        - containerPort: 8082
         env:
         - name: SPRING_DATASOURCE_URL
           valueFrom:
             configMapKeyRef:
-              name: mysql-general-config
+              name: mysql-chat-config
               key: jdbc-url
         - name: SPRING_DATASOURCE_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mysql-general-secret
+              name: mysql-chat-secret
               key: username
         - name: SPRING_DATASOURCE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-general-secret
+              name: mysql-chat-secret
               key: password
         resources:
           requests:
@@ -45,12 +45,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: general-api-service
+  name: chat-api-service
 spec:
   selector:
-    app: general-api
+    app: chat-api
   ports:
     - protocol: TCP
-      port: 8081
-      targetPort: 8081
+      port: 8082
+      targetPort: 8082
   type: ClusterIP

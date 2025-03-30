@@ -232,7 +232,8 @@ export default function CouncilModal({
                 <Button
                   variant="contained"
                   onClick={() => {
-                    if (confirmFunction && (verifyForm && verifyForm())) {
+                    console.log(confirmFunction != undefined && (verifyForm != undefined ? verifyForm() : true));
+                    if (confirmFunction != undefined && (verifyForm != undefined ? verifyForm() : true)) {
                       close();
                       confirmFunction();
                     }

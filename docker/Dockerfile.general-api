@@ -1,5 +1,5 @@
 FROM openjdk:21
 EXPOSE 8081
-WORKDIR app/spring
+WORKDIR /app/spring
 COPY ../back/GeneralAPI/target/GeneralAPI.jar /app/spring/general-service.jar
 ENTRYPOINT ["java", "-jar", "general-service.jar"]

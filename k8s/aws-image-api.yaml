@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-image-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aws-image-api
+  template:
+    metadata:
+      labels:
+        app: aws-image-api
+    spec:
+      containers:
+      - name: aws-image-api
+        image: hivqs79/portal-do-conselho_aws-image-api:latest
+        ports:
+        - containerPort: 3060
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-aws-image-config
+              key: host
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-aws-image-config
+              key: port
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-aws-image-config
+              key: database
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-aws-image-secret
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-aws-image-secret
+              key: password
+        - name: REGION
+          valueFrom:
+            secretKeyRef:
+              name: aws-image-secret
+              key: region
+        - name: ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-image-secret
+              key: access_key
+        - name: SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-image-secret
+              key: secret_key
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aws-image-api-service
+spec:
+  selector:
+    app: aws-image-api
+  ports:
+    - protocol: TCP
+      port: 3060
+      targetPort: 3060
+  type: ClusterIP

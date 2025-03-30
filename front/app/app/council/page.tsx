@@ -96,8 +96,8 @@ export default function Council() {
   };
 
   const resetInputs = () => {
-    setDate(dayjs().add(1, "day"));
-    setTime(dayjs());
+    setDate(null);
+    setTime(null);
     setSelectedTeachers({});
     setSearchClass("");
     setSearchTeachers("");

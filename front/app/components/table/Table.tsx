@@ -43,7 +43,7 @@ export default function Table({
               headerButtons={headerButtons}
             />
             <tbody>
-                {tableContent.content.length > 0 ? (
+                {tableContent && tableContent.content.length > 0 ? (
                   tableContent.content.map((row : TableCouncilRow, index) => {
                     row.className = (index === 0 ? "border-t-0 " : "border-t-2 ");
                       return (

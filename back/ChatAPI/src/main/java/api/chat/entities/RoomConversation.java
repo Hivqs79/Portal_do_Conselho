@@ -2,10 +2,7 @@ package api.chat.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -39,5 +36,6 @@ public class RoomConversation {
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "roomConversation")
     @JsonIgnore
+    @ToString.Exclude
     private List<Message> messages;
 }

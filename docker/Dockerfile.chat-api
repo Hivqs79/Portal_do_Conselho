@@ -1,0 +1,5 @@
+FROM openjdk:21
+EXPOSE 8082
+WORKDIR /app/spring
+COPY ../back/ChatAPI/target/ChatAPI.jar /app/spring/chat-service.jar
+ENTRYPOINT ["java", "-jar", "chat-service.jar"] 

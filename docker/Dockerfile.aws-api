@@ -1,0 +1,13 @@
+FROM node:16-alpine
+
+WORKDIR /usr/src/app
+
+COPY ../back/AwsAPI/package*.json ./
+
+RUN npm install -g npm@8.19.2
+RUN npm install
+
+COPY ../back/AwsAPI .
+
+EXPOSE 3060
+CMD ["node", "index.js"]

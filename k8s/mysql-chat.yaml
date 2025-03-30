@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-chat-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /mnt/data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-chat-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-chat-secret
+type: Opaque
+data:
+  username: cm9vdA== 
+  password: cm9vdA== 
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-chat-config
+data:
+  jdbc-url: jdbc:mysql://mysql-chat-service:3306/chat_db?createDatabaseIfNotExist=true
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-chat-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mysql-chat
+  template:
+    metadata:
+      labels:
+        app: mysql-chat
+    spec:
+      containers:
+      - name: mysql-chat
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-chat-secret
+              key: password
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-chat-persistent-storage
+          mountPath: /var/lib/mysql
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 400m
+            memory: 1Gi
+      volumes:
+      - name: mysql-chat-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-chat-pvc
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-chat-service
+spec:
+  selector:
+    app: mysql-chat
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP
