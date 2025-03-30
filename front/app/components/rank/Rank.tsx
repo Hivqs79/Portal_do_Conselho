@@ -30,7 +30,6 @@ export default function Rank({
   onRankChange,
 }: RankProps) {
   const {
-    primaryGrayColor,
     colorByModeSecondary,
     constrastColor,
     secondaryColor,
@@ -58,9 +57,9 @@ export default function Rank({
   ) => {
     setSelectedRank(newRank);
     if (onRankChange) {
-      onRankChange(newRank); // Passa o novo rank para o componente pai
-      const encryptedRank = Encryptor({ rank: newRank }); // Criptografa o rank
-      localStorage.setItem("rank", encryptedRank); // Salva no localStorage
+      onRankChange(newRank);
+      const encryptedRank = Encryptor({ rank: newRank });
+      localStorage.setItem("rank", encryptedRank);
     }
     handleClose();
   };
@@ -142,7 +141,7 @@ export default function Rank({
                 (key) => (
                   <div
                     key={key}
-                    className="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition"
+                    className="rankHover flex items-center gap-2 p-2 rounded-lg cursor-pointer transition"
                     onClick={() => handleSelect(key)}
                   >
                     {rank[key]}{" "}
@@ -163,7 +162,7 @@ export default function Rank({
     if (popover) {
       return (
         <>
-          <div className="inline-flex justify-between items-center flex-wrap gap-3 w-full">
+          <div className="inline-flex flex-col sm:flex-row justify-between items-start sm:items-center flex-wrap gap-3 w-full">
             <Typography
               variant="lg_text_bold"
               style={{ color: colorByModeSecondary }}
@@ -171,8 +170,11 @@ export default function Rank({
               Rank:
             </Typography>
             <span
-              style={{ borderColor: primaryGrayColor, color: constrastColor }}
-              className="cursor-pointer flex items-center gap-1 border-[2px] rounded-normal w-[120px]"
+              style={{
+                borderColor: colorByModeSecondary,
+                color: constrastColor,
+              }}
+              className="cursor-pointer w-full flex justify-center p-1 sm:justify-start items-center gap-1 border-[2px] rounded-normal sm:w-[120px]"
               onClick={handleClick}
             >
               {rank[selectedRank]}
@@ -195,7 +197,7 @@ export default function Rank({
                 (key) => (
                   <div
                     key={key}
-                    className="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition"
+                    className="rankHover flex items-center gap-2 p-2 rounded-lg cursor-pointer transition"
                     onClick={() => handleSelectNormalRank(key)}
                   >
                     {rank[key]}{" "}

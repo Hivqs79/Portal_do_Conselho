@@ -35,6 +35,7 @@ export const colors = {
     "primaryGrayColor": "#888888",
     "secondaryGrayColor": "#E7E7E7",
     "redDanger": "#FE3535",
+    "greenConfirm": "#148018",
     "pallete" : {
         "blue": {
             "primary": "#0050AC",
@@ -67,7 +68,7 @@ export const colors = {
             "terciary": "#FFC5C5"
         },
         "purple": {
-            "primary": "#5E0BCC",
+            "primary": "#4E0BA7",
             "secondary": "#AF92FF",
             "terciary": "#DBD0FF"
         },

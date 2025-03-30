@@ -1,7 +1,7 @@
 "use client";
 import OpacityHex from "@/hooks/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Rank from "./rank/Rank";
 import Photo from "./profile/Photo";
 import TextareaComponent from "./input/TextareaComponent";
@@ -11,7 +11,6 @@ import AutoSaveIndicator from "./AutoSaveIndicator";
 import { useState, useEffect, useRef } from "react";
 import { Decryptor } from "@/encryption/Decryptor";
 import { Encryptor } from "@/encryption/Encryptor";
-import CommentariesModal from "./Modals/CommentariesModal";
 
 interface StudentCouncilFormProps {
   student: string;
@@ -19,6 +18,7 @@ interface StudentCouncilFormProps {
   rank: "excellent" | "good" | "average" | "critical" | "none";
   positiveContent: string;
   negativeContent: string;
+  id_user?: number
   comments: string;
   onNext: () => void;
   onPrevious: () => void;
@@ -32,9 +32,10 @@ export default function StudentCouncilForm({
   positiveContent: initialPositiveContent,
   negativeContent: initialNegativeContent,
   comments,
+  id_user,
   onNext,
   onPrevious,
-  openCommentsModal
+  openCommentsModal,
 }: StudentCouncilFormProps) {
   const [frequenciaAtualizada, setFrequenciaAtual] =
     useState(initialFrequencia);
@@ -62,7 +63,6 @@ export default function StudentCouncilForm({
   const [isDisable, setDisable] = useState(false);
   const isInitialMount = useRef(true);
 
-  // Carrega os dados do localStorage quando o student muda
   useEffect(() => {
     setFrequencia(initialFrequencia);
     setPositiveContent(initialPositiveContent);
@@ -86,7 +86,6 @@ export default function StudentCouncilForm({
     }
   }, [student]);
 
-  // Função para salvar no localStorage
   const saveToLocalStorage = () => {
     setDisable(true);
     setIsSaving(true);
@@ -111,7 +110,6 @@ export default function StudentCouncilForm({
     }, 1000);
   };
 
-  // Monitora alterações e salva após um tempo de inatividade
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
@@ -161,28 +159,32 @@ export default function StudentCouncilForm({
 
   return (
     <>
-      <div
-        style={{ borderColor: primaryColor }}
+      <Box
+        style={{ borderColor: colorByModeSecondary }}
         className="relative w-full border-2 rounded-big p-5 px-9 xl:px-16 flex flex-col gap-5 pb-10 lg:pb-5"
       >
-        <div className="flex flex-wrap lg:flex-nowrap gap-5 lg:gap-10 justify-center">
-          <div className="flex flex-col justify-between items-start gap-5 h-[550px]">
-            <div className="flex flex-wrap justify-between items-center gap-4">
+        <Box className="flex flex-wrap lg:flex-nowrap gap-5 lg:gap-10 justify-center">
+          <Box className="flex flex-col justify-between items-start gap-5 h-[550px]">
+            <Box className="flex flex-wrap justify-between items-center gap-4">
               <Typography variant="lg_text_bold" color={constrastColor}>
                 <span style={{ color: colorByModeSecondary }}>Aluno:</span>{" "}
                 {student}
               </Typography>
-            </div>
-            <Photo classname="lg:w-[250px] mx-auto" rounded={false} />
+            </Box>
+            <Photo
+              classname="max-w-[200px] max-h-[290px] h-[300px] w-[350px] sm:max-w-[250px] mx-auto"
+              idUser={1}
+              rounded={false}
+            />
             <span className="flex flex-col justify-center items-center gap-4 w-full">
-              <span className="flex justify-between w-full items-center flex-wrap gap-y-4 gap-x-4">
+              <span className="flex flex-col sm:flex-row justify-between w-full items-start sm:items-center flex-wrap gap-y-4 gap-x-4">
                 <Typography variant="lg_text_bold" color={colorByModeSecondary}>
                   Frequência:
                 </Typography>
-                <div className="relative flex items-center">
+                <Box className="relative flex items-center w-full sm:w-auto">
                   <input
                     style={{
-                      borderColor: primaryColor,
+                      borderColor: colorByModeSecondary,
                       color: OpacityHex(constrastColor, 0.7),
                       paddingRight: "20px",
                     }}
@@ -192,7 +194,7 @@ export default function StudentCouncilForm({
                     onChange={handleFrequenciaChange}
                     min={0}
                     max={100}
-                    className="text-center bg-none bg-transparent appearance-none border-2 w-[120px] font-bold h-[40px] flex justify-center items-center rounded-small [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none outline-none"
+                    className="text-center bg-none bg-transparent rounded-normal appearance-none border-2 w-full sm:w-[120px] font-bold h-[48px] flex justify-center items-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none outline-none"
                   />
                   <span
                     style={{ color: OpacityHex(constrastColor, 0.7) }}
@@ -200,7 +202,7 @@ export default function StudentCouncilForm({
                   >
                     %
                   </span>
-                </div>
+                </Box>
               </span>
               <span className="w-full">
                 <Rank
@@ -212,7 +214,7 @@ export default function StudentCouncilForm({
                 />
               </span>
             </span>
-            <span className="lg:hidden">
+            <span className="lg:hidden w-full">
               <Button
                 variant="contained"
                 sx={{ width: "100%" }}
@@ -235,12 +237,12 @@ export default function StudentCouncilForm({
                 </Typography>
               </Button>
             </span>
-          </div>
-          <div
-            style={{ backgroundColor: primaryColor }}
+          </Box>
+          <Box
+            style={{ backgroundColor: colorByModeSecondary }}
             className="hidden lg:block w-[.2rem] rounded-full h-[550px]"
-          ></div>
-          <div className="w-full flex justify-between flex-col gap-5 lg:h-[550px]">
+          ></Box>
+          <Box className="w-full flex justify-between flex-col gap-5 lg:h-[550px]">
             <TextareaComponent
               title="Pontos Positivos"
               readonly={false}
@@ -255,8 +257,8 @@ export default function StudentCouncilForm({
               value={negativeContent}
               onChange={(e) => setNegativeContent(e.target.value)}
             />
-          </div>
-        </div>
+          </Box>
+        </Box>
         {!isDisable ? (
           <>
             <span
@@ -264,7 +266,7 @@ export default function StudentCouncilForm({
               className="absolute left-[-12px] lg:left-[-10] xl:left-0 top-1/3 lg:top-1/2 -translate-y-1/2 cursor-pointer"
             >
               <Icon
-                color={primaryColor}
+                color={colorByModeSecondary}
                 className="text-6xl"
                 IconPassed={IoIosArrowBack}
               />
@@ -274,7 +276,7 @@ export default function StudentCouncilForm({
               className="absolute right-[-12px] lg:right-[-10] xl:right-0 top-1/3 lg:top-1/2 -translate-y-1/2 cursor-pointer"
             >
               <Icon
-                color={primaryColor}
+                color={colorByModeSecondary}
                 className="text-6xl"
                 IconPassed={IoIosArrowForward}
               />
@@ -300,13 +302,10 @@ export default function StudentCouncilForm({
             </span>
           </>
         )}
-        <div className="absolute bottom-2 left-3 lg:hidden lg:bottom-[20px]">
+        <Box className="absolute bottom-2 left-3 lg:bottom-auto lg:left-auto lg:right-[2.5rem] lg:top-5 xl:right-[4rem]">
           <AutoSaveIndicator saved={!isSaving} />
-        </div>
-        <div className="absolute hidden lg:block right-[4rem] top-5">
-          <AutoSaveIndicator saved={!isSaving} />
-        </div>
-      </div>
+        </Box>
+      </Box>
     </>
   );
 }

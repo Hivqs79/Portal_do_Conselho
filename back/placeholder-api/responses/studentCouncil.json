@@ -2,9 +2,6 @@
   "council-form": {
     "class": {
       "name": "AI PSIN 2023/2 INT1",
-      "positiveContent": "",
-      "negativeContent": "",
-      "rank": "average",
       "teacherAnotations": [
         {
           "name": "Kristian Erdmann",
@@ -29,11 +26,7 @@
     "users": [
       {
         "name": "Alex Gabriel Zastrow",
-        "frequencia": 82.45,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "good",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -57,11 +50,7 @@
       },
       {
         "name": "André Felipe Witt",
-        "frequencia": 91.12,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "average",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -85,11 +74,7 @@
       },
       {
         "name": "Artur Neves Hopner",
-        "frequencia": 77.89,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "good",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -113,11 +98,7 @@
       },
       {
         "name": "Bruna Júlia Reckziegel",
-        "frequencia": 85.34,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "good",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -141,11 +122,7 @@
       },
       {
         "name": "Camilly dos Santos Chelest",
-        "frequencia": 78.56,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "critical",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -169,11 +146,7 @@
       },
       {
         "name": "Cauã Justimiano Dutra",
-        "frequencia": 80.02,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "none",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -197,11 +170,7 @@
       },
       {
         "name": "Emily Hefter de Souza",
-        "frequencia": 89.67,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "good",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -225,11 +194,7 @@
       },
       {
         "name": "Fernanda Agnes Amorim",
-        "frequencia": 87.43,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "excellent",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -253,11 +218,7 @@
       },
       {
         "name": "Gabriel Leite Medeiros",
-        "frequencia": 79.21,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "good",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -281,11 +242,7 @@
       },
       {
         "name": "Gabriela Carolina Pellense",
-        "frequencia": 83.55,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "critical",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -309,11 +266,7 @@
       },
       {
         "name": "Giulia Fugel",
-        "frequencia": 88.92,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "good",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -337,11 +290,7 @@
       },
       {
         "name": "Gustavo Stinghen",
-        "frequencia": 76.34,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "average",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -365,11 +314,7 @@
       },
       {
         "name": "Joana Reinert Voigt",
-        "frequencia": 92.45,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "good",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -393,11 +338,7 @@
       },
       {
         "name": "Kaun Eggert",
-        "frequencia": 92.45,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "good",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -421,11 +362,7 @@
       },
       {
         "name": "Leticia Moretti",
-        "frequencia": 81.78,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "good",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -449,11 +386,7 @@
       },
       {
         "name": "Mateus Henrque Bosquetti",
-        "frequencia": 81.78,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "good",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -477,11 +410,7 @@
       },
       {
         "name": "Pedro Augusto wilhem",
-        "frequencia": 74.59,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "excellent",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -505,11 +434,7 @@
       },
       {
         "name": "Pedro Henrique Panstein",
-        "frequencia": 90.59,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "excellent",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -533,11 +458,7 @@
       },
       {
         "name": "Saymon Oliveira de Castro",
-        "frequencia": 74.59,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "excellent",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -561,11 +482,7 @@
       },
       {
         "name": "Vinícius Eduardo dos Santos",
-        "frequencia": 81.78,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "average",
         "comments": [
           {
             "name": "Kristian Erdmann",
@@ -589,11 +506,7 @@
       },
       {
         "name": "Yara Janice Schneider",
-        "frequencia": 90.23,
         "imageKey": "",
-        "negativeContent": "",
-        "positiveContent": "",
-        "rank": "critical",
         "comments": [
           {
             "name": "Kristian Erdmann",

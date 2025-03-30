@@ -1,6 +1,6 @@
 "use client";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Modal } from "@mui/material";
 import Icon from "../Icon";
 import { IoClose } from "react-icons/io5";
 import Photo from "../profile/Photo";
@@ -36,7 +36,6 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
     };
   }, []);
 
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -56,13 +55,27 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
   }, []);
 
   // Função para prevenir o comportamento padrão ao arrastar sobre a área
-  const handleDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  }, []);
+  const handleDragOver = useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+    },
+    []
+  );
 
   return (
-    <Box className="bg-black/60 fixed inset-0 flex justify-center items-center z-50">
+    <Modal
+        open
+        sx={{
+          display: "flex",
+          p: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          border: "none",
+          outline: "none",
+        }}
+      >
       <div
+        onClick={(e) => e.stopPropagation()}
         style={{ backgroundColor: backgroundColor }}
         className="p-5 rounded-lg w-full max-w-[800px] m-5"
       >
@@ -94,7 +107,7 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
             <Photo
               classname="p-0 m-0 h-[200px] w-[200px]"
               rounded={true}
-              photo={selectedImage ? URL.createObjectURL(selectedImage) : ""}
+              editPhoto={selectedImage}
               profile={true}
             />
             <span className="absolute top-1/2 left-1/2 -translate-x-1/2 w-full h-full bg-black/50 flex justify-center items-center rounded-full -translate-y-1/2">
@@ -175,6 +188,6 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
           </Button>
         </Box>
       </div>
-    </Box>
+    </Modal>
   );
 }

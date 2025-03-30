@@ -1,47 +1,85 @@
-"use client";
-
-import { useThemeContext } from "@/hooks/useTheme";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useThemeContext } from "@/hooks/useTheme";
 
 interface PhotoProps {
-  photo?: File | string | null;
-  classname: string;
-  rounded: boolean;
+  classname?: string;
+  rounded?: boolean;
+  idUser?: number;
   profile?: boolean;
+  editPhoto?: File | null;
 }
 
-export default function Photo({ photo, classname, rounded, profile }: PhotoProps) {
+export default function Photo({
+  classname,
+  rounded,
+  profile,
+  idUser,
+  editPhoto,
+}: PhotoProps) {
   const { secondaryColor, terciaryColor } = useThemeContext();
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null);
 
-  if (!photo || photo === "") {
-    if (rounded) {
-      return (
-        <svg
-          className={classname || "w-[200px] h-[200px]"}
-          viewBox="0 0 200 200"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g clipPath="url(#clip0_489_11834)">
-            <rect width="200" height="200" rx="100" fill={terciaryColor} />
-            <circle cx="100" cy="100" r="40" fill={secondaryColor} />
-            <path
-              d="M165 203C165 183.904 158.152 165.591 145.962 152.088C133.772 138.586 117.239 131 100 131C82.7609 131 66.2279 138.586 54.0381 152.088C41.8482 165.591 35 183.904 35 203L100 203H165Z"
-              fill={secondaryColor}
-            />
-          </g>
-          <defs>
-            <clipPath id="clip0_489_11834">
-              <rect width="200" height="200" rx="100" fill="white" />
-            </clipPath>
-          </defs>
-        </svg>
-      );
+  useEffect(() => {
+    if (idUser) {
+      const imageId = parseInt(localStorage.getItem("imageid") || "0"); //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO
+      if (!imageId || isNaN(imageId)) { //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO
+        console.error("Imagem não encontrada, ID não é válido"); //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO
+        return; //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO
+      } //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO
+
+      fetch(`http://localhost:3060/image/${imageId}`) //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO
+        .then((res) => {
+          if (!res.ok) {
+            console.log("Imagem não encontrada, default img selecionada")
+            setPhotoUrl(null);
+          }
+          return res.blob();
+        })
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          setPhotoUrl(url);
+
+          // Pré-carregar a imagem para obter suas dimensões
+          const img = new window.Image();
+          img.src = url;
+          img.onload = () => {
+            setDimensions({ width: img.width, height: img.height });
+          };
+        })
+        .catch((error) => {
+          console.error(error);
+          setPhotoUrl(null);
+        });
     }
+  }, [idUser]);
 
-    return (
+  if (!photoUrl || !dimensions) {
+    return rounded ? (
       <svg
-        className={classname || "w-full"}
+        className={classname || "max-w-[250px]"}
+        viewBox="0 0 200 200"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clipPath="url(#clip0_489_11834)">
+          <rect width="200" height="200" rx="100" fill={terciaryColor} />
+          <circle cx="100" cy="100" r="40" fill={secondaryColor} />
+          <path
+            d="M165 203C165 183.904 158.152 165.591 145.962 152.088C133.772 138.586 117.239 131 100 131C82.7609 131 66.2279 138.586 54.0381 152.088C41.8482 165.591 35 183.904 35 203L100 203H165Z"
+            fill={secondaryColor}
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0_489_11834">
+            <rect width="200" height="200" rx="100" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
+    ) : (
+      <svg
+        className={classname || "max-w-[250px]"}
         viewBox="0 0 238 276"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -63,16 +101,19 @@ export default function Photo({ photo, classname, rounded, profile }: PhotoProps
     );
   }
 
-  const photoUrl =
-    typeof photo === "string" ? photo : URL.createObjectURL(photo);
-
   return (
-      <Image
-        src={photoUrl}
-        alt="Custom Image"
-        width={500}
-        height={500}
-        className={rounded ? `rounded-full ${classname} ${profile ? "w-[244px] h-[200px]" : ""}` : `${classname}`}
-      />
+    <Image
+      src={photoUrl}
+      alt="Custom Image"
+      width={dimensions.width}
+      height={dimensions.height}
+      className={
+        rounded
+          ? `rounded-full ${classname} ${
+              profile ? "max-w-[244px] h-[200px]" : ""
+            }`
+          : `${classname} + rounded-normal`
+      }
+    />
   );
 }

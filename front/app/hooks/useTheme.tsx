@@ -39,13 +39,14 @@ interface ThemeContextType {
   secondaryGrayColor: string;
   colorByMode: string;
   colorByModeSecondary: string;
-  lighterColor: (string: string) => string;
-  darkerColor: (string: string) => string;
   textBlackolor: string;
   lightGrayColor: string;
   darkGrayColor: string;
   redDanger: string;
   textDarkColor: string;
+  greenConfirm: string;
+  lighterColor: (string: string) => string;
+  darkerColor: (string: string) => string;
   getThemeMode: () => "dark" | "light";
   getThemePallete: () => PossibleColors;
   changeFontSize: (multiplier: number) => void;
@@ -72,13 +73,14 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const secondaryGrayColor = colors.secondaryGrayColor;
   const colorByMode = ThemeSettings.getColorByMode();
   const colorByModeSecondary = ThemeSettings.getColorByModeSecondary();
-  const lighterColor = (color: string) => ThemeSettings.lighterColor(color);
-  const darkerColor = ThemeSettings.darkerColor;
   const textBlackolor = ThemeSettings.textBlackolor();
   const textDarkColor = colors.textDarkColor;
   const lightGrayColor = ThemeSettings.lightGrayColor();
   const darkGrayColor = ThemeSettings.darkGrayColor();
   const redDanger = colors.redDanger;
+  const greenConfirm = colors.greenConfirm;
+  const lighterColor = (color: string) => ThemeSettings.lighterColor(color);
+  const darkerColor = ThemeSettings.darkerColor;
   const getThemeMode = () => ThemeSettings.getThemeMode();
   const getThemePallete = (): PossibleColors => ThemeSettings.getThemePallete() as PossibleColors;  
   const getFontSize = () => ThemeSettings.getFontSize();
@@ -133,10 +135,6 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
     <ThemeContext.Provider
       value={{
         theme,
-        setTheme,
-        reloadTheme,
-        changeThemeMode,
-        changePallete,
         primaryColor,
         secondaryColor,
         terciaryColor,
@@ -149,12 +147,17 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
         secondaryGrayColor,
         colorByMode,
         colorByModeSecondary,
-        lighterColor,
-        darkerColor,
         textBlackolor,
         lightGrayColor,
         darkGrayColor,
         redDanger,
+        greenConfirm,
+        setTheme,
+        reloadTheme,
+        changeThemeMode,
+        changePallete,
+        lighterColor,
+        darkerColor,
         getThemeMode,
         getThemePallete,
         changeFontSize,

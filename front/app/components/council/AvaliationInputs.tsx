@@ -17,7 +17,7 @@ export default function AvaliationInputs({
   onPositiveChange,
   onNegativeChange,
 }: AvaliationInputsProps) {
-  const { primaryColor } = useThemeContext();
+  const { primaryColor, colorByModeSecondary } = useThemeContext();
 
   const handlePositiveChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onPositiveChange(e.target.value);
@@ -30,8 +30,8 @@ export default function AvaliationInputs({
   return (
     <>
       <div
-        style={{ borderColor: primaryColor }}
-        className="w-full flex-col lg:flex-row rounded-b-big p-2 sm:p-5 flex border-[2px] border-t-0 justify-center items-center flex-wrap gap-4 md:flex-nowrap"
+        style={{ borderColor: colorByModeSecondary }}
+        className="w-full flex-col lg:flex-row rounded-b-big p-5 flex border-[2px] border-t-0 justify-center items-center flex-wrap gap-4 md:flex-nowrap"
       >
         <TextareaComponent
           title="Pontos Positivos"
@@ -41,7 +41,7 @@ export default function AvaliationInputs({
           onChange={handlePositiveChange}
         />
         <div
-          style={{ backgroundColor: primaryColor }}
+          style={{ backgroundColor: colorByModeSecondary }}
           className="hidden lg:block w-[.2rem] h-[255px]"
         ></div>
         <TextareaComponent

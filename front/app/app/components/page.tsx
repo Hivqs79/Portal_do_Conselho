@@ -24,7 +24,7 @@ import {
   FaCheck,
   FaRegCalendarAlt,
   FaRegClock,
-  FaRegEyeSlash,  
+  FaRegEyeSlash,
 } from "react-icons/fa";
 import { BiCheckDouble, BiSupport } from "react-icons/bi";
 import { PiBooks, PiPlayBold, PiStudentBold, PiUserBold } from "react-icons/pi";
@@ -47,20 +47,51 @@ import {
 import Icon from "@/components/Icon";
 import Rank from "@/components/rank/Rank";
 import { FaRegEye, FaRegFilePdf } from "react-icons/fa6";
-import Table from "@/components/table/Table";
 import TextareaComponent from "@/components/input/TextareaComponent";
 import Photo from "@/components/profile/Photo";
+import AccordionComponent from "@/components/AccordionComponent";
+import OpacityHex from "@/hooks/OpacityHex";
 
 export default function Components() {
-  const { primaryColor, secondaryColor, terciaryColor, constrastColor } =
-    useThemeContext();
+  const {
+    primaryColor,
+    secondaryColor,
+    terciaryColor,
+    constrastColor,
+    colorByModeSecondary,
+  } = useThemeContext();
+
+  const anotations = [
+    {
+      name: "Anotation 1",
+      rank: "good",
+      description:
+        "lorem ipsun dolor si amet ipsun dolor si ametipsun dolor si amet ipsun dolor si amet",
+    },
+    {
+      name: "Anotation 2",
+      rank: "excellent",
+      description:
+        "lorem ipsun dolor si amet ipsun dolor si ametipsun dolor si amet ipsun dolor si amet",
+    },
+    {
+      name: "Anotation 3",
+      rank: "average",
+      description:
+        "lorem ipsun dolor si amet ipsun dolor si ametipsun dolor si amet ipsun dolor si amet",
+    },
+  ];
+
+  const verifyRank = (rank: string | undefined | null): string => {
+    return rank ?? "none";
+  };
 
   return (
     <Container
       maxWidth={"lg"}
-      className="flex flex-col gap-8 justify-center items-center min-h-screen" //change to center after
+      className="flex flex-col gap-8 justify-start items-center min-h-screen"
     >
-      <Box className="flex flex-row gap-8 justify-center items-center">
+      {/* <Box className="flex flex-row gap-8 justify-center items-center">
         <Box className="flex flex-col gap-4">
           <Button variant="contained" color="primary" sx={{ width: 300 }}>
             Teste Primary
@@ -227,8 +258,24 @@ export default function Components() {
         <Rank variant="default" type="critical" outline={false} popover={false} />
       </Box>
  
-      <Photo photo={""} rounded={false} classname="w-20 h-20" />
-      <Photo photo={""} rounded={true} classname="w-20 h-20" />
+      <Photo idUser={1} rounded={false} classname="w-20 h-20" />
+      <Photo idUser={1} rounded={true} classname="w-20 h-20" /> */}
+      <Box
+        style={{ backgroundColor: OpacityHex(colorByModeSecondary, 0.2) }}
+        className="p-2 mt-32 rounded-big w-full"
+      >
+        <span className="flex rounded-big flex-col p-2 gap-2">
+          {anotations.map((anotation: any, index: number) => (
+            <AccordionComponent
+              type="default"
+              key={index}
+              name={anotation.name}
+              description={anotation.description}
+              outlined={false}
+            />
+          ))}
+        </span>
+      </Box>
     </Container>
   );
 }

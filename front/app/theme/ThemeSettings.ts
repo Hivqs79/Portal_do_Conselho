@@ -51,9 +51,7 @@ const whiteColor = colors.whiteColor;
 const blackColor = colors.blackColor;
 
 export default class ThemeSettings {
-
   public static getThemeMode(): "dark" | "light" {
-    
     const mode = localStorage.getItem("mode");
     const isDarkMode = document.documentElement.classList.contains("dark");
     if (mode === "dark" && !isDarkMode) {
@@ -132,12 +130,12 @@ export default class ThemeSettings {
     if (!multiplier) {
       localStorage.setItem("fontMultiplier", "1");
       return 1;
-    } 
+    }
     return parseFloat(multiplier);
   }
 
   public static changeFontSize(multiplier: number) {
-    localStorage.setItem("fontMultiplier", multiplier.toString());        
+    localStorage.setItem("fontMultiplier", multiplier.toString());
   }
 
   public static getFontFamilyText() {
@@ -145,32 +143,32 @@ export default class ThemeSettings {
     if (!fontFamilyText) {
       localStorage.setItem("fontFamilyText", "Poppins");
       return "Poppins";
-    } 
+    }
     return fontFamilyText;
   }
 
   public static changeFontFamilyText(fontFamilyText: string) {
-    localStorage.setItem("fontFamilyText", fontFamilyText);        
+    localStorage.setItem("fontFamilyText", fontFamilyText);
   }
 
   public static getFontFamilyTitle() {
     const fontFamilyText = localStorage.getItem("fontFamilyTitle");
     if (!fontFamilyText) {
-      localStorage.setItem("fontFamilyTitle", "Inter");
+      localStorage.setItem("fontFamilyTitle", "Lora");
       return "Lora";
-    } 
+    }
     return fontFamilyText;
   }
 
   public static changeFontFamilyTitle(fontFamilyText: string) {
-    localStorage.setItem("fontFamilyTitle", fontFamilyText);        
+    localStorage.setItem("fontFamilyTitle", fontFamilyText);
   }
-  
 
   public static createThemePallete() {
     const themeBase = createTheme({});
     const primary_color = BrandColors.primary_color;
     const secondary_color = BrandColors.secondary_color;
+    const redDanger = colors.redDanger;
     const terciary_color = BrandColors.terciary_color;
     const colorByMode = this.getColorByMode();
     const fontMultiplier = this.getFontSize();
@@ -214,6 +212,12 @@ export default class ThemeSettings {
             contrastText: this.getBetterContrast(terciary_color),
           },
         }),
+        error: {
+          main: redDanger,
+          light: this.lighterColor(redDanger),
+          dark: this.darkerColor(redDanger),
+          contrastText: this.getBetterContrast(redDanger),
+        },
       },
       typography: {
         h1_title: {
@@ -366,18 +370,44 @@ export default class ThemeSettings {
             },
           },
         },
+        //Mudar somente border radios para 8px e não 4 .css-4ux6g8-MuiButtonBase-root-MuiButton-root
+        MuiButton: {
+          styleOverrides: {
+            root: {
+              borderRadius: "8px",
+              textTransform: "none",
+            },
+          },
+        },
         MuiOutlinedInput: {
           styleOverrides: {
             root: {
-              "&:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline": {
+              borderRadius: "8px",
+              "&:hover:not(.Mui-focused):not(.Mui-error) .MuiOutlinedInput-notchedOutline": {
                 borderColor: colorByMode,
                 borderWidth: "2px",
                 color: this.getContrastThemeColor(),
               },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              "&.Mui-focused:not(.Mui-error) .MuiOutlinedInput-notchedOutline": {
                 borderColor: colorByMode,
                 borderWidth: "2px",
                 boxShadow: "2px 2px 4px 1px" + colorByMode + "77",
+              },
+              "&:hover:not(.Mui-focused).Mui-disabled .MuiOutlinedInput-notchedOutline": {
+                borderColor: this.getContrastThemeColor() + "AA",
+                color: this.getContrastThemeColor() + "AA",
+              },
+              "&.Mui-focused .Mui-disabled .MuiOutlinedInput-notchedOutline": {
+                borderColor: this.getContrastThemeColor() + "AA",
+                color: this.getContrastThemeColor() + "AA",
+              },
+              "&.Mui-disabled .MuiOutlinedInput-notchedOutline": {
+                borderColor: this.getContrastThemeColor() + "AA",
+                color: this.getContrastThemeColor() + "AA",
+              },
+              "&.Mui-disabled .MuiOutlinedInput-input": {
+                borderColor: this.getContrastThemeColor() + "AA",
+                textFillColor: this.getContrastThemeColor() + "AA",
               },
               color: this.getContrastThemeColor(),
             },
@@ -387,8 +417,21 @@ export default class ThemeSettings {
             },
           },
         },
+        MuiFormLabel: {
+          styleOverrides: {
+            root: {
+              color: this.getContrastThemeColor(),
+              "&.Mui-disabled": {
+                color: this.getContrastThemeColor() + "AA",
+              },
+            },
+          },
+        },
         MuiMenu: {
           styleOverrides: {
+            root: {
+              zIndex: 25,
+            },
             paper: {
               backgroundColor: primary_color,
               color: whiteColor,
@@ -406,22 +449,19 @@ export default class ThemeSettings {
               padding: "8px 24px",
             },
           },
-        }, 
+        },
         MuiModal: {
           styleOverrides: {
             root: {
-              zIndex: 25,
-            }, 
-            backdrop: {
-              zIndex: 20,
-            }           
-          }
+              zIndex: 210,
+            },
+          },
         },
         MuiPaper: {
           styleOverrides: {
             root: {
               zIndex: 25,
-            },        
+            },
           },
         },
         MuiPaginationItem: {
@@ -451,13 +491,41 @@ export default class ThemeSettings {
             },
           },
         },
-        MuiButton: {
+        MuiAccordion: {
           styleOverrides: {
             root: {
-              textTransform: "none",
-            }
-          }
-        }
+              zIndex: 10,
+              borderRadius: "16px !important",
+            },
+          },
+        },
+        MuiAccordionDetails: {
+          styleOverrides: {
+            root: {
+              padding: "8px !important",
+            },
+          },
+        },
+        MuiCheckbox: {
+          styleOverrides: {
+            root: {
+              "& .MuiSvgIcon-root": {
+                fill: colorByMode,
+              },
+              padding: 0,
+            },
+          },
+        },
+        MuiRadio: {
+          styleOverrides: {
+            root: {
+              "& .MuiSvgIcon-root": {
+                fill: colorByMode,
+              },
+              padding: 0,
+            },
+          },
+        },
       },
     });
   }

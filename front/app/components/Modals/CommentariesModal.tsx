@@ -1,10 +1,15 @@
 "use client";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  Modal,
+  Typography,
+} from "@mui/material";
 import { IoClose } from "react-icons/io5";
 import Icon from "../Icon";
 import { useEffect } from "react";
-import Anotation from "../Anotation";
+import AccordionComponent from "../AccordionComponent";
+import OpacityHex from "@/hooks/OpacityHex";
 
 interface CommentariesModalProps {
   onClose: () => void;
@@ -20,11 +25,11 @@ export default function CommentariesModal({
   anotations,
 }: CommentariesModalProps) {
   const {
-    primaryColor,
     redDanger,
     backgroundColor,
     constrastColor,
     terciaryColor,
+    colorByModeSecondary,
   } = useThemeContext();
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -46,14 +51,25 @@ export default function CommentariesModal({
 
   return (
     <>
-      <Box className="bg-black/60 fixed inset-0 flex justify-center items-center z-50">
-        <Box
+      <Modal
+        open
+        sx={{
+          display: "flex",
+          p: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          border: "none",
+          outline: "none",
+        }}
+      >
+        <div
+          onClick={(e) => e.stopPropagation()}
           style={{ backgroundColor: backgroundColor }}
           className="p-5 rounded-lg w-full max-w-[1000px] m-5"
         >
           <Box className="flex justify-between items-center">
             <Box>
-              <Typography variant="lg_text_bold" color={primaryColor}>
+              <Typography variant="lg_text_bold" color={colorByModeSecondary}>
                 {student
                   ? "Comentarios para o Aluno: "
                   : "Anotações para a turma: "}
@@ -71,13 +87,14 @@ export default function CommentariesModal({
             </span>
           </Box>
           <Box
-            style={{ backgroundColor: terciaryColor }}
+            style={{ backgroundColor: OpacityHex(colorByModeSecondary, 0.2) }}
             className="p-2 mt-8 rounded-big"
           >
-            <span className="flex rounded-big flex-col max-h-[550px] p-2 gap-5 overflow-y-scroll">
+            <span className="flex rounded-big flex-col max-h-[550px] p-2 gap-2 overflow-y-scroll">
               {anotations.map((anotation: any, index: number) => (
-                <Anotation
-                  key={index} 
+                <AccordionComponent
+                  type="council"
+                  key={index}
                   name={anotation.name}
                   rank={verifyRank(anotation.rank)}
                   positiveContent={anotation.positiveContent}
@@ -86,8 +103,8 @@ export default function CommentariesModal({
               ))}
             </span>
           </Box>
-        </Box>
-      </Box>
+        </div>
+      </Modal>
     </>
   );
 }

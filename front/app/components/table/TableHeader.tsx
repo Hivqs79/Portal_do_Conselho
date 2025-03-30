@@ -9,13 +9,13 @@ import Search from "./Search";
 import Rank from "../rank/Rank";
 import { Decryptor } from "@/encryption/Decryptor";
 import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
-import CommentariesModal from "../Modals/CommentariesModal";
+import { TableHeaderButtons } from "@/interfaces/TableHeaderButtons";
 
 interface TableHeaderProps {
   variant: "Table" | "council";
   headers: TableHeaderContent[];
   headerButtons: TableHeaderButtons;
-  data?: any;
+  rank?: any;
   openCommentsModal?: (open: boolean) => void;
 }
 
@@ -23,12 +23,12 @@ export default function TableHeader({
   variant,
   headers,
   headerButtons,
-  data,
+  rank,
   openCommentsModal,
 }: TableHeaderProps) {
-  const [actualRank, setActualRank] = useState(data);
+  const [actualRank, setActualRank] = useState(rank);
 
-  const { primaryColor, whiteColor, textDarkColor } = useThemeContext();
+  const { primaryColor, whiteColor, textDarkColor, colorByMode, colorByModeSecondary } = useThemeContext();
   const {
     filterButton,
     orderButton,
@@ -102,12 +102,12 @@ export default function TableHeader({
     return (
       <>
         <thead
-          style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
-          className="max-w-[1024px] rounded-big"
+          style={{ backgroundColor: primaryColor, boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}` }}
+          className="max-w-[1024px] rounded-t-big"
         >
           <tr className="w-full flex flex-wrap gap-5 justify-between items-center p-3 lg:px-6">
-            <th className="flex w-full md:w-[250px] p-0">
-              <Typography variant="sm_text_bold" color="white">
+            <th className="flex flex-1 w-full md:w-[250px] p-0">
+              <Typography variant="sm_text_bold" color={whiteColor}>
                 Feedback da turma no geral
               </Typography>
             </th>

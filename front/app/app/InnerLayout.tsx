@@ -6,12 +6,17 @@ import { ThemeProviderContext, useThemeContext } from "@/hooks/useTheme";
 import { Box, ThemeProvider } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { ReactElement, useEffect } from "react";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import 'dayjs/locale/pt-br';
 
 export default function InnerLayout({ children }: { children: ReactElement }) {
   return (
     <ThemeProviderContext>
       <RoleProvider>
-        <CoreLayout>{children}</CoreLayout>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+          <CoreLayout>{children}</CoreLayout>
+        </LocalizationProvider>
       </RoleProvider>
     </ThemeProviderContext>
   );
@@ -53,7 +58,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
         {!isLoginPage ? (
           <>
             <Header variant={role} />
-            <Box className="flex flex-col mb-24 mx-[15%]">
+            <Box className="flex flex-col mb-24 mx-[5%] sm:mx-[15%]">
               {children}
             </Box>
           </>

@@ -1,6 +1,6 @@
 type TeacherAnnotation = {
   name: string;
-  rank?: string;
+  rank: string;
   positiveContent: string;
   negativeContent: string;
 };

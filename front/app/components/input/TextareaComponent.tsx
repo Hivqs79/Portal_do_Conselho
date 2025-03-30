@@ -25,6 +25,7 @@ export default function TextareaComponent({
 }: TextareaProps) {
   const [isCopy, setIsCopy] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false); // Estado para animação
   const {
     primaryColor,
     constrastColor,
@@ -37,18 +38,26 @@ export default function TextareaComponent({
     if (copyButton) {
       setIsCopy(true);
     }
-  }, [isCopy]);
+  }, [copyButton]);
 
   function copyTextArea() {
     navigator.clipboard
       .writeText(value || content || "")
       .then(() => {
+        triggerAnimation(); // Chama animação
         openSnackbar();
       })
       .catch((err) => {
         console.error("Erro ao copiar texto:", err);
       });
   }
+
+  const triggerAnimation = () => {
+    setIsAnimating(true);
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 500);
+  };
 
   const openSnackbar = () => {
     setIsSnackbarOpen(true);
@@ -68,7 +77,7 @@ export default function TextareaComponent({
           <div
             style={{
               background: backgroundColor,
-              border: `2px solid ${primaryColor}`,
+              border: `2px solid ${colorByModeSecondary}`,
             }}
             className="rounded-normal p-1 mt-3 min-h-[200px] "
           >
@@ -87,9 +96,14 @@ export default function TextareaComponent({
               {isCopy && (
                 <span
                   onClick={() => copyTextArea()}
-                  className="absolute bottom-1 right-2"
+                  className={`absolute bottom-1 right-2 ${
+                    isAnimating ? "animate-copy" : ""
+                  }`} // Adiciona classe de animação
                 >
-                  <Icon color={primaryColor} IconPassed={IoCopyOutline} />
+                  <Icon
+                    color={colorByModeSecondary}
+                    IconPassed={IoCopyOutline}
+                  />
                 </span>
               )}
             </span>
@@ -133,7 +147,7 @@ export default function TextareaComponent({
         <div
           style={{
             background: backgroundColor,
-            border: `2px solid ${primaryColor}`,
+            border: `2px solid ${colorByModeSecondary}`,
           }}
           className="rounded-normal p-1 mt-3 min-h-[200px] "
         >
