@@ -9,7 +9,6 @@ import dayjs from "dayjs";
 import { useWindowWidth } from "@react-hook/window-size";
 import CouncilModal from "./CouncilModal";
 import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
-import { count } from "console";
 
 interface CreateCouncilFormProps {
   councilInformation: CouncilFormProps;

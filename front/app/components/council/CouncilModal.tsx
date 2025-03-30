@@ -41,7 +41,7 @@ export default function CouncilModal({
     whiteColor,
     textBlackolor,
   } = useThemeContext();
-  console.log(councilInformation.visualizedCouncil);  
+
   const date = councilInformation.visualizedCouncil  ? dayjs(councilInformation.visualizedCouncil.startDateTime) : councilInformation.date;
   const time = councilInformation.visualizedCouncil  ? dayjs(councilInformation.visualizedCouncil.startDateTime) : councilInformation.time;
   const teachers = councilInformation.visualizedCouncil ? councilInformation.visualizedCouncil.teachers as Teacher[] : isArray(councilInformation.teachers) && councilInformation.teachers.filter((t) => councilInformation.selectedTeachers[t.id]);
@@ -52,7 +52,9 @@ export default function CouncilModal({
       open={open}
       onClose={() => {
         close();
-        setEditing && setEditing(false);
+        if (setEditing) {
+          setEditing(false);
+        }
       }}
       className="flex items-center justify-center"
     >
@@ -88,7 +90,9 @@ export default function CouncilModal({
               <Box
                 onClick={() => {
                   close();
-                  setEditing && setEditing(false);
+                  if(setEditing) {
+                    setEditing(false);
+                  }
                 }}
               >
                 <Icon
@@ -100,7 +104,7 @@ export default function CouncilModal({
             </Box>
           </Box>
           {editing && councilInformation ? (
-            <CouncilForm councilInformation={councilInformation} variant="editing"/>
+            <CouncilForm councilInformation={{...councilInformation, selectedTeachers: teachers.}} variant="editing"/>
           ) : (
             <>
               <Box className="flex flex-col md:flex-row md:gap-8">
@@ -206,7 +210,13 @@ export default function CouncilModal({
               <Box className="flex flex-row gap-8 justify-between">
                 <Button
                   variant="contained"
-                  onClick={() => {close(); setEditing && setEditing(false);}}
+                  onClick={() => {
+                    close(); 
+                    if(setEditing) {
+                      setEditing(false);
+                    }
+                  }
+                  }
                   className="h-fit w-full"
                   color="terciary"
                 >
@@ -220,11 +230,13 @@ export default function CouncilModal({
                 <Button
                   variant="contained"
                   onClick={() => {
-                    console.log("teste");
-                    confirmFunction && confirmFunction();
-                    console.log(confirmFunction ? "true" : "false");
                     close();
-                    setEditing && setEditing(false);
+                    if (confirmFunction) {
+                      confirmFunction();
+                    }
+                    if(setEditing) {
+                      setEditing(false);
+                    }
                   }}
                   className="h-fit w-full"
                   color="primary"

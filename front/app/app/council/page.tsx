@@ -7,7 +7,7 @@ import Class from "@/interfaces/Class";
 import { TableContent } from "@/interfaces/TableContent";
 import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
 import { Teacher } from "@/interfaces/Teacher";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { TableRowButtons } from "@/interfaces/TableRowButtons";
@@ -86,6 +86,7 @@ export default function Council() {
     });
     response.json().then((data) => {
       console.log(data);
+      setIsEditing(false);
       resetInputs();
     });
   };
@@ -147,7 +148,8 @@ export default function Council() {
       console.log(data);
     };
     fetchCouncil();
-  }, [isCreate]);
+    console.log("teste do council");
+  }, [isCreate, isEditing]);
 
   return (
     <Box>
@@ -179,7 +181,7 @@ export default function Council() {
             open={visualizedCouncil !== null}
             close={() => setVisualizedCouncil(null)}
             councilInformation={councilInformation}   
-            confirmFunction={editCouncil}
+            confirmFunction={() => editCouncil}
             setEditing={(value: boolean) => setIsEditing(value)}
             editing={isEditing}
             variant="details"
