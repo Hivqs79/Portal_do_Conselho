@@ -8,6 +8,7 @@ import net.weg.general_api.model.entity.annotation.Annotation;
 import net.weg.general_api.model.entity.council.Council;
 import net.weg.general_api.repository.CouncilRepository;
 import net.weg.general_api.service.classes.ClassService;
+import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ public class CouncilService {
     private ModelMapper modelMapper;
     private ClassService classService;
     private TeacherService teacherService;
+    private final KafkaEventSender kafkaEventSender;
 
     public Page<CouncilResponseDTO> findCouncilSpec(Specification<Council> spec, Pageable pageable) {
         Page<Council> councils = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -38,6 +40,7 @@ public class CouncilService {
         council.setTeachers(teacherService.getTeachersByIdList(councilRequestDTO.getTeachers_id())); //SETAR PROFESSOR
 
         Council councilSaved = repository.save(council);
+        kafkaEventSender.sendEvent(councilSaved, "POST", "Council created");
 
         return modelMapper.map(councilSaved, CouncilResponseDTO.class);
     }
@@ -66,6 +69,8 @@ public class CouncilService {
         council.setTeachers(teacherService.getTeachersByIdList(councilRequestDTO.getTeachers_id())); //SETAR PROFESSOR
 
         Council updatedCouncil = repository.save(council);
+        kafkaEventSender.sendEvent(updatedCouncil, "PUT", "Council updated");
+
         return modelMapper.map(updatedCouncil, CouncilResponseDTO.class);
     }
 
@@ -73,6 +78,8 @@ public class CouncilService {
         Council council = findCouncilEntity(id);
         council.setEnabled(false);
         repository.save(council);
+        kafkaEventSender.sendEvent(council, "DELETE", "Council disabled");
+
         return modelMapper.map(council, CouncilResponseDTO.class);
     }
 
