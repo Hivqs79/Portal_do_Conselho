@@ -68,7 +68,7 @@ public class StudentController {
     @ApiResponse(responseCode = "404", description = "Student/class not found")
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<StudentResponseDTO> addStudentClasses(@Parameter(description = "Class IDs", example = "[1,2,3]") @RequestBody List<Long> classes_id, @Parameter(description = "Student ID", example = "1") @PathVariable Long id) {
-        return new ResponseEntity<>(service.addStudentClasss(id, classes_id), HttpStatus.OK);
+        return new ResponseEntity<>(service.addStudentClass(id, classes_id), HttpStatus.OK);
     }
 
     @PatchMapping("/remove-class/{id}")
@@ -78,7 +78,7 @@ public class StudentController {
     @ApiResponse(responseCode = "404", description = "Student/class not found")
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<StudentResponseDTO> removeStudentClasses(@Parameter(description = "Class IDs", example = "[1,2]") @RequestBody List<Long> classes_id, @Parameter(description = "Student ID", example = "1") @PathVariable Long id) {
-        return new ResponseEntity<>(service.removeStudentClasss(id, classes_id), HttpStatus.OK);
+        return new ResponseEntity<>(service.removeStudentClass(id, classes_id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
