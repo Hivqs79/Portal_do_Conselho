@@ -6,6 +6,7 @@ import net.weg.general_api.model.dto.request.users.PedagogicRequestDTO;
 import net.weg.general_api.model.dto.response.users.PedagogicResponseDTO;
 import net.weg.general_api.model.entity.users.Pedagogic;
 import net.weg.general_api.repository.PedagogicRepository;
+import net.weg.general_api.service.kafka.KafkaEventSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ public class PedagogicService {
     private PedagogicRepository repository;
     private CustomizationService customizationService;
     private ModelMapper modelMapper;
+    private KafkaEventSender kafkaEventSender;
 
     public Page<PedagogicResponseDTO> findPedagogicSpec(Specification<Pedagogic> spec, Pageable pageable) {
         Page<Pedagogic> pedagogics = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -29,8 +31,8 @@ public class PedagogicService {
         Pedagogic pedagogic = modelMapper.map(pedagogicRequestDTO, Pedagogic.class);
 
         Pedagogic pedagogicSaved = repository.save(pedagogic);
+        kafkaEventSender.sendEvent(pedagogicSaved, "POST", "Pedagogic created");
         pedagogicSaved.setCustomization(customizationService.setDefault(pedagogicSaved));
-
 
         return modelMapper.map(pedagogicSaved, PedagogicResponseDTO.class);
     }
@@ -49,6 +51,7 @@ public class PedagogicService {
         Pedagogic pedagogic = findPedagogicEntity(id);
         modelMapper.map(pedagogicRequestDTO, pedagogic);
         Pedagogic updatedPedagogic = repository.save(pedagogic);
+        kafkaEventSender.sendEvent(updatedPedagogic, "PUT", "Pedagogic updated");
         return modelMapper.map(updatedPedagogic, PedagogicResponseDTO.class);
     }
 
@@ -56,6 +59,7 @@ public class PedagogicService {
         Pedagogic pedagogic = findPedagogicEntity(id);
         pedagogic.setEnabled(false);
         repository.save(pedagogic);
+        kafkaEventSender.sendEvent(pedagogic, "DELETE", "Pedagogic disabled");
         return modelMapper.map(pedagogic, PedagogicResponseDTO.class);
     }
 
