@@ -9,6 +9,7 @@ import net.weg.general_api.model.entity.annotation.AnnotationStudent;
 import net.weg.general_api.model.entity.council.Council;
 import net.weg.general_api.repository.AnnotationStudentRepository;
 import net.weg.general_api.service.council.CouncilService;
+import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.users.StudentService;
 import net.weg.general_api.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
@@ -25,6 +26,7 @@ public class AnnotationStudentService {
     private StudentService studentService;
     private TeacherService teacherService;
     private CouncilService councilService;
+    private final KafkaEventSender kafkaEventSender;
 
     private ModelMapper modelMapper;
 
@@ -51,6 +53,7 @@ public class AnnotationStudentService {
         annotationStudent.setTeacher(teacherService.findTeacherEntity(annotationStudentRequestDTO.getTeacher_id())); //SETAR PROFESSOR
 
         AnnotationStudent annotationSaved = repository.save(annotationStudent);
+        kafkaEventSender.sendEvent(annotationSaved, "POST", "Student created");
 
         return modelMapper.map(annotationSaved, AnnotationStudentResponseDTO.class);
     }
@@ -85,6 +88,8 @@ public class AnnotationStudentService {
         annotationStudent.setStudent(studentService.findStudentEntity(annotationStudentRequestDTO.getStudent_id()));
 
         AnnotationStudent updatedAnnotationStudent = repository.save(annotationStudent);
+        kafkaEventSender.sendEvent(updatedAnnotationStudent, "PUT", "Student updated");
+
         return modelMapper.map(updatedAnnotationStudent, AnnotationStudentResponseDTO.class);
     }
 
@@ -92,6 +97,8 @@ public class AnnotationStudentService {
         AnnotationStudent annotationStudent = findAnnotationEntity(id);
         annotationStudent.setEnabled(false);
         repository.save(annotationStudent);
+        kafkaEventSender.sendEvent(annotationStudent, "DELETE", "Student disabled");
+
         return modelMapper.map(annotationStudent, AnnotationStudentResponseDTO.class);
     }
 

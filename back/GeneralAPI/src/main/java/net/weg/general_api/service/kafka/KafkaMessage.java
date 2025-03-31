@@ -6,4 +6,5 @@ import lombok.Data;
 public class KafkaMessage {
     private String httpMethod;
     private Object object;
+    private String descriptionLog;
 }

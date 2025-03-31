@@ -9,6 +9,7 @@ import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.users.Teacher;
 import net.weg.general_api.repository.TeacherRepository;
 import net.weg.general_api.service.classes.ClassService;
+import net.weg.general_api.service.kafka.KafkaEventSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ public class TeacherService {
     private ClassService classService;
     private CustomizationService customizationService;
     private ModelMapper modelMapper;
+    private final KafkaEventSender kafkaEventSender;
 
     public Page<TeacherResponseDTO> findTeacherSpec(Specification<Teacher> spec, Pageable pageable) {
         Page<Teacher> teachers = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -37,6 +39,7 @@ public class TeacherService {
 
         teacher.setClasses(classService.getClassesByIdList(teacherRequestDTO.getClasses_id()));
         Teacher teacherSaved = repository.save(teacher);
+        kafkaEventSender.sendEvent(teacherSaved, "POST", "Teacher created");
         teacherSaved.setCustomization(customizationService.setDefault(teacherSaved));
 
         return modelMapper.map(teacherSaved, TeacherResponseDTO.class);
@@ -59,6 +62,7 @@ public class TeacherService {
         teacher.setClasses(classService.getClassesByIdList(teacherRequestDTO.getClasses_id()));
 
         Teacher updatedTeacher = repository.save(teacher);
+        kafkaEventSender.sendEvent(updatedTeacher, "PUT", "Teacher updated");
         return modelMapper.map(updatedTeacher, TeacherResponseDTO.class);
     }
 
@@ -66,6 +70,7 @@ public class TeacherService {
         Teacher teacher = findTeacherEntity(id);
         teacher.setEnabled(false);
         repository.save(teacher);
+        kafkaEventSender.sendEvent(teacher, "DELETE", "Teacher deleted");
         return modelMapper.map(teacher, TeacherResponseDTO.class);
     }
 
@@ -85,6 +90,7 @@ public class TeacherService {
         classesId.forEach(integer -> {
             Class aClass = classService.findClassEntity(integer);
             if (!classes.contains(aClass)) {
+                kafkaEventSender.sendEvent(aClass, "PATCH", "Teacher updated to new class: " + aClass);
                 classes.add(aClass);
             }
         });
@@ -100,6 +106,7 @@ public class TeacherService {
 
         classesId.forEach(integer -> {
             Class aClass = classService.findClassEntity(integer);
+            kafkaEventSender.sendEvent(aClass, "PATCH", "Teacher removed from class: " + aClass);
             classes.remove(aClass);
         });
         teacher.setClasses(classes);

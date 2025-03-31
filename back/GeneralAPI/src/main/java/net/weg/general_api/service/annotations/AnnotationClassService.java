@@ -8,6 +8,7 @@ import net.weg.general_api.model.entity.annotation.AnnotationClass;
 import net.weg.general_api.model.entity.council.Council;
 import net.weg.general_api.repository.AnnotationClassRepository;
 import net.weg.general_api.service.council.CouncilService;
+import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ public class AnnotationClassService {
     private TeacherService teacherService;
     private CouncilService councilService;
     private ModelMapper modelMapper;
+    private KafkaEventSender kafkaEventSender;
 
     public Page<AnnotationClassResponseDTO> findAnnotationClassSpec(Specification<AnnotationClass> spec, Pageable pageable) {
         Page<AnnotationClass> annotationClasses = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -38,6 +40,7 @@ public class AnnotationClassService {
         annotationClass.setCouncil(council); //SETAR CONSELHO
 
         AnnotationClass annotationSaved = repository.save(annotationClass);
+        kafkaEventSender.sendEvent(annotationClass, "POST", "Annotation class created");
 
         return modelMapper.map(annotationSaved, AnnotationClassResponseDTO.class);
     }
@@ -68,6 +71,8 @@ public class AnnotationClassService {
         annotationClass.setCouncil(council); //SETAR CONSELHO
 
         AnnotationClass updatedAnnotationClass = repository.save(annotationClass);
+        kafkaEventSender.sendEvent(updatedAnnotationClass, "PUT", "Annotation class updated");
+
         return modelMapper.map(updatedAnnotationClass, AnnotationClassResponseDTO.class);
     }
 
@@ -75,6 +80,8 @@ public class AnnotationClassService {
         AnnotationClass annotationClass = findAnnotationEntity(id);
         annotationClass.setEnabled(false);
         repository.save(annotationClass);
+        kafkaEventSender.sendEvent(annotationClass, "DELETE", "Annotation class disabled");
+
         return modelMapper.map(annotationClass, AnnotationClassResponseDTO.class);
     }
 

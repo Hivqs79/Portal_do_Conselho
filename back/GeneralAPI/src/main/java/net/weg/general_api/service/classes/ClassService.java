@@ -8,6 +8,7 @@ import net.weg.general_api.model.dto.response.users.StudentResponseDTO;
 import net.weg.general_api.model.dto.response.users.TeacherResponseDTO;
 import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.repository.ClassRepository;
+import net.weg.general_api.service.kafka.KafkaEventSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ public class ClassService {
 
     private ClassRepository repository;
     private ModelMapper modelMapper;
+    private final KafkaEventSender kafkaEventSender;
 
     public Page<ClassResponseDTO> findClassSpec(Specification<Class> spec, Pageable pageable) {
         Page<Class> classes = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -42,6 +44,7 @@ public class ClassService {
     public ClassResponseDTO createClass(ClassRequestDTO classesRequestDTO) {
         Class classes = modelMapper.map(classesRequestDTO, Class.class);
         Class classesSaved = repository.save(classes);
+        kafkaEventSender.sendEvent(classes, "POST", "Class created");
 
         return modelMapper.map(classesSaved, ClassResponseDTO.class);
     }
@@ -60,6 +63,8 @@ public class ClassService {
         Class classes = findClassEntity(id);
         modelMapper.map(classesRequestDTO, classes);
         Class updatedClass = repository.save(classes);
+        kafkaEventSender.sendEvent(updatedClass, "PUT", "Class updated");
+
         return modelMapper.map(updatedClass, ClassResponseDTO.class);
     }
 
@@ -67,6 +72,8 @@ public class ClassService {
         Class classes = findClassEntity(id);
         classes.setEnabled(false);
         repository.save(classes);
+        kafkaEventSender.sendEvent(classes, "DELETE", "Class disabled");
+
         return modelMapper.map(classes, ClassResponseDTO.class);
     }
 
