@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.exception.exceptions.KafkaException;
 import net.weg.general_api.exception.exceptions.UserNotFoundException;
+import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.kafka.KafkaMessage;
 import net.weg.general_api.model.dto.request.users.StudentRequestDTO;
 import net.weg.general_api.model.dto.response.users.StudentResponseDTO;
@@ -29,7 +30,7 @@ public class StudentService {
     private ClassService classService;
     private CustomizationService customizationService;
     private ModelMapper modelMapper;
-    private KafkaProducerService kafkaProducerService;
+    private KafkaEventSender kafkaEventSender;
     private final ObjectMapper objectMapper;
 
     public Page<StudentResponseDTO> findStudentSpec(Specification<Student> spec, Pageable pageable) {
@@ -44,7 +45,7 @@ public class StudentService {
         Student studentSaved = repository.save(student);
         studentSaved.setCustomization(customizationService.setDefault(studentSaved));
 
-        //this.sendStudentEvent(student, "POST");
+        kafkaEventSender.sendEvent(studentSaved, "POST", "New student created");
         return modelMapper.map(studentSaved, StudentResponseDTO.class);
     }
 
@@ -65,6 +66,7 @@ public class StudentService {
         student.setClasses(classService.getClassesByIdList(studentRequestDTO.getClasses_id()));
 
         Student updatedStudent = repository.save(student);
+        kafkaEventSender.sendEvent(updatedStudent, "PUT", "Student updated");
         return modelMapper.map(updatedStudent, StudentResponseDTO.class);
     }
 
@@ -72,21 +74,8 @@ public class StudentService {
         Student student = findStudentEntity(id);
         student.setEnabled(false);
         repository.save(student);
+        kafkaEventSender.sendEvent(student, "DELETE", "Student deleted");
         return modelMapper.map(student, StudentResponseDTO.class);
-    }
-
-    public void sendStudentEvent(Student student, String httpMethod) {
-        try {
-            KafkaMessage message = new KafkaMessage();
-            message.setHttpMethod(httpMethod);
-            message.setObject(student);
-
-            String jsonMessage = objectMapper.writeValueAsString(message);
-
-            kafkaProducerService.sendMessage("student", jsonMessage);
-        } catch (JsonProcessingException e) {
-            throw new KafkaException("Failed to serialize KafkaMessage object" + e);
-        }
     }
 
     public StudentResponseDTO addStudentClasss(Long id, List<Long> classesId) {
@@ -96,6 +85,7 @@ public class StudentService {
         classesId.forEach(integer -> {
             Class aClass = classService.findClassEntity(integer);
             if (!classes.contains(aClass)) {
+                kafkaEventSender.sendEvent(student, "PATCH", "Student updated to new class: " + aClass);
                 classes.add(aClass);
             }
         });
@@ -111,6 +101,7 @@ public class StudentService {
 
         classesId.forEach(integer -> {
             Class aClass = classService.findClassEntity(integer);
+            kafkaEventSender.sendEvent(student, "PATCH", "Student removed from your class: " + aClass);
             classes.remove(aClass);
         });
         student.setClasses(classes);

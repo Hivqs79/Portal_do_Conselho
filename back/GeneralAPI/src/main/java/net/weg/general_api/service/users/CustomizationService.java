@@ -8,6 +8,7 @@ import net.weg.general_api.model.entity.users.Customization;
 import net.weg.general_api.model.entity.users.User;
 import net.weg.general_api.model.enums.*;
 import net.weg.general_api.repository.CustomizationRepository;
+import net.weg.general_api.service.kafka.KafkaEventSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class CustomizationService {
 
     private CustomizationRepository repository;
     private ModelMapper modelMapper;
+    private KafkaEventSender kafkaEventSender;
 
 
     public Customization setDefault(User user) {
@@ -46,6 +48,7 @@ public class CustomizationService {
         Customization customization = repository.findByUser_Id(user_id).orElseThrow(() -> new UserNotFoundException("User not found"));
         modelMapper.map(customizationRequestDTO, customization);
         Customization updatedCustomization = repository.save(customization);
+        kafkaEventSender.sendEvent(updatedCustomization, "PUT", "Customization updated");
         return modelMapper.map(updatedCustomization, CustomizationResponseDTO.class);
     }
 
