@@ -11,6 +11,7 @@ import net.weg.general_api.model.entity.feedback.FeedbackClass;
 import net.weg.general_api.repository.FeedbackClassRepository;
 import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.council.CouncilService;
+import net.weg.general_api.service.kafka.KafkaEventSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ public class FeedbackClassService {
     private ClassService classService;
     private CouncilService councilService;
     private ModelMapper modelMapper;
+    private final KafkaEventSender kafkaEventSender;
 
     public Page<FeedbackClassResponseDTO> findFeedbackClassSpec(Specification<FeedbackClass> spec, Pageable pageable) {
         Page<FeedbackClass> feedbackClasses = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -48,6 +50,7 @@ public class FeedbackClassService {
         council.getAClass().setLastRank(feedbackClass.getRank());
 
         FeedbackClass feedbackSaved = repository.save(feedbackClass);
+        kafkaEventSender.sendEvent(feedbackSaved, "POST", "Feedback Class created");
 
         return modelMapper.map(feedbackSaved, FeedbackClassResponseDTO.class);
     }
@@ -72,6 +75,7 @@ public class FeedbackClassService {
         council.getAClass().setLastRank(feedbackClass.getRank());
 
         FeedbackClass updatedFeedbackClass = repository.save(feedbackClass);
+        kafkaEventSender.sendEvent(updatedFeedbackClass, "PUT", "Feedback Class updated");
         return modelMapper.map(updatedFeedbackClass, FeedbackClassResponseDTO.class);
     }
 
@@ -79,6 +83,7 @@ public class FeedbackClassService {
         FeedbackClass feedbackClass = findFeedbackEntity(id);
         feedbackClass.setEnabled(false);
         repository.save(feedbackClass);
+        kafkaEventSender.sendEvent(feedbackClass, "DELETE", "Feedback Class disabled");
         return modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class);
     }
 

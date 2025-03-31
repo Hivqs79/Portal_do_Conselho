@@ -11,6 +11,7 @@ import net.weg.general_api.model.entity.feedback.FeedbackStudent;
 import net.weg.general_api.model.entity.users.Student;
 import net.weg.general_api.repository.FeedbackStudentRepository;
 import net.weg.general_api.service.council.CouncilService;
+import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.users.StudentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ public class FeedbackStudentService {
     private CouncilService councilService;
     private StudentService studentService;
     private ModelMapper modelMapper;
+    private final KafkaEventSender kafkaEventSender;
 
     public Page<FeedbackStudentResponseDTO> findFeedbackStudentSpec(Specification<FeedbackStudent> spec, Pageable pageable) {
         Page<FeedbackStudent> feedbackStudentes = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -54,6 +56,7 @@ public class FeedbackStudentService {
         student.setLastRank(feedbackStudent.getRank());
 
         FeedbackStudent feedbackSaved = repository.save(feedbackStudent);
+        kafkaEventSender.sendEvent(feedbackSaved, "POST", "Feedback Student created");
 
         return modelMapper.map(feedbackSaved, FeedbackStudentResponseDTO.class);
     }
@@ -89,6 +92,7 @@ public class FeedbackStudentService {
         student.setLastRank(feedbackStudent.getRank());
 
         FeedbackStudent updatedFeedbackStudent = repository.save(feedbackStudent);
+        kafkaEventSender.sendEvent(updatedFeedbackStudent, "PUT", "Feedback Student updated");
         return modelMapper.map(updatedFeedbackStudent, FeedbackStudentResponseDTO.class);
     }
 
@@ -96,6 +100,7 @@ public class FeedbackStudentService {
         FeedbackStudent feedbackStudent = findFeedbackEntity(id);
         feedbackStudent.setEnabled(false);
         repository.save(feedbackStudent);
+        kafkaEventSender.sendEvent(feedbackStudent, "DELETE", "Feedback Student disabled");
         return modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class);
     }
 

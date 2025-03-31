@@ -11,6 +11,7 @@ import net.weg.general_api.model.entity.feedback.FeedbackUser;
 import net.weg.general_api.model.entity.users.User;
 import net.weg.general_api.repository.FeedbackUserRepository;
 import net.weg.general_api.service.council.CouncilService;
+import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.users.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ public class FeedbackUserService {
     private CouncilService councilService;
     private UserService userService;
     private ModelMapper modelMapper;
+    private final KafkaEventSender kafkaEventSender;
 
     public Page<FeedbackUserResponseDTO> findFeedbackUserSpec(Specification<FeedbackUser> spec, Pageable pageable) {
         Page<FeedbackUser> feedbackUseres = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -49,6 +51,7 @@ public class FeedbackUserService {
         feedbackUser.setUser(user); //SETAR USUARIO
 
         FeedbackUser feedbackSaved = repository.save(feedbackUser);
+        kafkaEventSender.sendEvent(feedbackSaved, "POST", "Feedback User created");
 
         return modelMapper.map(feedbackSaved, FeedbackUserResponseDTO.class);
     }
@@ -78,6 +81,7 @@ public class FeedbackUserService {
         feedbackUser.setUser(user); //SETAR USUARIO
 
         FeedbackUser updatedFeedbackUser = repository.save(feedbackUser);
+        kafkaEventSender.sendEvent(updatedFeedbackUser, "PUT", "Feedback User updated");
         return modelMapper.map(updatedFeedbackUser, FeedbackUserResponseDTO.class);
     }
 
@@ -85,6 +89,7 @@ public class FeedbackUserService {
         FeedbackUser feedbackUser = findFeedbackEntity(id);
         feedbackUser.setEnabled(false);
         repository.save(feedbackUser);
+        kafkaEventSender.sendEvent(feedbackUser, "DELETE", "Feedback User disabled");
         return modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class);
     }
 
