@@ -35,7 +35,7 @@ public class NotificationController {
         return notificationService.getNotifications(spec, pageable);
     }
 
-    @PostMapping
+    @PostMapping("/sendNotification")
     public Notification createNotification(
             @RequestParam Long userId,
             @RequestParam String title,
