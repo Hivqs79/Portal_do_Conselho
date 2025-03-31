@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class KafkaMessageDTO {
-    private Object object;
+    private String object;
     private String httpMethod;
     private String description;
 }

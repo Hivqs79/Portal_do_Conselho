@@ -15,13 +15,15 @@ public class KafkaEventSender {
     public void sendEvent(Object object, String httpMethod, String descriptionLog) {
         try {
             String topic = object.getClass().getSimpleName().toLowerCase();
+            System.out.println("topic: " + topic);
 
             KafkaMessage message = new KafkaMessage();
             message.setHttpMethod(httpMethod);
-            message.setObject(object);
-            message.setDescriptionLog(descriptionLog);
-
+            message.setObject(object.toString());
+            message.setDescription(descriptionLog);
             String jsonMessage = objectMapper.writeValueAsString(message);
+
+            System.out.println("jsonMessage: " + jsonMessage);
             kafkaProducerService.sendMessage(topic, jsonMessage);
         } catch (JsonProcessingException e) {
             throw new KafkaException("Failed to serialize KafkaMessage object: " + e);

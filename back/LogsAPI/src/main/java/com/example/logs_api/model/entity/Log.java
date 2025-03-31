@@ -14,7 +14,8 @@ public class Log {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Object object;
+    @Column(columnDefinition = "TEXT")
+    private String object;
     private String httpMethod;
     private String description;
 }

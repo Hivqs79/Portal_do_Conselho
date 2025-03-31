@@ -1,19 +1,15 @@
 package net.weg.general_api.service.users;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import net.weg.general_api.exception.exceptions.KafkaException;
 import net.weg.general_api.exception.exceptions.UserNotFoundException;
 import net.weg.general_api.service.kafka.KafkaEventSender;
-import net.weg.general_api.service.kafka.KafkaMessage;
 import net.weg.general_api.model.dto.request.users.StudentRequestDTO;
 import net.weg.general_api.model.dto.response.users.StudentResponseDTO;
 import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.users.Student;
 import net.weg.general_api.repository.StudentRepository;
 import net.weg.general_api.service.classes.ClassService;
-import net.weg.general_api.service.kafka.KafkaProducerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -78,7 +74,7 @@ public class StudentService {
         return modelMapper.map(student, StudentResponseDTO.class);
     }
 
-    public StudentResponseDTO addStudentClasss(Long id, List<Long> classesId) {
+    public StudentResponseDTO addStudentClass(Long id, List<Long> classesId) {
         Student student = findStudentEntity(id);
         List<Class> classes = student.getClasses();
 
@@ -95,7 +91,7 @@ public class StudentService {
         return modelMapper.map(student, StudentResponseDTO.class);
     }
 
-    public StudentResponseDTO removeStudentClasss(Long id, List<Long> classesId) {
+    public StudentResponseDTO removeStudentClass(Long id, List<Long> classesId) {
         Student student = findStudentEntity(id);
         List<Class> classes = student.getClasses();
 

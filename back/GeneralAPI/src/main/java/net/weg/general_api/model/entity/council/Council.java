@@ -75,6 +75,7 @@ public class Council {
         return "Council{" +
                 "id=" + id +
                 ", aClass=" + aClass +
+                ", startDateTime=" + startDateTime +
                 ", teachers=" + teachers +
                 ", preCouncil=" + preCouncil +
                 '}';

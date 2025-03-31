@@ -72,7 +72,7 @@ public class TeacherController {
     @ApiResponse(responseCode = "404", description = "Teacher/class not found")
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<TeacherResponseDTO> addTeacherClasses(@Parameter(description = "Class IDs", example = "[1,2,3]") @RequestBody List<Long> classes_id, @Parameter(description = "Teacher ID", example = "1") @PathVariable Long id) {
-        return new ResponseEntity<>(service.addTeacherClasss(id, classes_id), HttpStatus.OK);
+        return new ResponseEntity<>(service.addTeacherClass(id, classes_id), HttpStatus.OK);
     }
 
     @PatchMapping("/remove-class/{id}")
@@ -82,7 +82,7 @@ public class TeacherController {
     @ApiResponse(responseCode = "404", description = "Teacher/class not found")
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<TeacherResponseDTO> removeTeacherClasses(@Parameter(description = "Class IDs", example = "[1,2]") @RequestBody List<Long> classes_id, @Parameter(description = "Teacher ID", example = "1") @PathVariable Long id) {
-        return new ResponseEntity<>(service.removeTeacherClasss(id, classes_id), HttpStatus.OK);
+        return new ResponseEntity<>(service.removeTeacherClass(id, classes_id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

@@ -83,7 +83,7 @@ public class TeacherService {
         return repository.findAllById(teachers_id);
     }
 
-    public TeacherResponseDTO addTeacherClasss(Long id, List<Long> classesId) {
+    public TeacherResponseDTO addTeacherClass(Long id, List<Long> classesId) {
         Teacher teacher = findTeacherEntity(id);
         List<Class> classes = teacher.getClasses();
 
@@ -100,7 +100,7 @@ public class TeacherService {
         return modelMapper.map(teacher, TeacherResponseDTO.class);
     }
 
-    public TeacherResponseDTO removeTeacherClasss(Long id, List<Long> classesId) {
+    public TeacherResponseDTO removeTeacherClass(Long id, List<Long> classesId) {
         Teacher teacher = findTeacherEntity(id);
         List<Class> classes = teacher.getClasses();
 
