@@ -36,11 +36,11 @@ function uploadFile(file, bucketName, keyName) {
   };
 
 class ImageService {
-    addImage(image, titulo, idUser) {
+    addImage(image, nome, idUser) {
         const data_criacao = new Date();
         const uuid = crypto.randomUUID();
         uploadFile(image, "portal-conselho-bucket", uuid);
-        return imageRepository.addImage(uuid, titulo, idUser, data_criacao);
+        return imageRepository.addImage(uuid, nome, idUser, data_criacao);
     };
     
     getAllImage() {
@@ -50,7 +50,7 @@ class ImageService {
     async getImageById(idUserImage) {
         try {
             let data = await imageRepository.getImageById(idUserImage);
-            const file = await downloadFile("portal-conselho-bucket", data[0].referencia, `./imageOutput/${data[0].titulo}.jpg`);
+            const file = await downloadFile("portal-conselho-bucket", data[0].referencia, `./imageOutput/${data[0].nome}.jpg`);
             return [data, file];                            
         } catch (error) {
             console.error(error);

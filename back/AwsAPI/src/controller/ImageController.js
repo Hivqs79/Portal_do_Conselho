@@ -3,13 +3,13 @@ const mime = require("mime-types");
 
 class ImageController {
     addImage(req, res) {
-        const {titulo, id_user} = req.body;
-        if (!titulo || !id_user || !req.file ) {
+        const {nome, id_user} = req.body;
+        if (!nome || !id_user || !req.file ) {
             res.status(400).json({message:"Missing or invalid params"});
             return;
         }
         const image = Buffer.from(new Uint8Array(req.file.buffer));
-        imageService.addImage(image, titulo, id_user).then(data => {
+        imageService.addImage(image, nome, id_user).then(data => {
             console.log(data);
             res.status(201).json({message:"Image added successfully!"});
         }).catch(error => {            

@@ -1,9 +1,9 @@
-const database = require("../database/connection");
+const knex = require("../database/connection");
 
 class ImageRepository {
-  addImage(referencia, titulo, id_user, data_criacao) {
+  addImage(referencia, nome, id_user, data_criacao) {
     return database
-      .insert({ referencia, titulo, id_user, data_criacao })
+      .insert({ referencia, nome, id_user, data_criacao })
       .table("Image");
   }
 
