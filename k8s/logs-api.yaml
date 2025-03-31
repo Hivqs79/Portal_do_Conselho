@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logs-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: logs-api
+  template:
+    metadata:
+      labels:
+        app: logs-api
+    spec:
+      containers:
+      - name: logs-api
+        image: hivqs79/portal-do-conselho_logs-api:latest
+        ports:
+        - containerPort: 8070
+        env:
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-logs-config
+              key: jdbc-url
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysql-logs-secret
+              key: username
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-logs-secret
+              key: password
+        - name: KAFKA_TOPICS
+          value: "annotationclass,annotationstudent,class,council,feedbackclass,feedbackstudent,feedbackuser,precouncilsection,precouncil,admin,customization,pedagogic,student,teacher"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi                
+        
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: logs-api-service
+spec:
+  selector:
+    app: logs-api
+  ports:
+    - protocol: TCP
+      port: 8070
+      targetPort: 8070
+  type: ClusterIP

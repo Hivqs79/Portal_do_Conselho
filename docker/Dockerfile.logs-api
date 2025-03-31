@@ -1,0 +1,5 @@
+FROM openjdk:21
+EXPOSE 8070
+WORKDIR /app/spring
+COPY ../back/LogsAPI/target/LogsAPI.jar /app/spring/logs-service.jar
+ENTRYPOINT ["java", "-jar", "logs-service.jar"]
