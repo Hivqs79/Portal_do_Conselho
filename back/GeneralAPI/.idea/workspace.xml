@@ -5,20 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aae07e96-69c1-4165-ac9d-99ecae57c7c2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../AwsAPI/src/database/connection.js" beforeDir="false" afterPath="$PROJECT_DIR$/../AwsAPI/src/database/connection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/config/KafkaConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/controller/LogController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/model/dto/KafkaMessageDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/model/entity/Log.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/repository/LogRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/service/LogService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/service/kafka/KafkaConsumerService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/service/kafka/KafkaProducerService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/textFiles/Plugins" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/textFiles/Plugins" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../docker/Dockerfile.general-api" beforeDir="false" afterPath="$PROJECT_DIR$/../../docker/Dockerfile.general-api" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../k8s/general-api.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../../k8s/general-api.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../k8s/mysql.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../k8s/pvc.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../k8s/secrets.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../scripts/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/build.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../scripts/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/run.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +71,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.GeneralApiApplication.executor": "Run",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "feature/logs-microservice",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/pedro/Documents/Github/portal_do_conselho/back/ChatAPI",
     "node.js.detected.package.eslint": "true",
@@ -132,6 +127,7 @@
       <workItem from="1743296279787" duration="39000" />
       <workItem from="1743354731635" duration="368000" />
       <workItem from="1743367182768" duration="743000" />
+      <workItem from="1743378103778" duration="2713000" />
     </task>
     <servers />
   </component>
