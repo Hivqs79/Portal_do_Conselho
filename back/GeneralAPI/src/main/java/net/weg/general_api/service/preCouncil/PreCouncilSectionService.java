@@ -6,6 +6,7 @@ import net.weg.general_api.model.dto.request.preCouncil.PreCouncilSectionRequest
 import net.weg.general_api.model.dto.response.preCouncil.PreCouncilSectionResponseDTO;
 import net.weg.general_api.model.entity.preCouncil.PreCouncilSection;
 import net.weg.general_api.repository.PreCouncilSectionRepository;
+import net.weg.general_api.service.kafka.KafkaEventSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ public class PreCouncilSectionService {
     private PreCouncilSectionRepository repository;
     private ModelMapper modelMapper;
     private PreCouncilService preCouncilService;
+    private KafkaEventSender kafkaEventSender;
 
     public Page<PreCouncilSectionResponseDTO> findPreCouncilSectionSpec(Specification<PreCouncilSection> spec, Pageable pageable) {
         Page<PreCouncilSection> preCouncilSections = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -31,7 +33,7 @@ public class PreCouncilSectionService {
         preCouncilSection.setPreCouncil(preCouncilService.findPreCouncilEntity(preCouncilSectionRequestDTO.getPreCouncil_id()));
 
         PreCouncilSection preCouncilSectionSaved = repository.save(preCouncilSection);
-
+        kafkaEventSender.sendEvent(preCouncilSectionSaved, "POST", "PreCouncil section created");
         return modelMapper.map(preCouncilSectionSaved, PreCouncilSectionResponseDTO.class);
     }
 
@@ -52,6 +54,7 @@ public class PreCouncilSectionService {
         preCouncilSection.setPreCouncil(preCouncilService.findPreCouncilEntity(preCouncilSectionRequestDTO.getPreCouncil_id()));
 
         PreCouncilSection updatedPreCouncilSection = repository.save(preCouncilSection);
+        kafkaEventSender.sendEvent(updatedPreCouncilSection, "POST", "PreCouncil section updated");
         return modelMapper.map(updatedPreCouncilSection, PreCouncilSectionResponseDTO.class);
     }
 
@@ -59,6 +62,7 @@ public class PreCouncilSectionService {
         PreCouncilSection preCouncilSection = findPreCouncilSectionEntity(id);
         preCouncilSection.setEnabled(false);
         repository.save(preCouncilSection);
+        kafkaEventSender.sendEvent(preCouncilSection, "DELETE", "PreCouncil section disabled");
         return modelMapper.map(preCouncilSection, PreCouncilSectionResponseDTO.class);
     }
 
