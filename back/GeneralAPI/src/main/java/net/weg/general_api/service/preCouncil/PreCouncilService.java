@@ -22,7 +22,7 @@ public class PreCouncilService {
     private PreCouncilRepository repository;
     private CouncilService councilService;
     private ModelMapper modelMapper;
-    private KafkaEventSender kafkaEventSender;
+    private final KafkaEventSender kafkaEventSender;
 
     public Page<PreCouncilResponseDTO> findPreCouncilSpec(Specification<PreCouncil> spec, Pageable pageable) {
         Page<PreCouncil> preCouncils = repository.getAllByEnabledIsTrue(spec, pageable);

@@ -27,7 +27,7 @@ public class TeacherService {
     private ClassService classService;
     private CustomizationService customizationService;
     private ModelMapper modelMapper;
-    private KafkaEventSender kafkaEventSender;
+    private final KafkaEventSender kafkaEventSender;
 
     public Page<TeacherResponseDTO> findTeacherSpec(Specification<Teacher> spec, Pageable pageable) {
         Page<Teacher> teachers = repository.getAllByEnabledIsTrue(spec, pageable);

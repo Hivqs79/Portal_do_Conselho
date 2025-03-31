@@ -20,7 +20,7 @@ public class PedagogicService {
     private PedagogicRepository repository;
     private CustomizationService customizationService;
     private ModelMapper modelMapper;
-    private KafkaEventSender kafkaEventSender;
+    private final KafkaEventSender kafkaEventSender;
 
     public Page<PedagogicResponseDTO> findPedagogicSpec(Specification<Pedagogic> spec, Pageable pageable) {
         Page<Pedagogic> pedagogics = repository.getAllByEnabledIsTrue(spec, pageable);

@@ -20,7 +20,7 @@ public class PreCouncilSectionService {
     private PreCouncilSectionRepository repository;
     private ModelMapper modelMapper;
     private PreCouncilService preCouncilService;
-    private KafkaEventSender kafkaEventSender;
+    private final KafkaEventSender kafkaEventSender;
 
     public Page<PreCouncilSectionResponseDTO> findPreCouncilSectionSpec(Specification<PreCouncilSection> spec, Pageable pageable) {
         Page<PreCouncilSection> preCouncilSections = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -54,7 +54,7 @@ public class PreCouncilSectionService {
         preCouncilSection.setPreCouncil(preCouncilService.findPreCouncilEntity(preCouncilSectionRequestDTO.getPreCouncil_id()));
 
         PreCouncilSection updatedPreCouncilSection = repository.save(preCouncilSection);
-        kafkaEventSender.sendEvent(updatedPreCouncilSection, "POST", "PreCouncil section updated");
+        kafkaEventSender.sendEvent(updatedPreCouncilSection, "PUT", "PreCouncil section updated");
         return modelMapper.map(updatedPreCouncilSection, PreCouncilSectionResponseDTO.class);
     }
 

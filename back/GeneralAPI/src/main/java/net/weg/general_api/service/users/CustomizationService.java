@@ -18,7 +18,7 @@ public class CustomizationService {
 
     private CustomizationRepository repository;
     private ModelMapper modelMapper;
-    private KafkaEventSender kafkaEventSender;
+    private final KafkaEventSender kafkaEventSender;
 
 
     public Customization setDefault(User user) {

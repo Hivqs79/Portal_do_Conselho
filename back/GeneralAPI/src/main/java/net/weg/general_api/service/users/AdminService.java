@@ -20,7 +20,7 @@ public class AdminService {
     private AdminRepository repository;
     private CustomizationService customizationService;
     private ModelMapper modelMapper;
-    private KafkaEventSender kafkaEventSender;
+    private final KafkaEventSender kafkaEventSender;
 
     public Page<AdminResponseDTO> findAdminSpec(Specification<Admin> spec, Pageable pageable) {
         Page<Admin> admins = repository.getAllByEnabledIsTrue(spec, pageable);

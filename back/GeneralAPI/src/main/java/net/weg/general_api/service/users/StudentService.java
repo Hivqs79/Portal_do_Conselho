@@ -30,7 +30,7 @@ public class StudentService {
     private ClassService classService;
     private CustomizationService customizationService;
     private ModelMapper modelMapper;
-    private KafkaEventSender kafkaEventSender;
+    private final KafkaEventSender kafkaEventSender;
     private final ObjectMapper objectMapper;
 
     public Page<StudentResponseDTO> findStudentSpec(Specification<Student> spec, Pageable pageable) {
