@@ -5,20 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aae07e96-69c1-4165-ac9d-99ecae57c7c2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../AwsAPI/src/database/connection.js" beforeDir="false" afterPath="$PROJECT_DIR$/../AwsAPI/src/database/connection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/textFiles/Plugins" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/textFiles/Plugins" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../docker/Dockerfile.general-api" beforeDir="false" afterPath="$PROJECT_DIR$/../../docker/Dockerfile.general-api" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../k8s/general-api.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../../k8s/general-api.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../k8s/mysql.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../k8s/pvc.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../k8s/secrets.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../scripts/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/build.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../scripts/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/run.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/users/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/users/StudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/users/TeacherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/users/TeacherService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +35,7 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+        <option name="mavenHome" value="Use Maven wrapper" />
       </MavenGeneralSettings>
     </option>
   </component>
@@ -73,10 +61,11 @@
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.GeneralApiApplication.executor": "Run",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "feature/back-notification-integration",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/pedro/Documents/Github/portal_do_conselho/back/ChatAPI",
     "node.js.detected.package.eslint": "true",
@@ -110,14 +99,6 @@
       </method>
     </configuration>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -132,6 +113,7 @@
       <workItem from="1743296279787" duration="39000" />
       <workItem from="1743354731635" duration="368000" />
       <workItem from="1743367182768" duration="743000" />
+      <workItem from="1743439457799" duration="766000" />
     </task>
     <servers />
   </component>

@@ -31,7 +31,6 @@ public class StudentService {
     private CustomizationService customizationService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
-    private final ObjectMapper objectMapper;
 
     public Page<StudentResponseDTO> findStudentSpec(Specification<Student> spec, Pageable pageable) {
         Page<Student> students = repository.getAllByEnabledIsTrue(spec, pageable);
