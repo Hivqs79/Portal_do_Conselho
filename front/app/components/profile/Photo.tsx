@@ -49,7 +49,7 @@ export default function Photo({
           };
         })
         .catch((error) => {
-          console.error(error);
+          console.log(error);
           setPhotoUrl(null);
         });
     }
