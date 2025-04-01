@@ -1,18 +1,21 @@
-const knex = require("../database/connection");
+const { getDb } = require("../database/connection");
 
 class ImageRepository {
   addImage(referencia, nome, id_user, data_criacao) {
-    return database
+    const db = getDb();
+    return db
       .insert({ referencia, nome, id_user, data_criacao })
-      .table("Image");
+      .table("tb_awsimagem");
   }
 
   getAllImage() {
-    return database.select("*").table("Image");
+    const db = getDb();
+    return db.select("*").table("tb_awsimagem");
   }
 
   getImageById(idUserImage) {
-    return database.select("*").from("Image").where("id_user", idUserImage);
+    const db = getDb();
+    return db.select("*").from("tb_awsimagem").where("id_user", idUserImage);
   }
 }
 
