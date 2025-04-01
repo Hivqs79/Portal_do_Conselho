@@ -6,6 +6,7 @@ import net.weg.general_api.model.dto.request.council.CouncilRequestDTO;
 import net.weg.general_api.model.dto.response.council.CouncilResponseDTO;
 import net.weg.general_api.model.entity.annotation.Annotation;
 import net.weg.general_api.model.entity.council.Council;
+import net.weg.general_api.model.entity.notification.Notification;
 import net.weg.general_api.model.entity.users.Teacher;
 import net.weg.general_api.repository.CouncilRepository;
 import net.weg.general_api.service.classes.ClassService;
@@ -44,10 +45,12 @@ public class CouncilService {
         kafkaEventSender.sendEvent(councilSaved, "POST", "Council created");
 
         for (Teacher teacher : councilSaved.getTeachers()) {
-            //Enviar uma notificação para cada professor do conselho
-            kafkaEventSender.sendNotification(teacher.getId(),
-                    "Novo conselho iniciado!!",
-                    "O conselho da turma: " + councilSaved.getAClass() + " iniciado");
+            Notification notification = Notification.builder()
+                    .title("Novo conselho iniciado!")
+                    .message("O conselho da turma: " + councilSaved.getAClass().getName() + " iniciado")
+                    .userId(teacher.getId())
+                    .build();
+            kafkaEventSender.sendNotification(notification);
         }
 
         return modelMapper.map(councilSaved, CouncilResponseDTO.class);

@@ -5,29 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aae07e96-69c1-4165-ac9d-99ecae57c7c2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/kafka/KafkaEventSender.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/kafka/KafkaMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/model/entity/Topic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/repository/TopicRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/service/TopicService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/controllers/MessageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/controllers/MessageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/controllers/RoomConversationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/controllers/RoomConversationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/controllers/UserController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/Message.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/RoomConversation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/RoomConversation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/dto/MessageDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/dto/MessageDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/dto/RoomConversationDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/dto/RoomConversationDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/repositorys/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/MessageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/MessageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/RoomConversationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/RoomConversationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/UserService.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/model/entity/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/model/entity/Log.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/service/kafka/KafkaConsumerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/service/kafka/KafkaConsumerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../k8s/logs-api.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../../k8s/logs-api.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../scripts/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/build.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/notification/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/notification/NotificationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/notification/NotificationRequestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/notification/NotificationResponseDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/notification/Notification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/notification/Notification.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/council/CouncilService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/council/CouncilService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/kafka/KafkaEventSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/kafka/KafkaEventSender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/kafka/NotificationKafkaConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/kafka/NotificationKafkaConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/notification/NotificationMessage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/notification/NotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/notification/NotificationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front/app/app/test-notification/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front/app/components/NotificationBell.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,39 +58,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.GeneralAPI [clean,install].executor": "Run",
-    "Maven.GeneralAPI [clean,package,-DskipTests].executor": "Run",
-    "Maven.GeneralAPI [clean,package,-Dskiptests].executor": "Run",
-    "Maven.GeneralAPI [clean].executor": "Run",
-    "Maven.GeneralAPI [dependency:tree].executor": "Run",
-    "Maven.GeneralAPI [package].executor": "Run",
-    "Maven.GeneralAPI [validate].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.GeneralApiApplication.executor": "Run",
-    "git-widget-placeholder": "dev",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/pedro_a_wilhelm/Documents/Github/Portal_do_Conselho/back/GeneralAPI",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
-    "settings.editor.splitter.proportion": "0.17859624",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.GeneralAPI [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.GeneralAPI [clean,package,-DskipTests].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.GeneralAPI [clean,package,-Dskiptests].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.GeneralAPI [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.GeneralAPI [dependency:tree].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.GeneralAPI [package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.GeneralAPI [validate].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.GeneralApiApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/pedro_a_wilhelm/Documents/Github/Portal_do_Conselho/back/GeneralAPI&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.17859624&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn clean" />
@@ -135,7 +124,7 @@
       <workItem from="1743354731635" duration="368000" />
       <workItem from="1743367182768" duration="743000" />
       <workItem from="1743378103778" duration="2713000" />
-      <workItem from="1743446782289" duration="3045000" />
+      <workItem from="1743446782289" duration="4600000" />
     </task>
     <servers />
   </component>

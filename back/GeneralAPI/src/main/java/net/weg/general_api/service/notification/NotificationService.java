@@ -21,13 +21,7 @@ public class NotificationService {
         return notificationRepository.getAllByEnabledIsTrue(spec, pageable);
     }
 
-    public Notification createNotification(Long userId, String title, String message) {
-        Notification notification = new Notification();
-        notification.setUserId(userId);
-        notification.setTitle(title);
-        notification.setMessage(message);
-        notification.setStatus(Notification.NotificationStatus.PENDING);
-
+    public Notification createNotification(Notification notification) {
         return notificationRepository.save(notification);
     }
 
@@ -35,10 +29,10 @@ public class NotificationService {
         return notificationRepository.findById(id);
     }
 
-    public void updateNotificationStatus(Long id, Notification.NotificationStatus status) {
+    public void updateNotificationStatus(Long id, Boolean isViewed) {
         Notification notification = notificationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Notification not found"));
-        notification.setStatus(status);
+        notification.setViewed(isViewed);
         notificationRepository.save(notification);
     }
 

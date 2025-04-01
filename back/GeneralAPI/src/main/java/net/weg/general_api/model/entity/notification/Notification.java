@@ -2,12 +2,18 @@ package net.weg.general_api.model.entity.notification;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "notifications")
 public class Notification {
     @Id
@@ -31,18 +37,14 @@ public class Notification {
     @Column(nullable = false)
     private boolean enabled;
 
+    private boolean isViewed;
+
     @PrePersist
     public void onPrePersist() {
         this.setEnabled(true);
+        this.setViewed(false);
         this.setMessageDateTime(LocalDateTime.now());
     }
 
-    @Enumerated(EnumType.STRING)
-    private NotificationStatus status;
 
-    public enum NotificationStatus {
-        PENDING,
-        RECEIVED,
-        READ
-    }
 }

@@ -52,8 +52,8 @@ public class NotificationController {
     @PatchMapping("/{id}/status")
     public void updateNotificationStatus(
             @PathVariable Long id,
-            @RequestParam NotificationStatus status) {
-        notificationService.updateNotificationStatus(id, status);
+            @RequestParam Boolean isViewed) {
+        notificationService.updateNotificationStatus(id, isViewed);
     }
 
     @PatchMapping("/{id}/disable")

@@ -2,7 +2,6 @@ package net.weg.general_api.service.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import net.weg.general_api.service.notification.NotificationMessage;
 import net.weg.general_api.service.notification.NotificationService;
 import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.annotation.KafkaListener;
