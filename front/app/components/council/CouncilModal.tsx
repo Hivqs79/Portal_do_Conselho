@@ -1,3 +1,4 @@
+"use client";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import Icon from "../Icon";
@@ -12,6 +13,8 @@ import { LuPencilLine } from "react-icons/lu";
 import CouncilForm from "@/components/council/CouncilForm";
 import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
 import { isArray } from "util";
+import { useState } from "react";
+import ConfirmChanges from "../Modals/ConfirmChanges";
 
 interface CouncilModalProps {
   open: boolean;
@@ -32,7 +35,7 @@ export default function CouncilModal({
   setEditing,
   editing,
   variant,
-  councilInformation,  
+  councilInformation,
 }: CouncilModalProps) {
   const {
     primaryColor,
@@ -44,10 +47,11 @@ export default function CouncilModal({
     textBlackolor,
   } = useThemeContext();
 
-  const date = councilInformation.visualizedCouncil  ? dayjs(councilInformation.visualizedCouncil.startDateTime) : councilInformation.date;
-  const time = councilInformation.visualizedCouncil  ? dayjs(councilInformation.visualizedCouncil.startDateTime) : councilInformation.time;
-  const teachers = councilInformation.visualizedCouncil ? councilInformation.visualizedCouncil.teachers as Teacher[] : isArray(councilInformation.teachers) && councilInformation.teachers.filter((t) => councilInformation.selectedTeachers[t.id]);
-  const classSelected = councilInformation.visualizedCouncil ?  councilInformation.visualizedCouncil.aclass as Class : councilInformation.classExistents.find((c) => c.id === councilInformation.selectedClass) as Class;
+  const date = councilInformation.visualizedCouncil ? dayjs(councilInformation.visualizedCouncil.startDateTime) : councilInformation.date;
+  const time = councilInformation.visualizedCouncil ? dayjs(councilInformation.visualizedCouncil.startDateTime) : councilInformation.time;
+  const teachers = councilInformation.visualizedCouncil ? (councilInformation.visualizedCouncil.teachers as Teacher[]) : isArray(councilInformation.teachers) && councilInformation.teachers.filter((t) => councilInformation.selectedTeachers[t.id]);
+  const classSelected = councilInformation.visualizedCouncil ? (councilInformation.visualizedCouncil.aclass as Class) : (councilInformation.classExistents.find((c) => c.id === councilInformation.selectedClass ) as Class);
+  const [openConfirm, setOpenConfirm] = useState(false);
 
   return (
     <Modal
@@ -78,7 +82,7 @@ export default function CouncilModal({
               )}
             </Box>
             <Box className="flex w-fit h-fit gap-1">
-              {(variant !== "confirm" && !editing) && (
+              {variant !== "confirm" && !editing && (
                 <Icon
                   IconPassed={LuPencilLine}
                   colorButton={terciaryColor}
@@ -92,7 +96,7 @@ export default function CouncilModal({
               <Box
                 onClick={() => {
                   close();
-                  if(setEditing) {
+                  if (setEditing) {
                     setEditing(false);
                   }
                 }}
@@ -106,7 +110,11 @@ export default function CouncilModal({
             </Box>
           </Box>
           {editing && councilInformation ? (
-            <CouncilForm councilInformation={councilInformation} verifyForm={verifyForm} variant="editing"/>
+            <CouncilForm
+              councilInformation={councilInformation}
+              verifyForm={verifyForm}
+              variant="editing"
+            />
           ) : (
             <>
               <Box className="flex flex-col md:flex-row md:gap-8">
@@ -167,7 +175,9 @@ export default function CouncilModal({
                         },
                       }}
                     >
-                      {(teachers && teachers.length !== 0 && isArray(teachers)) ? (
+                      {teachers &&
+                      teachers.length !== 0 &&
+                      isArray(teachers) ? (
                         teachers.map((teacher, index) => (
                           <Typography
                             key={teacher.id}
@@ -213,12 +223,11 @@ export default function CouncilModal({
                 <Button
                   variant="contained"
                   onClick={() => {
-                    close(); 
-                    if(setEditing) {
+                    close();
+                    if (setEditing) {
                       setEditing(false);
                     }
-                  }
-                  }
+                  }}
                   className="h-fit w-full"
                   color="terciary"
                 >
@@ -232,10 +241,15 @@ export default function CouncilModal({
                 <Button
                   variant="contained"
                   onClick={() => {
-                    console.log(confirmFunction != undefined && (verifyForm != undefined ? verifyForm() : true));
-                    if (confirmFunction != undefined && (verifyForm != undefined ? verifyForm() : true)) {
-                      close();
-                      confirmFunction();
+                    console.log(
+                      confirmFunction != undefined &&
+                        (verifyForm != undefined ? verifyForm() : true)
+                    );
+                    if (
+                      confirmFunction != undefined &&
+                      (verifyForm != undefined ? verifyForm() : true)
+                    ) {
+                      setOpenConfirm(true);
                     }
                   }}
                   className="h-fit w-full"
@@ -250,6 +264,20 @@ export default function CouncilModal({
                 </Button>
               </Box>
             </Box>
+          )}
+          {openConfirm && (
+            <ConfirmChanges
+              type="default"
+              title={`Tem certeza que deseja ${editing ? "editar" : "criar"} esse conselho?`}
+              description={`Ao confirmar, este conselho ${editing ? "será atualizado" : "irá para a lista de conselhos para realizar"}, mas não se preocupe, você poderá editálo ${editing ? "novamente" : null} a qualquer momento.`}
+              confirmButtonText={`${editing ? "Editar" : "Criar"} conselho`}
+              onClose={() => setOpenConfirm(false)}
+              firstConfirmButton={() => {
+                setOpenConfirm(false)
+                close();
+                confirmFunction && confirmFunction();
+              }}
+            />
           )}
         </Box>
       </Box>

@@ -212,7 +212,7 @@ export default function Council() {
             setEditing={(value: boolean) => setIsEditing(value)}
             editing={isEditing}
             variant="details"
-          />          
+          />
         </>
       )}
       <Snackbar 
