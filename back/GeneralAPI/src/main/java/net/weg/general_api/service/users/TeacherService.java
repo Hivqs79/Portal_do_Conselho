@@ -90,7 +90,7 @@ public class TeacherService {
         classesId.forEach(integer -> {
             Class aClass = classService.findClassEntity(integer);
             if (!classes.contains(aClass)) {
-                kafkaEventSender.sendEvent(aClass, "PATCH", "Teacher updated to new class: " + aClass);
+                kafkaEventSender.sendEvent(teacher, "PATCH", "Teacher updated to new class: " + aClass);
                 classes.add(aClass);
             }
         });
@@ -106,7 +106,7 @@ public class TeacherService {
 
         classesId.forEach(integer -> {
             Class aClass = classService.findClassEntity(integer);
-            kafkaEventSender.sendEvent(aClass, "PATCH", "Teacher removed from class: " + aClass);
+            kafkaEventSender.sendEvent(teacher, "PATCH", "Teacher removed from class: " + aClass);
             classes.remove(aClass);
         });
         teacher.setClasses(classes);

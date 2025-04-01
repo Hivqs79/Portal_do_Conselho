@@ -42,7 +42,7 @@ metadata:
 data:
   host: mysql-aws-image-service
   port: "3306"
-  database: aws-image_db
+  database: aws_image_db
 
 ---
 apiVersion: apps/v1
@@ -72,13 +72,6 @@ spec:
         volumeMounts:
         - name: mysql-aws-image-persistent-storage
           mountPath: /var/lib/mysql
-        resources:
-          requests:
-            cpu: 200m
-            memory: 512Mi
-          limits:
-            cpu: 400m
-            memory: 1Gi
       volumes:
       - name: mysql-aws-image-persistent-storage
         persistentVolumeClaim:
