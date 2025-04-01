@@ -11,7 +11,7 @@ import { LuPencilLine, LuTrash } from "react-icons/lu";
 import TableButton from "./TableButton";
 import { IoClose } from "react-icons/io5";
 import { FaRegClock } from "react-icons/fa";
-import OpacityHex from "@/hooks/OpacityHex";
+import OpacityHex from "@/utils/OpacityHex";
 import { Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { TableRowButtons } from "@/interfaces/TableRowButtons";

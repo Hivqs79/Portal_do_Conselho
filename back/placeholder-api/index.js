@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3030;
 const feedback = require("./responses/feedbacks.json");
 const studentCouncil = require("./responses/studentCouncil.json");
 const sendMessage = require("./producer");
-const consumer = require("./consumer");
+const {consumer, consumer2} = require("./consumer");
 
 app.use(express.json()); // Middleware to parse JSON
 

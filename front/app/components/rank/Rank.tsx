@@ -8,7 +8,7 @@ import {
 import { Popover, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useThemeContext } from "@/hooks/useTheme";
-import OpacityHex from "@/hooks/OpacityHex";
+import OpacityHex from "@/utils/OpacityHex";
 import { RiSubtractFill } from "react-icons/ri";
 import { Encryptor } from "@/encryption/Encryptor";
 

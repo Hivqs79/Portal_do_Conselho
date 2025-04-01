@@ -9,7 +9,7 @@ import { IoClose } from "react-icons/io5";
 import Icon from "../Icon";
 import { useEffect } from "react";
 import AccordionComponent from "../AccordionComponent";
-import OpacityHex from "@/hooks/OpacityHex";
+import OpacityHex from "@/utils/OpacityHex";
 
 interface CommentariesModalProps {
   onClose: () => void;

@@ -9,7 +9,7 @@ import TableHeader from "@/components/table/TableHeader";
 import Title from "@/components/Title";
 import { Decryptor } from "@/encryption/Decryptor";
 import { Encryptor } from "@/encryption/Encryptor";
-import OpacityHex from "@/hooks/OpacityHex";
+import OpacityHex from "@/utils/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, Typography } from "@mui/material";
 import { useWindowWidth } from "@react-hook/window-size";

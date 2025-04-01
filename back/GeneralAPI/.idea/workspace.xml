@@ -7,16 +7,15 @@
     <list default="true" id="aae07e96-69c1-4165-ac9d-99ecae57c7c2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/notification/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/controller/notification/NotificationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/request/notification/NotificationRequestDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/dto/response/notification/NotificationResponseDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/notification/Notification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/model/entity/notification/Notification.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/NotificationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/repository/NotificationRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/council/CouncilService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/council/CouncilService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/kafka/KafkaEventSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/kafka/KafkaEventSender.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/kafka/NotificationKafkaConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/kafka/NotificationKafkaConsumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/notification/NotificationMessage.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/notification/NotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/weg/general_api/service/notification/NotificationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../front/app/app/test-notification/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../front/app/components/NotificationBell.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../placeholder-api/consumer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../placeholder-api/consumer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front/app/components/profile/Photo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/app/components/profile/Photo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../k8s/kafka-zookeeper.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../../k8s/kafka-zookeeper.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../scripts/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/build.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../scripts/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/run.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +44,7 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="Use Maven wrapper" />
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
       </MavenGeneralSettings>
     </option>
   </component>
@@ -130,5 +129,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

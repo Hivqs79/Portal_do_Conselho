@@ -15,4 +15,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
         return findAll(enabledSpec, pageable);
     }
+
+    Page<Notification> getNotificationsByUserId(Long id, Pageable pageable);
 }

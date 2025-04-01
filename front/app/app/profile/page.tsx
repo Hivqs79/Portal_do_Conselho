@@ -3,7 +3,7 @@ import Icon from "@/components/Icon";
 import UploadImageModal from "@/components/Modals/UploadImageModal";
 import Title from "@/components/Title";
 import Photo from "@/components/profile/Photo";
-import OpacityHex from "@/hooks/OpacityHex";
+import OpacityHex from "@/utils/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, IconButton, Snackbar, Typography } from "@mui/material";
 import { useState, useEffect } from "react";

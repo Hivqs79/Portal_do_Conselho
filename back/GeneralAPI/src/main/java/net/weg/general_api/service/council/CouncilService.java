@@ -11,6 +11,7 @@ import net.weg.general_api.model.entity.users.Teacher;
 import net.weg.general_api.repository.CouncilRepository;
 import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.notification.NotificationService;
 import net.weg.general_api.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ public class CouncilService {
     private ClassService classService;
     private TeacherService teacherService;
     private final KafkaEventSender kafkaEventSender;
+    private final NotificationService notificationService;
 
     public Page<CouncilResponseDTO> findCouncilSpec(Specification<Council> spec, Pageable pageable) {
         Page<Council> councils = repository.getAllByEnabledIsTrue(spec, pageable);

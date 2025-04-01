@@ -1,5 +1,5 @@
 const kafka = require('kafka-node');
-const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092', requestTimeout: 20000 });
+const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9093', requestTimeout: 20000 });
 const Producer = kafka.Producer;
 const producer = new Producer(client);
 

@@ -11,7 +11,7 @@ import {
 import { IoIosArrowDown } from "react-icons/io";
 import Icon from "./Icon";
 import { useState } from "react";
-import OpacityHex from "@/hooks/OpacityHex";
+import OpacityHex from "@/utils/OpacityHex";
 
 interface AnotationProps {
   type: "default" | "notification" | "council";

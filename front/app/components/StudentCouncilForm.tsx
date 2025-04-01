@@ -1,5 +1,5 @@
 "use client";
-import OpacityHex from "@/hooks/OpacityHex";
+import OpacityHex from "@/utils/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, Typography } from "@mui/material";
 import Rank from "./rank/Rank";

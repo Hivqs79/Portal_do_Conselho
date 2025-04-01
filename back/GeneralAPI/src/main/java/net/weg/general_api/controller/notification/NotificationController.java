@@ -2,7 +2,6 @@ package net.weg.general_api.controller.notification;
 
 import lombok.AllArgsConstructor;
 import net.weg.general_api.model.entity.notification.Notification;
-import net.weg.general_api.model.entity.notification.Notification.NotificationStatus;
 import net.weg.general_api.repository.NotificationRepository;
 import net.weg.general_api.service.notification.NotificationService;
 import org.modelmapper.ModelMapper;
@@ -12,7 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/notification")
 @AllArgsConstructor
 public class NotificationController {
 
@@ -21,26 +20,14 @@ public class NotificationController {
     @GetMapping
     public Page<Notification> getNotifications(
             @RequestParam(required = false) Long userId,
-            @RequestParam(required = false) NotificationStatus status,
             Pageable pageable) {
         Specification<Notification> spec = Specification.where((root, query, cb) -> cb.conjunction());
 
         if (userId != null) {
             spec = spec.and((root, query, cb) -> cb.equal(root.get("userId"), userId));
         }
-        if (status != null) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("status"), status));
-        }
 
         return notificationService.getNotifications(spec, pageable);
-    }
-
-    @PostMapping("/sendNotification")
-    public Notification createNotification(
-            @RequestParam Long userId,
-            @RequestParam String title,
-            @RequestParam String message) {
-        return notificationService.createNotification(userId, title, message);
     }
 
     @GetMapping("/{id}")
@@ -49,10 +36,15 @@ public class NotificationController {
                 .orElseThrow(() -> new RuntimeException("Notification not found"));
     }
 
-    @PatchMapping("/{id}/status")
+    @GetMapping("/user/{id}")
+    public Page<Notification> getNotificationsByUserId(@PathVariable Long id, Pageable pageable) {
+        return notificationService.getNotificationsByUserId(id, pageable);
+    }
+
+    @PatchMapping("/{id}/is-viewed")
     public void updateNotificationStatus(
             @PathVariable Long id,
-            @RequestParam Boolean isViewed) {
+            @RequestParam boolean isViewed) {
         notificationService.updateNotificationStatus(id, isViewed);
     }
 

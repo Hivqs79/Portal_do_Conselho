@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { Box, Checkbox, FormControlLabel, Radio, RadioGroup, Typography } from "@mui/material";
 import { useThemeContext } from "@/hooks/useTheme";
-import OpacityHex from "@/hooks/OpacityHex";
+import OpacityHex from "@/utils/OpacityHex";
 import { Teacher } from "@/interfaces/Teacher";
 import Class from "@/interfaces/Class";
 import Search from "@/components/table/Search";

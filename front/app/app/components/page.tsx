@@ -50,7 +50,7 @@ import { FaRegEye, FaRegFilePdf } from "react-icons/fa6";
 import TextareaComponent from "@/components/input/TextareaComponent";
 import Photo from "@/components/profile/Photo";
 import AccordionComponent from "@/components/AccordionComponent";
-import OpacityHex from "@/hooks/OpacityHex";
+import OpacityHex from "@/utils/OpacityHex";
 
 export default function Components() {
   const {

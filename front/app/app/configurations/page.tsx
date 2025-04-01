@@ -1,6 +1,6 @@
 "use client";
 import Title from "@/components/Title";
-import OpacityHex from "@/hooks/OpacityHex";
+import OpacityHex from "@/utils/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
 import {
   Box,

@@ -21,6 +21,11 @@ public class NotificationService {
         return notificationRepository.getAllByEnabledIsTrue(spec, pageable);
     }
 
+
+    public Page<Notification> getNotificationsByUserId(Long id, Pageable pageable) {
+        return notificationRepository.getNotificationsByUserId(id, pageable);
+    }
+
     public Notification createNotification(Notification notification) {
         return notificationRepository.save(notification);
     }
@@ -29,7 +34,7 @@ public class NotificationService {
         return notificationRepository.findById(id);
     }
 
-    public void updateNotificationStatus(Long id, Boolean isViewed) {
+    public void updateNotificationStatus(Long id, boolean isViewed) {
         Notification notification = notificationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Notification not found"));
         notification.setViewed(isViewed);

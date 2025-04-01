@@ -9,6 +9,9 @@ import { useEffect, useRef, useState } from "react";
 import Menu from "./Menu";
 import Photo from "./profile/Photo";
 import Link from "next/link";
+import { useWindowWidth } from "@react-hook/window-size";
+import * as kafka from "kafka-node";
+import useKafka from "@/hooks/useKafka";
 
 interface HeaderProps {
   variant?: string;
@@ -16,24 +19,36 @@ interface HeaderProps {
 
 export default function Header({ variant }: HeaderProps) {
   const { primaryColor, whiteColor } = useThemeContext();
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const boxRef = useRef<HTMLElement>(null);
+  const windowWidth = useWindowWidth();
+  const [notifications, setNotifications] = useState(0);  
+  const { addConsumer } = useKafka();
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const handleResize = () => {
-        setIsSmallScreen(window.innerWidth < 640);
+    const userId = localStorage.getItem("idUser");
+
+    if (userId) {
+      const fetchNotifications = async () => {
+        const response = await fetch(
+          "http://localhost:8081/notification/user/" + userId);
+        const data = await response.json();
+        console.log(data);
+        setNotifications(data.content.length);
+      };
+      
+      const subscribe = async () => {        
+        const onMessage = (message: kafka.Message) => {
+          console.log('Received message in client:', message);
+          fetchNotifications();
+        }
+        addConsumer("notification"+userId, onMessage);
       };
 
-      handleResize();
-      window.addEventListener("resize", handleResize);
-
-      return () => {
-        window.removeEventListener("resize", handleResize);
-      };
+      fetchNotifications();      
+      subscribe();
     }
-  }, []);
+  }, []);  
 
   return (
     <Box
@@ -92,7 +107,7 @@ export default function Header({ variant }: HeaderProps) {
         </div>
         <Box className="flex flex-col justify-center items-start ml-2">
           <Typography
-            variant={isSmallScreen ? "md_text_regular" : "xl_text_regular"}
+            variant={windowWidth < 640 ? "md_text_regular" : "xl_text_regular"}
             style={{ color: whiteColor }}
           >
             Usuário
@@ -104,7 +119,7 @@ export default function Header({ variant }: HeaderProps) {
               className="w-4 h-4 mr-1"
             />
             <Typography
-              variant={isSmallScreen ? "xs_text_regular" : "sm_text_regular"}
+              variant={windowWidth < 640 ? "xs_text_regular" : "sm_text_regular"}
               style={{
                 color: whiteColor,
                 lineHeight: "0px",
@@ -120,7 +135,7 @@ export default function Header({ variant }: HeaderProps) {
           className="w-[1px] h-[30px] mx-4"
         />
         <span className=" sm:block">
-          <Badge badgeContent={10} color="secondary">
+          <Badge badgeContent={notifications} color="secondary">
             <Icon
               IconPassed={VscBell}
               color={whiteColor}

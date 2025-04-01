@@ -1,0 +1,802 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-image-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aws-image-api
+  template:
+    metadata:
+      labels:
+        app: aws-image-api
+    spec:
+      containers:
+      - name: aws-image-api
+        image: hivqs79/portal-do-conselho_aws-image-api:latest
+        ports:
+        - containerPort: 3060
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-aws-image-config
+              key: host
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-aws-image-config
+              key: port
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-aws-image-config
+              key: database
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-aws-image-secret
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-aws-image-secret
+              key: password
+        - name: REGION
+          valueFrom:
+            secretKeyRef:
+              name: aws-image-secret
+              key: region
+        - name: ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-image-secret
+              key: access_key
+        - name: SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-image-secret
+              key: secret_key
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aws-image-api-service
+spec:
+  selector:
+    app: aws-image-api
+  ports:
+    - protocol: TCP
+      port: 3060
+      targetPort: 3060
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-image-secret
+type: Opaque
+data:
+  region: cm9vdA== 
+  access_key: cm9vdA== 
+  secret_key: cm9vdA==
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: chat-api
+  template:
+    metadata:
+      labels:
+        app: chat-api
+    spec:
+      containers:
+      - name: chat-api
+        image: hivqs79/portal-do-conselho_chat-api:latest
+        ports:
+        - containerPort: 8082
+        env:
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-chat-config
+              key: jdbc-url
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysql-chat-secret
+              key: username
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-chat-secret
+              key: password
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi                
+        
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-api-service
+spec:
+  selector:
+    app: chat-api
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+  type: ClusterIP
+
+---
+# resources:
+#       requests:
+#         cpu: 50m
+#         memory: 128Mi
+#       limits:
+#         cpu: 100m
+#         memory: 256Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: general-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: general-api
+  template:
+    metadata:
+      labels:
+        app: general-api
+    spec:
+      containers:
+      - name: general-api
+        image: hivqs79/portal-do-conselho_general-api:latest
+        ports:
+        - containerPort: 8081
+        env:
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-general-config
+              key: jdbc-url
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysql-general-secret
+              key: username
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-general-secret
+              key: password
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi                
+        
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: general-api-service
+spec:
+  selector:
+    app: general-api
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+      - name: zookeeper
+        image: confluentinc/cp-zookeeper:latest
+        ports:
+        - containerPort: 2181
+        env:
+        - name: ZOOKEEPER_CLIENT_PORT
+          value: "2181"
+        - name: ZOOKEEPER_TICK_TIME
+          value: "2000"
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 100m
+            memory: 256Mi        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+spec:
+  ports:
+  - port: 2181
+    targetPort: 2181
+  selector:
+    app: zookeeper
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+      - name: kafka
+        image: wurstmeister/kafka:latest
+        ports:
+        - containerPort: 9092
+        env:
+        - name: KAFKA_ADVERTISED_LISTENERS
+          value: "PLAINTEXT://kafka-service:9092"
+        - name: KAFKA_LISTENERS
+          value: "PLAINTEXT://0.0.0.0:9092"
+        - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+          value: "PLAINTEXT:PLAINTEXT"
+        - name: KAFKA_INTER_BROKER_LISTENER_NAME
+          value: "PLAINTEXT"
+        # - name: KAFKA_ADVERTISED_LISTENERS
+        #   value: "INSIDE://kafka-service:9093,OUTSIDE://localhost:9092"
+        # - name: KAFKA_LISTENERS
+        #   value: "INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092"
+        # - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+        #   value: "INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT"
+        # - name: KAFKA_INTER_BROKER_LISTENER_NAME
+        #   value: "INSIDE"
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          value: "zookeeper:2181"
+        - name: KAFKA_BROKER_ID
+          value: "1"
+        volumeMounts:
+        - name: docker-sock
+          mountPath: /var/run/docker.sock
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 400m
+            memory: 1Gi
+      volumes:
+      - name: docker-sock
+        hostPath:
+          path: /var/run/docker.sock
+          type: Socket
+---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: kafka-service
+# spec:
+#   type: NodePort
+#   ports:
+#   - name: outside
+#     port: 9092
+#     targetPort: 9092
+#   - name: inside
+#     port: 9093
+#     targetPort: 9093
+#   selector:
+#     app: kafka
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-service
+spec:
+  type: ClusterIP
+  ports:
+    - name: kafka
+      port: 9092
+      targetPort: 9092
+  selector:
+    app: kafka
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logs-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: logs-api
+  template:
+    metadata:
+      labels:
+        app: logs-api
+    spec:
+      containers:
+      - name: logs-api
+        image: hivqs79/portal-do-conselho_logs-api:latest
+        ports:
+        - containerPort: 8070
+        env:
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-logs-config
+              key: jdbc-url
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysql-logs-secret
+              key: username
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-logs-secret
+              key: password
+        - name: KAFKA_TOPICS
+          value: "annotationclass,annotationstudent,class,council,feedbackclass,feedbackstudent,feedbackuser,precouncilsection,precouncil,admin,customization,pedagogic,student,teacher,roomconversation"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi                
+        
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: logs-api-service
+spec:
+  selector:
+    app: logs-api
+  ports:
+    - protocol: TCP
+      port: 8070
+      targetPort: 8070
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-aws-image-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /mnt/data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-aws-image-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-aws-image-secret
+type: Opaque
+data:
+  username: cm9vdA== 
+  password: cm9vdA== 
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-aws-image-config
+data:
+  host: mysql-aws-image-service
+  port: "3306"
+  database: aws-image_db
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-aws-image-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mysql-aws-image
+  template:
+    metadata:
+      labels:
+        app: mysql-aws-image
+    spec:
+      containers:
+      - name: mysql-aws-image
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-aws-image-secret
+              key: password
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-aws-image-persistent-storage
+          mountPath: /var/lib/mysql
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 400m
+            memory: 1Gi
+      volumes:
+      - name: mysql-aws-image-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-aws-image-pvc
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-aws-image-service
+spec:
+  selector:
+    app: mysql-aws-image
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-chat-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /mnt/data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-chat-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-chat-secret
+type: Opaque
+data:
+  username: cm9vdA== 
+  password: cm9vdA== 
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-chat-config
+data:
+  jdbc-url: jdbc:mysql://mysql-chat-service:3306/chat_db?createDatabaseIfNotExist=true
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-chat-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mysql-chat
+  template:
+    metadata:
+      labels:
+        app: mysql-chat
+    spec:
+      containers:
+      - name: mysql-chat
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-chat-secret
+              key: password
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-chat-persistent-storage
+          mountPath: /var/lib/mysql
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 400m
+            memory: 1Gi
+      volumes:
+      - name: mysql-chat-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-chat-pvc
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-chat-service
+spec:
+  selector:
+    app: mysql-chat
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-general-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /mnt/data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-general-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-general-secret
+type: Opaque
+data:
+  username: cm9vdA== 
+  password: cm9vdA== 
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-general-config
+data:
+  jdbc-url: jdbc:mysql://mysql-general-service:3306/general_db?createDatabaseIfNotExist=true
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-general-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mysql-general
+  template:
+    metadata:
+      labels:
+        app: mysql-general
+    spec:
+      containers:
+      - name: mysql-general
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-general-secret
+              key: password
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-general-persistent-storage
+          mountPath: /var/lib/mysql
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 400m
+            memory: 1Gi
+      volumes:
+      - name: mysql-general-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-general-pvc
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-general-service
+spec:
+  selector:
+    app: mysql-general
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-logs-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /mnt/data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-logs-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-logs-secret
+type: Opaque
+data:
+  username: cm9vdA== 
+  password: cm9vdA== 
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-logs-config
+data:
+  jdbc-url: jdbc:mysql://mysql-logs-service:3306/logs_db?createDatabaseIfNotExist=true
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-logs-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mysql-logs
+  template:
+    metadata:
+      labels:
+        app: mysql-logs
+    spec:
+      containers:
+      - name: mysql-logs
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-logs-secret
+              key: password
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-logs-persistent-storage
+          mountPath: /var/lib/mysql
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 400m
+            memory: 1Gi
+      volumes:
+      - name: mysql-logs-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-logs-pvc
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-logs-service
+spec:
+  selector:
+    app: mysql-logs
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP
+
+---

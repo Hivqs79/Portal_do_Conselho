@@ -1,6 +1,6 @@
 "use client";
 
-import OpacityHex from "@/hooks/OpacityHex";
+import OpacityHex from "@/utils/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
 import { dividerClasses } from "@mui/material";
 

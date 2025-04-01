@@ -4,7 +4,7 @@ import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { IoClose } from "react-icons/io5";
 import Icon from "../Icon";
 import { useEffect, useState, useRef } from "react"; // Adicione useRef
-import OpacityHex from "@/hooks/OpacityHex";
+import OpacityHex from "@/utils/OpacityHex";
 
 interface ConfirmChangesProps {
   type: "default" | "confirmText";
