@@ -1,6 +1,5 @@
 package api.chat.controllers;
 
-import api.chat.entities.Message;
 import api.chat.entities.dto.RoomConversationDto;
 import api.chat.entities.RoomConversation;
 import api.chat.service.RoomConversationService;
@@ -72,7 +71,7 @@ public class RoomConversationController {
     @ApiResponse(responseCode = "400", description = "Invalid request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<RoomConversation> readOne(@PathVariable Long id){
-        RoomConversation room = roomService.findbyId(id);
+        RoomConversation room = roomService.findById(id);
         return new ResponseEntity<>(room, HttpStatus.OK);
     }
 

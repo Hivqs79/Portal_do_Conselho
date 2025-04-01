@@ -3,6 +3,7 @@ package api.chat.service;
 import api.chat.entities.dto.RoomConversationDto;
 import api.chat.entities.RoomConversation;
 import api.chat.repositorys.RoomConversationRepository;
+import api.chat.service.kafka.KafkaEventSender;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,23 +19,28 @@ public class RoomConversationService {
 
     private MessageService messageService;
     private RoomConversationRepository repositoryRoom;
-    private UserService userService;
+    private KafkaEventSender kafkaEventSender;
 
     public RoomConversation register(RoomConversationDto dto){
-        RoomConversation room = dto.conversorRoom(userService, messageService);
-        return repositoryRoom.save(room);
+        RoomConversation room = dto.convert(messageService);
+        room = repositoryRoom.save(room);
+        kafkaEventSender.sendEvent(room, "POST", "Creating a conversation room");
+        return room;
     }
 
     public List<RoomConversation> findAll(){
         return repositoryRoom.findAll();
     }
 
-    public RoomConversation findbyId(Long id){
+    public RoomConversation findById(Long id){
         Optional<RoomConversation> optional = repositoryRoom.findById(id);
         return optional.get();
     }
 
     public void deleteById(Long id){
+        RoomConversation roomConversation = this.findById(id);
+        kafkaEventSender.sendEvent(roomConversation, "DELETE", "Deleting a conversation room");
+
         repositoryRoom.deleteById(id);
     }
 }

@@ -11,10 +11,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.modelmapper.internal.bytebuddy.implementation.Implementation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,17 +42,17 @@ public class MessageController {
         return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/deleteMessage/{idMessage}")
+    @DeleteMapping("/{id}")
     @Operation(method = "DELETE", summary = "Delete a message", description = "Delete a message by id")
     @ApiResponse(responseCode = "201", description = "Message deleted successfully",
             content = @Content(schema = @Schema(implementation = Message.class)))
     @ApiResponse(responseCode = "400", description = "Invalid request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public void deleteMessage(@PathVariable Long idMessage){
-        service.deleteMessage(idMessage);
+    public void deleteMessage(@PathVariable Long id) throws JsonProcessingException {
+        service.deleteMessage(id);
     }
 
-    @GetMapping("/findMessage/{idMessage}")
+    @GetMapping("/{id}")
     @Operation(method = "GET", summary = "Find message", description = "Search message by id")
     @ApiResponse(responseCode = "201", description = "message found successfully",
             content = @Content(schema = @Schema(implementation = Message.class),
@@ -63,12 +61,12 @@ public class MessageController {
                             "\"roomConversation\":{\"id\":\"1\",\"users\":[]}}")))
     @ApiResponse(responseCode = "400", description = "Invalid request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<Message> findMessageById(@PathVariable Long idMessage){
-        Message message = service.findMessageById(idMessage);
+    public ResponseEntity<Message> findMessageById(@PathVariable Long id){
+        Message message = service.findMessageById(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @GetMapping("/findMessagesByIdRoom/{idRoom}")
+    @GetMapping("/messages-room/{id}")
     @Operation(method = "GET", summary = "Find all messages by idRoom", description = "Search messages by idRoom")
     @ApiResponse(responseCode = "201", description = "messages found successfully",
             content = @Content(schema = @Schema(implementation = Message.class),
@@ -80,10 +78,9 @@ public class MessageController {
                             "\"roomConversation\": {\"id\": \"1\", \"users\": []} }]}")))
     @ApiResponse(responseCode = "400", description = "Invalid request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<List<Message>> findMessagesbyIdRoom(@PathVariable Long idRoom){
-        List<Message> messages = service.findMessagesByIdRoom(idRoom);
+    public ResponseEntity<List<Message>> findMessagesByIdRoom(@PathVariable Long id){
+        List<Message> messages = service.findMessagesByIdRoom(id);
         return new ResponseEntity<>(messages, HttpStatus.OK);
     }
-
 }
 

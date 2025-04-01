@@ -11,13 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "log")
-public class Log {
+@Table
+public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(columnDefinition = "TEXT")
-    private String object;
-    private String httpMethod;
-    private String description;
+    private String topic;
+    private String type;
 }

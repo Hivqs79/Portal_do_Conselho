@@ -19,11 +19,19 @@ public class Message {
     private Long id;
     private String content;
     private LocalDateTime currentTimeDate;
-    @ManyToOne
-    @JoinColumn(name = "sender_user")
-    private User sender;
+    private Long senderId;
     @ManyToOne
     @JoinColumn(name = "room_conversation_id")
     private RoomConversation roomConversation;
 
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                ", currentTimeDate=" + currentTimeDate +
+                ", senderId=" + senderId +
+                ", roomConversation=" + roomConversation +
+                '}';
+    }
 }

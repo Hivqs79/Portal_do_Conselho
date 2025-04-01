@@ -2,7 +2,6 @@ package api.chat.entities.dto;
 
 import api.chat.entities.Message;
 import api.chat.service.RoomConversationService;
-import api.chat.service.UserService;
 import lombok.*;
 
 import java.time.*;
@@ -16,18 +15,17 @@ import java.time.*;
 public class MessageDto {
 
     private String content;
-    private Long sender;
+    private Long senderId;
     private Long roomId;
-    private LocalDateTime currentTimeDate;
 
-    public Message conversorMessage (UserService userService, RoomConversationService roomConversationService){
+    public Message conversorMessage (RoomConversationService roomConversationService){
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
         LocalDate nowDate = now.toLocalDate();
         LocalTime nowTime = now.toLocalTime();
 
         return Message.builder()
-                .roomConversation(roomConversationService.findbyId(roomId))
-                .sender(userService.findbyId(sender))
+                .roomConversation(roomConversationService.findById(roomId))
+                .senderId(this.senderId)
                 .content(this.content)
                 .currentTimeDate(nowDate.atTime(nowTime))
                 .build();

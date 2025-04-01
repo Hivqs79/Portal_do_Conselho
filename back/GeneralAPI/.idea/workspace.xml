@@ -5,15 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aae07e96-69c1-4165-ac9d-99ecae57c7c2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/config/KafkaConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/controller/LogController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/model/dto/KafkaMessageDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/model/entity/Log.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/repository/LogRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/service/LogService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/service/kafka/KafkaConsumerService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/service/kafka/KafkaProducerService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/kafka/KafkaEventSender.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/kafka/KafkaMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/model/entity/Topic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/repository/TopicRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/service/TopicService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChatAPI/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/controllers/MessageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/controllers/MessageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/controllers/RoomConversationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/controllers/RoomConversationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/controllers/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/RoomConversation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/RoomConversation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/dto/MessageDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/dto/MessageDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/dto/RoomConversationDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/entities/dto/RoomConversationDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/repositorys/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/MessageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/MessageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/RoomConversationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/RoomConversationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChatAPI/src/main/java/api/chat/service/UserService.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/model/entity/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/model/entity/Log.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/service/kafka/KafkaConsumerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LogsAPI/src/main/java/com/example/logs_api/service/kafka/KafkaConsumerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../k8s/logs-api.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../../k8s/logs-api.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../scripts/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/build.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +56,7 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+        <option name="mavenHome" value="Use Maven wrapper" />
       </MavenGeneralSettings>
     </option>
   </component>
@@ -68,12 +82,13 @@
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.GeneralApiApplication.executor": "Run",
-    "git-widget-placeholder": "feature/logs-microservice",
+    "git-widget-placeholder": "dev",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/pedro/Documents/Github/portal_do_conselho/back/ChatAPI",
+    "last_opened_file_path": "C:/Users/pedro_a_wilhelm/Documents/Github/Portal_do_Conselho/back/GeneralAPI",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -105,14 +120,6 @@
       </method>
     </configuration>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -128,6 +135,7 @@
       <workItem from="1743354731635" duration="368000" />
       <workItem from="1743367182768" duration="743000" />
       <workItem from="1743378103778" duration="2713000" />
+      <workItem from="1743446782289" duration="3045000" />
     </task>
     <servers />
   </component>

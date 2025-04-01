@@ -3,6 +3,8 @@ package api.chat.service;
 import api.chat.entities.dto.MessageDto;
 import api.chat.entities.Message;
 import api.chat.repositorys.MessageRepository;
+import api.chat.service.kafka.KafkaEventSender;
+import api.chat.service.kafka.KafkaMessage;
 import api.chat.service.kafka.KafkaProducerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,24 +27,25 @@ import java.util.Optional;
 public class MessageService {
 
     private final MessageRepository repository;
-    private final UserService userService;
     @Lazy
     @Autowired
     private RoomConversationService roomConversationService;
 
-    private final KafkaProducerService kafkaProducerService;
+    private final KafkaEventSender kafkaEventSender;
     private final ObjectMapper objectMapper;
 
 
 
     public Message sendMessage(MessageDto dto) throws JsonProcessingException {
-        Message message = dto.conversorMessage(userService, roomConversationService);
-        System.out.println(objectMapper.writeValueAsString(message));
-        kafkaProducerService.sendMessage("room" + message.getRoomConversation().getId(), objectMapper.writeValueAsString(message));
-        return repository.save(message);
+        Message message = dto.conversorMessage(roomConversationService);
+        message = repository.save(message);
+        kafkaEventSender.sendEvent(objectMapper.writeValueAsString(message),"POST", "Sending a message","room" + message.getRoomConversation().getId());
+        return message;
     }
 
-    public void deleteMessage(Long idMessage){
+    public void deleteMessage(Long idMessage) throws JsonProcessingException {
+        Message message = findMessageById(idMessage);
+        kafkaEventSender.sendEvent(objectMapper.writeValueAsString(message),"DELETE", "Deleting a message");
         repository.deleteById(idMessage);
     }
 
