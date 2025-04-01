@@ -1,5 +1,5 @@
-drop database userapi_db;
-use userapi_db;
+drop database general_db;
+use general_db;
 
 show tables;
 
