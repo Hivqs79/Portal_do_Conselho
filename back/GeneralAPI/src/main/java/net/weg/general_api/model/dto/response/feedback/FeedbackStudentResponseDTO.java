@@ -22,6 +22,7 @@ public class FeedbackStudentResponseDTO {
     private double frequency;
     private boolean isViewed;
     private boolean isSatisfied;
+    private boolean isReturned;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 

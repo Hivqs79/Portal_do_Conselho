@@ -17,6 +17,7 @@ public class FeedbackClassResponseDTO {
     private CouncilResponseDTO council;
     private String strengths;
     private String toImprove;
+    private boolean isReturned;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 }
