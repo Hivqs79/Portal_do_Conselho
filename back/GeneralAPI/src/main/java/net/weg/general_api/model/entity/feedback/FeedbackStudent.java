@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class FeedbackStudent extends Feedback {
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "rank_classification", nullable = false)
     private RankENUM rank;
 
     @ManyToOne
