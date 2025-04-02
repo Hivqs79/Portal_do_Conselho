@@ -14,6 +14,7 @@ import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import net.weg.general_api.model.dto.request.feedback.FeedbackUserRequestDTO;
+import net.weg.general_api.model.dto.response.feedback.FeedbackClassResponseDTO;
 import net.weg.general_api.model.dto.response.feedback.FeedbackUserResponseDTO;
 import net.weg.general_api.model.entity.feedback.FeedbackUser;
 import net.weg.general_api.service.feedback.FeedbackUserService;
@@ -89,6 +90,15 @@ public class FeedbackUserController {
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<List<FeedbackUserResponseDTO>> getAllFeedbackUserByStudent(@Parameter(description = "User ID", example = "1") @PathVariable Long id) {
         return new ResponseEntity<>(service.getFeedbackUserByStudentId(id), HttpStatus.OK);
+    }
+
+    @PatchMapping("/return/{id}")
+    @Operation(method = "PATCH", summary = "Return user feedback status", description = "Modifies isReturned status, false to true")
+    @ApiResponse(responseCode = "200", description = "Feedbacks found", content = @Content(schema = @Schema(implementation = List.class), examples = @ExampleObject(value = "[{\"id\":1,\"rank\":\"AVERAGE\",\"strengths\":\"Excellent class\",\"toImprove\":\"None\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}]")))
+    @ApiResponse(responseCode = "404", description = "User not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<FeedbackUserResponseDTO> returnUserStudent(@Parameter(description = "Feedback ID", example = "1") @PathVariable Long id) {
+        return new ResponseEntity<>(service.returnFeedbackUser(id), HttpStatus.OK);
     }
 
 }
