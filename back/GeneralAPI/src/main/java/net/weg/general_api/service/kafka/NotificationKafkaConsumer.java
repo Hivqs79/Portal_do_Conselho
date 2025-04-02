@@ -13,10 +13,10 @@ public class NotificationKafkaConsumer {
     private final NotificationService notificationService;
     private final ObjectMapper objectMapper;
 
-    @KafkaListener(topics = "notification16", groupId = "notification_group")
+    @KafkaListener(topics = "notification", groupId = "notification_group")
     public void consumeNotification(String message) {
         try {
-            System.out.println("Notification: " + message);
+            System.out.println("Notification kc: " + message);
         } catch (Exception e) {
             throw new KafkaException("Error processing notification message: " + e.getMessage());
         }

@@ -39,7 +39,7 @@ public class KafkaEventSender {
         try {
             notification = notificationService.createNotification(notification);
             String jsonMessage = objectMapper.writeValueAsString(notification);
-            kafkaProducerService.sendMessage("notification" + notification.getUserId(), jsonMessage);
+            kafkaProducerService.sendMessage("notification", jsonMessage);
         } catch (JsonProcessingException e) {
             throw new KafkaException("Failed to serialize NotificationMessage: " + e);
         }
