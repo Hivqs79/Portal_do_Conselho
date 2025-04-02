@@ -29,6 +29,7 @@ export default function TableRow({
   const { primaryColor, constrastColor, backgroundColor } = useThemeContext();
   const {rank,
     realizeButton,
+    onClickRealize,
     visualizeIconButton,
     visualizeButton,
     onClickVisualize,
@@ -79,7 +80,7 @@ export default function TableRow({
 
             {(visualizeButton || seeButton || visualizeIconButton) && <TableButton onClick={() => onClickVisualize && onClickVisualize(content)} text={(seeButton ? "Olhar" : "Visualizar")} onlyIcon={visualizeIconButton} icon={FaRegEye}/>}
             
-            {realizeButton && <TableButton text="Realizar" onlyTextInBigSize={true} icon={PiPlayBold} />}
+            {realizeButton && <TableButton text="Realizar" onlyTextInBigSize={true} icon={PiPlayBold}onClick={() => onClickRealize && onClickRealize(content)} />}
 
             {(editButton || anotationButton) && <TableButton text={anotationButton ? "Anotar" : "Editar"} icon={LuPencilLine} />}
 

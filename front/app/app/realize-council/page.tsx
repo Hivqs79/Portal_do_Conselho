@@ -23,11 +23,13 @@ type UserComment = {
 };
 
 type User = {
+  id: number;
   name: string;
-  frequencia?: number;
-  imageKey: string;
-  rank?: string;
-  comments: UserComment[];
+  email: string;
+  isRepresentant: boolean;
+  lastRank: string | null;
+  createDate: string;
+  updateDate: string;
 };
 
 type CouncilClass = {
@@ -36,14 +38,34 @@ type CouncilClass = {
 };
 
 type CouncilData = {
-  ["council-form"]: {
-    class: CouncilClass;
-    users: User[];
+  id: number;
+  startDateTime: string;
+  teachers: Teacher[];
+  createDate: string;
+  updateDate: string;
+  aclass: {
+    id: number;
+    name: string;
+    area: string;
+    course: string;
+    lastRank: string | null;
+    createDate: string;
+    updateDate: string;
   };
+  className: string;
+};
+
+type Teacher = {
+  id: number;
+  name: string;
+  email: string;
+  createDate: string;
+  updateDate: string;
 };
 
 export default function RealizeCouncil() {
   const [data, setData] = useState<CouncilData | null>(null);
+  const [users, setUsers] = useState<User[]>([]);
   const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
   const [positiveContent, setPositiveContent] = useState("");
   const [negativeContent, setNegativeContent] = useState("");
@@ -78,14 +100,55 @@ export default function RealizeCouncil() {
   } = useThemeContext();
 
   useEffect(() => {
-    const fetchCouncilContent = async () => {
-      const response = await fetch("http://localhost:3030/studentCouncil");
-      const result: CouncilData = await response.json();
-      setData(result);
-    };
+    const councilDataInicialize = localStorage.getItem("councilDataInicialize");
 
-    fetchCouncilContent();
+    if (councilDataInicialize) {
+      try {
+        const parsedData = JSON.parse(councilDataInicialize);
+        if (parsedData && parsedData.aclass && parsedData.teachers) {
+          localStorage.setItem("className", parsedData.aclass.name);
+
+          const fetchUsers = async () => {
+            const users = await fetchUsersInClass(parsedData.aclass.id);
+            console.log("Usuarios recebidos: ", users);
+            setUsers(users);
+          };
+
+          fetchUsers();
+
+          setData(parsedData);
+          console.log("Dados carregados:", parsedData);
+        } else {
+          console.error("Estrutura de dados inválida");
+        }
+      } catch (error) {
+        console.error("Erro ao parsear dados:", error);
+      }
+    } else {
+      console.log("Nenhum dado encontrado no localStorage");
+    }
   }, []);
+
+  const fetchUsersInClass = async (idClass: number) => {
+    try {
+      const response = await fetch(
+        "http://localhost:8081/class/student/" + idClass
+      );
+      const users = await response.json();
+      return users;
+    } catch (error) {
+      console.log("Erro ao realizar a requisição dos alunos da turma: ", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("Valor atualizado de data:", data);
+    console.log("Class name: ", data?.aclass.name);
+    console.log("Class name: " + data?.aclass.name);
+    setTimeout(() => {
+      localStorage.removeItem("councilDataInicialize");
+    }, 5000);
+  }, [data]);
 
   const getDecryptedData = (key: string): string => {
     const encryptedData = localStorage.getItem(key);
@@ -134,15 +197,16 @@ export default function RealizeCouncil() {
   const handleNextStudent = () => {
     if (data !== null) {
       setCurrentStudentIndex(
-        (prevIndex) => (prevIndex + 1) % data["council-form"].users.length
+        (prevIndex) => (prevIndex + 1) % users.length
       );
+      console.log("oi: ", users.length);
     }
   };
 
   const handlePreviousStudent = () => {
     if (data !== null) {
       setCurrentStudentIndex((prevIndex) =>
-        prevIndex === 0 ? data["council-form"].users.length - 1 : prevIndex - 1
+        prevIndex === 0 ? users.length - 1 : prevIndex - 1
       );
     }
   };
@@ -173,7 +237,7 @@ export default function RealizeCouncil() {
 
     const savedData = localStorage.getItem("studentsData");
     if (data) {
-      councilClassName = data["council-form"].class.name;
+      councilClassName = data.aclass.name;
       if (savedData) {
         const decryptedData = Decryptor(savedData);
         if (decryptedData) {
@@ -223,7 +287,7 @@ export default function RealizeCouncil() {
 
     const savedData = localStorage.getItem("studentsData");
     if (data) {
-      councilClassName = data["council-form"].class.name;
+      councilClassName = data.aclass.name;
       if (savedData) {
         const decryptedData = Decryptor(savedData);
         if (decryptedData) {
@@ -244,8 +308,8 @@ export default function RealizeCouncil() {
         });
         return false;
       }
-      for (let i = 0; i < data["council-form"].users.length; i++) {
-        const userName = data["council-form"].users[i].name;
+      for (let i = 0; i < users.length; i++) {
+        const userName = users[i].name;
         if (studentsData[userName] === undefined) {
           console.log("Você deve preencer o aluno: ", userName);
           return false;
@@ -303,29 +367,6 @@ export default function RealizeCouncil() {
     return formattedData;
   }
 
-  function verifyRank() {
-    if (data) {
-      const rank = data["council-form"].users[currentStudentIndex].rank;
-      if (rank === undefined || rank === null) {
-        return "none";
-      }
-      return rank as "none" | "average" | "excellent" | "good" | "critical";
-    }
-    return "none";
-  }
-
-  function verifyFrequency() {
-    if (data) {
-      const frequency =
-        data["council-form"].users[currentStudentIndex].frequencia;
-      if (frequency === undefined || frequency === null) {
-        return 0;
-      }
-      return frequency;
-    }
-    return 0;
-  }
-
   const OpenfinalizeCouncilModal = () => {
     const result = verifyCouncil();
     if (result) {
@@ -362,7 +403,7 @@ export default function RealizeCouncil() {
     <Box>
       <Title
         textHighlight="Conselho"
-        text={`da turma: ${data ? data["council-form"].class.name : ""}`}
+        text={`da turma: ${data ? data.aclass.name : ""}`}
       />
       <Box
         className={`rounded-big m-0 flex justify-center items-center sm:outline-[16px] sm:outline`}
@@ -399,16 +440,18 @@ export default function RealizeCouncil() {
             </Box>
             <div>
               <StudentCouncilForm
-                student={
-                  data
-                    ? data["council-form"].users[currentStudentIndex].name
-                    : ""
-                }
+                // student={
+                //   data
+                //     ? data["council-form"].users[currentStudentIndex].name
+                //     : ""
+                // }
                 frequencia={verifyFrequency()}
                 comments=""
                 negativeContent={negativeContent}
                 positiveContent={positiveContent}
-                rank={verifyRank()}
+                // rank={
+                rank="none" //remover
+                student="" //remover
                 onNext={handleNextStudent}
                 onPrevious={handlePreviousStudent}
                 openCommentsModal={openStudentModal}
@@ -455,21 +498,25 @@ export default function RealizeCouncil() {
       </Box>
       {isModalTeacherOpen && (
         <CommentariesModal
-          anotations={data ? data["council-form"].class.teacherAnotations : []}
+          anotations={[]} //remover
+          name="" //remover
+          // anotations={data ? data["council-form"].class.teacherAnotations : []}
           student={false}
-          name={data ? data["council-form"].class.name : ""}
+          // name={data ? data["council-form"].class.name : ""}
           onClose={closeTeacherModal}
         />
       )}
       {isModalStudentOpen && (
         <CommentariesModal
-          anotations={
-            data ? data["council-form"].users[currentStudentIndex].comments : []
-          }
+          anotations={[]} //remover
+          name="" //remover
+          // anotations={
+          //   data ? data["council-form"].users[currentStudentIndex].comments : []
+          // }
           student={true}
-          name={
-            data ? data["council-form"].users[currentStudentIndex].name : ""
-          }
+          // name={
+          //   data ? data["council-form"].users[currentStudentIndex].name : ""
+          // }
           onClose={closeStudentModal}
         />
       )}

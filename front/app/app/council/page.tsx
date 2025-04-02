@@ -16,6 +16,7 @@ import TableCouncilRow from "@/interfaces/TableCouncilRow";
 import CouncilModal from "@/components/council/CouncilModal";
 import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
 import { useThemeContext } from "@/hooks/useTheme";
+import { useRouter } from "next/navigation";
 
 export default function Council() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -32,6 +33,7 @@ export default function Council() {
   const [isEditing, setIsEditing] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const {redDanger} = useThemeContext();
+  const router = useRouter();
 
   const rowButtons: TableRowButtons = {
     realizeButton: true,
@@ -41,6 +43,10 @@ export default function Council() {
       setSelectedClass(row.aclass.id);
       setDate(dayjs(row.startDateTime));
       setTime(dayjs(row.startDateTime));
+    },
+    onClickRealize: (row: TableCouncilRow) => {
+      localStorage.setItem("councilDataInicialize", JSON.stringify(row));
+      router.push("/realize-council");
     },
   };
 
@@ -54,7 +60,7 @@ export default function Council() {
     { name: "Turma" },
     { name: "Data" },
     { name: "Horário" },
-  ];  
+  ];
 
   const createCouncil = async () => {
     console.log("testeCreate");
