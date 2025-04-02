@@ -22,8 +22,15 @@ export default function Header({ variant }: HeaderProps) {
   const [openMenu, setOpenMenu] = useState(false);
   const boxRef = useRef<HTMLElement>(null);
   const windowWidth = useWindowWidth();
-  const [notifications, setNotifications] = useState(0);  
+  const [notifications, setNotifications] = useState(0);
   const { addConsumer } = useKafka();
+
+  
+  const eventSource = new EventSource("http://localhost:3090/events");
+
+  eventSource.onmessage = (event) => {
+    console.log("Nova mensagem:", JSON.parse(event.data));
+  };
 
   useEffect(() => {
     const userId = localStorage.getItem("idUser");
@@ -31,24 +38,26 @@ export default function Header({ variant }: HeaderProps) {
     if (userId) {
       const fetchNotifications = async () => {
         const response = await fetch(
-          "http://localhost:8081/notification/user/" + userId);
+          "http://localhost:8081/notification/user/" + userId
+        );
         const data = await response.json();
         console.log(data);
         setNotifications(data.content.length);
       };
-      
-      const subscribe = async () => {        
+
+      const subscribe = async () => {
         const onMessage = (message: kafka.Message) => {
-          console.log('Received message in client:', message);
+          console.log("Received message in client:", message);
           fetchNotifications();
-        }
-        addConsumer("notification"+userId, onMessage);
+        };
+        addConsumer("notification" + userId, onMessage);
       };
 
-      fetchNotifications();      
+      fetchNotifications();
+      // setTimeout(subscribe, 10000);
       subscribe();
     }
-  }, []);  
+  }, []);
 
   return (
     <Box
@@ -101,7 +110,7 @@ export default function Header({ variant }: HeaderProps) {
         {/* //TODO: substitute for a component of UserImage */}
         <div className="w-12 h-12 flex justify-center items-center rounded-full">
           <Link href={"/profile"}>
-            <Photo idUser={1} rounded={true} classname="w-full h-full" /> 
+            <Photo idUser={1} rounded={true} classname="w-full h-full" />
             {/* //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO */}
           </Link>
         </div>
@@ -119,7 +128,9 @@ export default function Header({ variant }: HeaderProps) {
               className="w-4 h-4 mr-1"
             />
             <Typography
-              variant={windowWidth < 640 ? "xs_text_regular" : "sm_text_regular"}
+              variant={
+                windowWidth < 640 ? "xs_text_regular" : "sm_text_regular"
+              }
               style={{
                 color: whiteColor,
                 lineHeight: "0px",

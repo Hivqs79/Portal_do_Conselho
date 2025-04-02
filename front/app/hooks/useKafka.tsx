@@ -9,22 +9,29 @@ const useKafka = () => {
             console.error('You need to provide a topic and a callback function.');
             return;
         }
-
+        console.log("teste1");
         const eventSource = new EventSource(`/api/kafkaConsumer?topic=${topic}`);
+        console.log("teste2");
 
         eventSource.onopen = () => {
-            console.log(`Conexão estabelecida com o tópico ${topic}`);
+            console.log(`Conexão estabelecida com o tópico ${topic}, status ${eventSource.readyState}`);            
         };
 
         console.log('EventSource readyState:', eventSource.readyState);
         
         eventSource.onmessage = (event) => {
             console.log("Mensagem recebida no useKafka antes do parse:", event);
-            const message = JSON.parse(event.data);
-            console.log("Mensagem recebida no useKafka:", message);
-            console.log("Mais um parse no useKafka:", JSON.parse(message.value));
-            onMessage(message);
-        };
+            try {
+              const message = JSON.parse(event.data);
+              console.log("Mensagem recebida no useKafka:", message);
+              const parsedMessage = JSON.parse(message.value.toString());
+              console.log("Mais um parse com .toString no useKafka:", parsedMessage);
+              console.log("Mais um parse no useKafka:", JSON.parse(message.value));
+              onMessage(message);
+            } catch (error) {
+              console.error("Erro ao processar a mensagem:", error);
+            }
+          };
 
         eventSource.onerror = (err) => {
             console.error(`Error in the connection to topic ${topic}:`, err);

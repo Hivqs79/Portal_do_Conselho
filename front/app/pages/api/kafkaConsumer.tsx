@@ -14,12 +14,18 @@ export default function handler(req, res) {
     }
 
     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Content-Encoding', 'identity');
+
     res.flushHeaders();
 
     const consumer = kafkaConsumer(topic);
+    res.write(`data: {"message": "Conexão SSE iniciada"}\n\n`);
 
     consumer.on('message', (message) => {
         console.log('Mensagem recebida na api:', message);
