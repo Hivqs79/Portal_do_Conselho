@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-work-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-work-service
+  template:
+    metadata:
+      labels:
+        app: kafka-work-service
+    spec:
+      containers:
+      - name: kafka-work-service
+        image: hivqs79/portal-do-conselho_kafka-work-service:latest
+        ports:
+        - containerPort: 3090
+        env:
+        - name: KAFKA_BROKER
+          value: "kafka-service:9092"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-work-service
+spec:
+  selector:
+    app: kafka-work-service
+  ports:
+    - protocol: TCP
+      port: 3090
+      targetPort: 3090
+  type: ClusterIP
