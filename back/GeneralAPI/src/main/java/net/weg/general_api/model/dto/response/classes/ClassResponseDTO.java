@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClassResponseDTO {
-
     private Long id;
     private String name;
     private String area;
@@ -19,4 +18,5 @@ public class ClassResponseDTO {
     private RankENUM lastRank;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+    private boolean enabled;
 }

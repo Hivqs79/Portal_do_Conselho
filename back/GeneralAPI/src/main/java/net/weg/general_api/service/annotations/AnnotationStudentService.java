@@ -37,7 +37,7 @@ public class AnnotationStudentService {
 
     public AnnotationStudentResponseDTO createAnnotationStudent(AnnotationStudentRequestDTO annotationStudentRequestDTO) {
         AnnotationStudent annotationStudent = modelMapper.map(annotationStudentRequestDTO, AnnotationStudent.class);
-
+        
         Council council = councilService.findCouncilEntity(annotationStudentRequestDTO.getCouncil_id());
 
         if (!council.getTeachers().contains(teacherService.findTeacherEntity(annotationStudentRequestDTO.getTeacher_id()))) {

@@ -18,6 +18,7 @@ import net.weg.general_api.model.dto.response.classes.ClassResponseDTO;
 import net.weg.general_api.model.dto.response.users.StudentResponseDTO;
 import net.weg.general_api.model.dto.response.users.TeacherResponseDTO;
 import net.weg.general_api.model.entity.classes.Class;
+import net.weg.general_api.model.entity.users.Teacher;
 import net.weg.general_api.service.classes.ClassService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +42,17 @@ public class ClassController {
     @ApiResponse(responseCode = "200", description = "Classes found", content = @Content(schema = @Schema(implementation = Page.class), examples = @ExampleObject(value = "{\"content\":[{\"id\":1,\"name\":\"Mathematics\",\"area\":\"EXACT\",\"course\":\"Engineering\",\"lastRank\":\"GOOD\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}],\"pageable\":{\"pageNumber\":0,\"pageSize\":10,\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true}},\"totalElements\":1,\"totalPages\":1}")))
     @ApiResponse(responseCode = "400", description = "Invalid parameters")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public Page<ClassResponseDTO> searchClasses(@And({@Spec(path = "id", spec = Equal.class), @Spec(path = "name", spec = Like.class), @Spec(path = "area", spec = Like.class), @Spec(path = "course", spec = Like.class), @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class), @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class), @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class), @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)}) Specification<Class> spec, Pageable pageable) {
+    public Page<ClassResponseDTO> searchClasses(
+            @And({
+                    @Spec(path = "id", spec = Equal.class),
+                    @Spec(path = "name", spec = Like.class),
+                    @Spec(path = "area", spec = Like.class),
+                    @Spec(path = "course", spec = Like.class),
+                    @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class),
+                    @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class),
+                    @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class),
+                    @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)})
+            Specification<Class> spec, Pageable pageable) {
         return service.findClassSpec(spec, pageable);
     }
 

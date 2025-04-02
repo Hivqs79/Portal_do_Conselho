@@ -13,13 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CouncilResponseDTO {
-
     private Long id;
     private LocalDateTime startDateTime;
+    private boolean isHappening;
     private ClassResponseDTO aClass;
     private List<TeacherResponseDTO> teachers;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-
-
+    private boolean enabled;
 }

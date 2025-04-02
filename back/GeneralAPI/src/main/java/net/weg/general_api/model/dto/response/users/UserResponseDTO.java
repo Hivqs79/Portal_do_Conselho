@@ -15,5 +15,5 @@ public class UserResponseDTO {
     private String email;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-
+    private boolean enabled;
 }

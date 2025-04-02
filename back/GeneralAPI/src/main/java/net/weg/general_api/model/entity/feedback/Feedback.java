@@ -28,6 +28,9 @@ public abstract class Feedback {
     @Column(nullable = false)
     private boolean enabled;
 
+    @Column(nullable = false)
+    private boolean isReturned;
+
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
 
@@ -46,6 +49,7 @@ public abstract class Feedback {
                 ", council=" + council.getId() +
                 ", strengths='" + strengths + '\'' +
                 ", toImprove='" + toImprove + '\'' +
+                ", isReturned='" + isReturned +
                 '}';
     }
 }

@@ -101,11 +101,4 @@ public class FeedbackClassService {
 
         return responseDTOS;
     }
-
-    public FeedbackClassResponseDTO returnFeedbackClass(Long id) {
-        FeedbackClass feedbackClass = findFeedbackEntity(id);
-        feedbackClass.setReturned(true);
-        repository.save(feedbackClass);
-        return modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class);
-    }
 }

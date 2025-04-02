@@ -10,15 +10,10 @@ import net.weg.general_api.model.enums.*;
 @NoArgsConstructor
 public class CustomizationResponseDTO {
     private Long id;
-
     private ModeThemeENUM modeTheme;
-
     private PalleteENUM pallete;
-
     private TextFont textFont;
-
     private TitleFont titleFont;
-
     private FontSizeENUM fontSize;
-
+    private boolean enabled;
 }
