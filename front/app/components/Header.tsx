@@ -10,8 +10,6 @@ import Menu from "./Menu";
 import Photo from "./profile/Photo";
 import Link from "next/link";
 import { useWindowWidth } from "@react-hook/window-size";
-import * as kafka from "kafka-node";
-import useKafka from "@/hooks/useKafka";
 
 interface HeaderProps {
   variant?: string;
@@ -22,15 +20,7 @@ export default function Header({ variant }: HeaderProps) {
   const [openMenu, setOpenMenu] = useState(false);
   const boxRef = useRef<HTMLElement>(null);
   const windowWidth = useWindowWidth();
-  const [notifications, setNotifications] = useState(0);
-  const { addConsumer } = useKafka();
-
-  
-  const eventSource = new EventSource("http://localhost:3090/events");
-
-  eventSource.onmessage = (event) => {
-    console.log("Nova mensagem:", JSON.parse(event.data));
-  };
+  const [notifications, setNotifications] = useState(0);    
 
   useEffect(() => {
     const userId = localStorage.getItem("idUser");
@@ -42,19 +32,19 @@ export default function Header({ variant }: HeaderProps) {
         );
         const data = await response.json();
         console.log(data);
-        setNotifications(data.content.length);
+        setNotifications(data.totalElements);
       };
 
       const subscribe = async () => {
-        const onMessage = (message: kafka.Message) => {
-          console.log("Received message in client:", message);
+        const eventSource = new EventSource("http://localhost:3090/events/notifications/" + userId);
+
+        eventSource.onmessage = (event) => {
+          console.log("Nova mensagem:", JSON.parse(event.data));
           fetchNotifications();
         };
-        addConsumer("notification" + userId, onMessage);
       };
 
       fetchNotifications();
-      // setTimeout(subscribe, 10000);
       subscribe();
     }
   }, []);
