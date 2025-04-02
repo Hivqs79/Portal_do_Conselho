@@ -14,28 +14,7 @@ import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, Typography } from "@mui/material";
 import { useWindowWidth } from "@react-hook/window-size";
 import { useState, useEffect } from "react";
-
-type UserComment = {
-  name: string;
-  rank: string;
-  positiveContent: string;
-  negativeContent: string;
-};
-
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  isRepresentant: boolean;
-  lastRank: string | null;
-  createDate: string;
-  updateDate: string;
-};
-
-type CouncilClass = {
-  name: string;
-  teacherAnotations: TeacherAnnotation[];
-};
+import { useRouter } from "next/navigation";
 
 type CouncilData = {
   id: number;
@@ -98,36 +77,138 @@ export default function RealizeCouncil() {
     whiteColor,
     textBlackolor,
   } = useThemeContext();
+  const router = useRouter();
 
   useEffect(() => {
     const councilDataInicialize = localStorage.getItem("councilDataInicialize");
+    const usersClass = localStorage.getItem("studentsData");
 
-    if (councilDataInicialize) {
-      try {
-        const parsedData = JSON.parse(councilDataInicialize);
-        if (parsedData && parsedData.aclass && parsedData.teachers) {
-          localStorage.setItem("className", parsedData.aclass.name);
+    const loadData = async () => {
+      // 1. Primeiro verifica se já temos dados no localStorage
+      if (usersClass) {
+        console.log("DADOS PUXADOS DIRETO DO LOCALSTORAGE");
+        const decryptedData = Decryptor(usersClass);
+        if (decryptedData) {
+          const studentNames = Object.keys(decryptedData);
 
-          const fetchUsers = async () => {
-            const users = await fetchUsersInClass(parsedData.aclass.id);
-            console.log("Usuarios recebidos: ", users);
-            setUsers(users);
-          };
+          // Se temos alunos no localStorage, usa esses dados
+          if (studentNames.length > 0) {
+            // Recria o array de users baseado no localStorage com valores padrão para propriedades faltantes
+            const usersFromStorage = studentNames.map((name) => {
+              const userData = decryptedData[name];
+              return {
+                id: userData?.id_user || 0,
+                name: name,
+                email: userData?.email || "",
+                isRepresentant: userData?.isRepresentant || false,
+                lastRank: userData?.lastRank || null,
+                createDate: userData?.createDate || new Date().toISOString(),
+                updateDate: userData?.updateDate || new Date().toISOString(),
+              } as User;
+            });
 
-          fetchUsers();
+            setUsers(usersFromStorage);
+            console.log(
+              "Usuários carregados do localStorage:",
+              usersFromStorage
+            );
 
-          setData(parsedData);
-          console.log("Dados carregados:", parsedData);
-        } else {
-          console.error("Estrutura de dados inválida");
+            // Se temos os dados básicos da turma no localStorage, seta eles também
+            const className = localStorage.getItem("className");
+            if (className && !data) {
+              setData({
+                id: 0, // valor padrão
+                startDateTime: new Date().toISOString(),
+                teachers: [],
+                createDate: new Date().toISOString(),
+                updateDate: new Date().toISOString(),
+                aclass: {
+                  id: 0,
+                  name: className,
+                  area: "",
+                  course: "",
+                  lastRank: null,
+                  createDate: new Date().toISOString(),
+                  updateDate: new Date().toISOString(),
+                },
+                className: className,
+              });
+            }
+            return;
+          }
         }
-      } catch (error) {
-        console.error("Erro ao parsear dados:", error);
       }
-    } else {
-      console.log("Nenhum dado encontrado no localStorage");
-    }
+
+      if (councilDataInicialize) {
+        console.log("DADOS PUXADOS DIRETO DA API");
+        try {
+          const parsedData = JSON.parse(councilDataInicialize);
+          if (parsedData && parsedData.aclass && parsedData.teachers) {
+            localStorage.setItem("className", parsedData.aclass.name);
+
+            const users = await fetchUsersInClass(parsedData.aclass.id);
+            console.log("Usuarios recebidos da API: ", users);
+
+            const initialData: Record<string, any> = {};
+            users.forEach((user: User) => {
+              initialData[user.name] = {
+                id: user.id,
+                id_user: user.id,
+                email: user.email,
+                isRepresentant: user.isRepresentant,
+                lastRank: user.lastRank,
+                createDate: user.createDate,
+                updateDate: user.updateDate,
+                frequencia: null,
+                comments: "",
+                negativeContent: "",
+                positiveContent: "",
+                rank: "none",
+              };
+            });
+
+            localStorage.setItem("studentsData", Encryptor(initialData));
+
+            setUsers(users);
+            setData(parsedData);
+            console.log("Dados carregados da API:", parsedData);
+          } else {
+            console.error("Estrutura de dados inválida");
+          }
+        } catch (error) {
+          console.error("Erro ao parsear dados:", error);
+        }
+      } else {
+        console.log("Nenhum dado encontrado no localStorage ou API");
+      }
+    };
+
+    loadData();
   }, []);
+
+  // Efeito para lidar com mudanças no índice do aluno atual
+  useEffect(() => {
+    if (
+      users.length > 0 &&
+      currentStudentIndex >= 0 &&
+      currentStudentIndex < users.length
+    ) {
+      const currentUser = users[currentStudentIndex];
+      console.log("Usuário atual:", currentUser);
+
+      // Aqui você pode carregar os dados específicos do aluno se necessário
+      const usersClass = localStorage.getItem("studentsData");
+      if (usersClass) {
+        const decryptedData = Decryptor(usersClass);
+        if (decryptedData && decryptedData[currentUser.name]) {
+          console.log(
+            "Dados do usuário no localStorage:",
+            decryptedData[currentUser.name]
+          );
+        }
+      }
+    }
+  }, [currentStudentIndex, users]);
 
   const fetchUsersInClass = async (idClass: number) => {
     try {
@@ -147,7 +228,7 @@ export default function RealizeCouncil() {
     console.log("Class name: " + data?.aclass.name);
     setTimeout(() => {
       localStorage.removeItem("councilDataInicialize");
-    }, 5000);
+    }, 2000);
   }, [data]);
 
   const getDecryptedData = (key: string): string => {
@@ -195,16 +276,14 @@ export default function RealizeCouncil() {
   };
 
   const handleNextStudent = () => {
-    if (data !== null) {
-      setCurrentStudentIndex(
-        (prevIndex) => (prevIndex + 1) % users.length
-      );
+    if (users.length > 0) {
+      setCurrentStudentIndex((prevIndex) => (prevIndex + 1) % users.length);
       console.log("oi: ", users.length);
     }
   };
 
   const handlePreviousStudent = () => {
-    if (data !== null) {
+    if (users.length > 0) {
       setCurrentStudentIndex((prevIndex) =>
         prevIndex === 0 ? users.length - 1 : prevIndex - 1
       );
@@ -277,7 +356,6 @@ export default function RealizeCouncil() {
   }
 
   function verifyCouncil() {
-    console.log("oi aaa");
     const ClassRank = getDecryptedData("rank");
     const ClassnegativeContent = getDecryptedData("negativeContent");
     const ClasspositiveContent = getDecryptedData("positiveContent");
@@ -315,6 +393,8 @@ export default function RealizeCouncil() {
           return false;
         } else if (
           studentsData[userName].frequencia === 0 ||
+          studentsData[userName].frequencia === null ||
+          studentsData[userName].frequencia === undefined ||
           studentsData[userName].rank === "none" ||
           studentsData[userName].positiveContent === "" ||
           studentsData[userName].negativeContent === ""
@@ -344,6 +424,7 @@ export default function RealizeCouncil() {
   ): any {
     const studentsArray = Object.keys(studentsData).map((studentName) => {
       return {
+        id_user: studentsData[studentName].id_user,
         name: studentName,
         frequencia: studentsData[studentName].frequencia,
         rank: studentsData[studentName].rank,
@@ -389,8 +470,14 @@ export default function RealizeCouncil() {
 
   const CancelCouncil = () => {
     setIsLoadingOpen(true);
+    localStorage.removeItem("className");
+    localStorage.removeItem("rank");
+    localStorage.removeItem("studentsData");
+    localStorage.removeItem("positiveContent");
+    localStorage.removeItem("negativeContent");
     setTimeout(() => {
       setIsLoadingOpen(false);
+      router.push("/council");
     }, 2000);
     setIsCancelCouncilOpen(false);
   };
@@ -399,11 +486,33 @@ export default function RealizeCouncil() {
     setIsCancelCouncilOpen(false);
   };
 
+  function verifyFrequency() {
+    const savedData = localStorage.getItem("studentsData");
+    if (savedData) {
+      const decryptedData = Decryptor(savedData);
+      if (decryptedData) {
+        for (let i = 0; i < users.length; i++) {
+          const userName = users[i].name;
+          if (
+            decryptedData[userName].frequencia === 0 ||
+            decryptedData[userName].frequencia === "" ||
+            decryptedData[userName].frequencia === undefined
+          ) {
+            return 0;
+          } else {
+            return decryptedData[userName].frequencia;
+          }
+        }
+      }
+      return 0;
+    }
+  }
+
   return (
     <Box>
       <Title
         textHighlight="Conselho"
-        text={`da turma: ${data ? data.aclass.name : ""}`}
+        text={`da turma: ${data ? data.aclass.name : localStorage.getItem("className")}`}
       />
       <Box
         className={`rounded-big m-0 flex justify-center items-center sm:outline-[16px] sm:outline`}
@@ -440,29 +549,21 @@ export default function RealizeCouncil() {
             </Box>
             <div>
               <StudentCouncilForm
-                // student={
-                //   data
-                //     ? data["council-form"].users[currentStudentIndex].name
-                //     : ""
-                // }
+                users={users || []}
+                student={
+                  users && users.length > 0
+                    ? users[currentStudentIndex]?.name
+                    : ""
+                }
+                id_user={users && users.length > 0 ? users[currentStudentIndex]?.id : undefined}
                 frequencia={verifyFrequency()}
                 comments=""
-                negativeContent={negativeContent}
-                positiveContent={positiveContent}
-                // rank={
-                rank="none" //remover
-                student="" //remover
+                negativeContent={negativeContent || ""}
+                positiveContent={positiveContent || ""}
+                rank={actualRank || "none"}
                 onNext={handleNextStudent}
                 onPrevious={handlePreviousStudent}
                 openCommentsModal={openStudentModal}
-                // imageKey={
-                //   data
-                //     ? data["council-form"].users[currentStudentIndex].id_user
-                //     : ""
-                // }
-                //TODO: Continuar configurando a integração com a aws
-                //TODO: Trocar o campo de imagekey no json para id_user
-                //TODO: Verificar se a requisição está funcionando
               />
             </div>
           </Box>

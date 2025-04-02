@@ -13,12 +13,13 @@ import { Decryptor } from "@/encryption/Decryptor";
 import { Encryptor } from "@/encryption/Encryptor";
 
 interface StudentCouncilFormProps {
+  users: User[];
   student: string;
   frequencia: number;
   rank: "excellent" | "good" | "average" | "critical" | "none";
   positiveContent: string;
   negativeContent: string;
-  id_user?: number
+  id_user?: number;
   comments: string;
   onNext: () => void;
   onPrevious: () => void;
@@ -26,6 +27,7 @@ interface StudentCouncilFormProps {
 }
 
 export default function StudentCouncilForm({
+  users,
   student,
   frequencia: initialFrequencia,
   rank: initialRank,
@@ -64,6 +66,30 @@ export default function StudentCouncilForm({
   const isInitialMount = useRef(true);
 
   useEffect(() => {
+    const savedData = localStorage.getItem("studentsData");
+    const studentsData = savedData ? Decryptor(savedData) || {} : {};
+
+    const hasSavedData = Object.keys(studentsData).length > 0;
+
+    if (!hasSavedData && users && users.length > 0) {
+      const initialData: Record<string, any> = {};
+
+      users.forEach((user) => {
+        initialData[user.name] = {
+          id_user: user.id,
+          frequencia: 0,
+          comments: "",
+          negativeContent: "",
+          positiveContent: "",
+          rank: "none",
+        };
+      });
+
+      localStorage.setItem("studentsData", Encryptor(initialData));
+    }
+  }, [users]);
+
+  useEffect(() => {
     setFrequencia(initialFrequencia);
     setPositiveContent(initialPositiveContent);
     setNegativeContent(initialNegativeContent);
@@ -91,6 +117,7 @@ export default function StudentCouncilForm({
     setIsSaving(true);
 
     const studentData = {
+      id_user,
       frequencia,
       comments,
       negativeContent,
@@ -136,6 +163,7 @@ export default function StudentCouncilForm({
     return () => clearTimeout(debounceSave);
   }, [positiveContent, negativeContent, frequencia, rank]);
 
+  // Restante do código permanece o mesmo...
   const handleFrequenciaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(",", ".");
     let parsedValue = parseFloat(value);
@@ -188,7 +216,7 @@ export default function StudentCouncilForm({
                       color: OpacityHex(constrastColor, 0.7),
                       paddingRight: "20px",
                     }}
-                    placeholder={String(initialFrequencia)}
+                    placeholder={String(0)}
                     type="number"
                     value={frequencia ?? ""}
                     onChange={handleFrequenciaChange}
