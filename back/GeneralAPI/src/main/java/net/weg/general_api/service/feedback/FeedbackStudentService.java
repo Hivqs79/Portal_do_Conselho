@@ -5,6 +5,7 @@ import net.weg.general_api.exception.exceptions.FeedbackNotFoundException;
 import net.weg.general_api.exception.exceptions.StudentFeedbackAlreadyExistException;
 import net.weg.general_api.exception.exceptions.UserNotAssociatedException;
 import net.weg.general_api.model.dto.request.feedback.FeedbackStudentRequestDTO;
+import net.weg.general_api.model.dto.response.feedback.FeedbackClassResponseDTO;
 import net.weg.general_api.model.dto.response.feedback.FeedbackStudentResponseDTO;
 import net.weg.general_api.model.entity.council.Council;
 import net.weg.general_api.model.entity.feedback.FeedbackStudent;
@@ -117,5 +118,12 @@ public class FeedbackStudentService {
         });
 
         return responseDTOS;
+    }
+
+    public FeedbackStudentResponseDTO returnFeedbackStudent(Long id) {
+        FeedbackStudent feedbackStudent = findFeedbackEntity(id);
+        feedbackStudent.setReturned(true);
+        repository.save(feedbackStudent);
+        return modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class);
     }
 }
