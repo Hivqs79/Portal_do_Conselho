@@ -10,11 +10,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PedagogicResponseDTO {
-
     private Long id;
     private String name;
     private String email;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-
+    private boolean enabled;
 }

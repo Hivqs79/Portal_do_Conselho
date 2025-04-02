@@ -25,5 +25,5 @@ public class FeedbackStudentResponseDTO {
     private boolean isReturned;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-
+    private boolean enabled;
 }

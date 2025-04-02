@@ -20,4 +20,5 @@ public class AnnotationClassResponseDTO {
     private CouncilResponseDTO council;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+    private boolean enabled;
 }

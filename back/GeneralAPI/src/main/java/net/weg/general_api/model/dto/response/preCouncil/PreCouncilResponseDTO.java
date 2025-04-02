@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PreCouncilResponseDTO {
-
     private Long id;
     private CouncilResponseDTO council;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+    private boolean enabled;
 }
