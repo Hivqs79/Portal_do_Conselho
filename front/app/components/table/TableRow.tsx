@@ -26,7 +26,7 @@ export default function TableRow({
   rowButtons,
 }: TableRowProps) {
   // const [selectedRank, setSelectedRank] = useState((content as TableCouncilRow).rank && (content as TableCouncilRow).rank);
-  const { primaryColor, constrastColor, backgroundColor } = useThemeContext();
+  const { primaryColor, constrastColor, colorByModeSecondary } = useThemeContext();
   const {rank,
     realizeButton,
     onClickRealize,
@@ -51,7 +51,7 @@ export default function TableRow({
       <tr
           style={{
             backgroundColor: OpacityHex(constrastColor, 0.01),
-            borderColor: primaryColor,
+            borderColor: colorByModeSecondary,
           }}
           className={`${content.className} flex rounded-b-big justify-between items-center p-3 w-full`}
       >

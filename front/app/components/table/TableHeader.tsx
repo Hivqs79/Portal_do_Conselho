@@ -62,8 +62,8 @@ export default function TableHeader({
   if (variant == "Table") {
     return (
       <thead
-        style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
-        className="w-full"
+        style={{ backgroundColor: primaryColor, boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}` }}
+        className="w-full rounded-t-big"
       >
         <tr className="flex justify-between items-center p-3">
           {headers.map((header, index) => (

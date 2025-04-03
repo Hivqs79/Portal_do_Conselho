@@ -24,7 +24,7 @@ export default function Table({
   headerButtons ={},
   rowButtons = {}
 }: TableProps) {
-  const { primaryColor } = useThemeContext();
+  const { primaryColor, colorByModeSecondary } = useThemeContext();
   const [search, setSearch] = useState("");    
   headerButtons.setSearch = setSearch;
   headerButtons.searchValue = search;
@@ -32,8 +32,8 @@ export default function Table({
   return (
     <div className="w-full flex justify-center items-start overflow-hidden outline-component">
       <Box
-        style={{ borderColor: primaryColor }}
-        className="flex justify-center items-start flex-col border-[2px] rounded-big w-full max-w-full"
+        style={{ boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}` }}
+        className="flex justify-center items-start rounded-b-big z-10 flex-col w-full max-w-full"
       >
         <div className="w-full overflow-x-auto">
           <table className="w-full max-w-full">
