@@ -1,7 +1,7 @@
 "use client";
 import AccordionComponent from "@/components/AccordionComponent";
-import ConfirmChanges from "@/components/Modals/ConfirmChanges";
-import ConfirmMessagesModal from "@/components/Modals/ConfirmMessagesModal";
+import ConfirmChanges from "@/components/modals/ConfirmChanges";
+import ConfirmMessagesModal from "@/components/modals/ConfirmMessagesModal";
 import Title from "@/components/Title";
 import { useRoleContext } from "@/hooks/useRole";
 import { useThemeContext } from "@/hooks/useTheme";

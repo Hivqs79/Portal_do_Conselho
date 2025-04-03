@@ -4,18 +4,19 @@ import SwapButton from "@/components/SwapButton";
 import Table from "@/components/table/Table";
 import Title from "@/components/Title";
 import Class from "@/interfaces/Class";
-import { TableContent } from "@/interfaces/TableContent";
-import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
+import { TableContent } from "@/interfaces/table/TableContent";
+import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
 import { Teacher } from "@/interfaces/Teacher";
 import { Box, Snackbar } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { TableRowButtons } from "@/interfaces/TableRowButtons";
-import { TableHeaderButtons } from "@/interfaces/TableHeaderButtons";
-import TableCouncilRow from "@/interfaces/TableCouncilRow";
+import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
+import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
+import TableCouncilRow from "@/interfaces/table/row/TableCouncilRow";
 import CouncilModal from "@/components/council/CouncilModal";
 import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
 import { useThemeContext } from "@/hooks/useTheme";
+import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 
 export default function Council() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -24,11 +25,11 @@ export default function Council() {
   const [selectedTeachers, setSelectedTeachers] = useState<{ [key: string]: boolean; }>({});
   const [date, setDate] = useState<dayjs.Dayjs | null>(null);
   const [time, setTime] = useState<dayjs.Dayjs | null>(null);
-  const [councils, setCouncils] = useState<TableContent>();
+  const [councils, setCouncils] = useState<TableContent | null>(null);
   const [isCreate, setIsCreate] = useState<boolean>(true);
   const [searchTeachers, setSearchTeachers] = useState<string>("");
   const [searchClass, setSearchClass] = useState<string>("");
-  const [visualizedCouncil, setVisualizedCouncil] = useState<TableCouncilRow | null>(null);
+  const [visualizedCouncil, setVisualizedCouncil] = useState<TableRowPossibleTypes | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const {redDanger} = useThemeContext();
@@ -36,11 +37,11 @@ export default function Council() {
   const rowButtons: TableRowButtons = {
     realizeButton: true,
     visualizeIconButton: true,
-    onClickVisualize: (row: TableCouncilRow) => {
+    onClickVisualize: (row: TableRowPossibleTypes) => {
       setVisualizedCouncil(row);
-      setSelectedClass(row.aclass.id);
-      setDate(dayjs(row.startDateTime));
-      setTime(dayjs(row.startDateTime));
+      setSelectedClass((row as TableCouncilRow).aclass.id);
+      setDate(dayjs((row as TableCouncilRow).startDateTime));
+      setTime(dayjs((row as TableCouncilRow).startDateTime));
     },
   };
 
@@ -124,7 +125,7 @@ export default function Council() {
   }
 
   const councilInformation: CouncilFormProps = {
-    visualizedCouncil: visualizedCouncil,
+    visualizedCouncil: visualizedCouncil as TableCouncilRow,
     selectedTeachers: selectedTeachers,
     selectedClass: selectedClass,
     setSelectedTeachers: setSelectedTeachers,
@@ -173,7 +174,6 @@ export default function Council() {
       console.log(data);
     };
     fetchCouncil();
-    console.log("teste do council");
   }, [isCreate, isEditing]);
 
   return (
@@ -198,7 +198,7 @@ export default function Council() {
       ) : (
         <>
           <Table
-            tableContent={councils ? councils : {} as TableContent}
+            tableContent={councils}
             headers={headers}
             headerButtons={headerButtons}
             rowButtons={rowButtons}

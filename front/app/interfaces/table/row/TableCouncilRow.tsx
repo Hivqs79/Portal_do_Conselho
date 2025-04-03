@@ -1,5 +1,5 @@
-import Class from "./Class";
-import {Teacher} from "./Teacher";
+import Class from "../../Class";
+import {Teacher} from "../../Teacher";
 import { TableRowContent } from "./TableRowContent";
 
 export default interface TableCouncilRow extends TableRowContent {

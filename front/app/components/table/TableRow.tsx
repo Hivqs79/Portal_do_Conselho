@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import Rank from "../rank/Rank";
 import { useThemeContext } from "@/hooks/useTheme";
 import { FaRegEye } from "react-icons/fa6";
-import { TableRowContent } from "@/interfaces/TableRowContent";
-import TableCouncilRow from "@/interfaces/TableCouncilRow";
+import TableCouncilRow from "@/interfaces/table/row/TableCouncilRow";
 import { PiPlayBold } from "react-icons/pi";
 import { LuPencilLine, LuTrash } from "react-icons/lu";
 import TableButton from "./TableButton";
@@ -14,20 +13,19 @@ import { FaRegClock } from "react-icons/fa";
 import OpacityHex from "@/utils/OpacityHex";
 import { Typography } from "@mui/material";
 import dayjs from "dayjs";
-import { TableRowButtons } from "@/interfaces/TableRowButtons";
+import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
+import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 
 interface TableRowProps {
-  content: TableCouncilRow;
+  content: TableRowPossibleTypes;
   rowButtons: TableRowButtons;
 }
 
-export default function TableRow({  
-  content,
-  rowButtons,
-}: TableRowProps) {
+export default function TableRow({ content, rowButtons }: TableRowProps) {
   // const [selectedRank, setSelectedRank] = useState((content as TableCouncilRow).rank && (content as TableCouncilRow).rank);
   const { primaryColor, constrastColor, backgroundColor } = useThemeContext();
-  const {rank,
+  const {
+    rank,
     realizeButton,
     visualizeIconButton,
     visualizeButton,
@@ -35,7 +33,7 @@ export default function TableRow({
     editButton,
     deleteButton,
     seeButton,
-    anotationButton,
+    annotationButton: anotationButton,
     closeButton,
     releasedButton,
     releaseButton,
@@ -44,51 +42,89 @@ export default function TableRow({
   // useEffect(() => {
   //   setSelectedRank(content.rank);
   // }, [content.rank]);
-  
+  let name = "aclass" in content ? content.aclass.name
+      : "council" in content ? content.council.aclass.name
+      : "";
+
+  let date = "startDateTime" in content ? content.startDateTime
+      : "council" in content ? content.council.startDateTime
+      : null;
+
   return (
     <>
       <tr
-          style={{
-            backgroundColor: OpacityHex(constrastColor, 0.01),
-            borderColor: primaryColor,
-          }}
-          className={`${content.className} flex rounded-b-big justify-between items-center p-3 w-full`}
+        style={{
+          backgroundColor: OpacityHex(constrastColor, 0.01),
+          borderColor: primaryColor,
+        }}
+        className={`${content.className} flex rounded-b-big justify-between items-center p-3 w-full`}
       >
-        {(content as TableCouncilRow).aclass.name && (          
-          <td style={{ color: constrastColor }} className="flex-1">
-              <Typography variant="lg_text_regular">{(content as TableCouncilRow).aclass.name}</Typography>
+        <td style={{ color: constrastColor }} className="flex-1">
+          <Typography variant="lg_text_regular">{name}</Typography>
+        </td>
+        {date && (
+          <td
+            style={{ color: constrastColor }}
+            className="hidden md:flex-1 md:flex text-center lg:justify-center"
+          >
+            <Typography variant="lg_text_regular">
+              {dayjs(date).format("DD/MM/YYYY")}
+            </Typography>
           </td>
         )}
-        {(content as TableCouncilRow).startDateTime && (              
-          <td style={{ color: constrastColor }} className="hidden md:flex-1 md:flex text-center lg:justify-center">
-              <Typography variant="lg_text_regular">{dayjs((content as TableCouncilRow).startDateTime).format("DD/MM/YYYY")}</Typography>
+        {date && (
+          <td
+            style={{ color: constrastColor }}
+            className="hidden lg:flex-1 lg:flex text-center justify-center"
+          >
+            <Typography variant="lg_text_regular">
+              {dayjs(date).format("HH:mm")}
+            </Typography>
           </td>
-        )}
-        {(content as TableCouncilRow).startDateTime && (
-          <td style={{ color: constrastColor }} className="hidden lg:flex-1 lg:flex text-center justify-center">
-              <Typography variant="lg_text_regular">{dayjs((content as TableCouncilRow).startDateTime).format("HH:mm")}</Typography>
-          </td>            
         )}
 
-          <td className="flex justify-end items-center w-2/5 lg:w-1/3 gap-2 sm:gap-4">
-            {/* {rank && (
+        <td className="flex justify-end items-center w-2/5 lg:w-1/3 gap-2 sm:gap-4">
+          {/* {rank && (
               <span className="hidden md:flex justify-center items-center">
                   {selectedRank && <Rank type={selectedRank} outline={true} popover={false} />}
               </span>              
             )}                         */}
 
-            {(visualizeButton || seeButton || visualizeIconButton) && <TableButton onClick={() => onClickVisualize && onClickVisualize(content)} text={(seeButton ? "Olhar" : "Visualizar")} onlyIcon={visualizeIconButton} icon={FaRegEye}/>}
-            
-            {realizeButton && <TableButton text="Realizar" onlyTextInBigSize={true} icon={PiPlayBold} />}
+          {(visualizeButton || seeButton || visualizeIconButton) && (
+            <TableButton
+              onClick={() => onClickVisualize && onClickVisualize(content)}
+              text={seeButton ? "Olhar" : "Visualizar"}
+              onlyIcon={visualizeIconButton}
+              icon={FaRegEye}
+            />
+          )}
 
-            {(editButton || anotationButton) && <TableButton text={anotationButton ? "Anotar" : "Editar"} icon={LuPencilLine} />}
+          {realizeButton && (
+            <TableButton
+              text="Realizar"
+              onlyTextInBigSize={true}
+              icon={PiPlayBold}
+            />
+          )}
 
-            {(releasedButton || releaseButton) && <TableButton text={releasedButton ? "Liberado" : "Liberar"} icon={FaRegClock}/>}
+          {(editButton || anotationButton) && (
+            <TableButton
+              text={anotationButton ? "Anotar" : "Editar"}
+              icon={LuPencilLine}
+            />
+          )}
 
-            {closeButton && <TableButton text="Fechar" icon={IoClose}/>}
+          {(releasedButton || releaseButton) && (
+            <TableButton
+              text={releasedButton ? "Liberado" : "Liberar"}
+              icon={FaRegClock}
+            />
+          )}
 
-            {deleteButton && <TableButton text="Excluir" icon={LuTrash}/>}
-          </td>
+          {closeButton && <TableButton text="Fechar" icon={IoClose} />}
+
+          {deleteButton && <TableButton text="Excluir" icon={LuTrash} />}
+        </td>
       </tr>
     </>
   );

@@ -8,8 +8,8 @@ import Icon from "../Icon";
 import Search from "./Search";
 import Rank from "../rank/Rank";
 import { Decryptor } from "@/encryption/Decryptor";
-import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
-import { TableHeaderButtons } from "@/interfaces/TableHeaderButtons";
+import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
+import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
 
 interface TableHeaderProps {
   variant: "Table" | "council";

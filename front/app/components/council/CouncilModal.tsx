@@ -38,6 +38,7 @@ export default function CouncilModal({
     primaryColor,
     terciaryColor,
     colorByMode,
+    colorByModeSecondary,
     backgroundColor,
     redDanger,
     whiteColor,
@@ -67,7 +68,7 @@ export default function CouncilModal({
         <Box className="flex flex-col w-full max-h-[80vh] overflow-y-auto p-8  gap-10">
           <Box className="flex flex-row w-full">
             <Box className="flex flex-col w-full">
-              <Typography variant="xl_text_bold" color={colorByMode}>
+              <Typography variant="xl_text_bold" color={colorByModeSecondary}>
                 {variant === "confirm" ? "Confirmar " : "Detalhes do "}conselho
               </Typography>
               {variant === "confirm" && (
@@ -111,7 +112,7 @@ export default function CouncilModal({
             <>
               <Box className="flex flex-col md:flex-row md:gap-8">
                 <Box className="flex flex-col w-full gap-4">
-                  <Typography color={colorByMode} variant="xl_text_bold">
+                  <Typography color={colorByModeSecondary} variant="xl_text_bold">
                     Data do conselho
                   </Typography>
                   <DatePicker
@@ -127,7 +128,7 @@ export default function CouncilModal({
                   />
                 </Box>
                 <Box className="flex flex-col w-full gap-4">
-                  <Typography color={colorByMode} variant="xl_text_bold">
+                  <Typography color={colorByModeSecondary} variant="xl_text_bold">
                     Horário do conselho
                   </Typography>
                   <TimePicker
@@ -145,7 +146,7 @@ export default function CouncilModal({
               </Box>
               <Box className="flex flex-col md:flex-row md:gap-8">
                 <Box className="w-full">
-                  <Typography color={colorByMode} variant="xl_text_bold">
+                  <Typography color={colorByModeSecondary} variant="xl_text_bold">
                     Professores
                   </Typography>
                   <Box
@@ -189,7 +190,7 @@ export default function CouncilModal({
                   </Box>
                 </Box>
                 <Box className="w-full">
-                  <Typography color={whiteColor} variant="xl_text_bold">
+                  <Typography color={colorByModeSecondary} variant="xl_text_bold">
                     Turma
                   </Typography>
                   <Box

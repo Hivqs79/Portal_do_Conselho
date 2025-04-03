@@ -1,7 +1,7 @@
-import TableCouncilRow from "./TableCouncilRow";
+import { TableRowPossibleTypes } from "./row/TableRowPossibleTypes";
 
 export interface TableContent {
-    content: TableCouncilRow[];
+    content: TableRowPossibleTypes[];
     pageNumber: number;
     pageSize: number;
     sort: {

@@ -4,15 +4,14 @@ import { Box, Typography } from "@mui/material";
 import TableRow from "./TableRow";
 import { useThemeContext } from "@/hooks/useTheme";
 import TableHeader from "./TableHeader";
-import { TableContent } from "@/interfaces/TableContent";
-import { TableRowContent } from "@/interfaces/TableRowContent";
-import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
-import TableCouncilRow from "@/interfaces/TableCouncilRow";
-import { TableHeaderButtons } from "@/interfaces/TableHeaderButtons";
-import { TableRowButtons } from "@/interfaces/TableRowButtons";
+import { TableContent } from "@/interfaces/table/TableContent";
+import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
+import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
+import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
+import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 
 interface TableProps {
-  tableContent: TableContent,
+  tableContent: TableContent | null,
   headers: TableHeaderContent[],
   headerButtons?: TableHeaderButtons,
   rowButtons?: TableRowButtons,
@@ -44,7 +43,7 @@ export default function Table({
             />
             <tbody>
                 {tableContent && tableContent.content.length > 0 ? (
-                  tableContent.content.map((row : TableCouncilRow, index) => {
+                  tableContent.content.map((row : TableRowPossibleTypes, index) => {
                     row.className = (index === 0 ? "border-t-0 " : "border-t-2 ");
                       return (
                         <TableRow
