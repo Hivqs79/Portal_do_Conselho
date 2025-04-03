@@ -2,25 +2,15 @@ package net.weg.general_api.service.council;
 
 import lombok.AllArgsConstructor;
 import net.weg.general_api.exception.exceptions.CouncilNotFoundException;
-import net.weg.general_api.model.dto.request.annotation.AnnotationClassRequestDTO;
-import net.weg.general_api.model.dto.request.annotation.AnnotationStudentRequestDTO;
 import net.weg.general_api.model.dto.request.council.CouncilRequestDTO;
 import net.weg.general_api.model.dto.response.council.CouncilResponseDTO;
 import net.weg.general_api.model.entity.annotation.Annotation;
-import net.weg.general_api.model.entity.users.Student;
-import net.weg.general_api.model.enums.RankENUM;
 import net.weg.general_api.model.entity.council.Council;
-import net.weg.general_api.model.entity.notification.Notification;
-import net.weg.general_api.model.entity.users.Teacher;
 import net.weg.general_api.repository.CouncilRepository;
-import net.weg.general_api.service.annotations.AnnotationClassService;
-import net.weg.general_api.service.annotations.AnnotationStudentService;
 import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,10 +27,6 @@ public class CouncilService {
     private ClassService classService;
     private TeacherService teacherService;
     private final KafkaEventSender kafkaEventSender;
-    @Lazy
-    private final AnnotationClassService annotationClassService;
-    @Lazy
-    private final AnnotationStudentService annotationStudentService;
 
     public Page<CouncilResponseDTO> findCouncilSpec(Specification<Council> spec, Pageable pageable) {
         Page<Council> councils = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -55,37 +41,6 @@ public class CouncilService {
 
         Council councilSaved = repository.save(council);
         kafkaEventSender.sendEvent(councilSaved, "POST", "Council created");
-
-        for (Teacher teacher : councilSaved.getTeachers()) {
-            Notification notification = Notification.builder()
-                    .title("Novo conselho iniciado!")
-                    .message("O conselho da turma: " + councilSaved.getAClass().getName() + " iniciado")
-                    .userId(teacher.getId())
-                    .build();
-            annotationClassService.createAnnotationClass(
-                    new AnnotationClassRequestDTO(
-                            RankENUM.EXCELLENT,
-                            "Comentários positivos da turma",
-                            "Pontos à melhorar da turma",
-                            teacher.getId(),
-                            councilSaved.getId()
-                    )
-            );
-
-            for (Student student :councilSaved.getAClass().getStudents()) {
-                annotationStudentService.createAnnotationStudent(
-                        new AnnotationStudentRequestDTO(
-                                RankENUM.EXCELLENT,
-                                "Comentários positivos do aluno",
-                                "Pontos à melhorar do aluno",
-                                teacher.getId(),
-                                councilSaved.getId(),
-                                student.getId()
-                        )
-                );
-            }
-            kafkaEventSender.sendNotification(notification);
-        }
 
         return modelMapper.map(councilSaved, CouncilResponseDTO.class);
     }

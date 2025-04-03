@@ -1,13 +1,80 @@
 package net.weg.general_api.service.kafka;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import net.weg.general_api.model.dto.request.annotation.AnnotationClassRequestDTO;
+import net.weg.general_api.model.dto.request.annotation.AnnotationStudentRequestDTO;
+import net.weg.general_api.model.entity.council.Council;
+import net.weg.general_api.model.entity.notification.Notification;
+import net.weg.general_api.model.entity.users.Student;
+import net.weg.general_api.model.entity.users.Teacher;
+import net.weg.general_api.model.enums.RankENUM;
+import net.weg.general_api.service.annotations.AnnotationClassService;
+import net.weg.general_api.service.annotations.AnnotationStudentService;
+import net.weg.general_api.service.council.CouncilService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class KafkaConsumerService {
+
+    private final ObjectMapper objectMapper;
+    private final AnnotationClassService annotationClassService;
+    private final AnnotationStudentService annotationStudentService;
+    private final CouncilService councilService;
+    private final KafkaEventSender kafkaEventSender;
 
     @KafkaListener(topics = "student", groupId = "group_id")
     public void consume(String message) {
         System.out.println("Consumed message: " + message);
+    }
+
+    @KafkaListener(topics = "council", groupId = "group_id")
+    public void consumeCouncil(String message) throws JsonProcessingException {
+        System.out.println("Consumed message: " + message);
+        KafkaMessage kafkaMessage = objectMapper.readValue(message, KafkaMessage.class);
+        //regex to catch the council id in this object Council{" +
+        //                "id=" + id +
+        //                ", aClass=" + aClass +
+        //                ", startDateTime=" + startDateTime +
+        //                ", teachers=" + teachers +
+        //                ", preCouncil=" + preCouncil +
+        //                '}
+        String regex = "Council\\{\\s*id=(\\d+).*";
+        Long councilId = Long.parseLong(kafkaMessage.getObject().replaceAll(regex, "$1"));
+        System.out.println(councilId);
+        Council council = councilService.findCouncilEntity(councilId);
+
+        for (Teacher teacher : council.getTeachers()) {
+            Notification notification = Notification.builder()
+                    .title("Novo conselho iniciado!")
+                    .message("O conselho da turma: " + council.getAClass().getName() + " iniciado")
+                    .userId(teacher.getId())
+                    .build();
+            annotationClassService.createAnnotationClass(
+                    new AnnotationClassRequestDTO(
+                            RankENUM.EXCELLENT,
+                            "Comentários positivos da turma",
+                            "Pontos à melhorar da turma",
+                            teacher.getId(),
+                            council.getId()
+                    )
+            );
+            for (Student student :council.getAClass().getStudents()) {
+                annotationStudentService.createAnnotationStudent(
+                        new AnnotationStudentRequestDTO(
+                                RankENUM.EXCELLENT,
+                                "Comentários positivos do aluno",
+                                "Pontos à melhorar do aluno",
+                                teacher.getId(),
+                                council.getId(),
+                                student.getId()
+                        )
+                );
+            }
+            kafkaEventSender.sendNotification(notification);
+        }
     }
 }
