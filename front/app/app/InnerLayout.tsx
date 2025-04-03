@@ -35,6 +35,10 @@ function CoreLayout({ children }: { children: ReactElement }) {
   const isLoginPage = pathname?.includes("/login");
 
   useEffect(() => {
+    const response = fetch("")
+  })
+
+  useEffect(() => {
     document.documentElement.style.setProperty("--primary-color", primaryColor);
     document.documentElement.style.setProperty(
       "--secondary-color",
