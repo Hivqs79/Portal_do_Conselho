@@ -26,25 +26,19 @@ public class KafkaConsumerService {
     private final CouncilService councilService;
     private final KafkaEventSender kafkaEventSender;
 
-    @KafkaListener(topics = "student", groupId = "group_id")
+    @KafkaListener(topics = "student", groupId = "group_general_api")
     public void consume(String message) {
         System.out.println("Consumed message: " + message);
     }
 
-    @KafkaListener(topics = "council", groupId = "group_id")
+    @KafkaListener(topics = "council", groupId = "group_general_api")
     public void consumeCouncil(String message) throws JsonProcessingException {
         System.out.println("Consumed message: " + message);
         KafkaMessage kafkaMessage = objectMapper.readValue(message, KafkaMessage.class);
-        //regex to catch the council id in this object Council{" +
-        //                "id=" + id +
-        //                ", aClass=" + aClass +
-        //                ", startDateTime=" + startDateTime +
-        //                ", teachers=" + teachers +
-        //                ", preCouncil=" + preCouncil +
-        //                '}
+
         String regex = "Council\\{\\s*id=(\\d+).*";
         Long councilId = Long.parseLong(kafkaMessage.getObject().replaceAll(regex, "$1"));
-        System.out.println(councilId);
+        System.out.println("Id of council: " + councilId);
         Council council = councilService.findCouncilEntity(councilId);
 
         for (Teacher teacher : council.getTeachers()) {
@@ -53,11 +47,13 @@ public class KafkaConsumerService {
                     .message("O conselho da turma: " + council.getAClass().getName() + " iniciado")
                     .userId(teacher.getId())
                     .build();
+            kafkaEventSender.sendNotification(notification);
+
             annotationClassService.createAnnotationClass(
                     new AnnotationClassRequestDTO(
-                            RankENUM.EXCELLENT,
-                            "Comentários positivos da turma",
-                            "Pontos à melhorar da turma",
+                            null,
+                            "",
+                            "",
                             teacher.getId(),
                             council.getId()
                     )
@@ -65,16 +61,15 @@ public class KafkaConsumerService {
             for (Student student :council.getAClass().getStudents()) {
                 annotationStudentService.createAnnotationStudent(
                         new AnnotationStudentRequestDTO(
-                                RankENUM.EXCELLENT,
-                                "Comentários positivos do aluno",
-                                "Pontos à melhorar do aluno",
+                                null,
+                                "",
+                                "",
                                 teacher.getId(),
                                 council.getId(),
                                 student.getId()
                         )
                 );
             }
-            kafkaEventSender.sendNotification(notification);
         }
     }
 }

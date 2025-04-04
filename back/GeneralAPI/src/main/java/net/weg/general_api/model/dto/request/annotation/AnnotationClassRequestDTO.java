@@ -13,9 +13,7 @@ import net.weg.general_api.model.enums.RankENUM;
 public class AnnotationClassRequestDTO {
 
     private RankENUM rank;
-    @NotBlank(message = "{not.blank.message}")
     private String strengths;
-    @NotBlank(message = "{not.blank.message}")
     private String toImprove;
     @NotNull(message = "{not.null.message}")
     private Long teacher_id;
