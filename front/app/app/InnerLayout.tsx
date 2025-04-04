@@ -40,30 +40,6 @@ function CoreLayout({ children }: { children: ReactElement }) {
     if (pathname !== "/realize-council") {
       sessionStorage.setItem("lastRoute", pathname ? pathname : "/");
     }
-
-    fetch("http://localhost:8081/council?isHappening=true")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        const hasActiveCouncil = data.content.length > 0;
-        setIsCouncilHappening(hasActiveCouncil);
-        
-        if (!hasActiveCouncil && pathname === "/realize-council") {
-          const lastRoute = sessionStorage.getItem("lastRoute") || "/";
-          router.replace(lastRoute);
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar dados: ", error);
-        setIsCouncilHappening(false);
-        if (pathname === "/realize-council") {
-          router.replace("/404");
-        }
-      });
   }, [pathname, router]);
 
   useEffect(() => {

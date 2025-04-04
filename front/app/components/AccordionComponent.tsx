@@ -21,6 +21,9 @@ interface AnotationProps {
   onChange?: () => void;
   checked?: boolean;
   viwed?: boolean;
+  rank?: string;
+  positiveContent?: string;
+  negativeContent?: string;
 }
 
 export default function AccordionComponent({
@@ -31,6 +34,9 @@ export default function AccordionComponent({
   onChange,
   checked,
   viwed,
+  rank,
+  positiveContent,
+  negativeContent,
 }: AnotationProps) {
   const {
     primaryColor,
@@ -68,7 +74,7 @@ export default function AccordionComponent({
         sx={{
           backgroundColor: outlined
             ? viwed
-              ? OpacityHex(secondaryColor, .18)
+              ? OpacityHex(secondaryColor, 0.18)
               : backgroundColor
             : primaryColor,
           color: whiteColor,
