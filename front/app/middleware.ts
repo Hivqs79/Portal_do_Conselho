@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
       const hasActiveCouncil = data.content?.length > 0;
 
       if (!hasActiveCouncil) {
-        // Bloqueia o acesso e redireciona para 404
+        // Bloqueia o acesso e redireciona para a ultima rota acessada
         return NextResponse.redirect(
           new URL(`${sessionStorage.getItem("lastRoute")}`, request.url)
         );
