@@ -3,34 +3,35 @@ import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
+  const pathname = url.pathname;
 
-  // Só verifica se está acessando /realize-council
-  if (url.pathname === "/realize-council") {
+  if (pathname === "/realize-council" || pathname === "/council") {
     try {
-      const res = await fetch(
-        "http://localhost:8081/council?isHappening=true",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const res = await fetch("http://localhost:8081/council?isHappening=truex", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
 
       const data = await res.json();
       const hasActiveCouncil = data.content?.length > 0;
 
-      if (!hasActiveCouncil) {
-        // Bloqueia o acesso e redireciona para a ultima rota acessada
-        return NextResponse.redirect(
-          new URL(`${sessionStorage.getItem("lastRoute")}`, request.url)
-        );
+      if (pathname === "/realize-council" && !hasActiveCouncil) {
+        const lastRoute = request.cookies.get("lastRoute")?.value || "/";
+        return NextResponse.redirect(new URL(lastRoute, request.url));
       }
+
+      if (pathname === "/council" && hasActiveCouncil) {
+        return NextResponse.redirect(new URL("/realize-council", request.url));
+      }
+
     } catch (err) {
       console.error("Erro ao verificar conselho:", err);
-      return NextResponse.redirect(new URL(`${sessionStorage.getItem("lastRoute")}`, request.url));
+      const lastRoute = request.cookies.get("lastRoute")?.value || "/";
+      return NextResponse.redirect(new URL(lastRoute, request.url));
     }
   }
 
@@ -38,5 +39,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/realize-council"],
+  matcher: ["/realize-council", "/council"],
 };

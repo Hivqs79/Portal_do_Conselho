@@ -34,13 +34,12 @@ function CoreLayout({ children }: { children: ReactElement }) {
   const pathname = usePathname();
   const router = useRouter();
   const isLoginPage = pathname?.includes("/login");
-  const [isCouncilHappening, setIsCouncilHappening] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (pathname !== "/realize-council") {
-      sessionStorage.setItem("lastRoute", pathname ? pathname : "/");
+      document.cookie = `lastRoute=${pathname}; path=/`;
     }
-  }, [pathname, router]);
+  }, [pathname]);
 
   useEffect(() => {
     document.documentElement.style.setProperty("--primary-color", primaryColor);
@@ -59,11 +58,6 @@ function CoreLayout({ children }: { children: ReactElement }) {
       setRole("pedagogic");
     }
   }, [role, setRole]);
-
-  // Se estiver na rota /realize-council e não houver conselho acontecendo, não renderiza nada
-  if (pathname === "/realize-council" && isCouncilHappening === false) {
-    return null;
-  }
 
   return (
     <ThemeProvider theme={theme}>
