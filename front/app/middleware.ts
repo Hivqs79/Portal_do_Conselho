@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
 
   if (pathname === "/realize-council" || pathname === "/council") {
     try {
-      const res = await fetch("http://localhost:8081/council?isHappening=truex", {
+      const res = await fetch("http://localhost:8081/council?isHappening=true", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -25,11 +25,12 @@ export async function middleware(request: NextRequest) {
       }
 
       if (pathname === "/council" && hasActiveCouncil) {
+        console.log("teste")
         return NextResponse.redirect(new URL("/realize-council", request.url));
       }
 
     } catch (err) {
-      console.error("Erro ao verificar conselho:", err);
+      console.log("Erro ao verificar conselho:", err);
       const lastRoute = request.cookies.get("lastRoute")?.value || "/";
       return NextResponse.redirect(new URL(lastRoute, request.url));
     }

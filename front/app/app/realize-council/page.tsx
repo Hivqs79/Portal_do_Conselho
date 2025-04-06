@@ -468,19 +468,66 @@ export default function RealizeCouncil() {
     setIsRealizeCouncilOpen(false);
   };
 
-  const CancelCouncil = () => {
+  const CancelCouncil = async () => {
     setIsLoadingOpen(true);
     localStorage.removeItem("className");
     localStorage.removeItem("rank");
     localStorage.removeItem("studentsData");
     localStorage.removeItem("positiveContent");
     localStorage.removeItem("negativeContent");
+    const councilChanged = await changeCouncilState();
+    if (!councilChanged) {
+      return;
+    }
     setTimeout(() => {
       setIsLoadingOpen(false);
       router.push("/council");
     }, 2000);
-    setIsCancelCouncilOpen(false);
-  };
+    setIsCancelCouncilOpen(false);    
+  }
+
+  async function changeCouncilState(): Promise<boolean> {
+    try {
+      const res = await fetch("http://localhost:8081/council?isHappening=true", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!res.ok) {
+        console.error("Erro ao buscar conselhos:", res.status);
+        return false;
+      }
+  
+      const data = await res.json();
+      const hasActiveCouncil = Array.isArray(data.content) && data.content.length > 0;
+  
+      if (hasActiveCouncil) {
+        const id = data.content[0].id;
+  
+        const modifyRes = await fetch(`http://localhost:8081/council/modify/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+  
+        if (!modifyRes.ok) {
+          console.error(`Erro ao modificar conselho com id ${id}:`, modifyRes.status);
+          return false;
+        }
+  
+        return true;
+      }
+  
+      return false;
+    } catch (err) {
+      console.error("Erro inesperado:", err);
+      return false;
+    }
+  }
+  
 
   const closeCancleCouncilModal = () => {
     setIsCancelCouncilOpen(false);
