@@ -109,10 +109,10 @@ public class FeedbackUserService {
         return responseDTOS;
     }
 
-    public FeedbackUserResponseDTO returnFeedbackUser(Long id) {
+    public FeedbackClassResponseDTO returnFeedbackUser(Long id) {
         FeedbackUser feedbackUser = findFeedbackEntity(id);
         feedbackUser.setReturned(true);
         repository.save(feedbackUser);
-        return modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class);
+        return modelMapper.map(feedbackUser, FeedbackClassResponseDTO.class);
     }
 }

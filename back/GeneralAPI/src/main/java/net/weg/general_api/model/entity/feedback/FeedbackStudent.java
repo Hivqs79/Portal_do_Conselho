@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class FeedbackStudent extends Feedback {
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "rank_classification", nullable = false)
     private RankENUM rank;
 
     @ManyToOne
@@ -45,6 +46,7 @@ public class FeedbackStudent extends Feedback {
     public void onPrePersist() {
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
+        this.setReturned(false);
         this.setViewed(false);
         this.setSatisfied(false);
         this.setEnabled(true);

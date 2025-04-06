@@ -15,12 +15,14 @@ import java.time.LocalDateTime;
 @PrimaryKeyJoinColumn(name = "feedback_id")
 public class FeedbackClass extends Feedback {
     @Enumerated(EnumType.STRING)
+    @Column(name = "rank_classification", nullable = false)
     private RankENUM rank;
 
     @PrePersist
     public void onPrePersist() {
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
+        this.setReturned(false);
         this.setEnabled(true);
     }
 

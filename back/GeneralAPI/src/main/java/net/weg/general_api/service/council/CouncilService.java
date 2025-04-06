@@ -89,4 +89,14 @@ public class CouncilService {
         return council.getAnnotations();
     }
 
+    public CouncilResponseDTO modifyCouncilStatus(Long id) {
+        Council council = findCouncilEntity(id);
+        if (council.isHappening()) {
+            council.setHappening(false);
+        } else {
+            council.setHappening(true);
+        }
+        repository.save(council);
+        return modelMapper.map(council, CouncilResponseDTO.class);
+    }
 }

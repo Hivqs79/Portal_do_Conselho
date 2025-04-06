@@ -19,7 +19,8 @@ public class FeedbackUserResponseDTO {
     private UserResponseDTO user;
     private boolean isViewed;
     private boolean isSatisfied;
+    private boolean isReturned;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-
+    private boolean enabled;
 }

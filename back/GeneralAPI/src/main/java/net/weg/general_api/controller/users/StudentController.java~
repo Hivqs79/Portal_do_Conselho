@@ -36,18 +36,7 @@ public class StudentController {
     @ApiResponse(responseCode = "200", description = "Students found", content = @Content(schema = @Schema(implementation = Page.class), examples = @ExampleObject(value = "{\"content\":[{\"id\":1,\"name\":\"Student\",\"email\":\"student@email.com\",\"isRepresentant\":false,\"lastRank\":\"EXCELLENT\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}],\"pageable\":{\"pageNumber\":0,\"pageSize\":10,\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true}},\"totalElements\":1,\"totalPages\":1}")))
     @ApiResponse(responseCode = "400", description = "Invalid parameters")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public Page<StudentResponseDTO> searchStudent(
-            @And({
-                    @Spec(path = "id", spec = Equal.class),
-                    @Spec(path = "name", spec = Like.class),
-                    @Spec(path = "email", spec = Like.class),
-                    @Spec(path = "isRepresentant", params = "representant", spec = True.class),
-                    @Spec(path = "frequency", spec = Equal.class),
-                    @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class),
-                    @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class),
-                    @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class),
-                    @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)
-            }) Specification<Student> spec, Pageable pageable) {
+    public Page<StudentResponseDTO> searchStudent(@And({@Spec(path = "id", spec = Equal.class), @Spec(path = "name", spec = Like.class), @Spec(path = "email", spec = Like.class), @Spec(path = "isRepresentant", params = "representant", spec = True.class), @Spec(path = "frequency", spec = Equal.class), @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class), @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class), @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class), @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)}) Specification<Student> spec, Pageable pageable) {
         return service.findStudentSpec(spec, pageable);
     }
 

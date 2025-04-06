@@ -18,4 +18,5 @@ public class StudentResponseDTO {
     private RankENUM lastRank;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+    private boolean enabled;
 }

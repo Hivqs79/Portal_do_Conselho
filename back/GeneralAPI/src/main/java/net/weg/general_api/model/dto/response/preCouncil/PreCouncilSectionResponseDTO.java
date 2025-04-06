@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PreCouncilSectionResponseDTO {
-
     private Long id;
     private PreCouncilResponseDTO preCouncil;
     private String topic;
@@ -19,4 +18,5 @@ public class PreCouncilSectionResponseDTO {
     private String toImprove;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+    private boolean enabled;
 }

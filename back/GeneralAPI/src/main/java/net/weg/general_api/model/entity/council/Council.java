@@ -35,6 +35,9 @@ public class Council {
     @Column(nullable = false)
     private boolean enabled;
 
+    @Column(nullable = false)
+    private boolean isHappening;
+
     @OneToMany(mappedBy = "council")
     private List<Annotation> annotations;
 
@@ -62,6 +65,7 @@ public class Council {
     public void onPrePersist() {
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
+        this.setHappening(false);
         this.setEnabled(true);
     }
 
@@ -78,6 +82,7 @@ public class Council {
                 ", startDateTime=" + startDateTime +
                 ", teachers=" + teachers +
                 ", preCouncil=" + preCouncil +
+                ", isHappening=" + isHappening +
                 '}';
     }
 }
