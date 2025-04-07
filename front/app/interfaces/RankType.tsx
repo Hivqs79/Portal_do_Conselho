@@ -1,0 +1,1 @@
+export type Rank = "EXCELLENT" | "GOOD" | "AVERAGE" | "CRITICAL" | "NONE";

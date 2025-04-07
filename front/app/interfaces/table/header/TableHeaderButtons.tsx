@@ -1,3 +1,5 @@
+import { Rank } from "@/interfaces/RankType";
+
 export interface TableHeaderButtons {
   searchInput?: boolean;
   setSearch?: (term: string) => void;
@@ -6,5 +8,7 @@ export interface TableHeaderButtons {
   setFilter?: (filter: boolean) => void;
   orderButton?: boolean;
   setOrder?: (order: boolean) => void;
-  onChangeRank?: (rank: string) => void;
+  rank?: Rank;
+  setRank?: (rank: Rank) => void;
+  rankText?: string;
 }

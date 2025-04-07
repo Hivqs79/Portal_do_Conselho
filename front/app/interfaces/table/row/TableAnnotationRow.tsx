@@ -1,10 +1,5 @@
-import Council from "../../Council";
+import ClassAnnotation from "@/interfaces/ClassAnnotation";
 import { TableRowContent } from "./TableRowContent";
+import StudentAnnotation from "@/interfaces/StudentAnnotation";
 
-export default interface TableAnnotationRow extends TableRowContent {
-    id: number,
-    rank: string,
-    strengths: string,
-    toImprove: string,
-    council: Council,
-}
+export default interface TableAnnotationRow extends TableRowContent, ClassAnnotation, StudentAnnotation {}

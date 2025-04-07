@@ -1,7 +1,7 @@
 import { TableRowPossibleTypes } from "./TableRowPossibleTypes";
 
 export interface TableRowButtons {
-    rank?: boolean;
+    rankButton?: boolean;
     realizeButton?: boolean;
     visualizeIconButton?: boolean;
     onClickVisualize?: (row: TableRowPossibleTypes) => void;

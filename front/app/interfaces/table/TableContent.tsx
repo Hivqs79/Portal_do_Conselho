@@ -2,22 +2,29 @@ import { TableRowPossibleTypes } from "./row/TableRowPossibleTypes";
 
 export interface TableContent {
     content: TableRowPossibleTypes[];
-    pageNumber: number;
-    pageSize: number;
+    pageable: {
+        pageNumber: number,
+        pageSize: number,
+        sort: {
+            empty: boolean,
+            sorted: boolean,
+            unsorted: boolean
+        },
+        offset: number,
+        paged: boolean,
+        unpaged: boolean
+    },
+    totalElements: number,
+    totalPages: number,
+    last: boolean,
+    size: number,
+    number: number,
     sort: {
-        sorted: boolean;
-        unsorted: boolean;
-        empty: boolean;
-    };
-    offset: number;
-    paged: boolean;
-    unpaged: boolean;
-    totalElements: number;
-    totalPages: number;
-    last: boolean;
-    first: boolean;
-    size: number;
-    number: number;
-    numberOfElements: number;
-    empty: boolean;
+        empty: boolean,
+        sorted: boolean,
+        unsorted: boolean
+    },
+    numberOfElements: number,
+    first: boolean,
+    empty: boolean
 }
