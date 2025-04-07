@@ -1,9 +1,5 @@
 "use client";
 import AvaliationInputs from "@/components/council/AvaliationInputs";
-import CommentariesModal from "@/components/modals/CommentariesModal";
-import ConfirmChanges from "@/components/modals/ConfirmChanges";
-import ConfirmMessagesModal from "@/components/modals/ConfirmMessagesModal";
-import LoadingModal from "@/components/modals/LoadingModal";
 import StudentCouncilForm from "@/components/StudentCouncilForm";
 import TableHeader from "@/components/table/TableHeader";
 import Title from "@/components/Title";
@@ -15,6 +11,12 @@ import { Box, Button, Typography } from "@mui/material";
 import { useWindowWidth } from "@react-hook/window-size";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import User from "@/interfaces/User";
+import CommentariesModal from "@/components/Modals/CommentariesModal";
+import ConfirmChanges from "@/components/Modals/ConfirmChanges";
+import ConfirmMessagesModal from "@/components/Modals/ConfirmMessagesModal";
+import LoadingModal from "@/components/Modals/LoadingModal";
+import { Rank as RankType } from "@/interfaces/RankType";
 
 type CouncilData = {
   id: number;
@@ -42,6 +44,25 @@ type Teacher = {
   updateDate: string;
 };
 
+type FinalJson = {
+  "council-form": {
+    class: {
+      name: string;
+      ClassRank: string;
+      ClassnegativeContent: string;
+      ClasspositiveContent: string;
+    };
+    users: {
+      id_user: number;
+      name: string;
+      frequencia: number | null;
+      rank: string;
+      positiveContent: string;
+      negativeContent: string;
+    }[];
+  };
+};
+
 export default function RealizeCouncil() {
   const [data, setData] = useState<CouncilData | null>(null);
   const [users, setUsers] = useState<User[]>([]);
@@ -65,11 +86,8 @@ export default function RealizeCouncil() {
     title: string;
     message: string;
     error: boolean;
-  }>({
-    title: "",
-    message: "",
-    error: false,
-  });
+  }>({ title: "", message: "", error: false });
+  const [finalJson, setFinalJson] = useState<FinalJson>();
   const {
     constrastColor,
     backgroundColor,
@@ -100,10 +118,6 @@ export default function RealizeCouncil() {
                 id: userData?.id_user || 0,
                 name: name,
                 email: userData?.email || "",
-                isRepresentant: userData?.isRepresentant || false,
-                lastRank: userData?.lastRank || null,
-                createDate: userData?.createDate || new Date().toISOString(),
-                updateDate: userData?.updateDate || new Date().toISOString(),
               } as User;
             });
 
@@ -155,10 +169,6 @@ export default function RealizeCouncil() {
                 id: user.id,
                 id_user: user.id,
                 email: user.email,
-                isRepresentant: user.isRepresentant,
-                lastRank: user.lastRank,
-                createDate: user.createDate,
-                updateDate: user.updateDate,
                 frequencia: null,
                 comments: "",
                 negativeContent: "",
@@ -306,7 +316,12 @@ export default function RealizeCouncil() {
     setIsModalStudentOpen(false);
   };
 
-  function finalizeCouncil() {
+  useEffect(() => {
+    //NOTE: UTILIZADO SOMENTE PARA TESTE, DELETAR QUANDO ESTIVER PRONTO
+    console.log("Final json state atualizado: ", finalJson); //NOTE: UTILIZADO SOMENTE PARA TESTE, DELETAR QUANDO ESTIVER PRONTO
+  }, [finalJson]); //NOTE: UTILIZADO SOMENTE PARA TESTE, DELETAR QUANDO ESTIVER PRONTO
+
+  async function finalizeCouncil() {
     const ClassRank = getDecryptedData("rank");
     const ClassnegativeContent = getDecryptedData("negativeContent");
     const ClasspositiveContent = getDecryptedData("positiveContent");
@@ -325,33 +340,92 @@ export default function RealizeCouncil() {
           studentsData = [];
         }
       }
-      console.log("Conselho finalizado com sucesso!");
-      console.log("data: ", data);
-      console.log(
-        "Final json: ",
-        formatFinalCouncilJson(
-          ClassRank,
-          ClassnegativeContent,
-          ClasspositiveContent,
-          studentsData,
-          councilClassName
-        )
+      const formattedJson = formatFinalCouncilJson(
+        ClassRank,
+        ClassnegativeContent,
+        ClasspositiveContent,
+        studentsData,
+        councilClassName
       );
+      setFinalJson(formattedJson);
       setModalMessage({
         title: "Conselho finalizado com sucesso!",
         message:
           "O conselhoi foi finalizado com sucesso, vá até a página de liberação de conselhos para visualá-lo.",
         error: false,
       });
+
       setIsLoadingOpen(true);
-      setTimeout(() => {
-        setIsConfirmModalOpen(true);
-        setIsRealizeCouncilOpen(false);
-        setIsLoadingOpen(false);
-        setTimeout(() => {
-          setIsConfirmModalOpen(false);
-        }, 2000);
-      }, 2000);
+
+      await TransformCouncilInFeedback(formattedJson)
+        .then(() => {
+          setIsLoadingOpen(false);
+          setIsRealizeCouncilOpen(false);
+          setIsConfirmModalOpen(true);
+          deleteStorage();
+          setTimeout(() => {
+            setIsConfirmModalOpen(false);
+            redirectPage("release-feedback");
+          }, 2000);
+        })
+        .catch((error) => {
+          console.log("Erro ao transformar conselho em feedback:", error);
+          setModalMessage({
+            title: "Erro",
+            message:
+              "Ocorreu um erro ao finalizar o conselho. Tente novamente.",
+            error: true,
+          });
+          setIsLoadingOpen(false);
+        });
+    }
+  }
+
+  async function TransformCouncilInFeedback(formattedJson: FinalJson) {
+    const idCouncil = await fetchHappeningCouncil();
+    console.log("Enviando para feedback/class:", {
+      rank: formattedJson?.["council-form"].class.ClassRank,
+      council_id: idCouncil,
+      strengths: formattedJson?.["council-form"].class.ClasspositiveContent,
+      toImprove: formattedJson?.["council-form"].class.ClassnegativeContent,
+    });
+    await fetch("http://localhost:8081/feedbacks/class", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        rank: formattedJson?.["council-form"].class.ClassRank,
+        council_id: idCouncil,
+        strengths: formattedJson?.["council-form"].class.ClasspositiveContent,
+        toImprove: formattedJson?.["council-form"].class.ClassnegativeContent,
+      }),
+    });
+
+    if (formattedJson) {
+      formattedJson["council-form"].users.forEach(async (user) => {
+        await fetch("http://localhost:8081/feedbacks/student", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            rank: user.rank,
+            council_id: idCouncil,
+            strengths: user.positiveContent,
+            toImprove: user.negativeContent,
+            student_id: user.id_user,
+            frequency: user.frequencia,
+          }),
+        });
+        await changeCouncilState();
+        await fetch("http://localhost:8081/council/" + idCouncil, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      });
     }
   }
 
@@ -468,67 +542,91 @@ export default function RealizeCouncil() {
     setIsRealizeCouncilOpen(false);
   };
 
-  const CancelCouncil = async () => {
-    setIsLoadingOpen(true);
+  const deleteStorage = async () => {
     localStorage.removeItem("className");
     localStorage.removeItem("rank");
     localStorage.removeItem("studentsData");
     localStorage.removeItem("positiveContent");
     localStorage.removeItem("negativeContent");
+  };
+
+  const redirectPage = (page: string) => {
+    router.push(`/${page}`);
+  };
+
+  const CancelCouncil = async () => {
+    setIsLoadingOpen(true);
+    await deleteStorage();
     const councilChanged = await changeCouncilState();
     if (!councilChanged) {
       return;
     }
     setTimeout(() => {
       setIsLoadingOpen(false);
-      router.push("/council");
+      redirectPage("council");
     }, 2000);
-    setIsCancelCouncilOpen(false);    
+    setIsCancelCouncilOpen(false);
+  };
+
+  async function fetchHappeningCouncil() {
+    try {
+      const res = await fetch(
+        "http://localhost:8081/council?isHappening=true",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!res.ok) {
+        console.error("Erro ao buscar conselhos:", res.status);
+        return;
+      }
+
+      const data = await res.json();
+      const hasActiveCouncil =
+        Array.isArray(data.content) && data.content.length > 0;
+      if (hasActiveCouncil) {
+        const id = data.content[0].id;
+        return id;
+      }
+      return;
+    } catch (error) {
+      console.log("Erro ao buscar conselhos:", error);
+    }
   }
 
   async function changeCouncilState(): Promise<boolean> {
     try {
-      const res = await fetch("http://localhost:8081/council?isHappening=true", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      if (!res.ok) {
-        console.error("Erro ao buscar conselhos:", res.status);
-        return false;
-      }
-  
-      const data = await res.json();
-      const hasActiveCouncil = Array.isArray(data.content) && data.content.length > 0;
-  
-      if (hasActiveCouncil) {
-        const id = data.content[0].id;
-        console.log(id)
-  
-        const modifyRes = await fetch(`http://localhost:8081/council/modify/${id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
+      const id = await fetchHappeningCouncil();
+      if (id) {
+        const modifyRes = await fetch(
+          `http://localhost:8081/council/modify/${id}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        });
-  
+        );
+
         if (!modifyRes.ok) {
-          console.error(`Erro ao modificar conselho com id ${id}:`, modifyRes.status);
+          console.error(
+            `Erro ao modificar conselho com id ${id}:`,
+            modifyRes.status
+          );
           return false;
         }
-  
         return true;
       }
-  
       return false;
     } catch (err) {
       console.error("Erro inesperado:", err);
       return false;
     }
   }
-  
 
   const closeCancleCouncilModal = () => {
     setIsCancelCouncilOpen(false);
@@ -560,7 +658,9 @@ export default function RealizeCouncil() {
     <Box>
       <Title
         textHighlight="Conselho"
-        text={`da turma: ${data ? data.aclass.name : localStorage.getItem("className")}`}
+        text={`da turma: ${
+          data ? data.aclass.name : localStorage.getItem("className")
+        }`}
       />
       <Box
         className={`rounded-big m-0 flex justify-center items-center sm:outline-[16px] sm:outline`}
@@ -603,12 +703,16 @@ export default function RealizeCouncil() {
                     ? users[currentStudentIndex]?.name
                     : ""
                 }
-                id_user={users && users.length > 0 ? users[currentStudentIndex]?.id : undefined}
+                id_user={
+                  users && users.length > 0
+                    ? users[currentStudentIndex]?.id
+                    : undefined
+                }
                 frequencia={verifyFrequency()}
                 comments=""
                 negativeContent={negativeContent || ""}
                 positiveContent={positiveContent || ""}
-                rank={actualRank || "none"}
+                rank={(actualRank as RankType) || "NONE"}
                 onNext={handleNextStudent}
                 onPrevious={handlePreviousStudent}
                 openCommentsModal={openStudentModal}

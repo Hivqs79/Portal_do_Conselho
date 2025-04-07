@@ -50,7 +50,7 @@ export default function Council() {
       setDate(dayjs((row as TableCouncilRow).startDateTime));
       setTime(dayjs((row as TableCouncilRow).startDateTime));
     },
-    onClickRealize: async (row: TableCouncilRow) => {
+    onClickRealize: async (row: TableRowPossibleTypes) => {
       setIsLoading(true);
       await modifyCouncilStatus(row.id);
       localStorage.setItem("councilDataInicialize", JSON.stringify(row));

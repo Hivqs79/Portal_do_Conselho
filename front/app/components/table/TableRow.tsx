@@ -21,9 +21,11 @@ interface TableRowProps {
 
 export default function TableRow({ content, rowButtons }: TableRowProps) {
   // const [selectedRank, setSelectedRank] = useState((content as TableCouncilRow).rank && (content as TableCouncilRow).rank);
-  const { primaryColor, constrastColor, colorByModeSecondary } = useThemeContext();
+  const { primaryColor, constrastColor, colorByModeSecondary } =
+    useThemeContext();
   const {
     rankButton,
+    rankVisualizer,
     realizeButton,
     onClickRealize,
     visualizeIconButton,
@@ -42,9 +44,12 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
   // useEffect(() => {
   //   setSelectedRank(content.rank);
   // }, [content.rank]);
-  
-  let date = "startDateTime" in content ? content.startDateTime
-    : "council" in content ? content.council.startDateTime
+
+  let date =
+    "startDateTime" in content
+      ? content.startDateTime
+      : "council" in content
+      ? content.council.startDateTime
       : null;
 
   function getStudentNameAndRemoveDate() {
@@ -53,22 +58,25 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     return content.student.name;
   }
 
-  let name = ("council" in content && content.student == null) ? content.council.aclass.name
-  : "student" in content ? getStudentNameAndRemoveDate()
-    : "aclass" in content ? content.aclass.name
+  let name =
+    "council" in content && content.student == null
+      ? content.council.aclass.name
+      : "student" in content
+      ? getStudentNameAndRemoveDate()
+      : "aclass" in content
+      ? content.aclass.name
       : "";
-
 
   let rank = "rank" in content && content.rank;
 
   return (
     <>
       <tr
-          style={{
-            backgroundColor: OpacityHex(constrastColor, 0.01),
-            borderColor: colorByModeSecondary,
-          }}
-          className={`${content.className} flex rounded-b-big justify-between items-center p-3 w-full`}
+        style={{
+          backgroundColor: OpacityHex(constrastColor, 0.01),
+          borderColor: colorByModeSecondary,
+        }}
+        className={`${content.className} flex rounded-b-big justify-between items-center p-3 w-full`}
       >
         <td style={{ color: constrastColor }} className="flex-1">
           <Typography variant="lg_text_regular">{name}</Typography>
@@ -95,9 +103,16 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
         )}
 
         <td className="flex justify-end items-center w-2/5 lg:w-1/3 gap-2 sm:gap-4">
-          {rankButton && (
+          {rankButton || rankVisualizer && (
             <span className="hidden md:flex justify-center items-center">
-              {rank && <Rank variant="annotation" type={rank} outline={false} popover={true} />}
+              {rank && (
+                <Rank
+                  variant="annotation"
+                  type={rank}
+                  outline={rankButton ? false : true}
+                  popover={rankButton ? true : false}
+                />
+              )}
             </span>
           )}
 
@@ -115,6 +130,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
               text="Realizar"
               onlyTextInBigSize={true}
               icon={PiPlayBold}
+              onClick={() => onClickRealize && onClickRealize(content)}
             />
           )}
 
