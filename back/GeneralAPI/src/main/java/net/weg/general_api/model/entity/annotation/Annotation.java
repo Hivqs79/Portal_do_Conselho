@@ -18,7 +18,7 @@ public abstract class Annotation {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "rank_classification", nullable = false)
+    @Column(name = "rank_classification")
     private RankENUM rank;
 
     @Column(nullable = false)

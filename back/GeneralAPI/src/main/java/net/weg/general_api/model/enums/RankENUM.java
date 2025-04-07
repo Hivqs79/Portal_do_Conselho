@@ -4,5 +4,6 @@ public enum RankENUM {
     EXCELLENT,
     GOOD,
     AVERAGE,
-    CRITICAL
+    CRITICAL,
+    NONE
 }

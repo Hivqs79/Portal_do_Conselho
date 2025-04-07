@@ -51,7 +51,7 @@ public class KafkaConsumerService {
 
             annotationClassService.createAnnotationClass(
                     new AnnotationClassRequestDTO(
-                            null,
+                            RankENUM.NONE,
                             "",
                             "",
                             teacher.getId(),
@@ -61,7 +61,7 @@ public class KafkaConsumerService {
             for (Student student :council.getAClass().getStudents()) {
                 annotationStudentService.createAnnotationStudent(
                         new AnnotationStudentRequestDTO(
-                                null,
+                                RankENUM.NONE,
                                 "",
                                 "",
                                 teacher.getId(),
