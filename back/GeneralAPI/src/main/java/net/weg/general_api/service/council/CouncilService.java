@@ -1,6 +1,7 @@
 package net.weg.general_api.service.council;
 
 import lombok.AllArgsConstructor;
+import net.weg.general_api.exception.exceptions.CouncilAlreadyHappeningException;
 import net.weg.general_api.exception.exceptions.CouncilNotFoundException;
 import net.weg.general_api.model.dto.request.council.CouncilRequestDTO;
 import net.weg.general_api.model.dto.response.council.CouncilResponseDTO;
@@ -108,6 +109,11 @@ public class CouncilService {
             council.setHappening(false);
             kafkaEventSender.sendEvent(council, "PUT", "Council status not happening");
         } else {
+
+            if (repository.existsCouncilByisHappeningIsTrue()) {
+                throw new CouncilAlreadyHappeningException("Ja existe um conselho rodando!");
+            }
+
             council.setHappening(true);
             kafkaEventSender.sendEvent(council, "PUT", "Council status is happening");
         }
