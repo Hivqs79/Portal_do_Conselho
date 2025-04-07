@@ -1,9 +1,6 @@
 package spring.emailsenderapi.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,12 +9,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.Email;
 
+import java.util.Date;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Builder
+/**
+ * @author Vinícius Eduardo dos Santos
+ */
 public class EmailModel {
 
     @Id
@@ -33,7 +35,13 @@ public class EmailModel {
     private String reciver;
     @NotNull
     private String title;
-    @NotNull
+    @Column(columnDefinition = "TEXT")
     private String content;
+
+    //pode remover após os testes (adicionado apenas para os testes)
+    private Date date;
+    private String turma;
+    private String typeUser;
+    private String typeContent;
 
 }

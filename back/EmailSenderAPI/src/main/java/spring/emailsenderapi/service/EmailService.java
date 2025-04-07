@@ -10,6 +10,9 @@ import spring.emailsenderapi.repository.EmailRepository;
 
 @Service
 @AllArgsConstructor
+/**
+ * @author Vinícius Eduardo dos Santos
+ */
 public class EmailService {
 
     private JavaMailSender sender;
