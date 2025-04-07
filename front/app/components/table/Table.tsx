@@ -24,7 +24,7 @@ export default function Table({
   headerButtons ={},
   rowButtons = {}
 }: TableProps) {
-  const { primaryColor, colorByModeSecondary } = useThemeContext();
+  const { colorByModeSecondary } = useThemeContext();
   const [search, setSearch] = useState("");    
   headerButtons.setSearch = setSearch;
   headerButtons.searchValue = search;

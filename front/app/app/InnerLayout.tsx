@@ -5,7 +5,7 @@ import { RoleProvider, useRoleContext } from "@/hooks/useRole";
 import { ThemeProviderContext, useThemeContext } from "@/hooks/useTheme";
 import { Box, ThemeProvider } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/pt-br";
@@ -32,7 +32,6 @@ function CoreLayout({ children }: { children: ReactElement }) {
   } = useThemeContext();
   const { role, setRole } = useRoleContext();
   const pathname = usePathname();
-  const router = useRouter();
   const isLoginPage = pathname?.includes("/login");
 
   useEffect(() => {
