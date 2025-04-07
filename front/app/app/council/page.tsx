@@ -17,6 +17,7 @@ import CouncilModal from "@/components/council/CouncilModal";
 import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
 import { useThemeContext } from "@/hooks/useTheme";
 import { useRouter } from "next/navigation";
+import LoadingModal from "@/components/Modals/LoadingModal";
 
 export default function Council() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -32,6 +33,7 @@ export default function Council() {
   const [visualizedCouncil, setVisualizedCouncil] = useState<TableCouncilRow | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const {redDanger} = useThemeContext();
   const router = useRouter();
 
@@ -44,7 +46,9 @@ export default function Council() {
       setDate(dayjs(row.startDateTime));
       setTime(dayjs(row.startDateTime));
     },
-    onClickRealize: (row: TableCouncilRow) => {
+    onClickRealize: async (row: TableCouncilRow) => {
+      setIsLoading(true);
+      await modifyCouncilStatus(row.id);
       localStorage.setItem("councilDataInicialize", JSON.stringify(row));
       router.push("/realize-council");
     },
@@ -61,6 +65,16 @@ export default function Council() {
     { name: "Data" },
     { name: "Horário" },
   ];
+
+  const modifyCouncilStatus = async (id: number) => {
+    const response = await fetch("http://localhost:8081/council/modify/" + id, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("Edited")
+  }
 
   const createCouncil = async () => {
     console.log("testeCreate");
@@ -232,6 +246,7 @@ export default function Council() {
           },
         }}
       />
+      {isLoading && <LoadingModal/>}
     </Box>
   );
 }

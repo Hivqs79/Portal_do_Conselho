@@ -36,6 +36,10 @@ function CoreLayout({ children }: { children: ReactElement }) {
   const isLoginPage = pathname?.includes("/login");
 
   useEffect(() => {
+    if (!pathname) {
+      document.cookie = `lastRoute=/; path=/`;
+    }
+
     if (pathname !== "/realize-council") {
       document.cookie = `lastRoute=${pathname}; path=/`;
     }

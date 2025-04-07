@@ -25,7 +25,7 @@ export async function middleware(request: NextRequest) {
       }
 
       if (pathname === "/council" && hasActiveCouncil) {
-        console.log("teste")
+        console.log(hasActiveCouncil);
         return NextResponse.redirect(new URL("/realize-council", request.url));
       }
 

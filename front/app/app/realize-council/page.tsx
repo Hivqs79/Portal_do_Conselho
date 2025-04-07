@@ -505,6 +505,7 @@ export default function RealizeCouncil() {
   
       if (hasActiveCouncil) {
         const id = data.content[0].id;
+        console.log(id)
   
         const modifyRes = await fetch(`http://localhost:8081/council/modify/${id}`, {
           method: "PATCH",
