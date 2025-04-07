@@ -1,8 +1,6 @@
 package net.weg.general_api.service.kafka;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import net.weg.general_api.service.notification.NotificationService;
 import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -10,10 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class NotificationKafkaConsumer {
-    private final NotificationService notificationService;
-    private final ObjectMapper objectMapper;
 
-    @KafkaListener(topics = "notification", groupId = "notification_group")
+    @KafkaListener(topics = "notification", groupId = "group_notification")
     public void consumeNotification(String message) {
         try {
             System.out.println("Notification kc: " + message);

@@ -6,12 +6,9 @@ import net.weg.general_api.model.dto.request.council.CouncilRequestDTO;
 import net.weg.general_api.model.dto.response.council.CouncilResponseDTO;
 import net.weg.general_api.model.entity.annotation.Annotation;
 import net.weg.general_api.model.entity.council.Council;
-import net.weg.general_api.model.entity.notification.Notification;
-import net.weg.general_api.model.entity.users.Teacher;
 import net.weg.general_api.repository.CouncilRepository;
 import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.kafka.KafkaEventSender;
-import net.weg.general_api.service.notification.NotificationService;
 import net.weg.general_api.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -30,7 +27,6 @@ public class CouncilService {
     private ClassService classService;
     private TeacherService teacherService;
     private final KafkaEventSender kafkaEventSender;
-    private final NotificationService notificationService;
 
     public Page<CouncilResponseDTO> findCouncilSpec(Specification<Council> spec, Pageable pageable) {
         Page<Council> councils = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -45,15 +41,6 @@ public class CouncilService {
 
         Council councilSaved = repository.save(council);
         kafkaEventSender.sendEvent(councilSaved, "POST", "Council created");
-
-        for (Teacher teacher : councilSaved.getTeachers()) {
-            Notification notification = Notification.builder()
-                    .title("Novo conselho iniciado!")
-                    .message("O conselho da turma: " + councilSaved.getAClass().getName() + " iniciado")
-                    .userId(teacher.getId())
-                    .build();
-            kafkaEventSender.sendNotification(notification);
-        }
 
         return modelMapper.map(councilSaved, CouncilResponseDTO.class);
     }

@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class GeneralApiApplication {
 
 	public static void main(String[] args) {
+		System.out.println("Rodando a minha versão do código v5. Ass: PW");
 		SpringApplication.run(GeneralApiApplication.class, args);
 	}
 

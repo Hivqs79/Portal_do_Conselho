@@ -1,16 +1,17 @@
-import TableCouncilRow from "./TableCouncilRow";
+import { TableRowPossibleTypes } from "./TableRowPossibleTypes";
 
 export interface TableRowButtons {
-    rank?: boolean;
+    rankButton?: boolean;
     realizeButton?: boolean;
     onClickRealize?: (row: TableCouncilRow) => void;
     visualizeIconButton?: boolean;
-    onClickVisualize?: (row: TableCouncilRow) => void;
+    onClickVisualize?: (row: TableRowPossibleTypes) => void;
     visualizeButton?: boolean;
     editButton?: boolean;
     deleteButton?: boolean;
     seeButton?: boolean;
-    anotationButton?: boolean;
+    annotationButton?: boolean;
+    onClickAnnotation?: (row: TableRowPossibleTypes) => void;
     closeButton?: boolean;
     releasedButton?: boolean;
     releaseButton?: boolean;

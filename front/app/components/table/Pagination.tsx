@@ -6,7 +6,6 @@ interface PaginationTableProps {
     page: number;
     setPage: (page: number) => void;
     count: number;
-    setCount: (count: number) => void;
     rowsPerPage: number;
     setRowsPerPage: (rowsPerPage: number) => void;
 } 
@@ -15,7 +14,6 @@ export default function PaginationTable({
     page,
     setPage,
     count,
-    setCount,
     rowsPerPage,
     setRowsPerPage
 }: PaginationTableProps) {      
@@ -72,6 +70,7 @@ export default function PaginationTable({
                         },
                     }}
                 >
+                    <MenuItem value={5}>5</MenuItem>
                     <MenuItem value={10}>10</MenuItem>
                     <MenuItem value={25}>25</MenuItem>
                     <MenuItem value={50}>50</MenuItem>

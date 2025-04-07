@@ -1,9 +1,9 @@
 "use client";
 import AvaliationInputs from "@/components/council/AvaliationInputs";
-import CommentariesModal from "@/components/Modals/CommentariesModal";
-import ConfirmChanges from "@/components/Modals/ConfirmChanges";
-import ConfirmMessagesModal from "@/components/Modals/ConfirmMessagesModal";
-import LoadingModal from "@/components/Modals/LoadingModal";
+import CommentariesModal from "@/components/modals/CommentariesModal";
+import ConfirmChanges from "@/components/modals/ConfirmChanges";
+import ConfirmMessagesModal from "@/components/modals/ConfirmMessagesModal";
+import LoadingModal from "@/components/modals/LoadingModal";
 import StudentCouncilForm from "@/components/StudentCouncilForm";
 import TableHeader from "@/components/table/TableHeader";
 import Title from "@/components/Title";
@@ -581,7 +581,7 @@ export default function RealizeCouncil() {
                   variant="council"
                   headers={[]}
                   headerButtons={{
-                    onChangeRank: handleRankChange,
+                    setRank: handleRankChange,
                   }}
                   openCommentsModal={openTeacherModal}
                   rank={actualRank}

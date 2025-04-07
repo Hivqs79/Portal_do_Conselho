@@ -11,14 +11,15 @@ import { useThemeContext } from "@/hooks/useTheme";
 import OpacityHex from "@/utils/OpacityHex";
 import { RiSubtractFill } from "react-icons/ri";
 import { Encryptor } from "@/encryption/Encryptor";
+import { Rank as RankType } from "@/interfaces/RankType";
 
 interface RankProps {
-  variant?: "default" | "council";
-  type: "excellent" | "good" | "average" | "critical" | "none";
+  variant?: "default" | "council" | "annotation";
+  type: RankType;
   outline: boolean;
   popover: boolean;
   onRankChange?: (
-    rank: "excellent" | "good" | "average" | "critical" | "none"
+    rank: RankType
   ) => void;
 }
 
@@ -53,7 +54,7 @@ export default function Rank({
   };
 
   const handleSelect = (
-    newRank: "excellent" | "good" | "average" | "critical" | "none"
+    newRank: RankType
   ) => {
     setSelectedRank(newRank);
     if (onRankChange) {
@@ -65,7 +66,7 @@ export default function Rank({
   };
 
   const handleSelectNormalRank = (
-    newRank: "excellent" | "good" | "average" | "critical" | "none"
+    newRank: RankType
   ) => {
     setSelectedRank(newRank);
     if (onRankChange) {
@@ -82,19 +83,19 @@ export default function Rank({
   }`;
 
   const rank = {
-    excellent: <FaRegFaceLaugh className={`${className} text-[#549600]`} />,
-    good: <FaRegFaceSmile className={`${className} text-[#7ABA28]`} />,
-    average: <FaRegFaceMeh className={`${className} text-[#F3C91C]`} />,
-    critical: <FaRegFaceFrown className={`${className} text-[#FE3535]`} />,
-    none: <RiSubtractFill className={`${className} text-gray-400`} />,
+    EXCELLENT: <FaRegFaceLaugh className={`${className} text-[#549600]`} />,
+    GOOD: <FaRegFaceSmile className={`${className} text-[#7ABA28]`} />,
+    AVERAGE: <FaRegFaceMeh className={`${className} text-[#F3C91C]`} />,
+    CRITICAL: <FaRegFaceFrown className={`${className} text-[#FE3535]`} />,
+    NONE: <RiSubtractFill className={`${className} text-gray-400`} />,
   };
 
   const rankLabels = {
-    excellent: "Ótimo",
-    good: "Bom",
-    average: "Mediano",
-    critical: "Crítico",
-    none: "Nenhum",
+    EXCELLENT: "Ótimo",
+    GOOD: "Bom",
+    AVERAGE: "Mediano",
+    CRITICAL: "Crítico",
+    NONE: "Nenhum",
   };
 
   if (popover && outline) {
@@ -108,7 +109,7 @@ export default function Rank({
     );
   }
 
-  if (variant === "council") {
+  if (variant === "council" || variant === "annotation") {
     if (popover) {
       return (
         <>
@@ -122,7 +123,7 @@ export default function Rank({
               className="cursor-pointer flex items-center gap-1 border-[2px] rounded-normal"
               onClick={handleClick}
             >
-              {rank[selectedRank]}
+              {variant === "council" ? rank[selectedRank] : rank[type]}
             </span>
           </div>
           <Popover
@@ -137,7 +138,7 @@ export default function Rank({
               className="p-4 flex flex-col space-y-2 z-40"
               style={{ backgroundColor: OpacityHex(secondaryColor, 0.2) }}
             >
-              {(["excellent", "good", "average", "critical"] as const).map(
+              {(["EXCELLENT", "GOOD", "AVERAGE", "CRITICAL"] as const).map(
                 (key) => (
                   <div
                     key={key}
@@ -193,7 +194,7 @@ export default function Rank({
               className="p-4 flex flex-col space-y-2 z-40"
               style={{ backgroundColor: OpacityHex(secondaryColor, 0.2) }}
             >
-              {(["excellent", "good", "average", "critical"] as const).map(
+              {(["EXCELLENT", "GOOD", "AVERAGE", "CRITICAL"] as const).map(
                 (key) => (
                   <div
                     key={key}

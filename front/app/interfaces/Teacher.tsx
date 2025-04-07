@@ -1,5 +1,3 @@
-export interface Teacher {
-    id: number,
-    name: string,
-    email: string
-}
+import User from "./User";
+
+export interface Teacher extends User {}

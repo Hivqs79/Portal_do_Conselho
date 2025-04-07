@@ -10,6 +10,7 @@ import Menu from "./Menu";
 import Photo from "./profile/Photo";
 import Link from "next/link";
 import { useWindowWidth } from "@react-hook/window-size";
+import { useRoleContext } from "@/hooks/useRole";
 
 interface HeaderProps {
   variant?: string;
@@ -21,11 +22,11 @@ export default function Header({ variant }: HeaderProps) {
   const boxRef = useRef<HTMLElement>(null);
   const windowWidth = useWindowWidth();
   const [notifications, setNotifications] = useState(0);    
+  const { userId } = useRoleContext();
 
   useEffect(() => {
-    const userId = localStorage.getItem("idUser");
 
-    if (userId) {
+    if (userId !== -1) {
       const fetchNotifications = async () => {
         const response = await fetch(
           "http://localhost:8081/notification/user/" + userId
@@ -47,7 +48,7 @@ export default function Header({ variant }: HeaderProps) {
       fetchNotifications();
       subscribe();
     }
-  }, []);
+  }, [userId]);
 
   return (
     <Box

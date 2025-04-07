@@ -3,14 +3,18 @@ import { createContext, useContext, useState } from "react";
 interface RoleContextType {
     role: string;
     setRole: (role: string) => void;
+    userId: number | null;
+    setUserId: (userId: number | null ) => void;
 }
 
 const roleContext = createContext<RoleContextType | undefined>(undefined);
 
 export function RoleProvider({ children }: { children: React.ReactNode }) {
     const [role, setRole] = useState("");
+    const [userId, setUserId] = useState<number | null>(-1);
+    console.log("teste role");
     return (
-        <roleContext.Provider value={{ role, setRole }}>
+        <roleContext.Provider value={{ role, setRole, userId, setUserId }}>
             {children}
         </roleContext.Provider>
     );

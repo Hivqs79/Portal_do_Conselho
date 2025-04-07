@@ -55,7 +55,7 @@ public class KafkaConsumerService {
         container.start();
     }
 
-    @KafkaListener(topics = "#{T(java.util.Arrays).asList('${KAFKA_TOPICS}'.split(','))}", groupId = "group_id")
+    @KafkaListener(topics = "#{T(java.util.Arrays).asList('${KAFKA_TOPICS}'.split(','))}", groupId = "group_logs_api")
     public void consume(String message) throws JsonProcessingException {
         System.out.println("Consumed message: " + message);
         KafkaMessageDTO kafkaMessageDTO = objectMapper.readValue(message, KafkaMessageDTO.class);
