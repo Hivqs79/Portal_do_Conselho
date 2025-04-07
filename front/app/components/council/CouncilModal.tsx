@@ -62,11 +62,11 @@ export default function CouncilModal({
       className="flex items-center justify-center"
     >
       <Box
-        className="p-4 z-50 mx-16 max-w-[800px] rounded-big mt-24"
+        className="py-2 px-4 z-50 mx-16 max-w-[800px] rounded-big mt-24"
         style={{ backgroundColor: backgroundColor }}
       >
-        <Box className="flex flex-col w-full max-h-[80vh] overflow-y-auto p-8  gap-10">
-          <Box className="flex flex-row w-full">
+        <Box className="flex flex-col w-full max-h-[80vh] overflow-y-auto p-6  gap-10">
+          <Box className="flex items-center flex-row w-full">
             <Box className="flex flex-col w-full">
               <Typography variant="xl_text_bold" color={colorByModeSecondary}>
                 {variant === "confirm" ? "Confirmar " : "Detalhes do "}conselho

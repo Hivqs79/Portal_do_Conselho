@@ -383,7 +383,7 @@ export default function RealizeCouncil() {
                   variant="council"
                   headers={[]}
                   headerButtons={{
-                    onChangeRank: handleRankChange,
+                    setRank: handleRankChange,
                   }}
                   openCommentsModal={openTeacherModal}
                   rank={actualRank}

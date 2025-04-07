@@ -17,6 +17,7 @@ import CouncilModal from "@/components/council/CouncilModal";
 import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
 import { useThemeContext } from "@/hooks/useTheme";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
+import PaginationTable from "@/components/table/Pagination";
 
 export default function Council() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -32,7 +33,9 @@ export default function Council() {
   const [visualizedCouncil, setVisualizedCouncil] = useState<TableRowPossibleTypes | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  const {redDanger} = useThemeContext();
+  const { redDanger } = useThemeContext();
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const rowButtons: TableRowButtons = {
     realizeButton: true,
@@ -55,7 +58,7 @@ export default function Council() {
     { name: "Turma" },
     { name: "Data" },
     { name: "Horário" },
-  ];  
+  ];
 
   const createCouncil = async () => {
     console.log("testeCreate");
@@ -74,7 +77,7 @@ export default function Council() {
       console.log(data);
       resetInputs();
     });
-  };  
+  };
 
   const editCouncil = async () => {
     console.log("testeEdit");
@@ -167,14 +170,14 @@ export default function Council() {
   useEffect(() => {
     const fetchCouncil = async () => {
       const response = await fetch(
-        "http://localhost:8081/council"
+        "http://localhost:8081/council?page=" + (page - 1) + "&size=" + rowsPerPage
       );
       const data = await response.json();
       setCouncils(data);
       console.log(data);
     };
     fetchCouncil();
-  }, [isCreate, isEditing]);
+  }, [isCreate, isEditing, page, rowsPerPage]);
 
   return (
     <Box>
@@ -203,19 +206,26 @@ export default function Council() {
             headerButtons={headerButtons}
             rowButtons={rowButtons}
           />
+          <PaginationTable
+            count={councils ? councils.totalPages : 0}
+            page={councils ? councils.pageable.pageNumber + 1 : 1}
+            setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={(rowsPerPage: number) => setRowsPerPage(rowsPerPage)}
+          />
           <CouncilModal
             open={visualizedCouncil !== null}
             close={() => setVisualizedCouncil(null)}
-            councilInformation={councilInformation}   
+            councilInformation={councilInformation}
             confirmFunction={editCouncil}
             verifyForm={verifyInputs}
             setEditing={(value: boolean) => setIsEditing(value)}
             editing={isEditing}
             variant="details"
-          />          
+          />
         </>
       )}
-      <Snackbar 
+      <Snackbar
         open={!!snackbarMessage}
         onClose={() => setSnackbarMessage("")}
         autoHideDuration={5000}

@@ -1,10 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Rank from "../rank/Rank";
 import { useThemeContext } from "@/hooks/useTheme";
 import { FaRegEye } from "react-icons/fa6";
-import TableCouncilRow from "@/interfaces/table/row/TableCouncilRow";
 import { PiPlayBold } from "react-icons/pi";
 import { LuPencilLine, LuTrash } from "react-icons/lu";
 import TableButton from "./TableButton";
@@ -25,7 +23,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
   // const [selectedRank, setSelectedRank] = useState((content as TableCouncilRow).rank && (content as TableCouncilRow).rank);
   const { primaryColor, constrastColor, backgroundColor } = useThemeContext();
   const {
-    rank,
+    rankButton,
     realizeButton,
     visualizeIconButton,
     visualizeButton,
@@ -34,6 +32,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     deleteButton,
     seeButton,
     annotationButton: anotationButton,
+    onClickAnnotation,
     closeButton,
     releasedButton,
     releaseButton,
@@ -42,13 +41,24 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
   // useEffect(() => {
   //   setSelectedRank(content.rank);
   // }, [content.rank]);
-  let name = "aclass" in content ? content.aclass.name
-      : "council" in content ? content.council.aclass.name
+  
+  let date = "startDateTime" in content ? content.startDateTime
+    : "council" in content ? content.council.startDateTime
+      : null;
+
+  function getStudentNameAndRemoveDate() {
+    date = null;
+    if (!("student" in content)) return "";
+    return content.student.name;
+  }
+
+  let name = ("council" in content && content.student == null) ? content.council.aclass.name
+  : "student" in content ? getStudentNameAndRemoveDate()
+    : "aclass" in content ? content.aclass.name
       : "";
 
-  let date = "startDateTime" in content ? content.startDateTime
-      : "council" in content ? content.council.startDateTime
-      : null;
+
+  let rank = "rank" in content && content.rank;
 
   return (
     <>
@@ -84,11 +94,11 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
         )}
 
         <td className="flex justify-end items-center w-2/5 lg:w-1/3 gap-2 sm:gap-4">
-          {/* {rank && (
-              <span className="hidden md:flex justify-center items-center">
-                  {selectedRank && <Rank type={selectedRank} outline={true} popover={false} />}
-              </span>              
-            )}                         */}
+          {rankButton && (
+            <span className="hidden md:flex justify-center items-center">
+              {rank && <Rank variant="annotation" type={rank} outline={false} popover={true} />}
+            </span>
+          )}
 
           {(visualizeButton || seeButton || visualizeIconButton) && (
             <TableButton
@@ -111,6 +121,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
             <TableButton
               text={anotationButton ? "Anotar" : "Editar"}
               icon={LuPencilLine}
+              onClick={() => onClickAnnotation && onClickAnnotation(content)}
             />
           )}
 
