@@ -73,10 +73,9 @@ export default function AnnotationsModal({
   }, [contentStudent]);
 
   const handleAccordionClick = () => {
-    // ...
     setTimeout(() => {
       updateStudentsAnnotationsSize();
-    }, 250); // tempo de espera em milissegundos
+    }, 250);
   };
 
   return (

@@ -17,9 +17,9 @@ import CouncilModal from "@/components/council/CouncilModal";
 import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
 import { useThemeContext } from "@/hooks/useTheme";
 import { useRouter } from "next/navigation";
-import LoadingModal from "@/components/Modals/LoadingModal";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 import PaginationTable from "@/components/table/Pagination";
+import LoadingModal from "@/components/modals/LoadingModal";
 
 type CouncilStatus = "expired" | "active" | "scheduled";
 

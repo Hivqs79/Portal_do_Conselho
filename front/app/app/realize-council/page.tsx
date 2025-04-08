@@ -12,10 +12,10 @@ import { useWindowWidth } from "@react-hook/window-size";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import User from "@/interfaces/User";
-import CommentariesModal from "@/components/Modals/CommentariesModal";
-import ConfirmChanges from "@/components/Modals/ConfirmChanges";
-import ConfirmMessagesModal from "@/components/Modals/ConfirmMessagesModal";
-import LoadingModal from "@/components/Modals/LoadingModal";
+import CommentariesModal from "@/components/modals/CommentariesModal";
+import ConfirmChanges from "@/components/modals/ConfirmChanges";
+import ConfirmMessagesModal from "@/components/modals/ConfirmMessagesModal";
+import LoadingModal from "@/components/modals/LoadingModal";
 import { Rank as RankType } from "@/interfaces/RankType";
 
 type CouncilData = {

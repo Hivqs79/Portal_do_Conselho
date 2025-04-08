@@ -35,7 +35,7 @@ export default function Annotations() {
       setIsModalOpen(true);
       setSelectedAnnotation((row as TableAnnotationRow));;
     },
-    rankButton: true
+    rankVisualizer: true,
   };
 
   const headerButtons: TableHeaderButtons = {
