@@ -23,15 +23,17 @@ export default function Annotations() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAnnotation, setSelectedAnnotation] = useState<Annotation | null>(null);
+  const [selectedStudents, setSelectedStudents] = useState<TableAnnotationRow[]>([]);
   const [studentSearch, setStudentSearch] = useState("");
   const [classSearch, setClassSearch] = useState("");
+  const [idStudentChanged, setIdStudentChanged] = useState(0);
 
   const rowButtons: TableRowButtons = {
     annotationButton: true,
     onClickAnnotation: (row: TableRowPossibleTypes) => {
       console.log(row);
-      setIsModalOpen(true);      
-      setSelectedAnnotation((row as TableAnnotationRow));
+      setIsModalOpen(true);
+      setSelectedAnnotation((row as TableAnnotationRow));;
     },
     rankButton: true
   };
@@ -67,59 +69,48 @@ export default function Annotations() {
   };
 
   const headersClass: TableHeaderContent[] = [
-    { name: "Turma " + selectedAnnotation?.council.aclass.name},
+    { name: "Turma " + selectedAnnotation?.council.aclass.name },
   ];
 
   const rowButtonsStudent = {
     setRank: (rank: Rank, idStudent: number) => {
-      if (!studentAnnotations) return;
-      setStudentAnnotations({
-        ...studentAnnotations,
-        content: studentAnnotations.content.map((row) => {
-          if (row.id === idStudent) {
-            return {
-              ...row,
-              rank: rank,
-            };
-          }
-          return row;
-        })
-      })
+      if (!selectedStudents) return;
+      setSelectedStudents(selectedStudents.map((row) => {
+        if (row.id === idStudent) {
+          return {
+            ...row,
+            rank: rank,
+          };
+        }
+        return row;
+      }))
+      setIdStudentChanged(idStudent);
     },
     setPositiveStudentContent: (content: string, idStudent: number) => {
-      if (!studentAnnotations) return;
-      setTimeout(() => {
-        setStudentAnnotations({
-          ...studentAnnotations,
-          content: studentAnnotations.content.map((row) => {
-            if (row.id === idStudent) {
-              console.log(row);
-              return {
-                ...row,
-                strengths: content,
-              };
-            }
-            return row;
-          })
-        });
-      }, 0);
+      if (!selectedStudents) return;
+      setSelectedStudents(selectedStudents.map((row) => {
+        if (row.id === idStudent) {
+          return {
+            ...row,
+            strengths: content,
+          };
+        }
+        return row;
+      }))
+      setIdStudentChanged(idStudent);
     },
     setNegativeStudentContent: (content: string, idStudent: number) => {
-      if (!studentAnnotations) return;
-      setTimeout(() => {
-        setStudentAnnotations({
-          ...studentAnnotations,
-          content: studentAnnotations.content.map((row) => {
-            if (row.id === idStudent) {
-              return {
-                ...row,
-                toImprove: content,
-              };
-            }
-            return row;
-          })
-        });
-      }, 0);
+      if (!selectedStudents) return;
+      setSelectedStudents(selectedStudents.map((row) => {
+        if (row.id === idStudent) {
+          return {
+            ...row,
+            toImprove: content,
+          };
+        }
+        return row;
+      }))
+      setIdStudentChanged(idStudent);
     },
   };
 
@@ -127,32 +118,11 @@ export default function Annotations() {
     searchInput: true,
     setSearch: (term: string) => setStudentSearch(term),
     searchValue: studentSearch,
-  };  
+  };
 
   const headersStudent: TableHeaderContent[] = [
     { name: "Nome" },
   ];
-
-  useEffect(() => {
-    const fetchClassAnnotations = async () => {
-      const response = await fetch(`http://localhost:8081/annotations/class?teacherId=${userId}&page=${page - 1}&size=${rowsPerPage}&className=${classSearch}`);
-      const data = await response.json();
-      console.log(data);
-      setClassAnnotations(data);
-    };    
-    fetchClassAnnotations();
-  }, [userId, page, rowsPerPage, classSearch]);
-
-  useEffect(() => {
-    const fetchStudentAnnotations = async (councilId: number, teacherId?: number) => {
-      const response = await fetch(`http://localhost:8081/annotations/student?councilId=${councilId}&teacherId=${teacherId}&studentName=${studentSearch}`);
-      const data = await response.json();
-      console.log(data);
-      setStudentAnnotations(data);
-    };
-    if (!selectedAnnotation) return;
-    fetchStudentAnnotations(selectedAnnotation.council.id, selectedAnnotation.teacher.id);
-  }, [selectedAnnotation?.id, studentSearch]);
 
   function setPositiveClassContent(content: string) {
     if (!selectedAnnotation) return;
@@ -178,6 +148,79 @@ export default function Annotations() {
     });
   }
 
+  useEffect(() => {
+    const fetchClassAnnotations = async () => {
+      const response = await fetch(`http://localhost:8081/annotations/class?teacherId=${userId}&page=${page - 1}&size=${rowsPerPage}&className=${classSearch}`);
+      const data = await response.json();
+      console.log(data);
+      setClassAnnotations(data);
+    };
+    fetchClassAnnotations();
+  }, [userId, page, rowsPerPage, classSearch, isModalOpen]);
+
+  useEffect(() => {
+    const fetchStudentAnnotations = async (councilId: number, teacherId?: number) => {
+      const response = await fetch(`http://localhost:8081/annotations/student?councilId=${councilId}&teacherId=${teacherId}&studentName=${studentSearch}`);
+      const data = await response.json();
+      console.log(data);
+      setStudentAnnotations(data);
+      setSelectedStudents(data.content);
+    };
+    if (!selectedAnnotation) return;
+    fetchStudentAnnotations(selectedAnnotation.council.id, selectedAnnotation.teacher.id);
+  }, [selectedAnnotation?.id, studentSearch]);
+
+  useEffect(() => {
+    async function updateClassAnnotation() {
+      if (!selectedAnnotation) return;
+      const response = await fetch(`http://localhost:8081/annotations/class/${selectedAnnotation.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          rank: selectedAnnotation.rank,
+          strengths: selectedAnnotation.strengths,
+          toImprove: selectedAnnotation.toImprove,
+          teacher_id: selectedAnnotation.teacher.id,
+          council_id: selectedAnnotation.council.id,
+        }),
+      });
+      console.log(response);
+    }
+    updateClassAnnotation();
+  }, [selectedAnnotation]);
+
+  useEffect(() => {
+    async function updateStudentAnnotation() {
+      if (!selectedStudents) return;
+      const row = selectedStudents.find((row: TableRowPossibleTypes) => {
+        if ('student' in row) {
+          return row.student.id === idStudentChanged;
+        }
+        return false;
+      }) as TableAnnotationRow | undefined;
+      const idAnnotation = row?.id;
+      if (!idAnnotation) return;
+      const response = await fetch(`http://localhost:8081/annotations/student/${idAnnotation}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          rank: row.rank,
+          strengths: row.strengths,
+          toImprove: row.toImprove,
+          teacher_id: row.teacher.id,
+          council_id: row.council.id,
+          student_id: row.student.id,
+        }),
+      });
+      console.log(response);
+    }
+    updateStudentAnnotation();
+  }, [selectedStudents]);
+
   return (
     <Box>
       <Title textHighlight="Anotações" text="para os conselhos" />
@@ -187,28 +230,28 @@ export default function Annotations() {
         headerButtons={headerButtons}
         tableContent={classAnnotations}
       />
-      <PaginationTable 
+      <PaginationTable
         count={classAnnotations ? classAnnotations.totalPages : 0}
         page={classAnnotations ? classAnnotations.pageable.pageNumber + 1 : 1}
         setPage={setPage}
         rowsPerPage={rowsPerPage}
         setRowsPerPage={(rowsPerPage: number) => setRowsPerPage(rowsPerPage)}
-        />
-        <AnnotationsModal 
-          variant="annotations"
-          open={isModalOpen}
-          close={() => setIsModalOpen(false)}
-          classPositiveContent={selectedAnnotation?.strengths ? selectedAnnotation.strengths : ""}
-          setClassPositiveContent={setPositiveClassContent}
-          classNegativeContent={selectedAnnotation?.toImprove ? selectedAnnotation.toImprove : ""}
-          setClassNegativeContent={setNegativeClassContent}          
-          headerButtonsClass={headerButtonsClass}
-          headersClass={headersClass}
-          contentStudent={studentAnnotations}
-          headersStudent={headersStudent}
-          rowButtonsStudent={rowButtonsStudent}
-          headerButtonsStudent={headerButtonsStudent}
-        />
+      />
+      <AnnotationsModal
+        variant="annotations"
+        open={isModalOpen}
+        close={() => setIsModalOpen(false)}
+        classPositiveContent={selectedAnnotation?.strengths ? selectedAnnotation.strengths : ""}
+        setClassPositiveContent={setPositiveClassContent}
+        classNegativeContent={selectedAnnotation?.toImprove ? selectedAnnotation.toImprove : ""}
+        setClassNegativeContent={setNegativeClassContent}
+        headerButtonsClass={headerButtonsClass}
+        headersClass={headersClass}
+        contentStudent={selectedStudents}
+        headersStudent={headersStudent}
+        rowButtonsStudent={rowButtonsStudent}
+        headerButtonsStudent={headerButtonsStudent}
+      />
     </Box>
   );
 }

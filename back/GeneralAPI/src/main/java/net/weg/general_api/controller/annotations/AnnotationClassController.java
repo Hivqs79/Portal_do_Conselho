@@ -47,8 +47,8 @@ public class AnnotationClassController {
     @ApiResponse(responseCode = "400", description = "Invalid data", content = @Content(examples = @ExampleObject(value = "{\"status\":400,\"error\":\"Validation Error\",\"message\":[\"strengths: must not be blank\",\"toImprove: must not be blank\",\"teacher_id: must not be null\",\"council_id: must not be null\"]}")))
     @ApiResponse(responseCode = "404", description = "Teacher or council not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<AnnotationClassResponseDTO> postAnnotationClass(@RequestBody @Validated AnnotationClassRequestDTO pedagogicRequestDTO) {
-        return new ResponseEntity<>(service.createAnnotationClass(pedagogicRequestDTO), HttpStatus.OK);
+    public ResponseEntity<AnnotationClassResponseDTO> postAnnotationClass(@RequestBody @Validated AnnotationClassRequestDTO annotationClassRequestDTO) {
+        return new ResponseEntity<>(service.createAnnotationClass(annotationClassRequestDTO), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -57,8 +57,8 @@ public class AnnotationClassController {
     @ApiResponse(responseCode = "400", description = "Invalid data")
     @ApiResponse(responseCode = "404", description = "Annotation, teacher or council not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<AnnotationClassResponseDTO> putAnnotationClass(@RequestBody @Validated AnnotationClassRequestDTO pedagogicRequestDTO, @Parameter(description = "Annotation ID", example = "1") @PathVariable Long id) {
-        return new ResponseEntity<>(service.updateAnnotationClass(pedagogicRequestDTO, id), HttpStatus.OK);
+    public ResponseEntity<AnnotationClassResponseDTO> putAnnotationClass(@RequestBody @Validated AnnotationClassRequestDTO annotationClassRequestDTO, @Parameter(description = "Annotation ID", example = "1") @PathVariable Long id) {
+        return new ResponseEntity<>(service.updateAnnotationClass(annotationClassRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

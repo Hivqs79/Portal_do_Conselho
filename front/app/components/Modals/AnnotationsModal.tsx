@@ -25,7 +25,7 @@ interface AnnotationsModalProps {
   setClassNegativeContent: (content: string) => void;
   headersClass: TableHeaderContent[];
   headerButtonsClass: TableHeaderButtons;
-  contentStudent: TableContent | null;
+  contentStudent: TableAnnotationRow[] | null;
   headersStudent: TableHeaderContent[];
   rowButtonsStudent: any;
   headerButtonsStudent: TableHeaderButtons;
@@ -47,30 +47,37 @@ export default function AnnotationsModal({
 }: AnnotationsModalProps) {
   const { colorByModeSecondary, redDanger, backgroundColor } =
     useThemeContext();
-    const studentsAnnotations = useRef<HTMLElement | null>(null);
+  const studentsAnnotations = useRef<HTMLElement | null>(null);
 
-    useEffect(() => {
-      if (studentsAnnotations.current) {
-        const element = studentsAnnotations.current;
-        const observer = new ResizeObserver(() => {
-          const elementInside = element.children[0] as HTMLElement;
+  const updateStudentsAnnotationsSize = () => {
+    const element = studentsAnnotations.current;
+    if (element) {
+      const elementInside = element.children[0] as HTMLElement;
 
-          if (element.getBoundingClientRect().height <= 420) {
-            element.style.paddingRight = "0px";
-            if (elementInside) {
-              elementInside.style.paddingRight = "0px";
-            }
-          } else {
-            element.style.paddingRight = "4px";
-            if (elementInside) {
-              elementInside.style.paddingRight = "4px";
-            }
-          }
-        });
-        observer.observe(element);
-        return () => observer.disconnect();
+      if (element.getBoundingClientRect().height <= 420) {
+        element.style.paddingRight = "0px";
+        if (elementInside) {
+          elementInside.style.paddingRight = "0px";
+        }
+      } else {
+        element.style.paddingRight = "4px";
+        if (elementInside) {
+          elementInside.style.paddingRight = "4px";
+        }
       }
-    }, [studentsAnnotations.current, headerButtonsStudent.searchValue]);
+    }
+  };
+
+  useEffect(() => {
+    updateStudentsAnnotationsSize();
+  }, [contentStudent]);
+
+  const handleAccordionClick = () => {
+    // ...
+    setTimeout(() => {
+      updateStudentsAnnotationsSize();
+    }, 250); // tempo de espera em milissegundos
+  };
 
   return (
     <Modal
@@ -142,29 +149,31 @@ export default function AnnotationsModal({
                     ref={studentsAnnotations}
                   >
                     <Box className="flex flex-col pr-2 max-h-[420px] overflow-y-auto">
-                      {contentStudent && contentStudent.content.length > 0 ? (
-                        contentStudent.content.map(
+                      {contentStudent && contentStudent.length > 0 ? (
+                        contentStudent.map(
                           (row: TableRowPossibleTypes, index: number) => {
                             row = row as TableAnnotationRow;
                             return (
-                              <AccordionComponent
-                                name={row.student.name}
-                                type="table"
-                                outlined={true}
-                                key={index}
-                                rank={row.rank}
-                                onChangeRank={(rank: RankType) => rowButtonsStudent.setRank(rank, row.id)}
-                              >
-                                <AvaliationInputs
-                                  writeOnly={variant !== "annotations"}
-                                  Positivecontent={row.strengths}
-                                  Negativecontent={row.toImprove}
-                                  onPositiveChange={(content: string) => rowButtonsStudent.setPositiveStudentContent(content, row.id)}
-                                  onNegativeChange={(content: string) => rowButtonsStudent.setNegativeStudentContent(content, row.id)}
-                                  copyButton={true}
-                                  withoutBorder={true}
-                                />
-                              </AccordionComponent>
+                              <Box onClick={handleAccordionClick} key={index}>
+                                <AccordionComponent
+                                  name={row.student.name}
+                                  type="table"
+                                  outlined={true}
+                                  key={index}
+                                  rank={row.rank}
+                                  onChangeRank={(rank: RankType) => rowButtonsStudent.setRank(rank, row.id)}
+                                >
+                                  <AvaliationInputs
+                                    writeOnly={variant !== "annotations"}
+                                    Positivecontent={row.strengths}
+                                    Negativecontent={row.toImprove}
+                                    onPositiveChange={(content: string) => rowButtonsStudent.setPositiveStudentContent(content, row.id)}
+                                    onNegativeChange={(content: string) => rowButtonsStudent.setNegativeStudentContent(content, row.id)}
+                                    copyButton={true}
+                                    withoutBorder={true}
+                                  />
+                                </AccordionComponent>
+                              </Box>
                             );
                           }
                         )
