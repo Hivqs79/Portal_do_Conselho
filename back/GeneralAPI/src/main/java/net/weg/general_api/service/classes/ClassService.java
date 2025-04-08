@@ -77,13 +77,17 @@ public class ClassService {
         return modelMapper.map(classes, ClassResponseDTO.class);
     }
 
-    public void mockarClass(List<ClassRequestDTO> classRequestDTOS) {
-        List<Class> classes = classRequestDTOS.stream().map(classRequestDTO -> modelMapper.map(classRequestDTO, Class.class)).collect(Collectors.toList());
-        repository.saveAll(classes);
-    }
 
     public List<Class> getClassesByIdList(List<Long> classes_id) {
         return repository.findAllById(classes_id);
+    }
+
+    public Class getClassByClassName(String className) {
+        return repository.findClassByName(className);
+    }
+
+    public List<Class> getAllClasses() {
+        return repository.findAll();
     }
 
 }
