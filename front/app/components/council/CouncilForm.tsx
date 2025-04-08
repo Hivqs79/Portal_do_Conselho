@@ -60,7 +60,7 @@ export default function CouncilForm({
           </Typography>
           <DatePicker
             label="Data do conselho"
-            minDate={dayjs().add(1, "day")}
+            minDate={dayjs()}
             value={date}
             onChange={(e) => e && setDate(e)}
             slots={{

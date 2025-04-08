@@ -74,7 +74,7 @@ export default function SelectTable({ selectType, name, rows, value, setSelected
                 className="px-2"
             >
                 <RadioGroup  
-                    className="flex !flex-col !flex-nowrap h-80 max-h-80 px-2 overflow-y-auto"            
+                    className="flex !flex-col !flex-nowrap max-h-80 px-2 overflow-y-auto"            
                 >
 
                     {Array.isArray(rows) && rows.map((row, i) => (

@@ -13,6 +13,11 @@ import { Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
+import TableCouncilRow from "@/interfaces/table/row/TableCouncilRow";
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
+dayjs.locale('pt-br');
 
 interface TableRowProps {
   content: TableRowPossibleTypes;
@@ -103,19 +108,19 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
         )}
 
         <td className="flex justify-end items-center w-2/5 lg:w-1/3 gap-2 sm:gap-4">
-          {rankButton || rankVisualizer && (
-            <span className="hidden md:flex justify-center items-center">
-              {rank && (
-                <Rank
-                  variant="annotation"
-                  type={rank}
-                  outline={rankButton ? false : true}
-                  popover={rankButton ? true : false}
-                />
-              )}
-            </span>
-          )}
-
+          {rankButton ||
+            (rankVisualizer && (
+              <span className="hidden md:flex justify-center items-center">
+                {rank && (
+                  <Rank
+                    variant="annotation"
+                    type={rank}
+                    outline={rankButton ? false : true}
+                    popover={rankButton ? true : false}
+                  />
+                )}
+              </span>
+            ))}
           {(visualizeButton || seeButton || visualizeIconButton) && (
             <TableButton
               onClick={() => onClickVisualize && onClickVisualize(content)}
@@ -124,16 +129,22 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
               icon={FaRegEye}
             />
           )}
-
           {realizeButton && (
             <TableButton
-              text="Realizar"
-              onlyTextInBigSize={true}
-              icon={PiPlayBold}
-              onClick={() => onClickRealize && onClickRealize(content)}
-            />
+            text={(content as TableCouncilRow).buttonText || "Realizar"}
+            onlyTextInBigSize={true}
+            icon={PiPlayBold}
+            onClick={() => onClickRealize?.(content)}
+            disabled={(content as TableCouncilRow).isDisabled ?? false}
+            tooltip={
+              (content as TableCouncilRow).status === "expired"
+                ? "Este conselho expirou. Edite para um novo horário."
+                : (content as TableCouncilRow).status === "scheduled"
+                ? `Disponível ${dayjs((content as TableCouncilRow).startDateTime).fromNow()}`
+                : "Clique para realizar este conselho"
+            }
+          />
           )}
-
           {(editButton || anotationButton) && (
             <TableButton
               text={anotationButton ? "Anotar" : "Editar"}
@@ -141,16 +152,13 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
               onClick={() => onClickAnnotation && onClickAnnotation(content)}
             />
           )}
-
           {(releasedButton || releaseButton) && (
             <TableButton
               text={releasedButton ? "Liberado" : "Liberar"}
               icon={FaRegClock}
             />
           )}
-
           {closeButton && <TableButton text="Fechar" icon={IoClose} />}
-
           {deleteButton && <TableButton text="Excluir" icon={LuTrash} />}
         </td>
       </tr>
