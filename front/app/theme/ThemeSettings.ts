@@ -12,6 +12,7 @@ import "@fontsource/montserrat";
 import "@fontsource/inter";
 import "@fontsource/merriweather";
 import "@fontsource/libre-baskerville";
+import OpacityHex from "@/utils/OpacityHex";
 
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
@@ -376,6 +377,10 @@ export default class ThemeSettings {
             root: {
               borderRadius: "8px",
               textTransform: "none",
+              "&.Mui-disabled": {
+                backgroundColor: OpacityHex(primary_color, 0.5),
+                color: OpacityHex(whiteColor, 0.5),
+              },
             },
           },
         },
@@ -383,20 +388,23 @@ export default class ThemeSettings {
           styleOverrides: {
             root: {
               borderRadius: "8px",
-              "&:hover:not(.Mui-focused):not(.Mui-error) .MuiOutlinedInput-notchedOutline": {
-                borderColor: colorByMode,
-                borderWidth: "2px",
-                color: this.getContrastThemeColor(),
-              },
-              "&.Mui-focused:not(.Mui-error) .MuiOutlinedInput-notchedOutline": {
-                borderColor: colorByMode,
-                borderWidth: "2px",
-                boxShadow: "2px 2px 4px 1px" + colorByMode + "77",
-              },
-              "&:hover:not(.Mui-focused).Mui-disabled .MuiOutlinedInput-notchedOutline": {
-                borderColor: this.getContrastThemeColor() + "AA",
-                color: this.getContrastThemeColor() + "AA",
-              },
+              "&:hover:not(.Mui-focused):not(.Mui-error) .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: colorByMode,
+                  borderWidth: "2px",
+                  color: this.getContrastThemeColor(),
+                },
+              "&.Mui-focused:not(.Mui-error) .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: colorByMode,
+                  borderWidth: "2px",
+                  boxShadow: "2px 2px 4px 1px" + colorByMode + "77",
+                },
+              "&:hover:not(.Mui-focused).Mui-disabled .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: this.getContrastThemeColor() + "AA",
+                  color: this.getContrastThemeColor() + "AA",
+                },
               "&.Mui-focused .Mui-disabled .MuiOutlinedInput-notchedOutline": {
                 borderColor: this.getContrastThemeColor() + "AA",
                 color: this.getContrastThemeColor() + "AA",
@@ -523,6 +531,13 @@ export default class ThemeSettings {
                 fill: colorByMode,
               },
               padding: 0,
+            },
+          },
+        },
+        MuiDialogActions: {
+          styleOverrides: {
+            root: {
+              justifyContent: "center",
             },
           },
         },

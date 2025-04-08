@@ -4,11 +4,11 @@ import Header from "@/components/Header";
 import { RoleProvider, useRoleContext } from "@/hooks/useRole";
 import { ThemeProviderContext, useThemeContext } from "@/hooks/useTheme";
 import { Box, ThemeProvider } from "@mui/material";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ReactElement, useEffect } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import 'dayjs/locale/pt-br';
+import "dayjs/locale/pt-br";
 
 export default function InnerLayout({ children }: { children: ReactElement }) {
   return (
@@ -33,6 +33,16 @@ function CoreLayout({ children }: { children: ReactElement }) {
   const { role, setRole, userId, setUserId } = useRoleContext();
   const pathname = usePathname();
   const isLoginPage = pathname?.includes("/login");
+
+  useEffect(() => {
+    if (!pathname) {
+      document.cookie = `lastRoute=/; path=/`;
+    }
+
+    if (pathname !== "/realize-council") {
+      document.cookie = `lastRoute=${pathname}; path=/`;
+    }
+  }, [pathname]);
 
   useEffect(() => {
     document.documentElement.style.setProperty("--primary-color", primaryColor);

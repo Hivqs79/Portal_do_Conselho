@@ -13,6 +13,11 @@ import { Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
+import TableCouncilRow from "@/interfaces/table/row/TableCouncilRow";
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
+dayjs.locale('pt-br');
 
 interface TableRowProps {
   content: TableRowPossibleTypes;
@@ -21,10 +26,13 @@ interface TableRowProps {
 
 export default function TableRow({ content, rowButtons }: TableRowProps) {
   // const [selectedRank, setSelectedRank] = useState((content as TableCouncilRow).rank && (content as TableCouncilRow).rank);
-  const { primaryColor, constrastColor, backgroundColor } = useThemeContext();
+  const { primaryColor, constrastColor, colorByModeSecondary } =
+    useThemeContext();
   const {
     rankButton,
+    rankVisualizer,
     realizeButton,
+    onClickRealize,
     visualizeIconButton,
     visualizeButton,
     onClickVisualize,
@@ -41,9 +49,12 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
   // useEffect(() => {
   //   setSelectedRank(content.rank);
   // }, [content.rank]);
-  
-  let date = "startDateTime" in content ? content.startDateTime
-    : "council" in content ? content.council.startDateTime
+
+  let date =
+    "startDateTime" in content
+      ? content.startDateTime
+      : "council" in content
+      ? content.council.startDateTime
       : null;
 
   function getStudentNameAndRemoveDate() {
@@ -52,11 +63,14 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     return content.student.name;
   }
 
-  let name = ("council" in content && content.student == null) ? content.council.aclass.name
-  : "student" in content ? getStudentNameAndRemoveDate()
-    : "aclass" in content ? content.aclass.name
+  let name =
+    "council" in content && content.student == null
+      ? content.council.aclass.name
+      : "student" in content
+      ? getStudentNameAndRemoveDate()
+      : "aclass" in content
+      ? content.aclass.name
       : "";
-
 
   let rank = "rank" in content && content.rank;
 
@@ -65,7 +79,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
       <tr
         style={{
           backgroundColor: OpacityHex(constrastColor, 0.01),
-          borderColor: primaryColor,
+          borderColor: colorByModeSecondary,
         }}
         className={`${content.className} flex rounded-b-big justify-between items-center p-3 w-full`}
       >
@@ -94,12 +108,19 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
         )}
 
         <td className="flex justify-end items-center w-2/5 lg:w-1/3 gap-2 sm:gap-4">
-          {rankButton && (
-            <span className="hidden md:flex justify-center items-center">
-              {rank && <Rank variant="annotation" type={rank} outline={false} popover={true} />}
-            </span>
-          )}
-
+          {rankButton ||
+            (rankVisualizer && (
+              <span className="hidden md:flex justify-center items-center">
+                {rank && (
+                  <Rank
+                    variant="annotation"
+                    type={rank}
+                    outline={rankButton ? false : true}
+                    popover={rankButton ? true : false}
+                  />
+                )}
+              </span>
+            ))}
           {(visualizeButton || seeButton || visualizeIconButton) && (
             <TableButton
               onClick={() => onClickVisualize && onClickVisualize(content)}
@@ -108,15 +129,22 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
               icon={FaRegEye}
             />
           )}
-
           {realizeButton && (
             <TableButton
-              text="Realizar"
-              onlyTextInBigSize={true}
-              icon={PiPlayBold}
-            />
+            text={(content as TableCouncilRow).buttonText || "Realizar"}
+            onlyTextInBigSize={true}
+            icon={PiPlayBold}
+            onClick={() => onClickRealize?.(content)}
+            disabled={(content as TableCouncilRow).isDisabled ?? false}
+            tooltip={
+              (content as TableCouncilRow).status === "expired"
+                ? "Este conselho expirou. Edite para um novo horário."
+                : (content as TableCouncilRow).status === "scheduled"
+                ? `Disponível ${dayjs((content as TableCouncilRow).startDateTime).fromNow()}`
+                : "Clique para realizar este conselho"
+            }
+          />
           )}
-
           {(editButton || anotationButton) && (
             <TableButton
               text={anotationButton ? "Anotar" : "Editar"}
@@ -124,16 +152,13 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
               onClick={() => onClickAnnotation && onClickAnnotation(content)}
             />
           )}
-
           {(releasedButton || releaseButton) && (
             <TableButton
               text={releasedButton ? "Liberado" : "Liberar"}
               icon={FaRegClock}
             />
           )}
-
           {closeButton && <TableButton text="Fechar" icon={IoClose} />}
-
           {deleteButton && <TableButton text="Excluir" icon={LuTrash} />}
         </td>
       </tr>

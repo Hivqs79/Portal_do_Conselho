@@ -64,8 +64,8 @@ export default function TableHeader({
   if (variant == "table" || variant == "annotation") {
     return (
       <thead
-        style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
-        className="flex justify-between w-full rounded-t-xl"
+        style={{ backgroundColor: primaryColor, boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}` }}
+        className="flex justify-between w-full rounded-t-big"
       >
         <tr className={"flex w-full justify-between items-center p-3 " + (variant == "annotation" && "px-5")}>
           {headers.map((header, index) => (

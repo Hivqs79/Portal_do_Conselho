@@ -22,7 +22,7 @@ export default function CouncilForm({
   verifyForm,
   variant,  
 }: CreateCouncilFormProps) {
-  const { primaryColor, colorByMode, whiteColor, colorByModeSecondary } = useThemeContext();
+  const { colorByMode, colorByModeSecondary, whiteColor } = useThemeContext();
   const windowWidth = useWindowWidth();
   const [openConfirm, setOpenConfirm] = useState(false);
   const {
@@ -50,7 +50,7 @@ export default function CouncilForm({
 
   return (
     <Box
-      style={{ borderColor: primaryColor }}
+      style={{ borderColor: colorByModeSecondary }}
       className="outline-component flex flex-col rounded-big sm:p-8 gap-8 sm:border-[2px]"
     >
       <Box className="flex flex-col md:flex-row w-full justify-between gap-8">
@@ -60,7 +60,7 @@ export default function CouncilForm({
           </Typography>
           <DatePicker
             label="Data do conselho"
-            minDate={dayjs().add(1, "day")}
+            minDate={dayjs()}
             value={date}
             onChange={(e) => e && setDate(e)}
             slots={{
@@ -75,7 +75,7 @@ export default function CouncilForm({
           />
         </Box>
         <div
-          style={{ backgroundColor: primaryColor }}
+          style={{ backgroundColor: colorByModeSecondary }}
           className="hidden md:block w-[2px]"
         />
         <Box className="flex flex-col w-full gap-4">

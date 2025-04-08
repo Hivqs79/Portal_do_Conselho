@@ -25,13 +25,13 @@ export default function Table({
   rowButtons = {},
   withoutOutline = false
 }: TableProps) {
-  const { primaryColor } = useThemeContext();
-
+  const { colorByModeSecondary } = useThemeContext();
+  
   return (
     <div className={"w-full flex justify-center items-start overflow-hidden " + (withoutOutline ? "" : "outline-component")}>
       <Box
-        style={{ borderColor: primaryColor }}
-        className="flex justify-center items-start flex-col border-[2px] rounded-big w-full max-w-full"
+        style={{ boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}` }}
+        className="flex justify-center items-start rounded-b-big z-10 flex-col w-full max-w-full"
       >
         <div className="w-full overflow-x-auto">
           <table className="w-full max-w-full rounded-t-2xl">

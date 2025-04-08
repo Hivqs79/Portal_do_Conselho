@@ -18,7 +18,7 @@ interface SelectTableProps {
 }
 
 export default function SelectTable({ selectType, name, rows, value, setSelectedItems, setRadioSelectedItem, setSearch }: SelectTableProps) {
-    const { primaryColor, backgroundColor, whiteColor, terciaryColor } = useThemeContext();
+    const { primaryColor, backgroundColor, colorByModeSecondary, whiteColor, terciaryColor } = useThemeContext();
     const windowWidth = useWindowWidth();
 
     const handleCheckboxChange = (id: string) => {
@@ -48,8 +48,8 @@ export default function SelectTable({ selectType, name, rows, value, setSelected
     const isAllSelected = (Array.isArray(rows) && value) && rows.every((row) => (value as { [key: string]: boolean })[row.id.toString()]);    
     
     return (
-        <Box style={{ borderColor: primaryColor, backgroundColor: primaryColor }} className="border-[2px] rounded-big overflow-hidden">
-            <Box className="flex justify-between items-center w-full p-6">
+        <Box style={{ borderColor: colorByModeSecondary, backgroundColor: primaryColor }} className="border-[2px] rounded-big overflow-hidden">
+            <Box style={{ backgroundColor: primaryColor, boxShadow: `inset 0px -2px 0px 0px ${colorByModeSecondary}`}} className="flex justify-between items-center w-full p-6">
                 <Box className="flex items-center">
                     {selectType === "multiple" && 
                         <Checkbox 
@@ -74,12 +74,12 @@ export default function SelectTable({ selectType, name, rows, value, setSelected
                 className="px-2"
             >
                 <RadioGroup  
-                    className="flex !flex-col !flex-nowrap h-80 max-h-80 px-2 overflow-y-auto"            
+                    className="flex !flex-col !flex-nowrap max-h-80 px-2 overflow-y-auto"            
                 >
 
                     {Array.isArray(rows) && rows.map((row, i) => (
                         <Box 
-                            style={{ borderColor: OpacityHex(primaryColor, 0.2) }} 
+                            style={{ borderColor: OpacityHex(colorByModeSecondary, 0.2) }} 
                             className={`flex items-centerw-full px-2 py-5 ` + (i !== rows.length - 1 ? "border-b-[1px]" : "")} key={row.id}
                             onClick={() => selectType === "single" ? (setRadioSelectedItem && setRadioSelectedItem(row.id)) : handleCheckboxChange(row.id.toString())}
                         >

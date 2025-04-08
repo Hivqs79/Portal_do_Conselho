@@ -93,8 +93,10 @@ public class CouncilService {
         Council council = findCouncilEntity(id);
         if (council.isHappening()) {
             council.setHappening(false);
+            kafkaEventSender.sendEvent(council, "PUT", "Council status not happening");
         } else {
             council.setHappening(true);
+            kafkaEventSender.sendEvent(council, "PUT", "Council status is happening");
         }
         repository.save(council);
         return modelMapper.map(council, CouncilResponseDTO.class);

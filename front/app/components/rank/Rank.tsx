@@ -83,11 +83,11 @@ export default function Rank({
   }`;
 
   const rank = {
-    EXCELLENT: <FaRegFaceLaugh className={`${className} text-[#549600]`} />,
-    GOOD: <FaRegFaceSmile className={`${className} text-[#7ABA28]`} />,
-    AVERAGE: <FaRegFaceMeh className={`${className} text-[#F3C91C]`} />,
-    CRITICAL: <FaRegFaceFrown className={`${className} text-[#FE3535]`} />,
-    NONE: <RiSubtractFill className={`${className} text-gray-400`} />,
+    EXCELLENT: <FaRegFaceLaugh style={{borderColor: colorByModeSecondary}} className={`${className} text-[#549600]`} />,
+    GOOD: <FaRegFaceSmile style={{borderColor: colorByModeSecondary}} className={`${className} text-[#7ABA28]`} />,
+    AVERAGE: <FaRegFaceMeh style={{borderColor: colorByModeSecondary}} className={`${className} text-[#F3C91C]`} />,
+    CRITICAL: <FaRegFaceFrown style={{borderColor: colorByModeSecondary}} className={`${className} text-[#FE3535]`} />,
+    NONE: <RiSubtractFill style={{borderColor: colorByModeSecondary}} className={`${className} text-gray-400`} />,
   };
 
   const rankLabels = {
@@ -123,7 +123,7 @@ export default function Rank({
               className="cursor-pointer flex items-center gap-1 border-[2px] rounded-normal"
               onClick={handleClick}
             >
-              {variant === "council" ? rank[selectedRank] : rank[type]}
+              {variant === "council" ? (rank[selectedRank] ? rank[selectedRank] : rank["NONE"]) : (rank[type] ? rank[type] : rank["NONE"])}
             </span>
           </div>
           <Popover
@@ -179,7 +179,7 @@ export default function Rank({
               onClick={handleClick}
             >
               {rank[selectedRank]}
-              <span className="capitalize">{rankLabels[selectedRank]}</span>
+              <span className="capitalize">{rankLabels[selectedRank] ? rankLabels[selectedRank] : <span className="flex justify-center items-center">{rank["NONE"]}{rankLabels["NONE"]}</span>}</span>
             </span>
           </div>
           <Popover
