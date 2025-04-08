@@ -25,8 +25,7 @@ interface TableRowProps {
 }
 
 export default function TableRow({ content, rowButtons }: TableRowProps) {
-  // const [selectedRank, setSelectedRank] = useState((content as TableCouncilRow).rank && (content as TableCouncilRow).rank);
-  const { primaryColor, constrastColor, colorByModeSecondary } =
+  const { constrastColor, colorByModeSecondary } =
     useThemeContext();
   const {
     rankButton,
@@ -45,10 +44,6 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     releasedButton,
     releaseButton,
   } = rowButtons;
-
-  // useEffect(() => {
-  //   setSelectedRank(content.rank);
-  // }, [content.rank]);
 
   let date =
     "startDateTime" in content

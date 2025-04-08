@@ -14,13 +14,15 @@ export default function ReleaseCouncil() {
   const [feedbacks, setFeedbacks] = useState<TableContent | null>(null);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [feedbackSearch, setFeedbackSearch] = useState<string>("");
 
   useEffect(() => {
     try {
       const fetchFeedbacks = async () => {
         const response = await fetch(
-          "http://localhost:8081/feedbacks/class?page=" + (page - 1) + "&size=" + rowsPerPage
+          "http://localhost:8081/feedbacks/class?page=" + (page - 1) + "&size=" + rowsPerPage + "&className=" + feedbackSearch,
         );
+        console.log("Response:", feedbackSearch);
         const data = await response.json();
         setFeedbacks(data);
         // console.log(data);
@@ -29,7 +31,7 @@ export default function ReleaseCouncil() {
     } catch (error) {
       console.log("Error fetching data:", error);
     }
-  })
+  }, [page, rowsPerPage, feedbackSearch]);
 
   const rowButtons: TableRowButtons = {
     rankVisualizer: true,
@@ -45,6 +47,7 @@ export default function ReleaseCouncil() {
 
   const headerButtons: TableHeaderButtons = {
     searchInput: true,
+    setSearch: (term: string) => setFeedbackSearch(term),
     orderButton: true,
     filterButton: true,
   };

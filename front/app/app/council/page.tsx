@@ -67,6 +67,7 @@ export default function Council() {
 
   const headerButtons: TableHeaderButtons = {
     searchInput: true,
+    setSearch: (term: string) => setSearchClass(term),
     orderButton: true,
     filterButton: true,
   };
@@ -298,7 +299,7 @@ export default function Council() {
   useEffect(() => {
     const fetchCouncil = async () => {
       const response = await fetch(
-        `http://localhost:8081/council?page=${page - 1}&size=${rowsPerPage}`
+        `http://localhost:8081/council?page=${page - 1}&size=${rowsPerPage}&className=${searchClass}`
       );
       const data = await response.json();
       
@@ -309,7 +310,7 @@ export default function Council() {
     };
     
     fetchCouncil();
-  }, [isCreate, isEditing, page, rowsPerPage]);
+  }, [isCreate, isEditing, page, rowsPerPage, searchClass]);
 
   return (
     <Box>
