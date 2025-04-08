@@ -128,4 +128,13 @@ public class FeedbackStudentService {
         repository.save(feedbackStudent);
         return modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class);
     }
+
+    public List<FeedbackStudent> getFeedbackStudentsByYearAndClassName(int year, String className) {
+        return repository.findByYearEnabledAndClassName(year, className);
+    }
+
+    public List<FeedbackStudent> getFeedbackStudentsByYear(int year) {
+        return repository.findByYearEnabled(year);
+    }
+
 }
