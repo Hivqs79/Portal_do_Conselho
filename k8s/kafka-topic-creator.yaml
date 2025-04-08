@@ -13,5 +13,21 @@ spec:
           - "-c"
           - |
             kafka-topics.sh --create --topic notification --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic annotationclass --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic annotationstudent --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic class --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic council --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic feedbackclass --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic feedbackstudent --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic feedbackuser --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic precouncilsection --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic precouncil --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic admin --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic customization --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic pedagogic --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic student --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic teacher --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic roomconversation --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            
       restartPolicy: Never
   backoffLimit: 4
