@@ -2,9 +2,9 @@ const AWS = require("aws-sdk");
 
 // Configuração das credenciais AWS
 AWS.config.update({
-  region: process.env.REGION,
-  accessKeyId: process.env.ACCESS_KEY_ID,
-  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  region: process.env.REGION.trim(),
+  accessKeyId: process.env.ACCESS_KEY_ID.trim(),
+  secretAccessKey: process.env.SECRET_ACCESS_KEY.trim()
 });
 
 // Criação da instância do S3
