@@ -11,12 +11,14 @@ import AutoSaveIndicator from "./AutoSaveIndicator";
 import { useState, useEffect, useRef } from "react";
 import { Decryptor } from "@/encryption/Decryptor";
 import { Encryptor } from "@/encryption/Encryptor";
+import User from "@/interfaces/User";
+import { Rank as RankType } from "@/interfaces/RankType";
 
 interface StudentCouncilFormProps {
   users: User[];
   student: string;
   frequencia: number;
-  rank: "excellent" | "good" | "average" | "critical" | "none";
+  rank: RankType;
   positiveContent: string;
   negativeContent: string;
   id_user?: number;
@@ -175,8 +177,8 @@ export default function StudentCouncilForm({
     }
   };
 
-  const handleRankChange = (newRank: string) => {
-    setRank(newRank as "excellent" | "good" | "average" | "critical" | "none");
+  const handleRankChange = (newRank: RankType) => {
+    setRank(newRank);
   };
 
   const openModal = () => {
@@ -251,7 +253,7 @@ export default function StudentCouncilForm({
                   variant="default"
                   popover={true}
                   outline={false}
-                  type={rank}
+                  type={rank ? rank : "NONE"}
                   onRankChange={handleRankChange}
                 />
               </span>

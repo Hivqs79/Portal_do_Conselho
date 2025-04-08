@@ -111,7 +111,7 @@ export default function MenuHeader({ open, onClose, variant }: MenuHeaderProps) 
                                 <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Pré-conselho</Typography>                    
                             </MenuItem>
                         </Link>
-                        <Link href="/release-council">
+                        <Link href="/release-feedback">
                             <MenuItem onClick={onClose} className="flex flex-row">                    
                                 <Icon IconPassed={TbReport} color={whiteColor} />                            
                                 <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Liberação de feedbacks</Typography>                    

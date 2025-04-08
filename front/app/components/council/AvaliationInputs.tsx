@@ -6,8 +6,10 @@ interface AvaliationInputsProps {
   writeOnly: boolean;
   Positivecontent?: string | null;
   Negativecontent?: string | null;
-  onPositiveChange: (content: string) => void;
-  onNegativeChange: (content: string) => void;
+  onPositiveChange?: (content: string) => void;
+  onNegativeChange?: (content: string) => void;
+  copyButton?: boolean;
+  withoutBorder?: boolean;
 }
 
 export default function AvaliationInputs({
@@ -16,22 +18,24 @@ export default function AvaliationInputs({
   Negativecontent,
   onPositiveChange,
   onNegativeChange,
+  copyButton,
+  withoutBorder,
 }: AvaliationInputsProps) {
-  const { primaryColor, colorByModeSecondary } = useThemeContext();
+  const { colorByModeSecondary } = useThemeContext();
 
   const handlePositiveChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    onPositiveChange(e.target.value);
+    onPositiveChange && onPositiveChange(e.target.value);
   };
 
   const handleNegativeChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    onNegativeChange(e.target.value);
+    onNegativeChange && onNegativeChange(e.target.value);
   };
 
   return (
     <>
       <div
         style={{ borderColor: colorByModeSecondary }}
-        className="w-full flex-col lg:flex-row rounded-b-big p-5 flex border-[2px] border-t-0 justify-center items-center flex-wrap gap-4 md:flex-nowrap"
+        className={"w-full flex-col lg:flex-row rounded-b-big p-5 flex border-t-0 justify-center items-center flex-wrap gap-4 md:flex-nowrap " + (withoutBorder ? "border-0" : "border-[2px]")}
       >
         <TextareaComponent
           title="Pontos Positivos"
@@ -39,6 +43,7 @@ export default function AvaliationInputs({
           readonly={writeOnly}
           placeholder="Digite algo aqui..."
           onChange={handlePositiveChange}
+          copyButton={copyButton}
         />
         <div
           style={{ backgroundColor: colorByModeSecondary }}
@@ -50,6 +55,7 @@ export default function AvaliationInputs({
           readonly={writeOnly}
           placeholder="Digite algo aqui..."
           onChange={handleNegativeChange}
+          copyButton={copyButton}
         />
       </div>
     </>

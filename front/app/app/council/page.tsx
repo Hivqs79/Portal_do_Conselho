@@ -4,20 +4,22 @@ import SwapButton from "@/components/SwapButton";
 import Table from "@/components/table/Table";
 import Title from "@/components/Title";
 import Class from "@/interfaces/Class";
-import { TableContent } from "@/interfaces/TableContent";
-import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
+import { TableContent } from "@/interfaces/table/TableContent";
+import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
 import { Teacher } from "@/interfaces/Teacher";
 import { Box, Snackbar } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { TableRowButtons } from "@/interfaces/TableRowButtons";
-import { TableHeaderButtons } from "@/interfaces/TableHeaderButtons";
-import TableCouncilRow from "@/interfaces/TableCouncilRow";
+import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
+import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
+import TableCouncilRow from "@/interfaces/table/row/TableCouncilRow";
 import CouncilModal from "@/components/council/CouncilModal";
 import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
 import { useThemeContext } from "@/hooks/useTheme";
 import { useRouter } from "next/navigation";
 import LoadingModal from "@/components/Modals/LoadingModal";
+import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
+import PaginationTable from "@/components/table/Pagination";
 
 export default function Council() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -26,27 +28,29 @@ export default function Council() {
   const [selectedTeachers, setSelectedTeachers] = useState<{ [key: string]: boolean; }>({});
   const [date, setDate] = useState<dayjs.Dayjs | null>(null);
   const [time, setTime] = useState<dayjs.Dayjs | null>(null);
-  const [councils, setCouncils] = useState<TableContent>();
+  const [councils, setCouncils] = useState<TableContent | null>(null);
   const [isCreate, setIsCreate] = useState<boolean>(true);
   const [searchTeachers, setSearchTeachers] = useState<string>("");
   const [searchClass, setSearchClass] = useState<string>("");
-  const [visualizedCouncil, setVisualizedCouncil] = useState<TableCouncilRow | null>(null);
+  const [visualizedCouncil, setVisualizedCouncil] = useState<TableRowPossibleTypes | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const {redDanger} = useThemeContext();
   const router = useRouter();
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const rowButtons: TableRowButtons = {
     realizeButton: true,
     visualizeIconButton: true,
-    onClickVisualize: (row: TableCouncilRow) => {
+    onClickVisualize: (row: TableRowPossibleTypes) => {
       setVisualizedCouncil(row);
-      setSelectedClass(row.aclass.id);
-      setDate(dayjs(row.startDateTime));
-      setTime(dayjs(row.startDateTime));
+      setSelectedClass((row as TableCouncilRow).aclass.id);
+      setDate(dayjs((row as TableCouncilRow).startDateTime));
+      setTime(dayjs((row as TableCouncilRow).startDateTime));
     },
-    onClickRealize: async (row: TableCouncilRow) => {
+    onClickRealize: async (row: TableRowPossibleTypes) => {
       setIsLoading(true);
       await modifyCouncilStatus(row.id);
       localStorage.setItem("councilDataInicialize", JSON.stringify(row));
@@ -93,7 +97,7 @@ export default function Council() {
       console.log(data);
       resetInputs();
     });
-  };  
+  };
 
   const editCouncil = async () => {
     console.log("testeEdit");
@@ -144,7 +148,7 @@ export default function Council() {
   }
 
   const councilInformation: CouncilFormProps = {
-    visualizedCouncil: visualizedCouncil,
+    visualizedCouncil: visualizedCouncil as TableCouncilRow,
     selectedTeachers: selectedTeachers,
     selectedClass: selectedClass,
     setSelectedTeachers: setSelectedTeachers,
@@ -186,15 +190,14 @@ export default function Council() {
   useEffect(() => {
     const fetchCouncil = async () => {
       const response = await fetch(
-        "http://localhost:8081/council"
+        "http://localhost:8081/council?page=" + (page - 1) + "&size=" + rowsPerPage
       );
       const data = await response.json();
       setCouncils(data);
       console.log(data);
     };
     fetchCouncil();
-    console.log("teste do council");
-  }, [isCreate, isEditing]);
+  }, [isCreate, isEditing, page, rowsPerPage]);
 
   return (
     <Box>
@@ -218,15 +221,22 @@ export default function Council() {
       ) : (
         <>
           <Table
-            tableContent={councils ? councils : {} as TableContent}
+            tableContent={councils}
             headers={headers}
             headerButtons={headerButtons}
             rowButtons={rowButtons}
           />
+          <PaginationTable
+            count={councils ? councils.totalPages : 0}
+            page={councils ? councils.pageable.pageNumber + 1 : 1}
+            setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={(rowsPerPage: number) => setRowsPerPage(rowsPerPage)}
+          />
           <CouncilModal
             open={visualizedCouncil !== null}
             close={() => setVisualizedCouncil(null)}
-            councilInformation={councilInformation}   
+            councilInformation={councilInformation}
             confirmFunction={editCouncil}
             verifyForm={verifyInputs}
             setEditing={(value: boolean) => setIsEditing(value)}
@@ -235,7 +245,7 @@ export default function Council() {
           />
         </>
       )}
-      <Snackbar 
+      <Snackbar
         open={!!snackbarMessage}
         onClose={() => setSnackbarMessage("")}
         autoHideDuration={5000}

@@ -29,7 +29,7 @@ public class Council {
     @Column(nullable = false)
     private LocalDateTime startDateTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Class aClass;
 
     @Column(nullable = false)
@@ -41,7 +41,7 @@ public class Council {
     @OneToMany(mappedBy = "council")
     private List<Annotation> annotations;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "council_teacher",
             joinColumns = @JoinColumn(name = "council_id"),

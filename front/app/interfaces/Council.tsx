@@ -5,5 +5,5 @@ export default interface Council {
     id: number,
     startDateTime: Date,
     teachers: Teacher[],
-    aclass: Class[],
+    aclass: Class,
 }

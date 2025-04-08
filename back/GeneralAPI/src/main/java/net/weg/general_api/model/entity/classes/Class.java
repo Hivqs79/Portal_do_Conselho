@@ -44,7 +44,7 @@ public class Class {
     @ManyToMany(mappedBy = "classes")
     private List<Teacher> teachers;
 
-    @ManyToMany(mappedBy = "classes")
+    @ManyToMany(mappedBy = "classes", fetch = FetchType.EAGER)
     private List<Student> students;
 
     @OneToMany(mappedBy = "aClass")

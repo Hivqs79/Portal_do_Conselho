@@ -8,11 +8,11 @@ import Icon from "../Icon";
 import Search from "./Search";
 import Rank from "../rank/Rank";
 import { Decryptor } from "@/encryption/Decryptor";
-import { TableHeaderContent } from "@/interfaces/TableHeaderContent";
-import { TableHeaderButtons } from "@/interfaces/TableHeaderButtons";
+import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
+import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
 
 interface TableHeaderProps {
-  variant: "Table" | "council";
+  variant: "table" | "council" | "annotation";
   headers: TableHeaderContent[];
   headerButtons: TableHeaderButtons;
   rank?: any;
@@ -23,12 +23,12 @@ export default function TableHeader({
   variant,
   headers,
   headerButtons,
-  rank,
+  rank: rankProp,
   openCommentsModal,
 }: TableHeaderProps) {
-  const [actualRank, setActualRank] = useState(rank);
+  const [actualRank, setActualRank] = useState(rankProp);
 
-  const { primaryColor, whiteColor, textDarkColor, colorByMode, colorByModeSecondary } = useThemeContext();
+  const { primaryColor, whiteColor, textDarkColor, colorByModeSecondary } = useThemeContext();
   const {
     filterButton,
     orderButton,
@@ -36,7 +36,9 @@ export default function TableHeader({
     setSearch,
     setFilter,
     setOrder,
-    onChangeRank,
+    setRank,
+    rank,
+    rankText,
   } = headerButtons;
 
   useEffect(() => {
@@ -56,16 +58,16 @@ export default function TableHeader({
   };
 
   useEffect(() => {
-    onChangeRank && onChangeRank(actualRank);
+    (setRank && variant !== "annotation") && setRank(actualRank);
   }, [actualRank]);
 
-  if (variant == "Table") {
+  if (variant == "table" || variant == "annotation") {
     return (
       <thead
         style={{ backgroundColor: primaryColor, boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}` }}
-        className="w-full rounded-t-big"
+        className="flex justify-between w-full rounded-t-big"
       >
-        <tr className="flex justify-between items-center p-3">
+        <tr className={"flex w-full justify-between items-center p-3 " + (variant == "annotation" && "px-5")}>
           {headers.map((header, index) => (
             <th
               key={index}
@@ -86,7 +88,15 @@ export default function TableHeader({
               </Typography>
             </th>
           ))}
-          <th className="flex gap-2 w-2/5 lg:w-1/3 justify-end">
+          <th className="flex items-center gap-2 w-2/5 lg:w-1/3 justify-end">
+            {rank && (
+              <>
+                <Typography variant="md_text_bold" color={whiteColor} className="hidden sm:flex">
+                  {rankText}
+                </Typography>
+                <Rank variant="annotation" outline={false} popover={true} type={rank} onRankChange={setRank} />
+              </>
+            )}
             {filterButton && (
               <Icon IconPassed={HiOutlineFilter} isButton={true} />
             )}

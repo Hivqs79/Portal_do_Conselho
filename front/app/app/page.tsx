@@ -3,7 +3,7 @@ import PaginationTable from "@/components/table/Pagination";
 import Table from "@/components/table/Table";
 import Title from "@/components/Title";
 import { useRoleContext } from "@/hooks/useRole";
-import { TableContent } from "@/interfaces/TableContent";
+import { TableContent } from "@/interfaces/table/TableContent";
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 

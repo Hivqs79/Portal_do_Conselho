@@ -22,7 +22,7 @@ export default function CouncilForm({
   verifyForm,
   variant,  
 }: CreateCouncilFormProps) {
-  const { primaryColor, colorByMode, colorByModeSecondary, whiteColor } = useThemeContext();
+  const { colorByMode, colorByModeSecondary, whiteColor } = useThemeContext();
   const windowWidth = useWindowWidth();
   const [openConfirm, setOpenConfirm] = useState(false);
   const {
@@ -55,7 +55,7 @@ export default function CouncilForm({
     >
       <Box className="flex flex-col md:flex-row w-full justify-between gap-8">
         <Box className="flex flex-col w-full gap-4">
-          <Typography color={colorByMode} variant="xl_text_bold">
+          <Typography color={colorByModeSecondary} variant="xl_text_bold">
             Data do conselho
           </Typography>
           <DatePicker
@@ -79,7 +79,7 @@ export default function CouncilForm({
           className="hidden md:block w-[2px]"
         />
         <Box className="flex flex-col w-full gap-4">
-          <Typography color={colorByMode} variant="xl_text_bold">
+          <Typography color={colorByModeSecondary} variant="xl_text_bold">
             Horário do conselho
           </Typography>
           <TimePicker
@@ -101,7 +101,7 @@ export default function CouncilForm({
       <Box className="flex flex-col gap-12">
         {variant === "create" && (
           <Box className="flex flex-col gap-4">
-            <Typography color={colorByMode} variant="xl_text_bold">
+            <Typography color={colorByModeSecondary} variant="xl_text_bold">
               Turma
             </Typography>
             <SelectTable
@@ -115,7 +115,7 @@ export default function CouncilForm({
           </Box>
         )}
         <Box className="flex flex-col gap-4">
-          <Typography color={colorByMode} variant="xl_text_bold">
+          <Typography color={colorByModeSecondary} variant="xl_text_bold">
             Professores
           </Typography>
           <SelectTable

@@ -1,6 +1,6 @@
 "use client";
 import Icon from "@/components/Icon";
-import UploadImageModal from "@/components/Modals/UploadImageModal";
+import UploadImageModal from "@/components/modals/UploadImageModal";
 import Title from "@/components/Title";
 import Photo from "@/components/profile/Photo";
 import OpacityHex from "@/utils/OpacityHex";
