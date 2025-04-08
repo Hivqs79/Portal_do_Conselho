@@ -2,14 +2,14 @@
 
 import OpacityHex from "@/utils/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
-import { dividerClasses } from "@mui/material";
 
 interface AutoSaveIndicatorProps {
   saved: boolean;
+  text: string;
 }
 
-export default function AutoSaveIndicator({ saved }: AutoSaveIndicatorProps) {
-  const { primaryColor, constrastColor, colorByModeSecondary } = useThemeContext();
+export default function AutoSaveIndicator({ saved, text }: AutoSaveIndicatorProps) {
+  const { constrastColor, colorByModeSecondary } = useThemeContext();
 
   if (saved) {
     return (
@@ -21,7 +21,7 @@ export default function AutoSaveIndicator({ saved }: AutoSaveIndicatorProps) {
               className="w-3 h-3 rounded-full relative"
             ></div>
           </div>
-          <span style={{color: OpacityHex(constrastColor, 0.8)}} className="text-sm">Alterações salvas</span>
+          <span style={{color: OpacityHex(constrastColor, 0.8)}} className="text-sm">{text}</span>
         </div>
       </>
     );
