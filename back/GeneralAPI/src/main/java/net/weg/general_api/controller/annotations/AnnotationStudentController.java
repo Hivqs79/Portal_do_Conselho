@@ -47,8 +47,8 @@ public class AnnotationStudentController {
     @ApiResponse(responseCode = "400", description = "Invalid data", content = @Content(examples = @ExampleObject(value = "{\"status\":400,\"error\":\"Validation Error\",\"message\":[\"strengths: must not be blank\",\"toImprove: must not be blank\",\"teacher_id: must not be null\",\"council_id: must not be null\",\"student_id: must not be null\"]}")))
     @ApiResponse(responseCode = "404", description = "Teacher, student or council not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<AnnotationStudentResponseDTO> postAnnotationStudent(@RequestBody @Validated AnnotationStudentRequestDTO pedagogicRequestDTO) {
-        return new ResponseEntity<>(service.createAnnotationStudent(pedagogicRequestDTO), HttpStatus.OK);
+    public ResponseEntity<AnnotationStudentResponseDTO> postAnnotationStudent(@RequestBody @Validated AnnotationStudentRequestDTO annotationStudentRequestDTO) {
+        return new ResponseEntity<>(service.createAnnotationStudent(annotationStudentRequestDTO), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -57,8 +57,8 @@ public class AnnotationStudentController {
     @ApiResponse(responseCode = "400", description = "Invalid data")
     @ApiResponse(responseCode = "404", description = "Annotation, teacher, student or council not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<AnnotationStudentResponseDTO> putAnnotationStudent(@RequestBody @Validated AnnotationStudentRequestDTO pedagogicRequestDTO, @Parameter(description = "Annotation ID", example = "1") @PathVariable Long id) {
-        return new ResponseEntity<>(service.updateAnnotationStudent(pedagogicRequestDTO, id), HttpStatus.OK);
+    public ResponseEntity<AnnotationStudentResponseDTO> putAnnotationStudent(@RequestBody @Validated AnnotationStudentRequestDTO annotationStudentRequestDTO, @Parameter(description = "Annotation ID", example = "1") @PathVariable Long id) {
+        return new ResponseEntity<>(service.updateAnnotationStudent(annotationStudentRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
