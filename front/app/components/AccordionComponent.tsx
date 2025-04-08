@@ -12,25 +12,31 @@ import { IoIosArrowDown } from "react-icons/io";
 import Icon from "./Icon";
 import { useState } from "react";
 import OpacityHex from "@/utils/OpacityHex";
+import { Rank as RankType } from "@/interfaces/RankType";
+import Rank from "./rank/Rank";
 
 interface AnotationProps {
-  type: "default" | "notification" | "council";
+  type: "default" | "notification" | "council" | "table";
   outlined?: boolean;
   name: string;
-  description?: string;
+  children: React.ReactNode;
   onChange?: () => void;
   checked?: boolean;
   viwed?: boolean;
+  rank?: RankType;
+  onChangeRank?: (rank: RankType) => void;
 }
 
 export default function AccordionComponent({
   type,
   name,
-  description,
+  children,
   outlined,
   onChange,
   checked,
   viwed,
+  rank,
+  onChangeRank,
 }: AnotationProps) {
   const {
     primaryColor,
@@ -41,18 +47,25 @@ export default function AccordionComponent({
     colorByMode,
     secondaryColor,
   } = useThemeContext();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);  
 
   return (
     <Accordion
       sx={{
-        boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}`,
-        backgroundColor: outlined ? backgroundColor : "transparent",
+        boxShadow:
+          type === "table"
+            ? "none"
+            : `inset 0px 0px 0px 2px ${colorByModeSecondary}`,
+        backgroundColor: outlined
+          ? type === "table"
+            ? "transparent"
+            : backgroundColor
+          : "transparent",
         "&:before": {
           display: "none",
         },
         "&.Mui-expanded": {
-          margin: "4px 0 !important",
+          margin: type === "table" ? "0px !important" : "4px 0 !important",
         },
       }}
     >
@@ -68,16 +81,34 @@ export default function AccordionComponent({
         sx={{
           backgroundColor: outlined
             ? viwed
-              ? OpacityHex(secondaryColor, .18)
+              ? OpacityHex(secondaryColor, 0.18)
+              : type === "table"
+              ? "transparent"
               : backgroundColor
             : primaryColor,
           color: whiteColor,
-          boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}`,
+          boxShadow:
+            type === "table"
+              ? "none"
+              : `inset 0px 0px 0px 2px ${colorByModeSecondary}`,
+          borderTop:
+            type === "table" ? `1px solid ${colorByModeSecondary}` : "none",
           padding: "8px",
-          borderRadius: "16px",
+          borderRadius: type === "table" ? "0px" : "16px",
+          "& .MuiAccordionSummary-content": {
+            margin: "0px !important",
+          },
           "&.Mui-expanded": {
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
+            backgroundColor:
+              type === "table"
+                ? OpacityHex(secondaryColor, 0.18)
+                : "transparent",
+            boxShadow:
+              type === "table"
+                ? `0px 2px 4px 2px ${OpacityHex(colorByModeSecondary, 0.18)}`
+                : "none",
             "& .MuiAccordionSummary-content": {
               margin: "0px !important",
             },
@@ -90,31 +121,38 @@ export default function AccordionComponent({
         }}
       >
         <Box className="flex justify-between items-center w-full mx-2">
-          <Box className="flex items-center gap-2">
-            {type === "notification" && (
-              <Checkbox
-                onClick={(e) => e.stopPropagation()}
-                onChange={onChange}
-                checked={checked}
-                className="!mr-2"
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fill: outlined ? colorByMode : terciaryColor,
-                  },
-                }}
-              />
+          <Box className="flex items-center flex-1 justify-between gap-2">
+            <Box>
+              {type === "notification" && (
+                <Checkbox
+                  onClick={(e) => e.stopPropagation()}
+                  onChange={onChange}
+                  checked={checked}
+                  className="!mr-2"
+                  sx={{
+                    "& .MuiSvgIcon-root": {
+                      fill: outlined ? colorByMode : terciaryColor,
+                    },
+                  }}
+                />
+              )}
+              <Typography
+                variant="lg_text_bold"
+                color={outlined ? colorByMode : whiteColor}
+              >
+                {name}
+              </Typography>
+            </Box>
+            {rank && (
+              <Box onClick={(e) => e.stopPropagation()} className="flex items-center">
+                <Rank variant="annotation" type={rank} outline={false} popover={true} onRankChange={onChangeRank}/>
+              </Box>
             )}
-            <Typography
-              variant="lg_text_bold"
-              color={outlined ? colorByMode : whiteColor}
-            >
-              {name}
-            </Typography>
           </Box>
         </Box>
       </AccordionSummary>
       <AccordionDetails
-        className="rounded-b-big"
+        className={type === "table" ? "rounded-b-big" : ""}
         sx={{
           backgroundColor: "transparent",
           borderTop: "none",
@@ -122,11 +160,7 @@ export default function AccordionComponent({
           paddingLeft: "8px !important",
         }}
       >
-        {type !== "council" && (
-          <Box className="flex gap-10 p-2">
-            <Typography variant="lg_text_regular">{description}</Typography>
-          </Box>
-        )}
+        {type !== "council" && children}
       </AccordionDetails>
     </Accordion>
   );

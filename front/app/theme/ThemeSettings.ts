@@ -495,14 +495,14 @@ export default class ThemeSettings {
           styleOverrides: {
             root: {
               zIndex: 10,
-              borderRadius: "16px !important",
+              borderRadius: "16px",
             },
           },
         },
         MuiAccordionDetails: {
           styleOverrides: {
             root: {
-              padding: "8px !important",
+              padding: "8px",
             },
           },
         },

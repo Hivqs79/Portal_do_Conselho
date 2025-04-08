@@ -26,7 +26,6 @@ export default function Annotations() {
   const [studentSearch, setStudentSearch] = useState("");
   const [classSearch, setClassSearch] = useState("");
 
-  console.log(classSearch);
   const rowButtons: TableRowButtons = {
     annotationButton: true,
     onClickAnnotation: (row: TableRowPossibleTypes) => {
@@ -71,17 +70,63 @@ export default function Annotations() {
     { name: "Turma " + selectedAnnotation?.council.aclass.name},
   ];
 
-  const rowButtonsStudent: TableRowButtons = {
-    rankButton: true,
-    annotationButton: true,
-    onClickAnnotation: (row: TableRowPossibleTypes) => {
-      console.log(row);
+  const rowButtonsStudent = {
+    setRank: (rank: Rank, idStudent: number) => {
+      if (!studentAnnotations) return;
+      setStudentAnnotations({
+        ...studentAnnotations,
+        content: studentAnnotations.content.map((row) => {
+          if (row.id === idStudent) {
+            return {
+              ...row,
+              rank: rank,
+            };
+          }
+          return row;
+        })
+      })
+    },
+    setPositiveStudentContent: (content: string, idStudent: number) => {
+      if (!studentAnnotations) return;
+      setTimeout(() => {
+        setStudentAnnotations({
+          ...studentAnnotations,
+          content: studentAnnotations.content.map((row) => {
+            if (row.id === idStudent) {
+              console.log(row);
+              return {
+                ...row,
+                strengths: content,
+              };
+            }
+            return row;
+          })
+        });
+      }, 0);
+    },
+    setNegativeStudentContent: (content: string, idStudent: number) => {
+      if (!studentAnnotations) return;
+      setTimeout(() => {
+        setStudentAnnotations({
+          ...studentAnnotations,
+          content: studentAnnotations.content.map((row) => {
+            if (row.id === idStudent) {
+              return {
+                ...row,
+                toImprove: content,
+              };
+            }
+            return row;
+          })
+        });
+      }, 0);
     },
   };
 
   const headerButtonsStudent: TableHeaderButtons = {
     searchInput: true,
-    setSearch: (term: string) => setStudentSearch(term)
+    setSearch: (term: string) => setStudentSearch(term),
+    searchValue: studentSearch,
   };  
 
   const headersStudent: TableHeaderContent[] = [
