@@ -14,26 +14,41 @@ import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTy
 import TableAnnotationRow from "@/interfaces/table/row/TableAnnotationRow";
 import { Rank } from "@/interfaces/RankType";
 import Annotation from "@/interfaces/Annotation";
+import AutoSaveIndicator from "@/components/AutoSaveIndicator";
+import { useThemeContext } from "@/hooks/useTheme";
+import OpacityHex from "@/utils/OpacityHex";
 
 export default function Annotations() {
-  const [classAnnotations, setClassAnnotations] = useState<TableContent | null>(null);
-  const [studentAnnotations, setStudentAnnotations] = useState<TableContent | null>(null);
+  const [classAnnotations, setClassAnnotations] = useState<TableContent | null>(
+    null
+  );
+  const [studentAnnotations, setStudentAnnotations] =
+    useState<TableContent | null>(null);
   const { userId } = useRoleContext();
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAnnotation, setSelectedAnnotation] = useState<Annotation | null>(null);
-  const [selectedStudents, setSelectedStudents] = useState<TableAnnotationRow[]>([]);
+  const [selectedAnnotation, setSelectedAnnotation] =
+    useState<Annotation | null>(null);
+  const [selectedStudents, setSelectedStudents] = useState<
+    TableAnnotationRow[]
+  >([]);
   const [studentSearch, setStudentSearch] = useState("");
   const [classSearch, setClassSearch] = useState("");
   const [idStudentChanged, setIdStudentChanged] = useState(0);
+  const [isSaved, setSaved] = useState(true);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [sentRequests, setSentRequests] = useState(false);
+  const [editedRows, setEditedRows] = useState<Record<number, TableAnnotationRow>>({});
+  const {backgroundColor} = useThemeContext();
+  const [showSaved, setShowSaved] = useState(false);
 
   const rowButtons: TableRowButtons = {
     annotationButton: true,
     onClickAnnotation: (row: TableRowPossibleTypes) => {
       console.log(row);
       setIsModalOpen(true);
-      setSelectedAnnotation((row as TableAnnotationRow));;
+      setSelectedAnnotation(row as TableAnnotationRow);
     },
     rankVisualizer: true,
   };
@@ -42,7 +57,7 @@ export default function Annotations() {
     searchInput: true,
     orderButton: true,
     filterButton: true,
-    setSearch: (term: string) => setClassSearch(term)
+    setSearch: (term: string) => setClassSearch(term),
   };
 
   const headers: TableHeaderContent[] = [
@@ -65,7 +80,7 @@ export default function Annotations() {
         teacher: selectedAnnotation.teacher,
       });
     },
-    rankText: "Classificar turma: "
+    rankText: "Classificar turma: ",
   };
 
   const headersClass: TableHeaderContent[] = [
@@ -75,42 +90,48 @@ export default function Annotations() {
   const rowButtonsStudent = {
     setRank: (rank: Rank, idStudent: number) => {
       if (!selectedStudents) return;
-      setSelectedStudents(selectedStudents.map((row) => {
-        if (row.id === idStudent) {
-          return {
-            ...row,
-            rank: rank,
-          };
-        }
-        return row;
-      }))
       setIdStudentChanged(idStudent);
+      setSelectedStudents(
+        selectedStudents.map((row) => {
+          if (row.student.id === idStudent) {
+            return {
+              ...row,
+              rank: rank,
+            };
+          }
+          return row;
+        })
+      );
     },
     setPositiveStudentContent: (content: string, idStudent: number) => {
       if (!selectedStudents) return;
-      setSelectedStudents(selectedStudents.map((row) => {
-        if (row.id === idStudent) {
-          return {
-            ...row,
-            strengths: content,
-          };
-        }
-        return row;
-      }))
       setIdStudentChanged(idStudent);
+      setSelectedStudents(
+        selectedStudents.map((row) => {
+          if (row.student.id === idStudent) {
+            return {
+              ...row,
+              strengths: content,
+            };
+          }
+          return row;
+        })
+      );
     },
     setNegativeStudentContent: (content: string, idStudent: number) => {
       if (!selectedStudents) return;
-      setSelectedStudents(selectedStudents.map((row) => {
-        if (row.id === idStudent) {
-          return {
-            ...row,
-            toImprove: content,
-          };
-        }
-        return row;
-      }))
       setIdStudentChanged(idStudent);
+      setSelectedStudents(
+        selectedStudents.map((row) => {
+          if (row.student.id === idStudent) {
+            return {
+              ...row,
+              toImprove: content,
+            };
+          }
+          return row;
+        })
+      );
     },
   };
 
@@ -120,9 +141,7 @@ export default function Annotations() {
     searchValue: studentSearch,
   };
 
-  const headersStudent: TableHeaderContent[] = [
-    { name: "Nome" },
-  ];
+  const headersStudent: TableHeaderContent[] = [{ name: "Nome" }];
 
   function setPositiveClassContent(content: string) {
     if (!selectedAnnotation) return;
@@ -150,7 +169,10 @@ export default function Annotations() {
 
   useEffect(() => {
     const fetchClassAnnotations = async () => {
-      const response = await fetch(`http://localhost:8081/annotations/class?teacherId=${userId}&page=${page - 1}&size=${rowsPerPage}&className=${classSearch}`);
+      const response = await fetch(
+        `http://localhost:8081/annotations/class?teacherId=${userId}&page=${page - 1
+        }&size=${rowsPerPage}&className=${classSearch}`
+      );
       const data = await response.json();
       console.log(data);
       setClassAnnotations(data);
@@ -159,67 +181,126 @@ export default function Annotations() {
   }, [userId, page, rowsPerPage, classSearch, isModalOpen]);
 
   useEffect(() => {
-    const fetchStudentAnnotations = async (councilId: number, teacherId?: number) => {
-      const response = await fetch(`http://localhost:8081/annotations/student?councilId=${councilId}&teacherId=${teacherId}&studentName=${studentSearch}`);
+    const fetchStudentAnnotations = async (
+      councilId: number,
+      teacherId?: number
+    ) => {
+      const response = await fetch(
+        `http://localhost:8081/annotations/student?councilId=${councilId}&teacherId=${teacherId}&studentName=${studentSearch}`
+      );
       const data = await response.json();
       console.log(data);
       setStudentAnnotations(data);
       setSelectedStudents(data.content);
     };
     if (!selectedAnnotation) return;
-    fetchStudentAnnotations(selectedAnnotation.council.id, selectedAnnotation.teacher.id);
+    fetchStudentAnnotations(
+      selectedAnnotation.council.id,
+      selectedAnnotation.teacher.id
+    );
   }, [selectedAnnotation?.id, studentSearch]);
 
-  useEffect(() => {
-    async function updateClassAnnotation() {
+  let timeoutIdClass: NodeJS.Timeout | null = null;
+
+  const debouncedUpdateClassAnnotation = async () => {
+    setSaved(false);
+    timeoutIdClass = setTimeout(async () => {
       if (!selectedAnnotation) return;
-      const response = await fetch(`http://localhost:8081/annotations/class/${selectedAnnotation.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          rank: selectedAnnotation.rank,
-          strengths: selectedAnnotation.strengths,
-          toImprove: selectedAnnotation.toImprove,
-          teacher_id: selectedAnnotation.teacher.id,
-          council_id: selectedAnnotation.council.id,
-        }),
-      });
+      const response = await fetch(
+        `http://localhost:8081/annotations/class/${selectedAnnotation.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            rank: selectedAnnotation.rank,
+            strengths: selectedAnnotation.strengths,
+            toImprove: selectedAnnotation.toImprove,
+            teacher_id: selectedAnnotation.teacher.id,
+            council_id: selectedAnnotation.council.id,
+          }),
+        }
+      );
       console.log(response);
-    }
-    updateClassAnnotation();
-  }, [selectedAnnotation]);
+      setSaved(true);
+    }, 2000);
+  };
 
   useEffect(() => {
-    async function updateStudentAnnotation() {
-      if (!selectedStudents) return;
-      const row = selectedStudents.find((row: TableRowPossibleTypes) => {
-        if ('student' in row) {
-          return row.student.id === idStudentChanged;
-        }
-        return false;
-      }) as TableAnnotationRow | undefined;
-      const idAnnotation = row?.id;
-      if (!idAnnotation) return;
-      const response = await fetch(`http://localhost:8081/annotations/student/${idAnnotation}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          rank: row.rank,
-          strengths: row.strengths,
-          toImprove: row.toImprove,
-          teacher_id: row.teacher.id,
-          council_id: row.council.id,
-          student_id: row.student.id,
-        }),
-      });
-      console.log(response);
-    }
-    updateStudentAnnotation();
+    debouncedUpdateClassAnnotation();
+    return () => {
+      if (timeoutIdClass) {
+        clearTimeout(timeoutIdClass);
+      }
+    };
+  }, [selectedAnnotation]);
+
+  
+  useEffect(() => {
+    debouncedUpdateStudentAnnotation();
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      setSentRequests(false);
+    };
   }, [selectedStudents]);
+
+  const debouncedUpdateStudentAnnotation = () => {
+    if (!selectedStudents) return;
+
+    const row = selectedStudents.find(row => "student" in row && row.student.id === idStudentChanged) as TableAnnotationRow | undefined;
+    if (!row) return;
+
+    setEditedRows(prev => ({ ...prev, [row.id]: row }));
+    setSaved(false);
+    if (timeoutId) clearTimeout(timeoutId);
+  };
+
+  useEffect(() => {
+    if (Object.keys(editedRows).length === 0 || sentRequests) return;
+  
+    const debounce = setTimeout(() => {
+      const newTimeoutId = setTimeout(async () => {
+        const responses = await Promise.all(
+          Object.keys(editedRows).map(id => {
+            const row = editedRows[parseInt(id)];
+            return fetch(`http://localhost:8081/annotations/student/${id}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                rank: row.rank,
+                strengths: row.strengths,
+                toImprove: row.toImprove,
+                teacher_id: row.teacher.id,
+                council_id: row.council.id,
+                student_id: row.student.id,
+              })
+            });
+          })
+        );
+        console.log(responses);
+        setEditedRows({});
+        setSaved(true);
+        setSentRequests(true);
+      }, 2000);
+      setTimeoutId(newTimeoutId);
+    }, 500);
+  
+    return () => clearTimeout(debounce);
+  }, [editedRows]);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      setShowSaved(true);
+      if (isSaved == true) {
+        setTimeout(() => {
+          setShowSaved(false);
+        }, 3000);
+      }
+    } else {
+      setShowSaved(false);
+    }
+  }, [isSaved]);
 
   return (
     <Box>
@@ -241,9 +322,13 @@ export default function Annotations() {
         variant="annotations"
         open={isModalOpen}
         close={() => setIsModalOpen(false)}
-        classPositiveContent={selectedAnnotation?.strengths ? selectedAnnotation.strengths : ""}
+        classPositiveContent={
+          selectedAnnotation?.strengths ? selectedAnnotation.strengths : ""
+        }
         setClassPositiveContent={setPositiveClassContent}
-        classNegativeContent={selectedAnnotation?.toImprove ? selectedAnnotation.toImprove : ""}
+        classNegativeContent={
+          selectedAnnotation?.toImprove ? selectedAnnotation.toImprove : ""
+        }
         setClassNegativeContent={setNegativeClassContent}
         headerButtonsClass={headerButtonsClass}
         headersClass={headersClass}
@@ -252,6 +337,12 @@ export default function Annotations() {
         rowButtonsStudent={rowButtonsStudent}
         headerButtonsStudent={headerButtonsStudent}
       />
+      <Box style={{backgroundColor: OpacityHex(backgroundColor, 0.4)}} className={"fixed bottom-3 duration-200 p-2 rounded-lg left-8 z-[1000] " + (showSaved ? "opacity-100" : "opacity-0")}>
+        <AutoSaveIndicator
+          saved={isSaved}
+          text={isSaved ? "Salvo" : "Salvando..."}
+        />
+      </Box>
     </Box>
   );
 }

@@ -7,8 +7,6 @@ import AvaliationInputs from "../council/AvaliationInputs";
 import TableHeader from "../table/TableHeader";
 import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
 import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
-import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
-import { TableContent } from "@/interfaces/table/TableContent";
 import AccordionComponent from "../AccordionComponent";
 import TableAnnotationRow from "@/interfaces/table/row/TableAnnotationRow";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
@@ -160,14 +158,14 @@ export default function AnnotationsModal({
                                   outlined={true}
                                   key={index}
                                   rank={row.rank}
-                                  onChangeRank={(rank: RankType) => rowButtonsStudent.setRank(rank, row.id)}
+                                  onChangeRank={(rank: RankType) => rowButtonsStudent.setRank(rank, (row as TableAnnotationRow).student.id)}
                                 >
                                   <AvaliationInputs
                                     writeOnly={variant !== "annotations"}
                                     Positivecontent={row.strengths}
                                     Negativecontent={row.toImprove}
-                                    onPositiveChange={(content: string) => rowButtonsStudent.setPositiveStudentContent(content, row.id)}
-                                    onNegativeChange={(content: string) => rowButtonsStudent.setNegativeStudentContent(content, row.id)}
+                                    onPositiveChange={(content: string) => rowButtonsStudent.setPositiveStudentContent(content, (row as TableAnnotationRow).student.id)}
+                                    onNegativeChange={(content: string) => rowButtonsStudent.setNegativeStudentContent(content, (row as TableAnnotationRow).student.id)}
                                     copyButton={true}
                                     withoutBorder={true}
                                   />
