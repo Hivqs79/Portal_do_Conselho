@@ -49,7 +49,7 @@ export default function Login() {
             <BlueButton variant="contained" className="!mb-12 !w-64" onClick={() => setInputError(!inputError)}>Entrar</BlueButton>
             <Typography variant="md_text_regular" className="!mb-4">
                 Esqueceu a senha? Clique em
-                <Link href={"/login/password-recuperation"} style={{color: colorByModeSecondary}} className="cursor-pointer"> recuperar</Link> 
+                <Link href={"/login/password-recover"} style={{color: colorByModeSecondary}} className="cursor-pointer"> recuperar</Link> 
             </Typography>
         </Box>
     );
