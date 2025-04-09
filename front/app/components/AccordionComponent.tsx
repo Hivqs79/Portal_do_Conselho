@@ -20,11 +20,12 @@ interface AnotationProps {
   outlined?: boolean;
   name: string;
   children: React.ReactNode;
-  onChange?: () => void;
+  onChangeCheckbox?: () => void;
   checked?: boolean;
-  viwed?: boolean;
+  viewed?: boolean;
   rank?: RankType;
   onChangeRank?: (rank: RankType) => void;
+  onClick?: () => void;
 }
 
 export default function AccordionComponent({
@@ -32,11 +33,12 @@ export default function AccordionComponent({
   name,
   children,
   outlined,
-  onChange,
+  onChangeCheckbox,
   checked,
-  viwed,
+  viewed = true,
   rank,
-  onChangeRank,
+  onChangeRank,  
+  onClick,
 }: AnotationProps) {
   const {
     primaryColor,
@@ -70,7 +72,10 @@ export default function AccordionComponent({
       }}
     >
       <AccordionSummary
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          setIsOpen(!isOpen);
+          onClick && onClick();
+        }}
         expandIcon={
           <Icon
             IconPassed={IoIosArrowDown}
@@ -80,11 +85,11 @@ export default function AccordionComponent({
         }
         sx={{
           backgroundColor: outlined
-            ? viwed
+            ? (!viewed
               ? OpacityHex(secondaryColor, 0.18)
-              : type === "table"
-              ? "transparent"
-              : backgroundColor
+              : (type === "table"
+                ? "transparent"
+              : backgroundColor))
             : primaryColor,
           color: whiteColor,
           boxShadow:
@@ -126,7 +131,7 @@ export default function AccordionComponent({
               {type === "notification" && (
                 <Checkbox
                   onClick={(e) => e.stopPropagation()}
-                  onChange={onChange}
+                  onChange={onChangeCheckbox}
                   checked={checked}
                   className="!mr-2"
                   sx={{

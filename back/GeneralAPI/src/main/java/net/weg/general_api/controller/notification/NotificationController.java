@@ -48,7 +48,7 @@ public class NotificationController {
         notificationService.updateNotificationStatus(id, isViewed);
     }
 
-    @PatchMapping("/{id}/disable")
+    @DeleteMapping("/{id}")
     public void disableNotification(@PathVariable Long id) {
         notificationService.disableNotification(id);
     }
