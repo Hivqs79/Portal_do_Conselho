@@ -1,18 +1,16 @@
 import Council from "./Council";
 import { Rank } from "./RankType";
 import Student from "./Student";
+import { Teacher } from "./Teacher";
 
 export default interface FeedbackStudent {
-  content: [
-    {
-      id: number;
-      rank: Rank;
-      council: Council;
-      strengths: string;
-      toImprove: string;
-      student: Student;
-      frequency: number;
-      satisfied: boolean;
-    }
-  ];
+  id: number;
+  rank: Rank;
+  strengths: string;
+  toImprove: string;
+  council: Council;
+  teacher: Teacher;
+  student: Student;
+  frequency: number;
+  satisfied: boolean;
 }
