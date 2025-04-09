@@ -14,7 +14,7 @@ import CouncilForm from "@/components/council/CouncilForm";
 import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
 import { isArray } from "util";
 import { useState } from "react";
-import ConfirmChanges from "../Modals/ConfirmChanges";
+import ConfirmChanges from "../modals/ConfirmChanges";
 
 interface CouncilModalProps {
   open: boolean;
@@ -48,10 +48,23 @@ export default function CouncilModal({
     textBlackolor,
   } = useThemeContext();
 
-  const date = councilInformation.visualizedCouncil ? dayjs(councilInformation.visualizedCouncil.startDateTime) : councilInformation.date;
-  const time = councilInformation.visualizedCouncil ? dayjs(councilInformation.visualizedCouncil.startDateTime) : councilInformation.time;
-  const teachers = councilInformation.visualizedCouncil ? (councilInformation.visualizedCouncil.teachers as Teacher[]) : isArray(councilInformation.teachers) && councilInformation.teachers.filter((t) => councilInformation.selectedTeachers[t.id]);
-  const classSelected = councilInformation.visualizedCouncil ? (councilInformation.visualizedCouncil.aclass as Class) : (councilInformation.classExistents.find((c) => c.id === councilInformation.selectedClass ) as Class);
+  const date = councilInformation.visualizedCouncil
+    ? dayjs(councilInformation.visualizedCouncil.startDateTime)
+    : councilInformation.date;
+  const time = councilInformation.visualizedCouncil
+    ? dayjs(councilInformation.visualizedCouncil.startDateTime)
+    : councilInformation.time;
+  const teachers = councilInformation.visualizedCouncil
+    ? (councilInformation.visualizedCouncil.teachers as Teacher[])
+    : isArray(councilInformation.teachers) &&
+      councilInformation.teachers.filter(
+        (t) => councilInformation.selectedTeachers[t.id]
+      );
+  const classSelected = councilInformation.visualizedCouncil
+    ? (councilInformation.visualizedCouncil.aclass as Class)
+    : (councilInformation.classExistents.find(
+        (c) => c.id === councilInformation.selectedClass
+      ) as Class);
   const [openConfirm, setOpenConfirm] = useState(false);
 
   return (
@@ -120,7 +133,10 @@ export default function CouncilModal({
             <>
               <Box className="flex flex-col md:flex-row md:gap-8">
                 <Box className="flex flex-col w-full gap-4">
-                  <Typography color={colorByModeSecondary} variant="xl_text_bold">
+                  <Typography
+                    color={colorByModeSecondary}
+                    variant="xl_text_bold"
+                  >
                     Data do conselho
                   </Typography>
                   <DatePicker
@@ -136,7 +152,10 @@ export default function CouncilModal({
                   />
                 </Box>
                 <Box className="flex flex-col w-full gap-4">
-                  <Typography color={colorByModeSecondary} variant="xl_text_bold">
+                  <Typography
+                    color={colorByModeSecondary}
+                    variant="xl_text_bold"
+                  >
                     Horário do conselho
                   </Typography>
                   <TimePicker
@@ -154,7 +173,10 @@ export default function CouncilModal({
               </Box>
               <Box className="flex flex-col md:flex-row md:gap-8">
                 <Box className="w-full">
-                  <Typography color={colorByModeSecondary} variant="xl_text_bold">
+                  <Typography
+                    color={colorByModeSecondary}
+                    variant="xl_text_bold"
+                  >
                     Professores
                   </Typography>
                   <Box
@@ -200,7 +222,10 @@ export default function CouncilModal({
                   </Box>
                 </Box>
                 <Box className="w-full">
-                  <Typography color={colorByModeSecondary} variant="xl_text_bold">
+                  <Typography
+                    color={colorByModeSecondary}
+                    variant="xl_text_bold"
+                  >
                     Turma
                   </Typography>
                   <Box
@@ -242,16 +267,13 @@ export default function CouncilModal({
                 <Button
                   variant="contained"
                   onClick={() => {
-                    console.log(
-                      confirmFunction != undefined &&
-                        (verifyForm != undefined ? verifyForm() : true)
-                    );
-                    if (
-                      confirmFunction != undefined &&
-                      (verifyForm != undefined ? verifyForm() : true)
-                    ) {
-                      setOpenConfirm(true);
+                    if (editing) {
+                      if (verifyForm && verifyForm()) {
+                        setOpenConfirm(true);
+                      }
+                      return;
                     }
+                    setOpenConfirm(true);
                   }}
                   className="h-fit w-full"
                   color="primary"
@@ -269,12 +291,20 @@ export default function CouncilModal({
           {openConfirm && (
             <ConfirmChanges
               type="default"
-              title={`Tem certeza que deseja ${editing ? "editar" : "criar"} esse conselho?`}
-              description={`Ao confirmar, este conselho ${editing ? "será atualizado" : "irá para a lista de conselhos para realizar"}, mas não se preocupe, você poderá editálo ${editing ? "novamente" : null} a qualquer momento.`}
+              title={`Tem certeza que deseja ${
+                editing ? "editar" : "criar"
+              } esse conselho?`}
+              description={`Ao confirmar, este conselho ${
+                editing
+                  ? "será atualizado"
+                  : "irá para a lista de conselhos para realizar"
+              }, mas não se preocupe, você poderá editálo ${
+                editing ? "novamente" : null
+              } a qualquer momento.`}
               confirmButtonText={`${editing ? "Editar" : "Criar"} conselho`}
               onClose={() => setOpenConfirm(false)}
               firstConfirmButton={() => {
-                setOpenConfirm(false)
+                setOpenConfirm(false);
                 close();
                 confirmFunction && confirmFunction();
               }}

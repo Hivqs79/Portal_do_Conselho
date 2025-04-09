@@ -1,3 +1,4 @@
+"use client";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Modal, Typography } from "@mui/material";
 import { IoClose } from "react-icons/io5";
@@ -6,9 +7,11 @@ import AvaliationInputs from "../council/AvaliationInputs";
 import TableHeader from "../table/TableHeader";
 import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
 import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
-import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
-import Table from "../table/Table";
-import { TableContent } from "@/interfaces/table/TableContent";
+import AccordionComponent from "../AccordionComponent";
+import TableAnnotationRow from "@/interfaces/table/row/TableAnnotationRow";
+import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
+import { useEffect, useRef } from "react";
+import { Rank as RankType } from "@/interfaces/RankType";
 
 interface AnnotationsModalProps {
   open: boolean;
@@ -20,9 +23,9 @@ interface AnnotationsModalProps {
   setClassNegativeContent: (content: string) => void;
   headersClass: TableHeaderContent[];
   headerButtonsClass: TableHeaderButtons;
-  contentStudent: TableContent | null;
-  headersStudent: TableHeaderContent[]
-  rowButtonsStudent: TableRowButtons;
+  contentStudent: TableAnnotationRow[] | null;
+  headersStudent: TableHeaderContent[];
+  rowButtonsStudent: any;
   headerButtonsStudent: TableHeaderButtons;
 }
 export default function AnnotationsModal({
@@ -40,7 +43,38 @@ export default function AnnotationsModal({
   headerButtonsStudent,
   rowButtonsStudent,
 }: AnnotationsModalProps) {
-  const { colorByModeSecondary, redDanger, backgroundColor } = useThemeContext();
+  const { colorByModeSecondary, redDanger, backgroundColor } =
+    useThemeContext();
+  const studentsAnnotations = useRef<HTMLElement | null>(null);
+
+  const updateStudentsAnnotationsSize = () => {
+    const element = studentsAnnotations.current;
+    if (element) {
+      const elementInside = element.children[0] as HTMLElement;
+
+      if (element.getBoundingClientRect().height <= 420) {
+        element.style.paddingRight = "0px";
+        if (elementInside) {
+          elementInside.style.paddingRight = "0px";
+        }
+      } else {
+        element.style.paddingRight = "4px";
+        if (elementInside) {
+          elementInside.style.paddingRight = "4px";
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    updateStudentsAnnotationsSize();
+  }, [contentStudent]);
+
+  const handleAccordionClick = () => {
+    setTimeout(() => {
+      updateStudentsAnnotationsSize();
+    }, 250);
+  };
 
   return (
     <Modal
@@ -83,7 +117,10 @@ export default function AnnotationsModal({
                 headerButtons={headerButtonsClass}
               />
             </table>
-            <Box style={{ borderColor: colorByModeSecondary }} className="flex flex-col border-[2px] border-t-0 rounded-b-2xl">
+            <Box
+              style={{ borderColor: colorByModeSecondary }}
+              className="flex flex-col border-[2px] border-t-0 rounded-b-2xl"
+            >
               <AvaliationInputs
                 writeOnly={variant !== "annotations"}
                 Positivecontent={classPositiveContent}
@@ -94,13 +131,62 @@ export default function AnnotationsModal({
                 withoutBorder={true}
               />
               <Box className="p-5">
-                <Table
-                  tableContent={contentStudent}
-                  headers={headersStudent}
-                  rowButtons={rowButtonsStudent}
-                  headerButtons={headerButtonsStudent}
-                  withoutOutline={true}
-                />
+                <Box>
+                  <table className="w-full rounded-t-2xl overflow-hidden">
+                    <TableHeader
+                      variant="annotation"
+                      headers={headersStudent}
+                      headerButtons={headerButtonsStudent}
+                    />
+                  </table>
+
+                  <Box
+                    style={{ borderColor: colorByModeSecondary }}
+                    className="flex flex-col border-[2px] pr-2 border-t-0 rounded-b-big"
+                    ref={studentsAnnotations}
+                  >
+                    <Box className="flex flex-col pr-2 max-h-[420px] overflow-y-auto">
+                      {contentStudent && contentStudent.length > 0 ? (
+                        contentStudent.map(
+                          (row: TableRowPossibleTypes, index: number) => {
+                            row = row as TableAnnotationRow;
+                            return (
+                              <Box onClick={handleAccordionClick} key={index}>
+                                <AccordionComponent
+                                  name={row.student.name}
+                                  type="table"
+                                  outlined={true}
+                                  key={index}
+                                  rank={row.rank}
+                                  onChangeRank={(rank: RankType) => rowButtonsStudent.setRank(rank, (row as TableAnnotationRow).student.id)}
+                                >
+                                  <AvaliationInputs
+                                    writeOnly={variant !== "annotations"}
+                                    Positivecontent={row.strengths}
+                                    Negativecontent={row.toImprove}
+                                    onPositiveChange={(content: string) => rowButtonsStudent.setPositiveStudentContent(content, (row as TableAnnotationRow).student.id)}
+                                    onNegativeChange={(content: string) => rowButtonsStudent.setNegativeStudentContent(content, (row as TableAnnotationRow).student.id)}
+                                    copyButton={true}
+                                    withoutBorder={true}
+                                  />
+                                </AccordionComponent>
+                              </Box>
+                            );
+                          }
+                        )
+                      ) : (
+                        <Box className="flex w-full justify-center my-4">
+                          <Typography
+                            variant="lg_text_regular"
+                            color={colorByModeSecondary}
+                          >
+                            Sem anotações
+                          </Typography>
+                        </Box>
+                      )}
+                    </Box>
+                  </Box>
+                </Box>
               </Box>
             </Box>
           </Box>

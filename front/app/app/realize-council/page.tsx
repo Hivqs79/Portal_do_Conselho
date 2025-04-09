@@ -12,10 +12,10 @@ import { useWindowWidth } from "@react-hook/window-size";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import User from "@/interfaces/User";
-import CommentariesModal from "@/components/Modals/CommentariesModal";
-import ConfirmChanges from "@/components/Modals/ConfirmChanges";
-import ConfirmMessagesModal from "@/components/Modals/ConfirmMessagesModal";
-import LoadingModal from "@/components/Modals/LoadingModal";
+import CommentariesModal from "@/components/modals/CommentariesModal";
+import ConfirmChanges from "@/components/modals/ConfirmChanges";
+import ConfirmMessagesModal from "@/components/modals/ConfirmMessagesModal";
+import LoadingModal from "@/components/modals/LoadingModal";
 import { Rank as RankType } from "@/interfaces/RankType";
 
 type CouncilData = {
@@ -98,7 +98,8 @@ export default function RealizeCouncil() {
   const router = useRouter();
 
   useEffect(() => {
-    const councilDataInicialize = localStorage.getItem("councilDataInicialize");
+    try {
+      const councilDataInicialize = localStorage.getItem("councilDataInicialize");
     const usersClass = localStorage.getItem("studentsData");
 
     const loadData = async () => {
@@ -189,11 +190,14 @@ export default function RealizeCouncil() {
           console.error("Erro ao parsear dados:", error);
         }
       } else {
-        console.log("Nenhum dado encontrado no localStorage ou API");
+        
       }
     };
 
     loadData();
+    } catch (error) {
+      console.error("Erro ao carregar dados:", error);
+    }
   }, []);
 
   // Efeito para lidar com mudanças no índice do aluno atual

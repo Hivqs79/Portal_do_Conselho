@@ -357,7 +357,7 @@ export default function StudentCouncilForm({
           </>
         )}
         <Box className="absolute bottom-2 left-3 lg:bottom-auto lg:left-auto lg:right-[2.5rem] lg:top-5 xl:right-[4rem]">
-          <AutoSaveIndicator saved={!isSaving} />
+          <AutoSaveIndicator text="Alterações salvas" saved={!isSaving} />
         </Box>
       </Box>
     </>
