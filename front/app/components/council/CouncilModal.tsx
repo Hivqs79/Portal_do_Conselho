@@ -14,7 +14,7 @@ import CouncilForm from "@/components/council/CouncilForm";
 import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
 import { isArray } from "util";
 import { useState } from "react";
-import ConfirmChanges from "../Modals/ConfirmChanges";
+import ConfirmChanges from "../modals/ConfirmChanges";
 
 interface CouncilModalProps {
   open: boolean;

@@ -15,6 +15,8 @@ import TableAnnotationRow from "@/interfaces/table/row/TableAnnotationRow";
 import { Rank } from "@/interfaces/RankType";
 import Annotation from "@/interfaces/Annotation";
 import AutoSaveIndicator from "@/components/AutoSaveIndicator";
+import { useThemeContext } from "@/hooks/useTheme";
+import OpacityHex from "@/utils/OpacityHex";
 
 export default function Annotations() {
   const [classAnnotations, setClassAnnotations] = useState<TableContent | null>(
@@ -35,6 +37,11 @@ export default function Annotations() {
   const [classSearch, setClassSearch] = useState("");
   const [idStudentChanged, setIdStudentChanged] = useState(0);
   const [isSaved, setSaved] = useState(true);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [sentRequests, setSentRequests] = useState(false);
+  const [editedRows, setEditedRows] = useState<Record<number, TableAnnotationRow>>({});
+  const {backgroundColor} = useThemeContext();
+  const [showSaved, setShowSaved] = useState(false);
 
   const rowButtons: TableRowButtons = {
     annotationButton: true,
@@ -163,8 +170,7 @@ export default function Annotations() {
   useEffect(() => {
     const fetchClassAnnotations = async () => {
       const response = await fetch(
-        `http://localhost:8081/annotations/class?teacherId=${userId}&page=${
-          page - 1
+        `http://localhost:8081/annotations/class?teacherId=${userId}&page=${page - 1
         }&size=${rowsPerPage}&className=${classSearch}`
       );
       const data = await response.json();
@@ -230,73 +236,71 @@ export default function Annotations() {
     };
   }, [selectedAnnotation]);
 
-  const timeoutIds: { [idAnnotation: number]: NodeJS.Timeout | null } = {};
-  let nowIdAnnotation: number | null = null;
-
-  const debouncedUpdateStudentAnnotation = async () => {
-    if (!selectedStudents) return;
-    const row = selectedStudents.find((row: TableRowPossibleTypes) => {
-      if ("student" in row) {
-        return row.student.id === idStudentChanged;
-      }
-      return false;
-    }) as TableAnnotationRow | undefined;
-    const idAnnotation = row?.id;
-    if (!idAnnotation) return;
-
-    // Cancela o timeout anterior para o aluno
-    const timeout = timeoutIds[idAnnotation];
-    if (timeout !== null) {
-      clearTimeout(timeout);
-    }
-    nowIdAnnotation = idAnnotation;
-
-    // Cria uma variável local para armazenar o row
-    const editedRow = { ...row };
-
-    // Cria um novo timeout para o aluno
-    timeoutIds[idAnnotation] = setTimeout(async () => {
-      const response = await fetch(
-        `http://localhost:8081/annotations/student/${idAnnotation}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            rank: editedRow.rank,
-            strengths: editedRow.strengths,
-            toImprove: editedRow.toImprove,
-            teacher_id: editedRow.teacher.id,
-            council_id: editedRow.council.id,
-            student_id: editedRow.student.id,
-          }),
-        }
-      );
-      console.log(response);
-      console.log(editedRow.rank);
-      setSaved(true);
-    }, 2000);
-  };
-
+  
   useEffect(() => {
     debouncedUpdateStudentAnnotation();
     return () => {
-      // Cancela todos os timeouts ao desmontar o componente
-      console.log(nowIdAnnotation);
-      if (nowIdAnnotation !== null) {
-
-        if (timeoutIds[nowIdAnnotation]) {
-          clearTimeout(timeoutIds[nowIdAnnotation]);
-        }
-      };
-      // Object.values(timeoutIds).forEach((timeoutId) => {
-      //   if (timeoutId) {
-      //     clearTimeout(timeoutId);
-      //   }
-      // });
+      if (timeoutId) clearTimeout(timeoutId);
+      setSentRequests(false);
     };
   }, [selectedStudents]);
+
+  const debouncedUpdateStudentAnnotation = () => {
+    if (!selectedStudents) return;
+
+    const row = selectedStudents.find(row => "student" in row && row.student.id === idStudentChanged) as TableAnnotationRow | undefined;
+    if (!row) return;
+
+    setEditedRows(prev => ({ ...prev, [row.id]: row }));
+    setSaved(false);
+    if (timeoutId) clearTimeout(timeoutId);
+  };
+
+  useEffect(() => {
+    if (Object.keys(editedRows).length === 0 || sentRequests) return;
+  
+    const debounce = setTimeout(() => {
+      const newTimeoutId = setTimeout(async () => {
+        const responses = await Promise.all(
+          Object.keys(editedRows).map(id => {
+            const row = editedRows[parseInt(id)];
+            return fetch(`http://localhost:8081/annotations/student/${id}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                rank: row.rank,
+                strengths: row.strengths,
+                toImprove: row.toImprove,
+                teacher_id: row.teacher.id,
+                council_id: row.council.id,
+                student_id: row.student.id,
+              })
+            });
+          })
+        );
+        console.log(responses);
+        setEditedRows({});
+        setSaved(true);
+        setSentRequests(true);
+      }, 2000);
+      setTimeoutId(newTimeoutId);
+    }, 500);
+  
+    return () => clearTimeout(debounce);
+  }, [editedRows]);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      setShowSaved(true);
+      if (isSaved == true) {
+        setTimeout(() => {
+          setShowSaved(false);
+        }, 3000);
+      }
+    } else {
+      setShowSaved(false);
+    }
+  }, [isSaved]);
 
   return (
     <Box>
@@ -333,14 +337,12 @@ export default function Annotations() {
         rowButtonsStudent={rowButtonsStudent}
         headerButtonsStudent={headerButtonsStudent}
       />
-      {isModalOpen && (
-        <Box className="fixed bottom-3 left-8 z-[1000]">
-          <AutoSaveIndicator
-            saved={isSaved}
-            text={isSaved ? "Salvo" : "Salvando..."}
-          />
-        </Box>
-      )}
+      <Box style={{backgroundColor: OpacityHex(backgroundColor, 0.4)}} className={"fixed bottom-3 duration-200 p-2 rounded-lg left-8 z-[1000] " + (showSaved ? "opacity-100" : "opacity-0")}>
+        <AutoSaveIndicator
+          saved={isSaved}
+          text={isSaved ? "Salvo" : "Salvando..."}
+        />
+      </Box>
     </Box>
   );
 }
