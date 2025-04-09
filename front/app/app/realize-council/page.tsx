@@ -423,8 +423,8 @@ export default function RealizeCouncil() {
           }),
         });
         await changeCouncilState();
-        await fetch("http://localhost:8081/council/" + idCouncil, {
-          method: "DELETE",
+        await fetch("http://localhost:8081/council/modifyFinished/" + idCouncil, {
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },

@@ -38,6 +38,9 @@ public class Council {
     @Column(nullable = false)
     private boolean isHappening;
 
+    @Column(nullable = false)
+    private boolean isFinished;
+
     @OneToMany(mappedBy = "council")
     private List<Annotation> annotations;
 
@@ -67,6 +70,7 @@ public class Council {
         this.setUpdateDate(LocalDateTime.now());
         this.setHappening(false);
         this.setEnabled(true);
+        this.setFinished(false);
     }
 
     @PreUpdate

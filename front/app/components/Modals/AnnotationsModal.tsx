@@ -18,11 +18,11 @@ import { Rank as RankType } from "@/interfaces/RankType";
 interface AnnotationsModalProps {
   open: boolean;
   close: () => void;
-  variant: string;
+  variant?: string;
   classPositiveContent: string;
-  setClassPositiveContent: (content: string) => void;
+  setClassPositiveContent?: (content: string) => void;
   classNegativeContent: string;
-  setClassNegativeContent: (content: string) => void;
+  setClassNegativeContent?: (content: string) => void;
   headersClass: TableHeaderContent[];
   headerButtonsClass: TableHeaderButtons;
   contentStudent: TableAnnotationRow[] | null;

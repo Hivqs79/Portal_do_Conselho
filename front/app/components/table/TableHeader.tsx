@@ -39,6 +39,7 @@ export default function TableHeader({
     setRank,
     rank,
     rankText,
+    rankVisualizer,
   } = headerButtons;
 
   useEffect(() => {
@@ -57,7 +58,7 @@ export default function TableHeader({
     }
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     (setRank && variant !== "annotation") && setRank(actualRank);
   }, [actualRank]);
 
@@ -80,7 +81,7 @@ export default function TableHeader({
               }
             >
               <Typography
-                variant="sm_text_bold"
+                variant="md_text_bold"
                 color={whiteColor}
                 className={index === 1 ? `md:pl-6 lg:pl-0` : ``}
               >
@@ -94,7 +95,7 @@ export default function TableHeader({
                 <Typography variant="md_text_bold" color={whiteColor} className="hidden sm:flex">
                   {rankText}
                 </Typography>
-                <Rank variant="annotation" outline={false} popover={true} type={rank} onRankChange={setRank} />
+                <Rank variant="annotation" outline={false} popover={rankVisualizer ? false : true} type={rank} onRankChange={setRank} />
               </>
             )}
             {filterButton && (

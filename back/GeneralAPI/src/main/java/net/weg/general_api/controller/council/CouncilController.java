@@ -91,6 +91,15 @@ public class CouncilController {
         return new ResponseEntity<>(service.modifyCouncilStatus(id), HttpStatus.OK);
     }
 
+    @PatchMapping("/modifyFinished/{id}")
+    @Operation(method = "PATCH", summary = "Modify council finished", description = "Modifies isFinished status, false to true and true to false")
+    @ApiResponse(responseCode = "200", description = "Council found", content = @Content(schema = @Schema(implementation = CouncilResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"aClass\":{\"id\":1,\"name\":\"Math\",\"area\":\"EXACT\",\"course\":\"Engineering\",\"lastRank\":\"GOLD\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"teachers\":[{\"id\":1,\"name\":\"Teacher\",\"email\":\"teacher@email.com\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}],\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))
+    @ApiResponse(responseCode = "404", description = "Council not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<CouncilResponseDTO> modifyCouncilFinished(@Parameter(description = "Council ID", example = "1") @PathVariable Long id) {
+        return new ResponseEntity<>(service.modifyCouncilFinished(id), HttpStatus.OK);
+    }
+
     @GetMapping("/annotations/{id}")
     @Operation(method = "GET", summary = "Get council annotations", description = "Returns all annotations for a council")
     @ApiResponse(responseCode = "200", description = "Annotations found", content = @Content(schema = @Schema(implementation = List.class), examples = @ExampleObject(value = "[{\"id\":1,\"content\":\"Important discussion point\",\"createdAt\":\"2025-01-01T10:15:00\"}]")))
