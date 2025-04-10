@@ -17,6 +17,7 @@ import ConfirmChanges from "@/components/modals/ConfirmChanges";
 import ConfirmMessagesModal from "@/components/modals/ConfirmMessagesModal";
 import LoadingModal from "@/components/modals/LoadingModal";
 import { Rank as RankType } from "@/interfaces/RankType";
+import { TableContent } from "@/interfaces/table/TableContent";
 
 type CouncilData = {
   id: number;
@@ -82,19 +83,11 @@ export default function RealizeCouncil() {
   const [isRealizelCouncilOpen, setIsRealizeCouncilOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isLoadingOpen, setIsLoadingOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState<{
-    title: string;
-    message: string;
-    error: boolean;
-  }>({ title: "", message: "", error: false });
+  const [modalMessage, setModalMessage] = useState<{title: string;message: string;error: boolean;}>({ title: "", message: "", error: false });
   const [finalJson, setFinalJson] = useState<FinalJson>();
-  const {
-    constrastColor,
-    backgroundColor,
-    colorByModeSecondary,
-    whiteColor,
-    textBlackolor,
-  } = useThemeContext();
+  const [classCommentaries, setClassCommentaries] = useState<TableContent[]>([]);
+  const [studentCommentaries, setStudentCommentaries] = useState<TableContent[]>([]);
+  const {constrastColor,backgroundColor,colorByModeSecondary,whiteColor,textBlackolor,} = useThemeContext();
   const router = useRouter();
 
   useEffect(() => {
@@ -200,6 +193,10 @@ export default function RealizeCouncil() {
       console.error("Erro ao carregar dados:", error);
     }
   }, []);
+
+  useEffect(() => {
+     
+  })
 
   // Efeito para lidar com mudanças no índice do aluno atual
   useEffect(() => {

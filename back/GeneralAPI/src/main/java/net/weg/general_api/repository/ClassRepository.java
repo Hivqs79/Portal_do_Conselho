@@ -7,6 +7,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.List;
+
 public interface ClassRepository extends JpaRepository<Class, Long>, JpaSpecificationExecutor<Class> {
     default Page<Class> getAllByEnabledIsTrue(Specification<Class> spec, Pageable pageable) {
         Specification<Class> enabledSpec = Specification.where(spec)
@@ -14,5 +16,7 @@ public interface ClassRepository extends JpaRepository<Class, Long>, JpaSpecific
 
         return findAll(enabledSpec, pageable);
     }
+
+    Class findClassByName(String name);
 
 }

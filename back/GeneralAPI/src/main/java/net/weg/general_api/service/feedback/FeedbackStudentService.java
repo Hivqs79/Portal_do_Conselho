@@ -56,6 +56,7 @@ public class FeedbackStudentService {
         feedbackStudent.setStudent(student); //SETAR ESTUDANTE
         student.setLastRank(feedbackStudent.getRank());
 
+        student.setLastFrequency(feedbackStudent.getFrequency());
         FeedbackStudent feedbackSaved = repository.save(feedbackStudent);
         kafkaEventSender.sendEvent(feedbackSaved, "POST", "Feedback Student created");
 
@@ -92,6 +93,7 @@ public class FeedbackStudentService {
         feedbackStudent.setStudent(student); //SETAR ESTUDANTE
         student.setLastRank(feedbackStudent.getRank());
 
+        student.setLastFrequency(feedbackStudent.getFrequency());
         FeedbackStudent updatedFeedbackStudent = repository.save(feedbackStudent);
         kafkaEventSender.sendEvent(updatedFeedbackStudent, "PUT", "Feedback Student updated");
         return modelMapper.map(updatedFeedbackStudent, FeedbackStudentResponseDTO.class);
@@ -126,4 +128,13 @@ public class FeedbackStudentService {
         repository.save(feedbackStudent);
         return modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class);
     }
+
+    public List<FeedbackStudent> getFeedbackStudentsByYearAndClassName(int year, String className) {
+        return repository.findByYearEnabledAndClassName(year, className);
+    }
+
+    public List<FeedbackStudent> getFeedbackStudentsByYear(int year) {
+        return repository.findByYearEnabled(year);
+    }
+
 }

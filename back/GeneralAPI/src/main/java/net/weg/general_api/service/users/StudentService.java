@@ -1,6 +1,5 @@
 package net.weg.general_api.service.users;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.exception.exceptions.UserNotFoundException;
 import net.weg.general_api.service.kafka.KafkaEventSender;
@@ -104,4 +103,13 @@ public class StudentService {
 
         return modelMapper.map(student, StudentResponseDTO.class);
     }
+
+    public List<Student> getAllStudentsByFrequency() {
+        return repository.getAllByLastFrequencyGreaterThan(0);
+    }
+
+    public List<Student> getStudentsByFrequency(String className) {
+        return repository.findByClassNameAndFrequency(className, 0);
+    }
+
 }

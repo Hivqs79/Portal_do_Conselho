@@ -1,0 +1,143 @@
+package spring.emailsenderapi.service;
+
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import spring.emailsenderapi.model.EmailModel;
+
+import java.text.SimpleDateFormat;
+
+@Service
+@AllArgsConstructor
+/**
+ * @author Vinícius Eduardo dos Santos
+ */
+public class AnswersService {
+
+    /**
+     *Function where a json is received with the information for sending the email, with the formatting depending on the subject
+     * @param email
+     * @return String
+     */
+    public String answers(EmailModel email){
+        /**
+         * date and time formatting
+         */
+        String dateFormat = new SimpleDateFormat("dd/MM/yyyy").format(email.getDate());
+        String hourFormat = new SimpleDateFormat("HH:mm").format(email.getDate());
+
+        switch (email.getTitle()){
+
+            /**
+             * answers related to advice
+             */
+            case "Conselho Marcado":
+                email.setContent("Prezado(a) professor(a) " + email.getOwner() + ",\n\n"
+                        + "Você foi convidado(a) a participar do conselho da turma " + email.getTurma() + ",\n"
+                        + "agendado para às " + hourFormat + " do dia " + dateFormat + ".\n\n"
+                        + "Caso deseje, já é possível acessar o site para fazer anotações sobre a turma.\n\n"
+                        + "Atenciosamente,\n"
+                        + "Equipe do Portal do Conselho");
+                break;
+
+            case "Conselho Remarcado":
+                email.setContent("Prezado(a) professor(a) " + email.getOwner() + ",\n\n"
+                        + "O conselho em que você foi convidado(a) a participar, da turma " + email.getTurma() + ",\n"
+                        + "agendado para às " + hourFormat + " do dia " + dateFormat + ", foi agendado para às " + hourFormat + " do dia " + dateFormat + ".\n\n"
+                        + "Caso deseje alterar alguma anotação, ainda será possível acessar o site para fazer anotações sobre a turma até o dia mostrado acima.\n\n"
+                        + "Atenciosamente,\n"
+                        + "Equipe do Portal do Conselho");
+                break;
+
+            case "Conselho Cancelado":
+                email.setContent("Prezado(a) professor(a) " + email.getOwner() + ",\n\n"
+                        + "O conselho em que você participaria, da turma " + email.getTurma() + ",\n"
+                        + "agendado para às " + hourFormat + " do dia " + dateFormat + ", foi cancelado"+".\n\n"
+                        + "Caso deseje alterar alguma anotação, ainda será possível acessar o site para fazer anotações até a nova data estabelecida.\n\n"
+                        + "Atenciosamente,\n"
+                        + "Equipe do Portal do Conselho");
+                break;
+
+            /**
+             * pre-advice related answers
+             */
+            case "Pré-Conselho Disponível":
+                email.setContent("Prezado(a) aluno(a) " + email.getOwner() + ",\n\n"
+                        + "Informamos que o Pré-Conselho já está disponível para preenchimento.\n"
+                        + "Você poderá realizá-lo até o dia " + dateFormat + " às " + hourFormat + ".\n\n"
+                        + "Pedimos, por gentileza, que responda juntamente com a sua turma.\n\n"
+                        + "Atenciosamente,\n"
+                        + "Equipe do Portal do Conselho");
+                break;
+
+            case "Pré-Conselho Pendente":
+                email.setContent("Prezado(a) aluno(a) " + email.getOwner() + ",\n\n"
+                        + "Verificamos que o seu Conselho ainda está pendente de preenchimento.\n"
+                        + "Pedimos que realize o preenchimento até o dia " + dateFormat + " às " + hourFormat + ".\n\n"
+                        + "A participação da sua turma é muito importante e deve ser feita em conjunto.\n\n"
+                        + "Atenciosamente,\n"
+                        + "Equipe do Portal do Conselho");
+                break;
+
+            /**
+             * message related responses
+             */
+            case "Mensagem Recebida":
+                email.setContent("Prezado(a) " + email.getTypeUser()+ " " + email.getOwner() + ",\n\n"
+                        + "Você recebeu uma nova mensagem relacionada ao " + email.getTypeContent() + ".\n"
+                        + "Recomendamos que acesse o sistema para verificar o conteúdo e, se necessário, tomar as devidas providências.\n\n"
+                        + "Atenciosamente,\n"
+                        + "Equipe do Portal do Conselho");;
+                break;
+
+            /**
+             * responses related to reports
+             */
+            case "Relatório Disponível":
+                email.setContent("Prezado(a) pedagogo " + email.getOwner() + ",\n\n"
+                        + "O relatório consolidado do conselho realizado no dia "+ dateFormat +" da turma " + email.getTurma() + " já está disponível para download.\n"
+                        + "Recomendamos acessar o sistema para análise e acompanhamento dos registros.\n\n"
+                        + "Atenciosamente,\n"
+                        + "Equipe do Portal do Conselho");
+                break;
+
+            /**
+             * answers related to advice
+             */
+            case "Feedback Disponível":
+                email.setContent("Prezado(a) " + email.getTypeUser()+ " " + email.getOwner() + ",\n\n"
+                        + "Informamos que um feedback referente ao seu desempenho no Conselho Escolar foi disponibilizado no portal.\n"
+                        + "Recomendamos que acesse o sistema para ler atentamente as observações e orientações registradas.\n\n"
+                        + "Sua reflexão sobre esse retorno é muito importante para o seu desenvolvimento.\n\n"
+                        + "Atenciosamente,\n"
+                        + "Equipe do Portal do Conselho");
+                break;
+
+            /**
+             * feedback related responses
+             */
+            case "Visualização do Conselho Diponível":
+                email.setContent("Prezado(a) supervisor(a) " + email.getOwner() + ",\n\n"
+                        + "O conselho realizado no dia "+ dateFormat +" da turma " + email.getTurma() + " está disponível para visualização no portal.\n"
+                        + "Solicitamos sua atenção para acompanhar os registros realizados e apoiar nos encaminhamentos necessários.\n\n"
+                        + "Atenciosamente,\n"
+                        + "Equipe do Portal do Conselho");
+                break;
+
+            /**
+             * answers related to notes
+             */
+            case "Anotações Fechadas":
+                email.setContent("Prezado(a) professor(a)" + email.getOwner() + ",\n\n"
+                        + "Informamos que as anotações para o conselho da turma " + email.getTurma() + " foram encerradas.\n"
+                        + "Caso deseje realizar alguma modificação, por gentileza, entre em contato com a equipe pedagógica.\n\n"
+                        + "Atenciosamente,\n"
+                        + "Equipe do Portal do Conselho");
+                break;
+
+        }
+        /**
+         * return content format
+         */
+        return email.getContent();
+    }
+}

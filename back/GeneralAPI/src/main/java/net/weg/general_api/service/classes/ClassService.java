@@ -7,6 +7,7 @@ import net.weg.general_api.model.dto.response.classes.ClassResponseDTO;
 import net.weg.general_api.model.dto.response.users.StudentResponseDTO;
 import net.weg.general_api.model.dto.response.users.TeacherResponseDTO;
 import net.weg.general_api.model.entity.classes.Class;
+import net.weg.general_api.model.entity.users.Student;
 import net.weg.general_api.repository.ClassRepository;
 import net.weg.general_api.service.kafka.KafkaEventSender;
 import org.modelmapper.ModelMapper;
@@ -31,9 +32,13 @@ public class ClassService {
         return classes.map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class));
     }
 
+    //FAZER ISSO NO RESTO
     public List<StudentResponseDTO> getStudentsByClass(Long class_id) {
         Class aClass = findClassEntity(class_id);
-        return aClass.getStudents().stream().map(student -> modelMapper.map(student, StudentResponseDTO.class)).collect(Collectors.toList());
+        return aClass.getStudents().stream()
+                .filter(Student::isEnabled) // ou student -> student.isEnabled()
+                .map(student -> modelMapper.map(student, StudentResponseDTO.class))
+                .collect(Collectors.toList());
     }
 
     public List<TeacherResponseDTO> getTeacherByClass(Long class_id) {
@@ -77,13 +82,17 @@ public class ClassService {
         return modelMapper.map(classes, ClassResponseDTO.class);
     }
 
-    public void mockarClass(List<ClassRequestDTO> classRequestDTOS) {
-        List<Class> classes = classRequestDTOS.stream().map(classRequestDTO -> modelMapper.map(classRequestDTO, Class.class)).collect(Collectors.toList());
-        repository.saveAll(classes);
-    }
 
     public List<Class> getClassesByIdList(List<Long> classes_id) {
         return repository.findAllById(classes_id);
+    }
+
+    public Class getClassByClassName(String className) {
+        return repository.findClassByName(className);
+    }
+
+    public List<Class> getAllClasses() {
+        return repository.findAll();
     }
 
 }
