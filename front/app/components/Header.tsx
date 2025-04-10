@@ -12,6 +12,8 @@ import Link from "next/link";
 import { useWindowWidth } from "@react-hook/window-size";
 import { useRoleContext } from "@/hooks/useRole";
 import NotificationMenu from "./NotificationMenu";
+import Notification from "@/interfaces/Notification";
+import OpacityHex from "@/utils/OpacityHex";
 
 interface HeaderProps {
   variant?: string;
@@ -26,7 +28,8 @@ export default function Header({ variant }: HeaderProps) {
   const { userId } = useRoleContext();
   const [openNotificationMenu, setOpenNotificationMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [incomingNotifications, setIncomingNotifications] = useState(false);
+  const [notificationToastOpen, setNotificationToastOpen] = useState(false);
+  const [incomingNotification, setIncomingNotification] = useState<Notification | null>(null);
 
   useEffect(() => {
     if (userId !== -1) {
@@ -45,18 +48,11 @@ export default function Header({ variant }: HeaderProps) {
         );
 
         eventSource.onmessage = (event) => {
-          console.log("Nova mensagem:", JSON.parse(event.data));
+          const notification = JSON.parse(event.data);
+          console.log("Nova mensagem:", notification);
           fetchNotifications();
-        //   {
-        //     "id": 1,
-        //     "userId": 16,
-        //     "title": "Novo conselho iniciado!",
-        //     "message": "O conselho da turma: WU75 iniciado",
-        //     "messageDateTime": "2025-04-10T00:50:47.805492261",
-        //     "enabled": true,
-        //     "viewed": false
-        // }
-          setIncomingNotifications(event.data);
+          setIncomingNotification(notification);
+          setNotificationToastOpen(true);
         };
       };
 
@@ -170,27 +166,32 @@ export default function Header({ variant }: HeaderProps) {
           close={() => setOpenNotificationMenu(false)}
           anchorEl={anchorEl}
         />
-        <Slide direction="left" in={openNotificationMenu} mountOnEnter unmountOnExit timeout={350}>
+        <Slide direction="left" in={notificationToastOpen} mountOnEnter unmountOnExit timeout={350}>
           <Snackbar
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
             open={true}
             autoHideDuration={5000}
+            onClick={() => 
+              setNotificationToastOpen(false)
+            } 
           >
           <Box
             style={{ backgroundColor: terciaryColor }}
-            className="flex flex-row items-center rounded-lg overflow-hidden mt-[75px] -m-3"
+            className="flex flex-row items-center max-w-[300px] rounded-lg overflow-hidden mt-24 sm:mt-[75px] -m-3"            
+            sx={{
+              boxShadow: `2px 2px 8px 0px ${OpacityHex(primaryColor, 0.3)}`,
+            }}
           >
             <Box
               style={{ backgroundColor: primaryColor }}
               className="h-24 w-1"
             />
             <Box className="flex flex-col p-4 gap-2">
-              <Typography variant="lg_text_regular">
-                Título notificação
+              <Typography variant="lg_text_regular" className="line-clamp-1 text-ellipsis">
+                {incomingNotification?.title}
               </Typography>
-              <Typography variant="sm_text_regular">
-                Mensagem da notificação lorem ipsum dolor sit amet, adiscipling
-                elit
+              <Typography variant="sm_text_regular" className="line-clamp-1 text-ellipsis">
+                {incomingNotification?.message} + {'ahdofisdbfokjsd'}
               </Typography>
             </Box>
           </Box>
