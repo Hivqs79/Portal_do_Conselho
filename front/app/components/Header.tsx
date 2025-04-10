@@ -1,5 +1,5 @@
 import { useThemeContext } from "@/hooks/useTheme";
-import { Badge, Box, Typography } from "@mui/material";
+import { Badge, Box, Slide, Snackbar, Typography } from "@mui/material";
 import LogoIcon from "./LogoIcon";
 import Icon from "./Icon";
 import { IoClose, IoMenu, IoSettingsOutline } from "react-icons/io5";
@@ -11,21 +11,23 @@ import Photo from "./profile/Photo";
 import Link from "next/link";
 import { useWindowWidth } from "@react-hook/window-size";
 import { useRoleContext } from "@/hooks/useRole";
+import NotificationMenu from "./NotificationMenu";
 
 interface HeaderProps {
   variant?: string;
 }
 
 export default function Header({ variant }: HeaderProps) {
-  const { primaryColor, whiteColor } = useThemeContext();
+  const { primaryColor, terciaryColor, whiteColor } = useThemeContext();
   const [openMenu, setOpenMenu] = useState(false);
   const boxRef = useRef<HTMLElement>(null);
   const windowWidth = useWindowWidth();
-  const [notifications, setNotifications] = useState(0);    
+  const [notifications, setNotifications] = useState(0);
   const { userId } = useRoleContext();
+  const [openNotificationMenu, setOpenNotificationMenu] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   useEffect(() => {
-
     if (userId !== -1) {
       const fetchNotifications = async () => {
         const response = await fetch(
@@ -37,7 +39,9 @@ export default function Header({ variant }: HeaderProps) {
       };
 
       const subscribe = async () => {
-        const eventSource = new EventSource("http://localhost:3090/events/notifications/" + userId);
+        const eventSource = new EventSource(
+          "http://localhost:3090/events/notifications/" + userId
+        );
 
         eventSource.onmessage = (event) => {
           console.log("Nova mensagem:", JSON.parse(event.data));
@@ -98,7 +102,6 @@ export default function Header({ variant }: HeaderProps) {
         </Link>
       </Box>
       <Box className="flex flex-row items-center">
-        {/* //TODO: substitute for a component of UserImage */}
         <div className="w-12 h-12 flex justify-center items-center rounded-full">
           <Link href={"/profile"}>
             <Photo idUser={1} rounded={true} classname="w-full h-full" />
@@ -136,7 +139,13 @@ export default function Header({ variant }: HeaderProps) {
           style={{ backgroundColor: whiteColor }}
           className="w-[1px] h-[30px] mx-4"
         />
-        <span className=" sm:block">
+        <span
+          className=" sm:block"
+          onClick={(e) => {
+            setOpenNotificationMenu(!openNotificationMenu);
+            setAnchorEl(e.currentTarget);
+          }}
+        >
           <Badge badgeContent={notifications} color="secondary">
             <Icon
               IconPassed={VscBell}
@@ -145,6 +154,37 @@ export default function Header({ variant }: HeaderProps) {
             />
           </Badge>
         </span>
+        <NotificationMenu
+          open={openNotificationMenu}
+          close={() => setOpenNotificationMenu(false)}
+          anchorEl={anchorEl}
+        />
+        <Slide direction="left" in={openNotificationMenu} mountOnEnter unmountOnExit timeout={350}>
+          <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            open={true}
+            autoHideDuration={5000}
+          >
+          <Box
+            style={{ backgroundColor: terciaryColor }}
+            className="flex flex-row items-center rounded-lg overflow-hidden mt-[75px] -m-3"
+          >
+            <Box
+              style={{ backgroundColor: primaryColor }}
+              className="h-24 w-1"
+            />
+            <Box className="flex flex-col p-4 gap-2">
+              <Typography variant="lg_text_regular">
+                Título notificação
+              </Typography>
+              <Typography variant="sm_text_regular">
+                Mensagem da notificação lorem ipsum dolor sit amet, adiscipling
+                elit
+              </Typography>
+            </Box>
+          </Box>
+        </Snackbar>
+        </Slide>
       </Box>
     </Box>
   );

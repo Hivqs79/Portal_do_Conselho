@@ -127,7 +127,7 @@ export default function AccordionComponent({
       >
         <Box className="flex justify-between items-center w-full mx-2">
           <Box className="flex items-center flex-1 justify-between gap-2">
-            <Box>
+            <Box className="flex items-center">
               {type === "notification" && (
                 <Checkbox
                   onClick={(e) => e.stopPropagation()}
@@ -162,7 +162,7 @@ export default function AccordionComponent({
           backgroundColor: "transparent",
           borderTop: "none",
           borderColor: colorByModeSecondary,
-          paddingLeft: "8px !important",
+          paddingLeft: type !== "council" ? "18px !important" : "8px !important",
         }}
       >
         {type !== "council" && children}
