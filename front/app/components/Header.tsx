@@ -26,6 +26,7 @@ export default function Header({ variant }: HeaderProps) {
   const { userId } = useRoleContext();
   const [openNotificationMenu, setOpenNotificationMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [incomingNotifications, setIncomingNotifications] = useState(false);
 
   useEffect(() => {
     if (userId !== -1) {
@@ -46,6 +47,16 @@ export default function Header({ variant }: HeaderProps) {
         eventSource.onmessage = (event) => {
           console.log("Nova mensagem:", JSON.parse(event.data));
           fetchNotifications();
+        //   {
+        //     "id": 1,
+        //     "userId": 16,
+        //     "title": "Novo conselho iniciado!",
+        //     "message": "O conselho da turma: WU75 iniciado",
+        //     "messageDateTime": "2025-04-10T00:50:47.805492261",
+        //     "enabled": true,
+        //     "viewed": false
+        // }
+          setIncomingNotifications(event.data);
         };
       };
 
