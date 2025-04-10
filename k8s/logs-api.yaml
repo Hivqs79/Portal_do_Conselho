@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: logs-api-deployment
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: logs-api
