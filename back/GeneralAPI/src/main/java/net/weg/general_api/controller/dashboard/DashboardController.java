@@ -1,15 +1,9 @@
-package net.weg.general_api.controller;
+package net.weg.general_api.controller.dashboard;
 
 import lombok.AllArgsConstructor;
-import net.kaczmarzyk.spring.data.jpa.domain.Equal;
-import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
-import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
-import net.kaczmarzyk.spring.data.jpa.domain.Like;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import net.weg.general_api.model.dto.response.ClassRankDashboardResponseDTO;
 import net.weg.general_api.model.dto.response.FrequencyAvarageDashboardResponseDTO;
-import net.weg.general_api.service.DashboardService;
+import net.weg.general_api.service.dashboard.DashboardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

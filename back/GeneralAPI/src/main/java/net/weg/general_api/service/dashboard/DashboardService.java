@@ -1,4 +1,4 @@
-package net.weg.general_api.service;
+package net.weg.general_api.service.dashboard;
 
 import lombok.AllArgsConstructor;
 import net.weg.general_api.model.dto.response.ClassRankDashboardResponseDTO;
