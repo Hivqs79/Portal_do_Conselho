@@ -27,7 +27,7 @@ public class ExceptionHandlerController {
     public ResponseEntity<ExceptionResponseDTO> handleUserNotFoundException(RuntimeException ex, WebRequest request) {
         ExceptionResponseDTO response = new ExceptionResponseDTO(
                 HttpStatus.NOT_FOUND.value(),
-                "Entity not found",
+                "Client side error",
                 ex.getMessage(),
                 request.getDescription(false).replace("uri=", ""),
                 ex.getClass(),
@@ -49,7 +49,7 @@ public class ExceptionHandlerController {
 
         ValidationResponseDTO response = new ValidationResponseDTO(
                 HttpStatus.BAD_REQUEST.value(),
-                "Erro de validação",
+                "Validation error",
                 errors,
                 request.getDescription(false).replace("uri=", ""),
                 ex.getClass(),
@@ -80,7 +80,7 @@ public class ExceptionHandlerController {
 
         ExceptionResponseDTO response = new ExceptionResponseDTO(
                 HttpStatus.CONFLICT.value(),
-                "Area content error",
+                "ENUM input error",
                 errorMessage,
                 request.getDescription(false).replace("uri=", ""),
                 ex.getClass(),

@@ -15,4 +15,7 @@ public interface CouncilRepository extends JpaRepository<Council, Long>, JpaSpec
 
         return findAll(enabledSpec, pageable);
     }
+
+    boolean existsCouncilByisHappeningIsTrue();
+
 }

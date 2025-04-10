@@ -15,5 +15,4 @@ public class CustomizationResponseDTO {
     private TextFont textFont;
     private TitleFont titleFont;
     private FontSizeENUM fontSize;
-    private boolean enabled;
 }

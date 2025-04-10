@@ -16,6 +16,7 @@ public class StudentResponseDTO {
     private String email;
     private Boolean isRepresentant;
     private RankENUM lastRank;
+    private double lastFrequency;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
     private boolean enabled;

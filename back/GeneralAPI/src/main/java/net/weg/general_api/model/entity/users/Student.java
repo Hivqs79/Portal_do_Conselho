@@ -21,6 +21,7 @@ public class Student extends User {
     @Column(nullable = false)
     private Boolean isRepresentant;
     private RankENUM lastRank;
+    private double lastFrequency;
 
     @ManyToMany
     @JoinTable(
@@ -48,8 +49,11 @@ public class Student extends User {
 
     @Override
     public String toString() {
-        return super.toString() + "\nStudent{" +
+        return "Student{" +
                 "isRepresentant=" + isRepresentant +
+                ", lastRank=" + lastRank +
+                ", lastFrequency=" + lastFrequency +
+                ", feedbackStudent=" + feedbackStudent +
                 '}';
     }
 }
