@@ -24,7 +24,10 @@ public abstract class Annotation {
     @Column(nullable = false)
     private boolean enabled;
 
+    @Column(columnDefinition = "TEXT")
     private String strengths;
+
+    @Column(columnDefinition = "TEXT")
     private String toImprove;
 
     @ManyToOne

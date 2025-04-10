@@ -12,18 +12,20 @@ import TableAnnotationRow from "@/interfaces/table/row/TableAnnotationRow";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 import { useEffect, useRef } from "react";
 import { Rank as RankType } from "@/interfaces/RankType";
+import TableFeedbackRow from "@/interfaces/table/row/TableFeedbackRow";
+import FeedbackStudent from "@/interfaces/FeedbackStudent";
 
 interface AnnotationsModalProps {
   open: boolean;
   close: () => void;
-  variant: string;
+  variant?: string;
   classPositiveContent: string;
-  setClassPositiveContent: (content: string) => void;
+  setClassPositiveContent?: (content: string) => void;
   classNegativeContent: string;
-  setClassNegativeContent: (content: string) => void;
+  setClassNegativeContent?: (content: string) => void;
   headersClass: TableHeaderContent[];
   headerButtonsClass: TableHeaderButtons;
-  contentStudent: TableAnnotationRow[] | null;
+  contentStudent: TableRowPossibleTypes[] | null;
   headersStudent: TableHeaderContent[];
   rowButtonsStudent: any;
   headerButtonsStudent: TableHeaderButtons;
@@ -149,11 +151,16 @@ export default function AnnotationsModal({
                       {contentStudent && contentStudent.length > 0 ? (
                         contentStudent.map(
                           (row: TableRowPossibleTypes, index: number) => {
-                            row = row as TableAnnotationRow;
+                            if (variant === "feedback") {
+                              row = row as FeedbackStudent;
+                            } else {
+                              row = row as TableAnnotationRow;
+                            }
                             return (
                               <Box onClick={handleAccordionClick} key={index}>
                                 <AccordionComponent
                                   name={row.student.name}
+                                  frequency={variant === "feedback" ? ("frequency" in row) ? (row.frequency as number | boolean | undefined) : false : false}
                                   type="table"
                                   outlined={true}
                                   key={index}

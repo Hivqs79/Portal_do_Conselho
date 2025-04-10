@@ -26,11 +26,11 @@ public class PreCouncilSection {
 
     @Column(nullable = false)
     private String topic;
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String strengths;
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String toImprove;
 
     @Column(name = "create_date", nullable = false)

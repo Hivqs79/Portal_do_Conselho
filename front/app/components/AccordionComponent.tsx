@@ -18,6 +18,7 @@ import Rank from "./rank/Rank";
 interface AnotationProps {
   type: "default" | "notification" | "council" | "table";
   outlined?: boolean;
+  frequency?: number | boolean;
   name: string;
   children: React.ReactNode;
   onChange?: () => void;
@@ -30,6 +31,7 @@ interface AnotationProps {
 export default function AccordionComponent({
   type,
   name,
+  frequency,
   children,
   outlined,
   onChange,
@@ -47,7 +49,7 @@ export default function AccordionComponent({
     colorByMode,
     secondaryColor,
   } = useThemeContext();
-  const [isOpen, setIsOpen] = useState(false);  
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Accordion
@@ -122,7 +124,7 @@ export default function AccordionComponent({
       >
         <Box className="flex justify-between items-center w-full mx-2">
           <Box className="flex items-center flex-1 justify-between gap-2">
-            <Box>
+            <Box className="flex items-center flex-1">
               {type === "notification" && (
                 <Checkbox
                   onClick={(e) => e.stopPropagation()}
@@ -138,14 +140,33 @@ export default function AccordionComponent({
               )}
               <Typography
                 variant="lg_text_bold"
+                className="flex-1"
                 color={outlined ? colorByMode : whiteColor}
               >
                 {name}
               </Typography>
+              {frequency && (
+                <Typography
+                  variant="lg_text_regular"
+                  className="hidden md:flex-1 md:flex text-center pl-[8%] lg:pl-0 lg:pr-4 lg:justify-center"
+                  color={outlined ? colorByMode : whiteColor}
+                >
+                  {frequency}%
+                </Typography>
+              )}
             </Box>
             {rank && (
-              <Box onClick={(e) => e.stopPropagation()} className="flex items-center">
-                <Rank variant="annotation" type={rank} outline={false} popover={true} onRankChange={onChangeRank}/>
+              <Box
+                onClick={(e) => !frequency && e.stopPropagation()}
+                className={`flex justify-end items-center ${frequency ? "w-1/5 lg:w-1/4" : ""}`}
+              >
+                <Rank
+                  variant="annotation"
+                  type={rank}
+                  outline={frequency ? true :false}
+                  popover={frequency ? false : true}
+                  onRankChange={onChangeRank}
+                />
               </Box>
             )}
           </Box>

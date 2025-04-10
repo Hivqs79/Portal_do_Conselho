@@ -10,7 +10,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface CouncilRepository extends JpaRepository<Council, Long>, JpaSpecificationExecutor<Council> {
     default Page<Council> getAllByEnabledIsTrue(Specification<Council> spec, Pageable pageable) {
         Specification<Council> enabledSpec = Specification.where(spec)
-                .and((root, query, cb) -> cb.isTrue(root.get("enabled")));
+                .and((root, query, cb) -> cb.isTrue(root.get("enabled")))
+                .and((root, query, cb) -> cb.isFalse(root.get("isFinished")));
 
         return findAll(enabledSpec, pageable);
     }

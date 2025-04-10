@@ -90,11 +90,24 @@ public class CouncilService {
         return council.getAnnotations();
     }
 
+    public CouncilResponseDTO modifyCouncilFinished(Long id) {
+        Council council = findCouncilEntity(id);
+        if (council.isFinished()) {
+            council.setFinished(false);
+            kafkaEventSender.sendEvent(council, "PATCH", "Council status not finished");
+        } else {
+            council.setFinished(true);
+            kafkaEventSender.sendEvent(council, "PATCH", "Council status is finished");
+        }
+        repository.save(council);
+        return modelMapper.map(council, CouncilResponseDTO.class);
+    }
+
     public CouncilResponseDTO modifyCouncilStatus(Long id) {
         Council council = findCouncilEntity(id);
         if (council.isHappening()) {
             council.setHappening(false);
-            kafkaEventSender.sendEvent(council, "PUT", "Council status not happening");
+            kafkaEventSender.sendEvent(council, "PATCH", "Council status not happening");
         } else {
 
             if (repository.existsCouncilByisHappeningIsTrue()) {
@@ -102,7 +115,7 @@ public class CouncilService {
             }
 
             council.setHappening(true);
-            kafkaEventSender.sendEvent(council, "PUT", "Council status is happening");
+            kafkaEventSender.sendEvent(council, "PATCH", "Council status is happening");
         }
         repository.save(council);
         return modelMapper.map(council, CouncilResponseDTO.class);

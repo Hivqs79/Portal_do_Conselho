@@ -17,6 +17,7 @@ import ConfirmChanges from "@/components/modals/ConfirmChanges";
 import ConfirmMessagesModal from "@/components/modals/ConfirmMessagesModal";
 import LoadingModal from "@/components/modals/LoadingModal";
 import { Rank as RankType } from "@/interfaces/RankType";
+import { TableContent } from "@/interfaces/table/TableContent";
 
 type CouncilData = {
   id: number;
@@ -82,123 +83,120 @@ export default function RealizeCouncil() {
   const [isRealizelCouncilOpen, setIsRealizeCouncilOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isLoadingOpen, setIsLoadingOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState<{
-    title: string;
-    message: string;
-    error: boolean;
-  }>({ title: "", message: "", error: false });
+  const [modalMessage, setModalMessage] = useState<{title: string;message: string;error: boolean;}>({ title: "", message: "", error: false });
   const [finalJson, setFinalJson] = useState<FinalJson>();
-  const {
-    constrastColor,
-    backgroundColor,
-    colorByModeSecondary,
-    whiteColor,
-    textBlackolor,
-  } = useThemeContext();
+  const [classCommentaries, setClassCommentaries] = useState<TableContent[]>([]);
+  const [studentCommentaries, setStudentCommentaries] = useState<TableContent[]>([]);
+  const {constrastColor,backgroundColor,colorByModeSecondary,whiteColor,textBlackolor,} = useThemeContext();
   const router = useRouter();
 
   useEffect(() => {
     try {
-      const councilDataInicialize = localStorage.getItem("councilDataInicialize");
-    const usersClass = localStorage.getItem("studentsData");
+      const councilDataInicialize = localStorage.getItem(
+        "councilDataInicialize"
+      );
+      const usersClass = localStorage.getItem("studentsData");
 
-    const loadData = async () => {
-      // 1. Primeiro verifica se já temos dados no localStorage
-      if (usersClass) {
-        console.log("DADOS PUXADOS DIRETO DO LOCALSTORAGE");
-        const decryptedData = Decryptor(usersClass);
-        if (decryptedData) {
-          const studentNames = Object.keys(decryptedData);
+      const loadData = async () => {
+        // 1. Primeiro verifica se já temos dados no localStorage
+        if (usersClass) {
+          console.log("DADOS PUXADOS DIRETO DO LOCALSTORAGE");
+          const decryptedData = Decryptor(usersClass);
+          if (decryptedData) {
+            const studentNames = Object.keys(decryptedData);
 
-          // Se temos alunos no localStorage, usa esses dados
-          if (studentNames.length > 0) {
-            // Recria o array de users baseado no localStorage com valores padrão para propriedades faltantes
-            const usersFromStorage = studentNames.map((name) => {
-              const userData = decryptedData[name];
-              return {
-                id: userData?.id_user || 0,
-                name: name,
-                email: userData?.email || "",
-              } as User;
-            });
+            // Se temos alunos no localStorage, usa esses dados
+            if (studentNames.length > 0) {
+              // Recria o array de users baseado no localStorage com valores padrão para propriedades faltantes
+              const usersFromStorage = studentNames.map((name) => {
+                const userData = decryptedData[name];
+                return {
+                  id: userData?.id_user || 0,
+                  name: name,
+                  email: userData?.email || "",
+                } as User;
+              });
 
-            setUsers(usersFromStorage);
-            console.log(
-              "Usuários carregados do localStorage:",
-              usersFromStorage
-            );
+              setUsers(usersFromStorage);
+              console.log(
+                "Usuários carregados do localStorage:",
+                usersFromStorage
+              );
 
-            // Se temos os dados básicos da turma no localStorage, seta eles também
-            const className = localStorage.getItem("className");
-            if (className && !data) {
-              setData({
-                id: 0, // valor padrão
-                startDateTime: new Date().toISOString(),
-                teachers: [],
-                createDate: new Date().toISOString(),
-                updateDate: new Date().toISOString(),
-                aclass: {
-                  id: 0,
-                  name: className,
-                  area: "",
-                  course: "",
-                  lastRank: null,
+              // Se temos os dados básicos da turma no localStorage, seta eles também
+              const className = localStorage.getItem("className");
+              if (className && !data) {
+                setData({
+                  id: 0, // valor padrão
+                  startDateTime: new Date().toISOString(),
+                  teachers: [],
                   createDate: new Date().toISOString(),
                   updateDate: new Date().toISOString(),
-                },
-                className: className,
-              });
+                  aclass: {
+                    id: 0,
+                    name: className,
+                    area: "",
+                    course: "",
+                    lastRank: null,
+                    createDate: new Date().toISOString(),
+                    updateDate: new Date().toISOString(),
+                  },
+                  className: className,
+                });
+              }
+              return;
             }
-            return;
           }
         }
-      }
 
-      if (councilDataInicialize) {
-        console.log("DADOS PUXADOS DIRETO DA API");
-        try {
-          const parsedData = JSON.parse(councilDataInicialize);
-          if (parsedData && parsedData.aclass && parsedData.teachers) {
-            localStorage.setItem("className", parsedData.aclass.name);
+        if (councilDataInicialize) {
+          console.log("DADOS PUXADOS DIRETO DA API");
+          try {
+            const parsedData = JSON.parse(councilDataInicialize);
+            if (parsedData && parsedData.aclass && parsedData.teachers) {
+              localStorage.setItem("className", parsedData.aclass.name);
 
-            const users = await fetchUsersInClass(parsedData.aclass.id);
-            console.log("Usuarios recebidos da API: ", users);
+              const users = await fetchUsersInClass(parsedData.aclass.id);
+              console.log("Usuarios recebidos da API: ", users);
 
-            const initialData: Record<string, any> = {};
-            users.forEach((user: User) => {
-              initialData[user.name] = {
-                id: user.id,
-                id_user: user.id,
-                email: user.email,
-                frequencia: null,
-                comments: "",
-                negativeContent: "",
-                positiveContent: "",
-                rank: "none",
-              };
-            });
+              const initialData: Record<string, any> = {};
+              users.forEach((user: User) => {
+                initialData[user.name] = {
+                  id: user.id,
+                  id_user: user.id,
+                  email: user.email,
+                  frequencia: null,
+                  comments: "",
+                  negativeContent: "",
+                  positiveContent: "",
+                  rank: "none",
+                };
+              });
 
-            localStorage.setItem("studentsData", Encryptor(initialData));
+              localStorage.setItem("studentsData", Encryptor(initialData));
 
-            setUsers(users);
-            setData(parsedData);
-            console.log("Dados carregados da API:", parsedData);
-          } else {
-            console.error("Estrutura de dados inválida");
+              setUsers(users);
+              setData(parsedData);
+              console.log("Dados carregados da API:", parsedData);
+            } else {
+              console.error("Estrutura de dados inválida");
+            }
+          } catch (error) {
+            console.error("Erro ao parsear dados:", error);
           }
-        } catch (error) {
-          console.error("Erro ao parsear dados:", error);
+        } else {
         }
-      } else {
-        
-      }
-    };
+      };
 
-    loadData();
+      loadData();
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
     }
   }, []);
+
+  useEffect(() => {
+     
+  })
 
   // Efeito para lidar com mudanças no índice do aluno atual
   useEffect(() => {
@@ -422,13 +420,13 @@ export default function RealizeCouncil() {
             frequency: user.frequencia,
           }),
         });
-        await changeCouncilState();
-        await fetch("http://localhost:8081/council/" + idCouncil, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+      });
+      await changeCouncilState();
+      await fetch("http://localhost:8081/council/modifyFinished/" + idCouncil, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
     }
   }

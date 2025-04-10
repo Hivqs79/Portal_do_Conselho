@@ -11,4 +11,5 @@ export interface TableHeaderButtons {
   rank?: Rank;
   setRank?: (rank: Rank) => void;
   rankText?: string;
+  rankVisualizer?: boolean;
 }
