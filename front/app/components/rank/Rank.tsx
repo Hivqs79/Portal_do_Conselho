@@ -109,12 +109,28 @@ export default function Rank({
     );
   }
 
+  const translateRank = (rank: string) => {
+    switch (rank) {
+      case "EXCELLENT":
+        return "Excelente";
+      case "GOOD":
+        return "Bom";
+      case "AVERAGE":
+        return "Mediano";
+      case "CRITICAL":
+        return "Crítico";
+      case "NONE":
+        return "Nenhum rank";
+    }
+  };
+
   if (variant === "council" || variant === "annotation") {
     if (popover) {
       return (
         <>
           <div className="inline-flex justify-center items-center gap-3">
             <span
+              title={translateRank(selectedRank)}
               style={{
                 borderColor: whiteColor,
                 color: constrastColor,
@@ -157,7 +173,7 @@ export default function Rank({
     }
 
     return (
-      <div className="inline-flex items-center gap-2">{rank[selectedRank]}</div>
+      <div title={translateRank(selectedRank)} style={{backgroundColor: whiteColor}} className="rounded-normal inline-flex items-center gap-2">{rank[selectedRank]}</div>
     );
   } else if (variant === "default") {
     if (popover) {
@@ -171,6 +187,7 @@ export default function Rank({
               Rank:
             </Typography>
             <span
+              title={translateRank(selectedRank)}
               style={{
                 borderColor: colorByModeSecondary,
                 color: constrastColor,
@@ -179,7 +196,7 @@ export default function Rank({
               onClick={handleClick}
             >
               {rank[selectedRank]}
-              <span className="capitalize">{rankLabels[selectedRank] ? rankLabels[selectedRank] : <span className="flex justify-center items-center">{rank["NONE"]}{rankLabels["NONE"]}</span>}</span>
+              <span title={translateRank(selectedRank)} className="capitalize">{rankLabels[selectedRank] ? rankLabels[selectedRank] : <span className="flex justify-center items-center">{rank["NONE"]}{rankLabels["NONE"]}</span>}</span>
             </span>
           </div>
           <Popover
@@ -215,6 +232,7 @@ export default function Rank({
     return (
       <div className="inline-flex justify-center items-center gap-3">
         <span
+          title={translateRank(selectedRank)}
           style={{
             borderColor: whiteColor,
             color: constrastColor,

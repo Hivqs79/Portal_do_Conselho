@@ -19,10 +19,10 @@ public abstract class Feedback {
     @JoinColumn(nullable = false)
     private Council council;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String strengths;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String toImprove;
 
     @Column(nullable = false)
