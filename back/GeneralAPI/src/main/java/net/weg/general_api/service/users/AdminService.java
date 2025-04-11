@@ -57,7 +57,7 @@ public class AdminService {
 
     public AdminResponseDTO disableAdmin(Long id) {
         Admin admin = findAdminEntity(id);
-        admin.setEnabled(false);
+        admin.getUserAuthentication().setEnabled(false);
         repository.save(admin);
         kafkaEventSender.sendEvent(admin, "DELETE", "Admin deleted");
         return modelMapper.map(admin, AdminResponseDTO.class);
