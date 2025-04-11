@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminRequestDTO {
+public class UserRequestDTO {
 
     @NotBlank(message = "{not.blank.message}")
     private String name;
