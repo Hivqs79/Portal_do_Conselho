@@ -9,6 +9,8 @@ public enum RoleENUM {
     STUDENT("student"),
     TEACHER("teacher"),
     PEDAGOGIC("pedagogic"),
+    SUPERVISOR("supervisor"),
+    SUBPEDAGOGIC("subpedagogic"),
     ADMIN("admin");
 
     private final String value;
