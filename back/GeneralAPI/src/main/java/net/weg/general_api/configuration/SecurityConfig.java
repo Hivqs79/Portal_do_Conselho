@@ -29,9 +29,16 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> {
-                    authorizeRequests.requestMatchers(HttpMethod.POST, "class").hasRole("PEDAGOGIC");
-                    authorizeRequests.requestMatchers(HttpMethod.DELETE, "admin/**").hasRole("ADMIN");
-                    authorizeRequests.anyRequest().permitAll();
+                    authorizeRequests.requestMatchers(HttpMethod.POST, "auth/login").permitAll();
+                    authorizeRequests.requestMatchers(HttpMethod.POST, "admin").permitAll();
+
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "student/**").hasRole("STUDENT");
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "class").hasRole("SUPERVISOR");
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "teacher/**").hasRole("TEACHER");
+                    authorizeRequests.requestMatchers(HttpMethod.POST, "class").hasRole("SUBPEDAGOGIC");
+                    authorizeRequests.requestMatchers(HttpMethod.POST, "subPedagogic").hasRole("PEDAGOGIC");
+                    authorizeRequests.anyRequest().hasRole("ADMIN");
+                    //TODO: Implementar o resto das URLs
                 })
                 .userDetailsService(authorizationService)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
