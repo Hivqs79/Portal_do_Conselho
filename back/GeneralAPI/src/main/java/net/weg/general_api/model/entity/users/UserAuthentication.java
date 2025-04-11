@@ -41,7 +41,13 @@ public class UserAuthentication implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        if (this.role.equals(RoleENUM.ADMIN)) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_STUDENT"), new SimpleGrantedAuthority("ROLE_TEACHER"), new SimpleGrantedAuthority("ROLE_PEDAGOGIC"), new SimpleGrantedAuthority("ROLE_SUBPEDAGOGIC"), new SimpleGrantedAuthority("ROLE_SUPERVISOR"));
+        } else if (this.role.equals(RoleENUM.PEDAGOGIC)) {
+            return List.of(new SimpleGrantedAuthority("ROLE_PEDAGOGIC"), new SimpleGrantedAuthority("ROLE_SUBPEDAGOGIC"));
+        } else {
+            return List.of(new SimpleGrantedAuthority("ROLE_" + role));
+        }
     }
 
     @Override
