@@ -154,6 +154,7 @@ export default function Council() {
 
   const createCouncil = async () => {
     console.log("testeCreate");
+    setIsLoading(true);
     const response = await fetch("http://localhost:8081/council", {
       method: "POST",
       headers: {
@@ -171,6 +172,7 @@ export default function Council() {
     response.json().then((data) => {
       console.log(data);
       resetInputs();
+      setIsLoading(false);
     });
   };
 

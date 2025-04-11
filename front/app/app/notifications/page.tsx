@@ -104,16 +104,17 @@ export default function Notifications() {
               <AccordionComponent
                 type="notification"
                 name={notification.title}
-                description={notification.description}
                 outlined
                 viwed={notification.viwed}
                 onChange={() => handleSelectNotification(index)}
                 checked={selectedNotifications.includes(index)}
-              />
+              >
+                {notification.description}
+              </AccordionComponent>
             </Box>
           ))}
         </Box>
-        <PaginationTable count={notifications.length} page={1} rowsPerPage={10} setCount={() => void 0} setPage={() => void 0} setRowsPerPage={() => void 0}/>
+        <PaginationTable count={notifications.length} page={1} rowsPerPage={10} setPage={() => void 0} setRowsPerPage={() => void 0}/>
           {/* // TODO: implementar paginação integrada com o backend de notificações */}
       </Box>
     </Box>

@@ -298,8 +298,8 @@ export default function CouncilModal({
                 editing
                   ? "será atualizado"
                   : "irá para a lista de conselhos para realizar"
-              }, mas não se preocupe, você poderá editálo ${
-                editing ? "novamente" : null
+              }, mas não se preocupe, você poderá editá-lo ${
+                editing ? "novamente" : ""
               } a qualquer momento.`}
               confirmButtonText={`${editing ? "Editar" : "Criar"} conselho`}
               onClose={() => setOpenConfirm(false)}
