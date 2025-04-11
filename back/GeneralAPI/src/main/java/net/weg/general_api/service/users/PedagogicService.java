@@ -57,7 +57,7 @@ public class PedagogicService {
 
     public PedagogicResponseDTO disablePedagogic(Long id) {
         Pedagogic pedagogic = findPedagogicEntity(id);
-        pedagogic.setEnabled(false);
+        pedagogic.getUserAuthentication().setEnabled(false);
         repository.save(pedagogic);
         kafkaEventSender.sendEvent(pedagogic, "DELETE", "Pedagogic disabled");
         return modelMapper.map(pedagogic, PedagogicResponseDTO.class);
