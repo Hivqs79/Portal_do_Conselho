@@ -5,6 +5,7 @@ import net.weg.general_api.exception.exceptions.UserNotFoundException;
 import net.weg.general_api.model.dto.request.users.PedagogicRequestDTO;
 import net.weg.general_api.model.dto.response.users.PedagogicResponseDTO;
 import net.weg.general_api.model.entity.users.Pedagogic;
+import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.PedagogicRepository;
 import net.weg.general_api.service.kafka.KafkaEventSender;
 import org.modelmapper.ModelMapper;
@@ -19,6 +20,7 @@ public class PedagogicService {
 
     private PedagogicRepository repository;
     private CustomizationService customizationService;
+    private UserAuthenticationService userAuthenticationService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
 
@@ -29,6 +31,10 @@ public class PedagogicService {
 
     public PedagogicResponseDTO createPedagogic(PedagogicRequestDTO pedagogicRequestDTO) {
         Pedagogic pedagogic = modelMapper.map(pedagogicRequestDTO, Pedagogic.class);
+
+        pedagogic.setUserAuthentication(
+                userAuthenticationService.saveUserAuthentication(pedagogicRequestDTO.getEmail(), pedagogicRequestDTO.getPassword(), RoleENUM.PEDAGOGIC)
+        );
 
         Pedagogic pedagogicSaved = repository.save(pedagogic);
         kafkaEventSender.sendEvent(pedagogicSaved, "POST", "Pedagogic created");
