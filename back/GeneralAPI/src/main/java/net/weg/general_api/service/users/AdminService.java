@@ -3,7 +3,7 @@ package net.weg.general_api.service.users;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.exception.exceptions.UserNotFoundException;
 import net.weg.general_api.model.dto.request.users.UserRequestDTO;
-import net.weg.general_api.model.dto.response.users.AdminResponseDTO;
+import net.weg.general_api.model.dto.response.users.UserResponseDTO;
 import net.weg.general_api.model.entity.users.Admin;
 import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.AdminRepository;
@@ -24,12 +24,12 @@ public class AdminService {
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
 
-    public Page<AdminResponseDTO> findAdminSpec(Specification<Admin> spec, Pageable pageable) {
+    public Page<UserResponseDTO> findAdminSpec(Specification<Admin> spec, Pageable pageable) {
         Page<Admin> admins = repository.getAllByEnabledIsTrue(spec, pageable);
-        return admins.map(admin -> modelMapper.map(admin, AdminResponseDTO.class));
+        return admins.map(admin -> modelMapper.map(admin, UserResponseDTO.class));
     }
 
-    public AdminResponseDTO createAdmin(UserRequestDTO userRequestDTO) {
+    public UserResponseDTO createAdmin(UserRequestDTO userRequestDTO) {
         Admin admin = modelMapper.map(userRequestDTO, Admin.class);
 
         admin.setUserAuthentication(
@@ -40,33 +40,33 @@ public class AdminService {
         kafkaEventSender.sendEvent(adminSaved, "POST", "New admin created");
         adminSaved.setCustomization(customizationService.setDefault(adminSaved));
 
-        return modelMapper.map(adminSaved, AdminResponseDTO.class);
+        return modelMapper.map(adminSaved, UserResponseDTO.class);
     }
 
-    public AdminResponseDTO findAdmin(Long id) {
+    public UserResponseDTO findAdmin(Long id) {
         Admin adminFound = findAdminEntity(id);
 
-        return modelMapper.map(adminFound, AdminResponseDTO.class);
+        return modelMapper.map(adminFound, UserResponseDTO.class);
     }
 
     public Admin findAdminEntity(Long id) {
         return repository.findById(id).orElseThrow(() -> new UserNotFoundException("Admin user not found"));
     }
 
-    public AdminResponseDTO updateAdmin(UserRequestDTO userRequestDTO, Long id) {
+    public UserResponseDTO updateAdmin(UserRequestDTO userRequestDTO, Long id) {
         Admin admin = findAdminEntity(id);
         modelMapper.map(userRequestDTO, admin);
         Admin updatedAdmin = repository.save(admin);
         kafkaEventSender.sendEvent(updatedAdmin, "PUT", "Admin updated");
-        return modelMapper.map(updatedAdmin, AdminResponseDTO.class);
+        return modelMapper.map(updatedAdmin, UserResponseDTO.class);
     }
 
-    public AdminResponseDTO disableAdmin(Long id) {
+    public UserResponseDTO disableAdmin(Long id) {
         Admin admin = findAdminEntity(id);
         admin.getUserAuthentication().setEnabled(false);
         repository.save(admin);
         kafkaEventSender.sendEvent(admin, "DELETE", "Admin deleted");
-        return modelMapper.map(admin, AdminResponseDTO.class);
+        return modelMapper.map(admin, UserResponseDTO.class);
     }
 
 }
