@@ -32,11 +32,11 @@ public class ClassService {
         return classes.map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class));
     }
 
-    //FAZER ISSO NO RESTO
+    //TODO FAZER ISSO NO RESTO
     public List<StudentResponseDTO> getStudentsByClass(Long class_id) {
         Class aClass = findClassEntity(class_id);
         return aClass.getStudents().stream()
-                .filter(Student::isEnabled) // ou student -> student.isEnabled()
+                .filter(student -> student.getUserAuthentication().isEnabled())
                 .map(student -> modelMapper.map(student, StudentResponseDTO.class))
                 .collect(Collectors.toList());
     }
