@@ -1,15 +1,14 @@
 "use client";
 import { useThemeContext } from "@/hooks/useTheme";
-import {
-  Box,
-  Modal,
-  Typography,
-} from "@mui/material";
+import { Box, Modal, Typography } from "@mui/material";
 import { IoClose } from "react-icons/io5";
 import Icon from "../Icon";
 import { useEffect } from "react";
 import AccordionComponent from "../AccordionComponent";
 import OpacityHex from "@/utils/OpacityHex";
+import { Rank } from "@/interfaces/RankType";
+import Annotations from "@/app/annotations/page";
+import AvaliationInputs from "../council/AvaliationInputs";
 
 interface CommentariesModalProps {
   onClose: () => void;
@@ -37,6 +36,8 @@ export default function CommentariesModal({
       onClose();
     }
   };
+
+  console.log("annotations: ", anotations);
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
@@ -92,14 +93,22 @@ export default function CommentariesModal({
           >
             <span className="flex rounded-big flex-col max-h-[550px] p-2 gap-2 overflow-y-scroll">
               {anotations.map((anotation: any, index: number) => (
+                console.log("anotation 2: ", anotation),
+                console.log("strengths: ", anotation.strengths),
+                console.log("toImprove: ", anotation.toImprove),
                 <AccordionComponent
-                  type="council"
+                  type="default"
                   key={index}
-                  name={anotation.name}
-                  rank={verifyRank(anotation.rank)}
-                  positiveContent={anotation.positiveContent}
-                  negativeContent={anotation.negativeContent}
-                />
+                  name={anotation.teacher.name}
+                  rank={verifyRank(anotation.rank) as Rank}
+                >
+                  <AvaliationInputs
+                    Positivecontent={anotation.strengths}
+                    Negativecontent={anotation.toImprove}
+                    copyButton
+                    readOnly
+                  />
+                </AccordionComponent>
               ))}
             </span>
           </Box>

@@ -17,7 +17,6 @@ import ConfirmChanges from "@/components/modals/ConfirmChanges";
 import ConfirmMessagesModal from "@/components/modals/ConfirmMessagesModal";
 import LoadingModal from "@/components/modals/LoadingModal";
 import { Rank as RankType } from "@/interfaces/RankType";
-import { TableContent } from "@/interfaces/table/TableContent";
 
 type CouncilData = {
   id: number;
@@ -83,11 +82,21 @@ export default function RealizeCouncil() {
   const [isRealizelCouncilOpen, setIsRealizeCouncilOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isLoadingOpen, setIsLoadingOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState<{title: string;message: string;error: boolean;}>({ title: "", message: "", error: false });
+  const [modalMessage, setModalMessage] = useState<{
+    title: string;
+    message: string;
+    error: boolean;
+  }>({ title: "", message: "", error: false });
   const [finalJson, setFinalJson] = useState<FinalJson>();
-  const [classCommentaries, setClassCommentaries] = useState<TableContent[]>([]);
-  const [studentCommentaries, setStudentCommentaries] = useState<TableContent[]>([]);
-  const {constrastColor,backgroundColor,colorByModeSecondary,whiteColor,textBlackolor,} = useThemeContext();
+  const [classCommentaries, setClassCommentaries] = useState([]);
+  const [studentCommentaries, setStudentCommentaries] = useState([]);
+  const {
+    constrastColor,
+    backgroundColor,
+    colorByModeSecondary,
+    whiteColor,
+    textBlackolor,
+  } = useThemeContext();
   const router = useRouter();
 
   useEffect(() => {
@@ -194,10 +203,6 @@ export default function RealizeCouncil() {
     }
   }, []);
 
-  useEffect(() => {
-     
-  })
-
   // Efeito para lidar com mudanças no índice do aluno atual
   useEffect(() => {
     if (
@@ -270,6 +275,42 @@ export default function RealizeCouncil() {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchCommentaries = async () => {
+      const councilId = await fetchHappeningCouncil();
+      if (councilId) {
+        const classResponse = await fetch(
+          "http://localhost:8081/annotations/class?isHappening=true&isFinished=false",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const classComentaries = await classResponse.json();
+        setClassCommentaries(classComentaries.content);
+        console.log("council ID class and student: ", councilId);
+
+        const studentResponse = await fetch(
+          `http://localhost:8081/annotations/student?councilId=${councilId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const studentComentaries = await studentResponse.json();
+        setStudentCommentaries(studentComentaries.content);
+
+        console.log("Class API Response: ", classComentaries);
+        console.log("Student API Response: ", studentComentaries);
+      }
+    };
+    fetchCommentaries();
+  }, []);
+
   const handlePositiveChange = (content: string) => {
     setPositiveClassContent(content);
     saveEncryptedData("positiveContent", content);
@@ -317,11 +358,6 @@ export default function RealizeCouncil() {
   const closeStudentModal = () => {
     setIsModalStudentOpen(false);
   };
-
-  useEffect(() => {
-    //NOTE: UTILIZADO SOMENTE PARA TESTE, DELETAR QUANDO ESTIVER PRONTO
-    console.log("Final json state atualizado: ", finalJson); //NOTE: UTILIZADO SOMENTE PARA TESTE, DELETAR QUANDO ESTIVER PRONTO
-  }, [finalJson]); //NOTE: UTILIZADO SOMENTE PARA TESTE, DELETAR QUANDO ESTIVER PRONTO
 
   async function finalizeCouncil() {
     const ClassRank = getDecryptedData("rank");
@@ -690,7 +726,7 @@ export default function RealizeCouncil() {
                 />
               </table>
               <AvaliationInputs
-                writeOnly={false}
+                readOnly={false}
                 Positivecontent={positiveClassContent}
                 Negativecontent={negativeClassContent}
                 onPositiveChange={handlePositiveChange}
@@ -753,11 +789,9 @@ export default function RealizeCouncil() {
       </Box>
       {isModalTeacherOpen && (
         <CommentariesModal
-          anotations={[]} //remover
-          name="" //remover
-          // anotations={data ? data["council-form"].class.teacherAnotations : []}
+          anotations={classCommentaries}
           student={false}
-          // name={data ? data["council-form"].class.name : ""}
+          name={"teste"}
           onClose={closeTeacherModal}
         />
       )}
