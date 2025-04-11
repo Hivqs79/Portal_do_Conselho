@@ -1,5 +1,6 @@
 package net.weg.general_api.model.entity.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +36,7 @@ public class UserAuthentication implements UserDetails {
     private RoleENUM role;
 
     @OneToOne(mappedBy = "userAuthentication")
+    @JsonIgnore
     private User user;
 
     @Override
@@ -42,4 +44,17 @@ public class UserAuthentication implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
+    @Override
+    public String toString() {
+        return "UserAuthentication{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", accountNonExpired=" + accountNonExpired +
+                ", accountNonLocked=" + accountNonLocked +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ", enabled=" + enabled +
+                ", role=" + role +
+                '}';
+    }
 }
