@@ -7,6 +7,7 @@ import net.weg.general_api.model.entity.feedback.FeedbackUser;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @Entity
 @Data
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -40,6 +41,9 @@ public abstract class User {
 
     @OneToMany(mappedBy = "user")
     private List<FeedbackUser> feedbackUsers;
+
+    @OneToOne
+    private UserAuthentication userAuthentication;
 
     @PrePersist
     public void onPrePersist() {
