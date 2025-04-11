@@ -170,28 +170,28 @@ INSERT INTO user (create_date, email, name, password, update_date, enabled) VALU
 ('2023-06-25 17:50:00', 'lucia.almeida@example.com', 'Lucia Almeida', 'Senha@3131', '2023-06-30 17:25:00', 1),
 ('2023-07-01 08:35:00', 'maria.souza@example.com', 'Maria Souza', 'Senha@3232', '2023-07-06 18:40:00', 1);
 
-INSERT INTO student (is_representant, user_id) VALUES
-(0, 1),  -- Alice Silva
-(1, 2),  -- Bruno Oliveira (representante)
-(0, 3),  -- Carla Santos
-(0, 5),  -- Elaine Costa
-(1, 7),  -- Gabriela Fernandes (representante)
-(0, 9),  -- Isabela Rodrigues
-(0, 11), -- Karina Lima
-(0, 13), -- Mariana Ribeiro
-(1, 15), -- Olivia Cunha (representante)
-(0, 4),  -- Diego Pereira
-(0, 6),  -- Fábio Martins
-(0, 8),  -- Henrique Gomes
-(0, 10), -- João Almeida
-(0, 12), -- Leonardo Souza
-(0, 14), -- Nelson Barbosa
-(0, 17), -- Quenia Nascimento
-(0, 26), -- Zoe Costa
-(0, 27), -- Zulma Silva
-(0, 28), -- Felipe Santos
-(0, 29), -- Victor Ferreira
-(0, 30); -- Gilberto Souza
+INSERT INTO student (is_representant, last_frequency, user_id) VALUES
+(0, 0.0, 1),  -- Alice Silva
+(1, 0.0, 2),  -- Bruno Oliveira (representante)
+(0, 0.0, 3),  -- Carla Santos
+(0, 0.0, 5),  -- Elaine Costa
+(1, 0.0, 7),  -- Gabriela Fernandes (representante)
+(0, 0.0, 9),  -- Isabela Rodrigues
+(0, 0.0, 11), -- Karina Lima
+(0, 0.0, 13), -- Mariana Ribeiro
+(1, 0.0, 15), -- Olivia Cunha (representante)
+(0, 0.0, 4),  -- Diego Pereira
+(0, 0.0, 6),  -- Fábio Martins
+(0, 0.0, 8),  -- Henrique Gomes
+(0, 0.0, 10), -- João Almeida
+(0, 0.0, 12), -- Leonardo Souza
+(0, 0.0, 14), -- Nelson Barbosa
+(0, 0.0, 17), -- Quenia Nascimento
+(0, 0.0, 26), -- Zoe Costa
+(0, 0.0, 27), -- Zulma Silva
+(0, 0.0, 28), -- Felipe Santos
+(0, 0.0, 29), -- Victor Ferreira
+(0, 0.0, 30); -- Gilberto Souza
 
 -- Inserindo professores baseados em usuários existentes
 INSERT INTO teacher (user_id) VALUES

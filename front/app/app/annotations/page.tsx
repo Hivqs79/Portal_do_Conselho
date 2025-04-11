@@ -170,7 +170,7 @@ export default function Annotations() {
   useEffect(() => {
     const fetchClassAnnotations = async () => {
       const response = await fetch(
-        `http://localhost:8081/annotations/class?teacherId=${userId}&page=${page - 1
+        `http://localhost:8081/annotations/class?isHappening=false&isFinished=false&teacherId=${userId}&page=${page - 1
         }&size=${rowsPerPage}&className=${classSearch}`
       );
       const data = await response.json();

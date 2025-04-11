@@ -35,6 +35,10 @@ public class KafkaConsumerService {
     public void consumeCouncil(String message) throws JsonProcessingException {
         System.out.println("Consumed message: " + message);
         KafkaMessage kafkaMessage = objectMapper.readValue(message, KafkaMessage.class);
+        String httpMethod = kafkaMessage.getHttpMethod();
+        System.out.println("httpMethod: " + httpMethod);
+
+        if (!httpMethod.equals("POST")) return;
 
         String regex = "Council\\{\\s*id=(\\d+).*";
         Long councilId = Long.parseLong(kafkaMessage.getObject().replaceAll(regex, "$1"));
