@@ -2,6 +2,7 @@ package net.weg.general_api.service.users;
 
 import lombok.AllArgsConstructor;
 import net.weg.general_api.exception.exceptions.UserNotFoundException;
+import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.model.dto.request.users.StudentRequestDTO;
 import net.weg.general_api.model.dto.response.users.StudentResponseDTO;
@@ -24,6 +25,7 @@ public class StudentService {
     private StudentRepository repository;
     private ClassService classService;
     private CustomizationService customizationService;
+    private UserAuthenticationService userAuthenticationService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
 
@@ -34,6 +36,10 @@ public class StudentService {
 
     public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {
         Student student = modelMapper.map(studentRequestDTO, Student.class);
+
+        student.setUserAuthentication(
+                userAuthenticationService.saveUserAuthentication(studentRequestDTO.getEmail(), studentRequestDTO.getPassword(), RoleENUM.STUDENT)
+        );
 
         student.setClasses(classService.getClassesByIdList(studentRequestDTO.getClasses_id()));
         Student studentSaved = repository.save(student);
