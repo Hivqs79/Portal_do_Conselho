@@ -68,7 +68,7 @@ public class TeacherService {
 
     public TeacherResponseDTO disableTeacher(Long id) {
         Teacher teacher = findTeacherEntity(id);
-        teacher.setEnabled(false);
+        teacher.getUserAuthentication().setEnabled(false);
         repository.save(teacher);
         kafkaEventSender.sendEvent(teacher, "DELETE", "Teacher deleted");
         return modelMapper.map(teacher, TeacherResponseDTO.class);
