@@ -12,6 +12,7 @@ import net.weg.general_api.repository.UserAuthenticationRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
-    private final PasswordEncoder passwordEncoder;
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final TokenService tokenService;
 
     private final UserAuthenticationRepository userAuthenticationRepository;
@@ -36,6 +37,11 @@ public class AuthenticationService {
         return token;
     }
 
+    public static String encodePassword (String passwordPlainText) {
+        return passwordEncoder.encode(passwordPlainText);
+    }
+
+    /*
     public User register(RegisterRequestDTO registerRequestDTO) {
 
         UserAuthentication userAuthentication = UserAuthentication.builder()
@@ -58,5 +64,7 @@ public class AuthenticationService {
 
         return user;
     }
+
+     */
 
 }
