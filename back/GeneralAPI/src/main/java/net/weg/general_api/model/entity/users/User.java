@@ -32,9 +32,6 @@ public abstract class User {
     @OneToOne(mappedBy = "user")
     private Customization customization;
 
-    @Column(nullable = false)
-    private boolean enabled;
-
     @OneToMany(mappedBy = "user")
     private List<FeedbackUser> feedbackUsers;
 
@@ -45,7 +42,6 @@ public abstract class User {
     public void onPrePersist() {
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
-        this.setEnabled(true);
     }
 
     @PreUpdate
