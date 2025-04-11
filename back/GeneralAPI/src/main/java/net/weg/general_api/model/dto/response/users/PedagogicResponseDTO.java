@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 public class PedagogicResponseDTO {
     private Long id;
     private String name;
-    private String email;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-    private boolean enabled;
+    private UserAuthenticationResponseDTO userAuthentication;
+
 }
