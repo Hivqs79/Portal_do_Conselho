@@ -5,8 +5,11 @@ import net.weg.general_api.exception.exceptions.UserNotFoundException;
 import net.weg.general_api.model.dto.request.users.AdminRequestDTO;
 import net.weg.general_api.model.dto.response.users.AdminResponseDTO;
 import net.weg.general_api.model.entity.users.Admin;
+import net.weg.general_api.model.entity.users.UserAuthentication;
+import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.AdminRepository;
 import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.security.AuthenticationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +22,7 @@ public class AdminService {
 
     private AdminRepository repository;
     private CustomizationService customizationService;
+    private UserAuthenticationService userAuthenticationService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
 
@@ -29,6 +33,10 @@ public class AdminService {
 
     public AdminResponseDTO createAdmin(AdminRequestDTO adminRequestDTO) {
         Admin admin = modelMapper.map(adminRequestDTO, Admin.class);
+
+        admin.setUserAuthentication(
+                userAuthenticationService.saveUserAuthentication(adminRequestDTO.getEmail(), adminRequestDTO.getPassword(), RoleENUM.ADMIN)
+        );
 
         Admin adminSaved = repository.save(admin);
         kafkaEventSender.sendEvent(adminSaved, "POST", "New admin created");
