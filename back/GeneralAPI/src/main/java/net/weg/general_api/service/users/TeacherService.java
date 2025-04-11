@@ -7,6 +7,7 @@ import net.weg.general_api.model.dto.response.classes.ClassResponseDTO;
 import net.weg.general_api.model.dto.response.users.TeacherResponseDTO;
 import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.users.Teacher;
+import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.TeacherRepository;
 import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.kafka.KafkaEventSender;
@@ -28,6 +29,7 @@ public class TeacherService {
     private CustomizationService customizationService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
+    private UserAuthenticationService userAuthenticationService;
 
     public Page<TeacherResponseDTO> findTeacherSpec(Specification<Teacher> spec, Pageable pageable) {
         Page<Teacher> teachers = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -37,7 +39,11 @@ public class TeacherService {
     public TeacherResponseDTO createTeacher(TeacherRequestDTO teacherRequestDTO) {
         Teacher teacher = modelMapper.map(teacherRequestDTO, Teacher.class);
 
+        teacher.setUserAuthentication(
+                userAuthenticationService.saveUserAuthentication(teacherRequestDTO.getEmail(), teacherRequestDTO.getPassword(), RoleENUM.TEACHER)
+        );
         teacher.setClasses(classService.getClassesByIdList(teacherRequestDTO.getClasses_id()));
+
         Teacher teacherSaved = repository.save(teacher);
         kafkaEventSender.sendEvent(teacherSaved, "POST", "Teacher created");
         teacherSaved.setCustomization(customizationService.setDefault(teacherSaved));
