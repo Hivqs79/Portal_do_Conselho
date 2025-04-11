@@ -13,11 +13,10 @@ import java.time.LocalDateTime;
 public class StudentResponseDTO {
     private Long id;
     private String name;
-    private String email;
     private Boolean isRepresentant;
     private RankENUM lastRank;
     private double lastFrequency;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-    private boolean enabled;
+    private UserAuthenticationResponseDTO userAuthentication;
 }
