@@ -22,10 +22,6 @@ public abstract class User {
 
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false, unique = true)
-    private String email;
-    @Column(nullable = false)
-    private String password;
 
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
@@ -62,7 +58,7 @@ public abstract class User {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
+                ", userAuth='" + userAuthentication + '\'' +
                 '}';
     }
 }
