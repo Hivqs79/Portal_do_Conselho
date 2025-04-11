@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> {
                     authorizeRequests.requestMatchers(HttpMethod.POST, "class").hasRole("PEDAGOGIC");
+                    authorizeRequests.requestMatchers(HttpMethod.DELETE, "admin/**").hasRole("ADMIN");
                     authorizeRequests.anyRequest().permitAll();
                 })
                 .userDetailsService(authorizationService)
