@@ -66,7 +66,7 @@ public class StudentService {
 
     public StudentResponseDTO disableStudent(Long id) {
         Student student = findStudentEntity(id);
-        student.setEnabled(false);
+        student.getUserAuthentication().setEnabled(false);
         repository.save(student);
         kafkaEventSender.sendEvent(student, "DELETE", "Student deleted");
         return modelMapper.map(student, StudentResponseDTO.class);
