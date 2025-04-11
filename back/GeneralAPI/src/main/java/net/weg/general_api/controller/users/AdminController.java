@@ -13,7 +13,7 @@ import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
-import net.weg.general_api.model.dto.request.users.AdminRequestDTO;
+import net.weg.general_api.model.dto.request.users.UserRequestDTO;
 import net.weg.general_api.model.dto.response.users.AdminResponseDTO;
 import net.weg.general_api.model.entity.users.Admin;
 import net.weg.general_api.service.users.AdminService;
@@ -61,8 +61,8 @@ public class AdminController {
             content = @Content(examples = @ExampleObject(value = "{\"status\":400,\"error\":\"Validation Error\",\"message\":[\"name: must not be blank\",\"email: must be a valid email\"]}")))
     @ApiResponse(responseCode = "409", description = "Email already exists")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<AdminResponseDTO> postAdmin(@RequestBody @Validated AdminRequestDTO adminRequestDTO) {
-        return new ResponseEntity<>(service.createAdmin(adminRequestDTO), HttpStatus.OK);
+    public ResponseEntity<AdminResponseDTO> postAdmin(@RequestBody @Validated UserRequestDTO userRequestDTO) {
+        return new ResponseEntity<>(service.createAdmin(userRequestDTO), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -75,9 +75,9 @@ public class AdminController {
     @ApiResponse(responseCode = "409", description = "Email already exists")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<AdminResponseDTO> putAdmin(
-            @RequestBody @Validated AdminRequestDTO adminRequestDTO,
+            @RequestBody @Validated UserRequestDTO userRequestDTO,
             @Parameter(description = "ID of the admin to be updated", example = "1") @PathVariable Long id) {
-        return new ResponseEntity<>(service.updateAdmin(adminRequestDTO, id), HttpStatus.OK);
+        return new ResponseEntity<>(service.updateAdmin(userRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
