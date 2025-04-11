@@ -21,7 +21,8 @@ public class Student extends User {
     @Column(nullable = false)
     private Boolean isRepresentant;
     private RankENUM lastRank;
-    private double lastFrequency;
+    @Column(nullable = true)
+    private Double lastFrequency;
 
     @ManyToMany
     @JoinTable(
