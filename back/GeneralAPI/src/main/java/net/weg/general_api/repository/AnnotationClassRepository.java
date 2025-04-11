@@ -14,4 +14,6 @@ public interface AnnotationClassRepository extends JpaRepository<AnnotationClass
 
         return findAll(enabledSpec, pageable);
     }
+
+    boolean existsByTeacher_IdAndCouncil_Id(Long teacherId, Long councilId);
 }

@@ -85,4 +85,8 @@ public class AnnotationClassService {
         return modelMapper.map(annotationClass, AnnotationClassResponseDTO.class);
     }
 
+    public boolean existsByTeacherAndCouncil(Long teacherId, Long councilId) {
+        return repository.existsByTeacher_IdAndCouncil_Id(teacherId, councilId);
+    }
+
 }

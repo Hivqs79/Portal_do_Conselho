@@ -11,6 +11,8 @@ public interface AnnotationStudentRepository extends JpaRepository<AnnotationStu
 
     Page<AnnotationStudent> findAllByStudent_Id(Pageable pageable, Long id);
 
+    boolean existsByTeacher_IdAndCouncil_IdAndStudent_Id(Long teacherId, Long councilId, Long studentId);
+
     default Page<AnnotationStudent> getAllByEnabledIsTrue(Specification<AnnotationStudent> spec, Pageable pageable) {
         Specification<AnnotationStudent> enabledSpec = Specification.where(spec)
                 .and((root, query, cb) -> cb.isTrue(root.get("enabled")));
