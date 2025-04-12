@@ -39,7 +39,7 @@ export default function AccordionComponent({
   checked,
   viewed = true,
   rank,
-  onChangeRank,
+  onChangeRank, 
   onClick,
 }: AnotationProps) {
   const {
@@ -88,11 +88,11 @@ export default function AccordionComponent({
         }
         sx={{
           backgroundColor: outlined
-            ? !viewed
+            ? (!viewed
               ? OpacityHex(secondaryColor, 0.18)
-              : type === "table"
-              ? "transparent"
-              : backgroundColor
+              : (type === "table"
+                ? "transparent"
+              : backgroundColor))
             : primaryColor,
           color: whiteColor,
           boxShadow:

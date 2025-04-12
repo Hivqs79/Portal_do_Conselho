@@ -48,6 +48,7 @@ kind: Deployment
 metadata:
   name: mysql-chat-deployment
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: mysql-chat

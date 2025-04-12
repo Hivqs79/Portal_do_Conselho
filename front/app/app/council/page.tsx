@@ -282,6 +282,7 @@ export default function Council() {
       const data = await response.json();
       setTeachers(data);
     };
+    if (!selectedClass) return;
     fetchTeachers();
   }, [selectedClass, isCreate]);
 

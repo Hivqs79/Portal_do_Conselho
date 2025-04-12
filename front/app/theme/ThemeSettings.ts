@@ -502,7 +502,7 @@ export default class ThemeSettings {
           styleOverrides: {
             root: {
               zIndex: 10,
-              borderRadius: "16px",
+              borderRadius: "16px !important",
             },
           },
         },
