@@ -21,11 +21,12 @@ interface AnotationProps {
   frequency?: number | boolean;
   name: string;
   children: React.ReactNode;
-  onChange?: () => void;
+  onChangeCheckbox?: () => void;
   checked?: boolean;
-  viwed?: boolean;
+  viewed?: boolean;
   rank?: RankType;
   onChangeRank?: (rank: RankType) => void;
+  onClick?: () => void;
 }
 
 export default function AccordionComponent({
@@ -34,11 +35,12 @@ export default function AccordionComponent({
   frequency,
   children,
   outlined,
-  onChange,
+  onChangeCheckbox,
   checked,
-  viwed,
+  viewed = true,
   rank,
   onChangeRank,
+  onClick,
 }: AnotationProps) {
   const {
     primaryColor,
@@ -55,9 +57,10 @@ export default function AccordionComponent({
     <Accordion
       sx={{
         boxShadow:
-          type === "table"
+          type === "table" || type === "default"
             ? "none"
             : `inset 0px 0px 0px 2px ${colorByModeSecondary}`,
+          borderRadius: type === "table" ? "0px" : "16px",
         backgroundColor: outlined
           ? type === "table"
             ? "transparent"
@@ -72,7 +75,10 @@ export default function AccordionComponent({
       }}
     >
       <AccordionSummary
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          setIsOpen(!isOpen);
+          onClick && onClick();
+        }}
         expandIcon={
           <Icon
             IconPassed={IoIosArrowDown}
@@ -82,7 +88,7 @@ export default function AccordionComponent({
         }
         sx={{
           backgroundColor: outlined
-            ? viwed
+            ? !viewed
               ? OpacityHex(secondaryColor, 0.18)
               : type === "table"
               ? "transparent"
@@ -106,11 +112,11 @@ export default function AccordionComponent({
             backgroundColor:
               type === "table"
                 ? OpacityHex(secondaryColor, 0.18)
-                : "transparent",
+                : type === "default" ? primaryColor : "transparent",
             boxShadow:
               type === "table"
                 ? `0px 2px 4px 2px ${OpacityHex(colorByModeSecondary, 0.18)}`
-                : "none",
+                : type === "default" ? `inset 0px 0px 0px 2px ${colorByModeSecondary}` : "none",
             "& .MuiAccordionSummary-content": {
               margin: "0px !important",
             },
@@ -128,7 +134,7 @@ export default function AccordionComponent({
               {type === "notification" && (
                 <Checkbox
                   onClick={(e) => e.stopPropagation()}
-                  onChange={onChange}
+                  onChange={onChangeCheckbox}
                   checked={checked}
                   className="!mr-2"
                   sx={{
@@ -158,12 +164,14 @@ export default function AccordionComponent({
             {rank && (
               <Box
                 onClick={(e) => !frequency && e.stopPropagation()}
-                className={`flex justify-end items-center ${frequency ? "w-1/5 lg:w-1/4" : ""}`}
+                className={`flex justify-end items-center ${
+                  frequency ? "w-1/5 lg:w-1/4" : ""
+                }`}
               >
                 <Rank
                   variant="annotation"
                   type={rank}
-                  outline={frequency ? true :false}
+                  outline={frequency ? true : false}
                   popover={frequency ? false : true}
                   onRankChange={onChangeRank}
                 />
@@ -178,7 +186,8 @@ export default function AccordionComponent({
           backgroundColor: "transparent",
           borderTop: "none",
           borderColor: colorByModeSecondary,
-          paddingLeft: "8px !important",
+          paddingLeft:
+            type !== "council" ? "18px !important" : "8px !important",
         }}
       >
         {type !== "council" && children}

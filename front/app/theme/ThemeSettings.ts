@@ -371,7 +371,6 @@ export default class ThemeSettings {
             },
           },
         },
-        //Mudar somente border radios para 8px e não 4 .css-4ux6g8-MuiButtonBase-root-MuiButton-root
         MuiButton: {
           styleOverrides: {
             root: {
