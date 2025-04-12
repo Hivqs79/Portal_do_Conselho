@@ -184,7 +184,8 @@ export default function AccordionComponent({
         className={type === "table" ? "rounded-b-big" : ""}
         sx={{
           backgroundColor: type === "default" ? backgroundColor : "transparent",
-          borderRadius: type === "default" ? "16px 0px" : "0px",
+          borderBottomLeftRadius: type === "default" ? "16px" : "0px",
+          borderBottomRightRadius: type === "default" ? "16px" : "0px",
           borderTop: "none",
           padding: type === "default" ? "0px !important" : "8px 0px !important",
           borderColor: colorByModeSecondary,
