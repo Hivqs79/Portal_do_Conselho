@@ -21,7 +21,7 @@ export default function AvaliationInputs({
   copyButton,
   withoutBorder,
 }: AvaliationInputsProps) {
-  const { colorByModeSecondary } = useThemeContext();
+  const { colorByModeSecondary, backgroundColor } = useThemeContext();
 
   const handlePositiveChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onPositiveChange && onPositiveChange(e.target.value);
@@ -34,7 +34,7 @@ export default function AvaliationInputs({
   return (
     <>
       <div
-        style={{ borderColor: colorByModeSecondary }}
+        style={{ borderColor: colorByModeSecondary}}
         className={"w-full flex-col lg:flex-row rounded-b-big p-5 flex border-t-0 justify-center items-center flex-wrap gap-4 md:flex-nowrap " + (withoutBorder ? "border-0" : "border-[2px]")}
       >
         <TextareaComponent

@@ -183,11 +183,13 @@ export default function AccordionComponent({
       <AccordionDetails
         className={type === "table" ? "rounded-b-big" : ""}
         sx={{
-          backgroundColor: "transparent",
+          backgroundColor: type === "default" ? backgroundColor : "transparent",
+          borderRadius: type === "default" ? "16px 0px" : "0px",
           borderTop: "none",
+          padding: type === "default" ? "0px !important" : "8px 0px !important",
           borderColor: colorByModeSecondary,
           paddingLeft:
-            type !== "council" ? "18px !important" : "8px !important",
+            type !== "council" && type !== "default" ? "18px !important" : type === "default" ? "0px !important" : "8px !important",
         }}
       >
         {type !== "council" && children}
