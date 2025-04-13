@@ -594,11 +594,11 @@ export default function RealizeCouncil() {
 
   const CancelCouncil = async () => {
     setIsLoadingOpen(true);
-    await deleteStorage();
     const councilChanged = await changeCouncilState();
     if (!councilChanged) {
       return;
     }
+    await deleteStorage();
     setTimeout(() => {
       setIsLoadingOpen(false);
       redirectPage("council");

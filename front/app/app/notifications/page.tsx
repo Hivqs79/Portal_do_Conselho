@@ -183,7 +183,7 @@ export default function Notifications() {
                   }
                   checked={selectedNotifications.includes(index)}
                 >
-                  {(notification as TableNotificationRow).message}
+                  <Typography variant="md_text_regular">{(notification as TableNotificationRow).message}</Typography>
                 </AccordionComponent>
               </Box>
             ))
