@@ -27,7 +27,6 @@ export default function CommentariesModal({
     redDanger,
     backgroundColor,
     constrastColor,
-    terciaryColor,
     colorByModeSecondary,
   } = useThemeContext();
 

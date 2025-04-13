@@ -22,6 +22,9 @@ export class BrandColors {
     }
 
     public static changePallete(color: "gray" | "blue" | "pink" | "yellow" | "red" | "green" | "purple" | "orange") {
+        if (!colors?.pallete?.[color]) {
+            return;
+        }
         BrandColors._primary_color = colors.pallete[color].primary;
         BrandColors._secondary_color = colors.pallete[color].secondary;
         BrandColors._terciary_color = colors.pallete[color].terciary;

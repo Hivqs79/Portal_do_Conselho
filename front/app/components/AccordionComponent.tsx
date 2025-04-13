@@ -16,7 +16,7 @@ import { Rank as RankType } from "@/interfaces/RankType";
 import Rank from "./rank/Rank";
 
 interface AnotationProps {
-  type: "default" | "notification" | "council" | "table";
+  type: "default" | "notification" | "council" | "table" | "support";
   outlined?: boolean;
   frequency?: number | boolean;
   name: string;
@@ -112,7 +112,7 @@ export default function AccordionComponent({
             backgroundColor:
               type === "table"
                 ? OpacityHex(secondaryColor, 0.18)
-                : type === "default" ? primaryColor : "transparent",
+                : type === "default" || type === "support" ? primaryColor : "transparent",
             boxShadow:
               type === "table"
                 ? `0px 2px 4px 2px ${OpacityHex(colorByModeSecondary, 0.18)}`

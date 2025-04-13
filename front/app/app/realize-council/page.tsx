@@ -291,9 +291,9 @@ export default function RealizeCouncil() {
         const classComentaries = await classResponse.json();
         setClassCommentaries(classComentaries.content);
         console.log("council ID class and student: ", councilId);
-
+        console.log("Nam: ", users[currentStudentIndex]?.name);
         const studentResponse = await fetch(
-          `http://localhost:8081/annotations/student?councilId=${councilId}`,
+          `http://localhost:8081/annotations/student?councilId=${councilId}&studentName=${users[currentStudentIndex]?.name}`,
           {
             method: "GET",
             headers: {
@@ -309,7 +309,7 @@ export default function RealizeCouncil() {
       }
     };
     fetchCommentaries();
-  }, []);
+  }, [users, currentStudentIndex]);
 
   const handlePositiveChange = (content: string) => {
     setPositiveClassContent(content);
@@ -797,15 +797,9 @@ export default function RealizeCouncil() {
       )}
       {isModalStudentOpen && (
         <CommentariesModal
-          anotations={[]} //remover
-          name="" //remover
-          // anotations={
-          //   data ? data["council-form"].users[currentStudentIndex].comments : []
-          // }
+          anotations={studentCommentaries}
           student={true}
-          // name={
-          //   data ? data["council-form"].users[currentStudentIndex].name : ""
-          // }
+          name={"teste"}
           onClose={closeStudentModal}
         />
       )}
