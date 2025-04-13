@@ -4,5 +4,7 @@ import { Rank } from "./RankType";
 export default interface Feedback {
   id: number;
   rank: Rank;
-  council: Council;
+  council: Council;  
+  strengths: string;
+  toImprove: string;
 }

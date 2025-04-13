@@ -1,15 +1,8 @@
-import Council from "./Council";
-import { Rank } from "./RankType";
+import Feedback from "./Feedback";
 import Student from "./Student";
-import { Teacher } from "./Teacher";
 
-export default interface FeedbackStudent {
+export default interface FeedbackStudent extends Feedback {
   id: number;
-  rank: Rank;
-  strengths: string;
-  toImprove: string;
-  council: Council;
-  teacher: Teacher;
   student: Student;
   frequency: number;
   satisfied: boolean;
