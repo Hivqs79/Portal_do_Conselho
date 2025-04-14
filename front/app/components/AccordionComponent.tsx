@@ -194,7 +194,7 @@ export default function AccordionComponent({
           borderColor: colorByModeSecondary,
           paddingLeft:
             type !== "council" && type !== "default" ? "18px !important" : type === "default" ? "0px !important" : "8px !important",
-          paddingRight: type !== "council" && type !== "default" ? "18px !important" : "8px !important",
+          paddingRight: type !== "council" && type !== "default" ? "18px !important" : "0px !important",
         }}
       >
         {type !== "council" && children}
