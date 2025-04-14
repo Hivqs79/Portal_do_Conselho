@@ -1,5 +1,5 @@
 import { useThemeContext } from "@/hooks/useTheme";
-import { Badge, Box, Slide, Snackbar, Typography } from "@mui/material";
+import { Badge, Box, Fade, Slide, Snackbar, Typography } from "@mui/material";
 import LogoIcon from "./LogoIcon";
 import Icon from "./Icon";
 import { IoClose, IoMenu, IoSettingsOutline } from "react-icons/io5";
@@ -14,22 +14,29 @@ import { useRoleContext } from "@/hooks/useRole";
 import NotificationMenu from "./NotificationMenu";
 import NotificationType from "@/interfaces/Notification";
 import Notification from "./Notification";
+import { ResponseApiPageable } from "@/interfaces/ResponseApiPageable";
+import { useRouter } from "next/navigation";
+
+const SlideLeft = (props: any) => {
+  return <Slide {...props} direction="left" />;
+};
 
 interface HeaderProps {
   variant?: string;
 }
 
 export default function Header({ variant }: HeaderProps) {
-  const { primaryColor, terciaryColor, whiteColor } = useThemeContext();
+  const { primaryColor, whiteColor } = useThemeContext();
   const [openMenu, setOpenMenu] = useState(false);
   const boxRef = useRef<HTMLElement>(null);
   const windowWidth = useWindowWidth();
-  const [notifications, setNotifications] = useState(0);
+  const [notifications, setNotifications] = useState<ResponseApiPageable<NotificationType> | null>();
   const { userId } = useRoleContext();
   const [openNotificationMenu, setOpenNotificationMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [notificationToastOpen, setNotificationToastOpen] = useState(false);
   const [incomingNotification, setIncomingNotification] = useState<NotificationType | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (userId !== -1) {
@@ -37,9 +44,14 @@ export default function Header({ variant }: HeaderProps) {
         const response = await fetch(
           "http://localhost:8081/notification/user/" + userId
         );
-        const data = await response.json();
+        let data: ResponseApiPageable<NotificationType> = await response.json();
         console.log(data);
-        setNotifications(data.totalElements);
+        data = {
+          ...data,
+          content: data.content.filter((notification) => !notification.viewed)
+        }
+        console.log(data);
+        setNotifications(data);        
       };
 
       const subscribe = async () => {
@@ -52,7 +64,6 @@ export default function Header({ variant }: HeaderProps) {
           console.log("Nova mensagem:", notification);
           fetchNotifications();
           setIncomingNotification(notification);
-          setNotificationToastOpen(true);
         };
       };
 
@@ -60,6 +71,13 @@ export default function Header({ variant }: HeaderProps) {
       subscribe();
     }
   }, [userId]);
+
+  useEffect(() => {
+    if (incomingNotification !== null) {
+      console.log(incomingNotification);
+      setNotificationToastOpen(true);
+    }
+  }, [incomingNotification]);
 
   return (
     <Box
@@ -119,6 +137,19 @@ export default function Header({ variant }: HeaderProps) {
           <Typography
             variant={windowWidth < 640 ? "md_text_regular" : "xl_text_regular"}
             style={{ color: whiteColor }}
+            onClick={() => {
+              console.log("click");
+              setIncomingNotification(
+                {
+                  "id": 1,
+                  "userId": 16,
+                  "title": "Novo conselho iniciado!",
+                  "message": "O conselho da turma: WU75 iniciado",
+                  "messageDateTime": new Date("2025-04-08T11:48:35.485102"),
+                  "viewed": false
+                }
+              );
+            }}
           >
             Usuário
           </Typography>
@@ -153,7 +184,7 @@ export default function Header({ variant }: HeaderProps) {
             setAnchorEl(e.currentTarget);
           }}
         >
-          <Badge badgeContent={notifications} color="secondary">
+          <Badge badgeContent={notifications ? notifications.content.length : 0} color="secondary">
             <Icon
               IconPassed={VscBell}
               color={whiteColor}
@@ -165,29 +196,32 @@ export default function Header({ variant }: HeaderProps) {
           open={openNotificationMenu}
           close={() => setOpenNotificationMenu(false)}
           anchorEl={anchorEl}
+          notifications={notifications ? notifications.content : []}
         />
-        <Slide direction="left" in={notificationToastOpen} mountOnEnter unmountOnExit timeout={350}>
-          <Snackbar
-            anchorOrigin={{ vertical: "top", horizontal: "right" }}
-            open={true}
-            autoHideDuration={5000}
-            onClick={() =>
-              setNotificationToastOpen(false)
-            }
-          >
-            {incomingNotification ? (
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={notificationToastOpen}
+          autoHideDuration={5000}
+          onClose={() => setNotificationToastOpen(false)}
+          TransitionComponent={SlideLeft}
+        >
+          <div>
+            {incomingNotification &&
               <Notification
+                variant="toast"
                 notification={incomingNotification}
-                onClick={() => {
-                  setNotificationToastOpen(false);
-                }}
                 onClose={() => {
                   setNotificationToastOpen(false);
                 }}
+                onClick={(notification) => {
+                  localStorage.setItem("notificationClickedId", notification.id.toString());
+                  router.push("/notifications");
+                  setNotificationToastOpen(false);
+                }}
               />
-            ) : <></>}
-          </Snackbar>
-        </Slide>
+            }
+          </div>
+        </Snackbar>
       </Box>
     </Box>
   );

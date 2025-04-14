@@ -27,6 +27,7 @@ interface AnotationProps {
   rank?: RankType;
   onChangeRank?: (rank: RankType) => void;
   onClick?: () => void;
+  open?: boolean;
 }
 
 export default function AccordionComponent({
@@ -41,6 +42,7 @@ export default function AccordionComponent({
   rank,
   onChangeRank, 
   onClick,
+  open = false
 }: AnotationProps) {
   const {
     primaryColor,
@@ -51,10 +53,11 @@ export default function AccordionComponent({
     colorByMode,
     secondaryColor,
   } = useThemeContext();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(open);
 
   return (
     <Accordion
+      expanded={isOpen}
       sx={{
         boxShadow:
           type === "table" || type === "default"
@@ -116,7 +119,7 @@ export default function AccordionComponent({
             boxShadow:
               type === "table"
                 ? `0px 2px 4px 2px ${OpacityHex(colorByModeSecondary, 0.18)}`
-                : type === "default" ? `inset 0px 0px 0px 2px ${colorByModeSecondary}` : "none",
+                : (type === "default" || type === "notification") ? `inset 0px 0px 0px 2px ${colorByModeSecondary}` : "none",
             "& .MuiAccordionSummary-content": {
               margin: "0px !important",
             },
@@ -145,7 +148,7 @@ export default function AccordionComponent({
                 />
               )}
               <Typography
-                variant="lg_text_bold"
+                variant="md_text_bold"
                 className="flex-1"
                 color={outlined ? colorByMode : whiteColor}
               >
@@ -185,11 +188,12 @@ export default function AccordionComponent({
         sx={{
           backgroundColor: type === "default" ? backgroundColor : "transparent",
           borderRadius: type === "default" ? "16px 0px" : "0px",
-          borderTop: "none",
+          borderTop: "1px",
           padding: type === "default" ? "0px !important" : "8px 0px !important",
           borderColor: colorByModeSecondary,
           paddingLeft:
             type !== "council" && type !== "default" ? "18px !important" : type === "default" ? "0px !important" : "8px !important",
+          paddingRight: type !== "council" && type !== "default" ? "18px !important" : "8px !important",
         }}
       >
         {type !== "council" && children}

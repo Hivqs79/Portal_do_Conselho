@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import AccordionComponent from "@/components/AccordionComponent";
 import Title from "@/components/Title";
 import { useThemeContext } from "@/hooks/useTheme";
@@ -16,6 +16,7 @@ export default function Notifications() {
     backgroundColor,
     textDarkColor,
     whiteColor,
+    constrastColor
   } = useThemeContext();
 
   const [selectedNotifications, setSelectedNotifications] = useState<number[]>(
@@ -30,6 +31,14 @@ export default function Notifications() {
   const isAllSelected =
     notifications !== null &&
     selectedNotifications.length === notifications.content.length;
+
+  const clickedNotification = localStorage.getItem("notificationClickedId");
+
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      localStorage.removeItem("notificationClickedId");
+    }, 5000);
+  }, []);
 
   const handleSelectAll = () => {
     if (isAllSelected) {
@@ -60,9 +69,8 @@ export default function Notifications() {
 
   const fetchNotifications = async () => {
     const response = await fetch(
-      `http://localhost:8081/notification/user/${userId}?page=${
-        page - 1
-      }&size=${rowsPerPage}`
+      `http://localhost:8081/notification/user/${userId}?page=${page - 1
+      }&size=${rowsPerPage}&sort=id,desc`
     );
     const data = await response.json();
     console.log(data);
@@ -110,7 +118,7 @@ export default function Notifications() {
                 onChange={handleSelectAll}
                 checked={isAllSelected}
               />
-              <Typography style={{ color: colorByMode }} variant="lg_text_bold">
+              <Typography style={{ color: colorByMode }} variant="md_text_bold">
                 Selecionar todos
               </Typography>
               {notificationsSelectedMessage && (
@@ -121,7 +129,7 @@ export default function Notifications() {
               )}
             </Box>
             {notificationsSelectedMessage && (
-              <Typography color={colorByMode} variant="lg_text_bold">
+              <Typography color={colorByMode} variant="md_text_bold">
                 {selectedNotifications.length}
                 {selectedNotifications.length === 1
                   ? " mensagem selecionada"
@@ -142,7 +150,7 @@ export default function Notifications() {
               }}
               variant="contained"
             >
-              <Typography variant="md_text_bold" color={whiteColor}>
+              <Typography variant="sm_text_bold" color={whiteColor}>
                 Marcar como lida
               </Typography>
             </Button>
@@ -152,14 +160,14 @@ export default function Notifications() {
                 selectedNotifications.forEach((index) => {
                   handleDeleteNotification(
                     (notifications?.content[index] as TableNotificationRow).id
-                    );
+                  );
                 });
                 setSelectedNotifications([]);
               }}
               variant="contained"
               color="terciary"
             >
-              <Typography variant="md_text_bold" color={textDarkColor}>
+              <Typography variant="sm_text_bold" color={textDarkColor}>
                 Deletar
               </Typography>
             </Button>
@@ -168,25 +176,32 @@ export default function Notifications() {
 
         <Box className="flex flex-col gap-2">
           {notifications ? (
-            notifications.content.map((notification, index) => (
-              <Box key={index}>
+            notifications?.content.map((notification, index) => {
+              notification = notification as TableNotificationRow;
+              return <Box key={index}>
                 <AccordionComponent
                   type="notification"
-                  name={(notification as TableNotificationRow).title}
+                  name={notification.title}
                   outlined
-                  viewed={(notification as TableNotificationRow).viewed}
+                  viewed={notification.viewed}
                   onChangeCheckbox={() => handleSelectNotification(index)}
-                  onClick={() =>
-                    setViewedNotification(
-                      (notification as TableNotificationRow).id
-                    )
-                  }
                   checked={selectedNotifications.includes(index)}
+                  onClick={() => !notification.viewed && setViewedNotification(notification.id)}
+                  open={clickedNotification !== null && (() => {
+                    if (parseInt(clickedNotification) === notification.id && !notification.viewed) {
+                      setViewedNotification(notification.id)
+                      notification.viewed = true;
+                      return true;
+                    }
+                    return false;
+                  })()}
                 >
-                  {(notification as TableNotificationRow).message}
+                  <Typography variant="sm_text_regular" color={constrastColor}>
+                    {notification.message}
+                  </Typography>
                 </AccordionComponent>
               </Box>
-            ))
+            })
           ) : (
             <Typography color={colorByMode} variant="lg_text_bold">
               Não existem notificações
@@ -196,10 +211,13 @@ export default function Notifications() {
       </Box>
       <PaginationTable
         count={notifications ? notifications.totalPages : 0}
-        page={notifications ? notifications.pageable.pageNumber + 1 : 1}
+        page={page}
         setPage={setPage}
         rowsPerPage={rowsPerPage}
-        setRowsPerPage={(rowsPerPage: number) => setRowsPerPage(rowsPerPage)}
+        setRowsPerPage={(rowsPerPage: number) => {
+          setRowsPerPage(rowsPerPage);
+          setPage(1);
+        }}
       />
     </Box>
   );
