@@ -137,7 +137,10 @@ export default function Annotations() {
 
   const headerButtonsStudent: TableHeaderButtons = {
     searchInput: true,
-    setSearch: (term: string) => setStudentSearch(term),
+    setSearch: (term: string) => {
+      setStudentSearch(term)
+      setPage(1)      
+    },
     searchValue: studentSearch,
   };
 
@@ -316,7 +319,10 @@ export default function Annotations() {
         page={classAnnotations ? classAnnotations.pageable.pageNumber + 1 : 1}
         setPage={setPage}
         rowsPerPage={rowsPerPage}
-        setRowsPerPage={(rowsPerPage: number) => setRowsPerPage(rowsPerPage)}
+        setRowsPerPage={(rowsPerPage: number) => {
+          setRowsPerPage(rowsPerPage); 
+          setPage(1); 
+        }}
       />
       <AnnotationsModal
         variant="annotations"

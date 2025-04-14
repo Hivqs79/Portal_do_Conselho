@@ -67,7 +67,10 @@ export default function Council() {
 
   const headerButtons: TableHeaderButtons = {
     searchInput: true,
-    setSearch: (term: string) => setSearchClass(term),
+    setSearch: (term: string) => {
+      setSearchClass(term); 
+      setPage(1);
+    },
     orderButton: true,
     filterButton: true,
   };
@@ -347,9 +350,10 @@ export default function Council() {
             page={councils ? councils.pageable.pageNumber + 1 : 1}
             setPage={setPage}
             rowsPerPage={rowsPerPage}
-            setRowsPerPage={(rowsPerPage: number) =>
-              setRowsPerPage(rowsPerPage)
-            }
+            setRowsPerPage={(rowsPerPage: number) => {
+              setRowsPerPage(rowsPerPage);
+              setPage(1);
+            }}
           />
           <CouncilModal
             open={visualizedCouncil !== null}
