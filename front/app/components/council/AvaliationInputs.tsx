@@ -21,7 +21,7 @@ export default function AvaliationInputs({
   copyButton,
   withoutBorder,
 }: AvaliationInputsProps) {
-  const { colorByModeSecondary, backgroundColor } = useThemeContext();
+  const { colorByModeSecondary } = useThemeContext();
 
   const handlePositiveChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onPositiveChange && onPositiveChange(e.target.value);
@@ -41,7 +41,7 @@ export default function AvaliationInputs({
           title="Pontos Positivos"
           content={Positivecontent as string}
           readonly={readOnly}
-          placeholder="Digite algo aqui..."
+          placeholder={readOnly ? "Nada aqui..." : "Digite algo aqui..."}
           onChange={handlePositiveChange}
           copyButton={copyButton}
         />
@@ -53,7 +53,7 @@ export default function AvaliationInputs({
           title="Pontos a melhorar"
           content={Negativecontent as string}
           readonly={readOnly}
-          placeholder="Digite algo aqui..."
+          placeholder={readOnly ? "Nada aqui..." : "Digite algo aqui..."}
           onChange={handleNegativeChange}
           copyButton={copyButton}
         />

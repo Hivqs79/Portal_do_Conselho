@@ -230,7 +230,7 @@ export default function RealizeCouncil() {
   const fetchUsersInClass = async (idClass: number) => {
     try {
       const response = await fetch(
-        "http://localhost:9876/class/student/" + idClass
+        "http://localhost:8081/class/student/" + idClass
       );
       const users = await response.json();
       return users;
@@ -291,9 +291,9 @@ export default function RealizeCouncil() {
         const classComentaries = await classResponse.json();
         setClassCommentaries(classComentaries.content);
         console.log("council ID class and student: ", councilId);
-
+        console.log("Nam: ", users[currentStudentIndex]?.name);
         const studentResponse = await fetch(
-          `http://localhost:8081/annotations/student?councilId=${councilId}`,
+          `http://localhost:8081/annotations/student?councilId=${councilId}&studentName=${users[currentStudentIndex]?.name}`,
           {
             method: "GET",
             headers: {
@@ -309,7 +309,7 @@ export default function RealizeCouncil() {
       }
     };
     fetchCommentaries();
-  }, []);
+  }, [users, currentStudentIndex]);
 
   const handlePositiveChange = (content: string) => {
     setPositiveClassContent(content);
@@ -427,7 +427,7 @@ export default function RealizeCouncil() {
       strengths: formattedJson?.["council-form"].class.ClasspositiveContent,
       toImprove: formattedJson?.["council-form"].class.ClassnegativeContent,
     });
-    await fetch("http://localhost:9876/feedbacks/class", {
+    await fetch("http://localhost:8081/feedbacks/class", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -442,7 +442,7 @@ export default function RealizeCouncil() {
 
     if (formattedJson) {
       formattedJson["council-form"].users.forEach(async (user) => {
-        await fetch("http://localhost:9876/feedbacks/student", {
+        await fetch("http://localhost:8081/feedbacks/student", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -458,7 +458,7 @@ export default function RealizeCouncil() {
         });
       });
       await changeCouncilState();
-      await fetch("http://localhost:9876/council/modifyFinished/" + idCouncil, {
+      await fetch("http://localhost:8081/council/modifyFinished/" + idCouncil, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -594,11 +594,11 @@ export default function RealizeCouncil() {
 
   const CancelCouncil = async () => {
     setIsLoadingOpen(true);
-    await deleteStorage();
     const councilChanged = await changeCouncilState();
     if (!councilChanged) {
       return;
     }
+    await deleteStorage();
     setTimeout(() => {
       setIsLoadingOpen(false);
       redirectPage("council");
@@ -609,7 +609,7 @@ export default function RealizeCouncil() {
   async function fetchHappeningCouncil() {
     try {
       const res = await fetch(
-        "http://localhost:9876/council?isHappening=true",
+        "http://localhost:8081/council?isHappening=true",
         {
           method: "GET",
           headers: {
@@ -641,7 +641,7 @@ export default function RealizeCouncil() {
       const id = await fetchHappeningCouncil();
       if (id) {
         const modifyRes = await fetch(
-          `http://localhost:9876/council/modify/${id}`,
+          `http://localhost:8081/council/modify/${id}`,
           {
             method: "PATCH",
             headers: {
@@ -797,15 +797,9 @@ export default function RealizeCouncil() {
       )}
       {isModalStudentOpen && (
         <CommentariesModal
-          anotations={[]} //remover
-          name="" //remover
-          // anotations={
-          //   data ? data["council-form"].users[currentStudentIndex].comments : []
-          // }
+          anotations={studentCommentaries}
           student={true}
-          // name={
-          //   data ? data["council-form"].users[currentStudentIndex].name : ""
-          // }
+          name={"teste"}
           onClose={closeStudentModal}
         />
       )}

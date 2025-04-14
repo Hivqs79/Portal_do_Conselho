@@ -196,7 +196,7 @@ export default function Notifications() {
                     return false;
                   })()}
                 >
-                  <Typography variant="sm_text_regular" color={constrastColor}>
+                  <Typography variant="md_text_regular" color={constrastColor}>
                     {notification.message}
                   </Typography>
                 </AccordionComponent>

@@ -270,9 +270,10 @@ export default function Components() {
               type="default"
               key={index}
               name={anotation.name}
-              description={anotation.description}
               outlined={false}
-            />
+            >
+              <Typography variant="md_text_regular">{anotation.description}</Typography>
+            </AccordionComponent>
           ))}
         </span>
       </Box>

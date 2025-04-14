@@ -210,7 +210,7 @@ export default function StudentCouncilForm({
               </Typography>
             </Box>
             <Photo
-              classname="max-w-[200px] max-h-[290px] h-[300px] w-[350px] sm:max-w-[250px] mx-auto rounded-lg shadow-md"
+              classname="max-w-[200px] max-h-[290px] h-[300px] w-[350px] sm:max-w-[250px] mx-auto rounded-lg"
               idUser={1}
               rounded={false}
             />
