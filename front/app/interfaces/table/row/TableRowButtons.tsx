@@ -1,4 +1,5 @@
 import { TableRowPossibleTypes } from "./TableRowPossibleTypes";
+import { Rank } from "@/interfaces/RankType";
 
 export interface TableRowButtons {
     rankButton?: boolean;
@@ -17,4 +18,7 @@ export interface TableRowButtons {
     onClickVisualize?: (row: TableRowPossibleTypes) => void;
     onClickRealease?: (row: TableRowPossibleTypes) => void;
     onClickAnnotation?: (row: TableRowPossibleTypes) => void;
+    setRank?: (rank: Rank, idStudent: number) => void;
+    setPositiveStudentContent?: (content: string, idStudent: number) => void;
+    setNegativeStudentContent?: (content: string, idStudent: number) => void;
 }

@@ -10,6 +10,14 @@ import {
 } from "react";
 import { Theme } from "@mui/material/styles";
 import ThemeSettings from "../theme/ThemeSettings";
+import { getThemeMode as getThemeModeImport, 
+  getFontSize as getFontSizeImport,
+  getFontFamilyText as getFontFamilyTextImport,
+  getFontFamilyTitle as getFontFamilyTitleImport,
+  changeFontSize as changeFontSizeImport,
+  changeFontFamilyText as changeFontFamilyTextImport,
+  changeFontFamilyTitle as changeFontFamilyTitleImport,
+} from "../theme/ThemeSettings";
 import { BrandColors, colors } from "../theme/BrandColors";
 
 export type PossibleColors =
@@ -81,11 +89,11 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const greenConfirm = colors.greenConfirm;
   const lighterColor = (color: string) => ThemeSettings.lighterColor(color);
   const darkerColor = ThemeSettings.darkerColor;
-  const getThemeMode = () => ThemeSettings.getThemeMode();
+  const getThemeMode = () => getThemeModeImport();
   const getThemePallete = (): PossibleColors => ThemeSettings.getThemePallete() as PossibleColors;  
-  const getFontSize = () => ThemeSettings.getFontSize();
-  const getFontFamilyText = () => ThemeSettings.getFontFamilyText();
-  const getFontFamilyTitle = () => ThemeSettings.getFontFamilyTitle();
+  const getFontSize = () => getFontSizeImport();
+  const getFontFamilyText = () => getFontFamilyTextImport();
+  const getFontFamilyTitle = () => getFontFamilyTitleImport();
 
   const reloadTheme = () => {
     setTheme(ThemeSettings.createThemePallete());
@@ -105,17 +113,17 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   };
 
   const changeFontSize = (multiplier: number) => {
-    ThemeSettings.changeFontSize(multiplier);
+    changeFontSizeImport(multiplier);
     reloadTheme();
   };
 
   const changeFontFamilyText = (fontFamilyText: string) => {
-    ThemeSettings.changeFontFamilyText(fontFamilyText);
+    changeFontFamilyTextImport(fontFamilyText);
     reloadTheme();
   };
 
   const changeFontFamilyTitle = (fontFamilyText: string) => {
-    ThemeSettings.changeFontFamilyTitle(fontFamilyText);
+    changeFontFamilyTitleImport(fontFamilyText);
     reloadTheme();
   };
 

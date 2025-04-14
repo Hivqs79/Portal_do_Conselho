@@ -192,8 +192,8 @@ function OTP({
         <React.Fragment key={index}>
           <StyledOTPInput
             aria-label={`Digit ${index + 1} of OTP`}
-            inputRef={(ele: any) => {
-                return inputRefs.current[index] = ele!;
+            ref={(ele: HTMLInputElement | null) => {
+              inputRefs.current[index] = ele!;
             }}
             onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(event, index)}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event, index)}

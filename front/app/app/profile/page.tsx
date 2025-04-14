@@ -9,6 +9,7 @@ import { Box, Button, IconButton, Snackbar, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import { LuPencilLine } from "react-icons/lu";
+import { useRoleContext } from "@/hooks/useRole";
 
 export default function Profile() {
   const {
@@ -19,7 +20,7 @@ export default function Profile() {
     textBlackolor,
   } = useThemeContext();
 
-  const [isStudent, setRole] = useState(true);
+  const {role} = useRoleContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
@@ -143,7 +144,7 @@ export default function Profile() {
               onClick={() => handleCopy("teste@estudante.sesisenai.org.br")}
             />
           </span>
-          {isStudent && (
+          {role === "student" && (
             <span className="w-full flex flex-col justify-center items-start gap-2">
               <Typography color={colorByModeSecondary} variant="lg_text_bold">
                 Turma

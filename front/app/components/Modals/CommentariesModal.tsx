@@ -7,8 +7,8 @@ import { useEffect } from "react";
 import AccordionComponent from "../AccordionComponent";
 import OpacityHex from "@/utils/OpacityHex";
 import { Rank } from "@/interfaces/RankType";
-import Annotations from "@/app/annotations/page";
 import AvaliationInputs from "../council/AvaliationInputs";
+import TeacherAnnotation from "@/interfaces/TeacherAnnotation";
 
 interface CommentariesModalProps {
   onClose: () => void;
@@ -27,24 +27,22 @@ export default function CommentariesModal({
     redDanger,
     backgroundColor,
     constrastColor,
-    terciaryColor,
     colorByModeSecondary,
-  } = useThemeContext();
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      onClose();
-    }
-  };
+  } = useThemeContext();  
 
   console.log("annotations: ", anotations);
 
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [onClose]);
 
   const verifyRank = (rank: string | undefined | null): string => {
     return rank ?? "none";
@@ -92,7 +90,8 @@ export default function CommentariesModal({
             className="p-2 mt-8 rounded-big"
           >
             <span className="flex rounded-big flex-col max-h-[550px] p-2 gap-2 overflow-y-scroll">
-              {anotations.map((anotation: any, index: number) => (
+              {anotations.map((anotation, index: number) => (
+                anotation = anotation as TeacherAnnotation,
                 console.log("anotation 2: ", anotation),
                 console.log("strengths: ", anotation.strengths),
                 console.log("toImprove: ", anotation.toImprove),

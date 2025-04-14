@@ -306,7 +306,7 @@ export default function CouncilModal({
               firstConfirmButton={() => {
                 setOpenConfirm(false);
                 close();
-                confirmFunction && confirmFunction();
+                confirmFunction?.();
               }}
             />
           )}

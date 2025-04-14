@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [page, setPage] = useState(1);
-  const [count, setCount] = useState(10);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableContent, setTableContent] = useState<TableContent>();
   const { role } = useRoleContext();
@@ -67,7 +66,7 @@ export default function Home() {
           <PaginationTable
             page={page}
             setPage={setPage}
-            count={count}
+            count={tableContent ? tableContent.totalElements : 1}
             rowsPerPage={rowsPerPage}
             setRowsPerPage={(rowsPerPage: number) => {
               setRowsPerPage(rowsPerPage);

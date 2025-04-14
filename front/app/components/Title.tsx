@@ -10,7 +10,7 @@ interface TitleProps {
     className?: string;
 }
 
-export default function Title({textHighlight, text, isWelcomeMensage=false, className}: TitleProps) {
+export default function Title({textHighlight, text, isWelcomeMensage=false, className = ""}: TitleProps) {
     const { colorByModeSecondary } = useThemeContext();
     const { role } = useRoleContext();
 
@@ -20,7 +20,7 @@ export default function Title({textHighlight, text, isWelcomeMensage=false, clas
     }
     return (
         <Box className={`flex !mt-[10rem] !mb-[4.5rem] ` + (isWelcomeMensage && "justify-center text-center")}>
-            <Typography variant="h4_title" color={colorByModeSecondary} className="font-bold">
+            <Typography variant="h4_title" color={colorByModeSecondary} className={"font-bold " + className}>
                 {textHighlight}
                 <Typography variant="h4_title" className="font-normal">{isWelcomeMensage && <br/>} {text}</Typography>
             </Typography>            

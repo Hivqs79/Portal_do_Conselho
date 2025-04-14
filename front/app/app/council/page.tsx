@@ -153,6 +153,7 @@ export default function Council() {
       },
     });
     console.log("Edited");
+    console.log(response);
   };
 
   const createCouncil = async () => {
@@ -283,11 +284,13 @@ export default function Council() {
           (selectedClass ? selectedClass : "")
       );
       const data = await response.json();
+      //TODO: Implement logic with teachers search
+      console.log(searchTeachers)
       setTeachers(data);
     };
     if (!selectedClass) return;
     fetchTeachers();
-  }, [selectedClass, isCreate]);
+  }, [selectedClass, isCreate, searchTeachers]);
 
   useEffect(() => {
     const fetchClass = async () => {

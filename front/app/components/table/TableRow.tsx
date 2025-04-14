@@ -56,10 +56,8 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     if (!("student" in content)) return "";
     return content.student.name;
   }
-  
-  console.log("oi");
-  console.log(content);
-  let name =
+
+  const name =
   "council" in content && content.student == null
     ? content.council.aclass && content.council.aclass.name
       ? content.council.aclass.name
@@ -70,7 +68,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     ? content.aclass.name
     : "";
 
-  let rank = "rank" in content && content.rank;
+  const rank = "rank" in content && content.rank;
 
   return (
     <>

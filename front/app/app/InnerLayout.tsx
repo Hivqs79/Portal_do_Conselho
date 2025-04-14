@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import { RoleProvider, useRoleContext } from "@/hooks/useRole";
 import { ThemeProviderContext, useThemeContext } from "@/hooks/useTheme";
 import { Box, ThemeProvider } from "@mui/material";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { ReactElement, useEffect } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";

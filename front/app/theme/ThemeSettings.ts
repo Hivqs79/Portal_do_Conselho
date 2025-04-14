@@ -13,6 +13,7 @@ import "@fontsource/inter";
 import "@fontsource/merriweather";
 import "@fontsource/libre-baskerville";
 import OpacityHex from "@/utils/OpacityHex";
+import { useLocalStorage } from 'usehooks-ts';
 
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
@@ -51,35 +52,74 @@ declare module "@mui/material/Typography" {
 const whiteColor = colors.whiteColor;
 const blackColor = colors.blackColor;
 
-export default class ThemeSettings {
-  public static getThemeMode(): "dark" | "light" {
-    const mode = localStorage.getItem("mode");
-    const isDarkMode = document.documentElement.classList.contains("dark");
-    if (mode === "dark" && !isDarkMode) {
-      this.changeThemeMode();
-      return "dark";
-    }
-    if (mode === "light" && isDarkMode) {
-      this.changeThemeMode();
-      return "light";
-    }
-    return isDarkMode ? "dark" : "light";
-  }
+export function getThemeMode() {
+  const [mode] = useLocalStorage("mode", JSON.stringify("light"));
+    // if (mode === "dark" && !isDarkMode) {
+    //   this.changeThemeMode();
+    //   return "dark";
+    // }
+    // if (mode === "light" && isDarkMode) {
+    //   this.changeThemeMode();
+    //   return "light";
+    // }
+    // return isDarkMode ? "dark" : "light";    
 
+  return mode === "dark" ? "dark" : "light";
+}
+
+export function getFontSize() {      
+  const [multiplier] = useLocalStorage("fontMultiplier", JSON.stringify("1"));      
+  return parseFloat(multiplier);
+}
+
+export function changeFontSize(multiplierProp: number) {
+  const [multiplier, setMultiplier] = useLocalStorage("fontMultiplier", JSON.stringify("1"));
+  if (multiplierProp !== parseInt(multiplier)) {
+    setMultiplier(multiplierProp.toString());
+  }
+}
+
+export function getFontFamilyText() {
+  const [fontFamilyText] = useLocalStorage("fontFamilyText", JSON.stringify("Poppins"));        
+  return fontFamilyText;
+}
+
+export function changeFontFamilyText(fontFamilyText: string) {
+  const [fontFamily, setFontFamily] = useLocalStorage("fontFamilyText", JSON.stringify("Poppins"));
+  if (fontFamilyText !== fontFamily) {
+    setFontFamily(fontFamilyText);
+  }
+}
+
+export function getFontFamilyTitle() {
+  const [fontFamilyTitle] = useLocalStorage("fontFamilyTitle", JSON.stringify("Lora"));
+  return fontFamilyTitle;
+}
+
+export function changeFontFamilyTitle(fontFamilyText: string) {
+  const [fontFamilyTitle, setFontFamilyTitle] = useLocalStorage("fontFamilyTitle", JSON.stringify("Lora"));
+  if (fontFamilyText !== fontFamilyTitle) {
+    setFontFamilyTitle(fontFamilyText);
+  }
+}
+
+export default class ThemeSettings {
+  
+  
   public static getThemePallete() {
-    const color = localStorage.getItem("theme");
-    return color ? color : "blue";
+    const [color] = useLocalStorage("theme", "blue");
+    return color;
   }
 
   public static getColorByMode() {
-    const mode = this.getThemeMode();
+    const mode = getThemeMode();
     return mode == "light"
       ? BrandColors.primary_color
       : BrandColors.terciary_color;
   }
 
   public static getColorByModeSecondary() {
-    const mode = this.getThemeMode();
+    const mode = getThemeMode();
     return mode == "light"
       ? BrandColors.primary_color
       : BrandColors.secondary_color;
@@ -106,7 +146,7 @@ export default class ThemeSettings {
   }
 
   public static getContrastThemeColor() {
-    const mode = this.getThemeMode();
+    const mode = getThemeMode();
     return mode == "dark" ? whiteColor : blackColor;
   }
 
@@ -115,7 +155,7 @@ export default class ThemeSettings {
   }
 
   public static getBackgroundThemeColor() {
-    const mode = this.getThemeMode();
+    const mode = getThemeMode();
     return mode == "dark" ? blackColor : whiteColor;
   }
 
@@ -124,46 +164,7 @@ export default class ThemeSettings {
       getContrastRatio(color, blackColor)
       ? whiteColor
       : blackColor;
-  }
-
-  public static getFontSize() {
-    const multiplier = localStorage.getItem("fontMultiplier");
-    if (!multiplier) {
-      localStorage.setItem("fontMultiplier", "1");
-      return 1;
-    }
-    return parseFloat(multiplier);
-  }
-
-  public static changeFontSize(multiplier: number) {
-    localStorage.setItem("fontMultiplier", multiplier.toString());
-  }
-
-  public static getFontFamilyText() {
-    const fontFamilyText = localStorage.getItem("fontFamilyText");
-    if (!fontFamilyText) {
-      localStorage.setItem("fontFamilyText", "Poppins");
-      return "Poppins";
-    }
-    return fontFamilyText;
-  }
-
-  public static changeFontFamilyText(fontFamilyText: string) {
-    localStorage.setItem("fontFamilyText", fontFamilyText);
-  }
-
-  public static getFontFamilyTitle() {
-    const fontFamilyText = localStorage.getItem("fontFamilyTitle");
-    if (!fontFamilyText) {
-      localStorage.setItem("fontFamilyTitle", "Lora");
-      return "Lora";
-    }
-    return fontFamilyText;
-  }
-
-  public static changeFontFamilyTitle(fontFamilyText: string) {
-    localStorage.setItem("fontFamilyTitle", fontFamilyText);
-  }
+  }  
 
   public static createThemePallete() {
     const themeBase = createTheme({});
@@ -172,14 +173,14 @@ export default class ThemeSettings {
     const redDanger = colors.redDanger;
     const terciary_color = BrandColors.terciary_color;
     const colorByMode = this.getColorByMode();
-    const fontMultiplier = this.getFontSize();
+    const fontMultiplier = getFontSize();
 
     const fontSize = (baseSize: number) => {
       return `${baseSize * fontMultiplier}rem`;
     };
 
-    const fontFamilyText = this.getFontFamilyText();
-    const fontFamilyTitle = this.getFontFamilyTitle();
+    const fontFamilyText = getFontFamilyText();
+    const fontFamilyTitle = getFontFamilyTitle();
 
     return createTheme(themeBase, {
       breakpoints: {

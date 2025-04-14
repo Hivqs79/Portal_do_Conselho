@@ -21,20 +21,24 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
     textBlackolor,
   } = useThemeContext();
 
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);  
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      onClose();
-    }
-  };
+  const handleClose = useCallback(() => {
+    onClose();
+  }, [onClose]);
 
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        handleClose();
+      }
+    };
+
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [handleClose]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

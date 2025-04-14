@@ -167,8 +167,8 @@ export default function StudentCouncilForm({
 
   // Restante do código permanece o mesmo...
   const handleFrequenciaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(",", ".");
-    let parsedValue = parseFloat(value);
+    const value = e.target.value.replace(",", ".");
+    const parsedValue = parseFloat(value);
 
     if (isNaN(parsedValue)) {
       setFrequencia(null);

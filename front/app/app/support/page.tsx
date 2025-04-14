@@ -94,9 +94,10 @@ export default function Reports() {
                   <Box key={index}>
                     <AccordionComponent
                       name={question.question}
-                      description={question.answer}
                       type="default"
-                    />
+                    >
+                      {question.answer}
+                    </AccordionComponent>
                   </Box>
                 );
               }

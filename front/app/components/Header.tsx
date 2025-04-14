@@ -1,5 +1,5 @@
 import { useThemeContext } from "@/hooks/useTheme";
-import { Badge, Box, Fade, Slide, Snackbar, Typography } from "@mui/material";
+import { Badge, Box, Slide, Snackbar, Typography, SlideProps } from "@mui/material";
 import LogoIcon from "./LogoIcon";
 import Icon from "./Icon";
 import { IoClose, IoMenu, IoSettingsOutline } from "react-icons/io5";
@@ -17,7 +17,7 @@ import Notification from "./Notification";
 import { ResponseApiPageable } from "@/interfaces/ResponseApiPageable";
 import { useRouter } from "next/navigation";
 
-const SlideLeft = (props: any) => {
+const SlideLeft = (props: SlideProps) => {
   return <Slide {...props} direction="left" />;
 };
 
