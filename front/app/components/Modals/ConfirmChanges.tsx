@@ -36,7 +36,7 @@ export default function ConfirmChanges({
   const [isValid, setIsValid] = useState(true);
   const {
     whiteColor,
-    textBlackolor,
+    textBlackColor,
     colorByModeSecondary,
     backgroundColor,
     redDanger,
@@ -139,7 +139,7 @@ export default function ConfirmChanges({
                 variant="contained"
                 color="terciary"
               >
-                <Typography variant="lg_text_bold" color={textBlackolor}>
+                <Typography variant="lg_text_bold" color={textBlackColor}>
                   Voltar
                 </Typography>
               </Button>
@@ -225,7 +225,7 @@ export default function ConfirmChanges({
                   variant="contained"
                   color="terciary"
                 >
-                  <Typography variant="lg_text_bold" color={textBlackolor}>
+                  <Typography variant="lg_text_bold" color={textBlackColor}>
                     Voltar
                   </Typography>
                 </Button>

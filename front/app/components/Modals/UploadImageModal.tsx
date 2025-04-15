@@ -18,7 +18,7 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
     backgroundColor,
     terciaryColor,
     whiteColor,
-    textBlackolor,
+    textBlackColor,
   } = useThemeContext();
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);  
@@ -133,29 +133,29 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
           />
 
           <div>
-            <Typography variant="md_text_regular" color={textBlackolor}>
+            <Typography variant="md_text_regular" color={textBlackColor}>
               Siga as seguintes orientações para a foto:
             </Typography>
 
             <ul className="list-disc pl-5 mt-3">
               <li>
-                <Typography variant="sm_text_regular" color={textBlackolor}>
+                <Typography variant="sm_text_regular" color={textBlackColor}>
                   Olhe diretamente para a câmera e não para os lados;
                 </Typography>
               </li>
               <li>
-                <Typography variant="sm_text_regular" color={textBlackolor}>
+                <Typography variant="sm_text_regular" color={textBlackColor}>
                   Não use nenhum acessório decorativo, como chapéu, boné, óculos
                   escuros, etc;
                 </Typography>
               </li>
               <li>
-                <Typography variant="sm_text_regular" color={textBlackolor}>
+                <Typography variant="sm_text_regular" color={textBlackColor}>
                   Dê preferência para fundos claros;
                 </Typography>
               </li>
               <li>
-                <Typography variant="sm_text_regular" color={textBlackolor}>
+                <Typography variant="sm_text_regular" color={textBlackColor}>
                   A foto deve ser do busto para cima;
                 </Typography>
               </li>
@@ -168,7 +168,7 @@ export default function UploadImageModal({ onClose }: UploadImageModalProps) {
             onClick={onClose}
             sx={{
               width: "45%",
-              color: textBlackolor,
+              color: textBlackColor,
               backgroundColor: terciaryColor,
               borderWidth: 2,
               fontSize: 14,

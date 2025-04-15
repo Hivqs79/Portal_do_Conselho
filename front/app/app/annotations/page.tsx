@@ -171,7 +171,7 @@ export default function Annotations() {
   useEffect(() => {
     const fetchClassAnnotations = async () => {
       const response = await fetch(
-        `http://localhost:8081/annotations/class?isHappening=false&isFinished=false&teacherId=${userId}&page=${page - 1
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/class?isHappening=false&isFinished=false&teacherId=${userId}&page=${page - 1
         }&size=${rowsPerPage}&className=${classSearch}`
       );
       const data = await response.json();
@@ -187,7 +187,7 @@ export default function Annotations() {
       teacherId?: number
     ) => {
       const response = await fetch(
-        `http://localhost:8081/annotations/student?councilId=${councilId}&teacherId=${teacherId}&studentName=${studentSearch}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/student?councilId=${councilId}&teacherId=${teacherId}&studentName=${studentSearch}`
       );
       const data = await response.json();
       setSelectedStudents(data.content);
@@ -206,7 +206,7 @@ export default function Annotations() {
     timeoutIdClass = setTimeout(async () => {
       if (!selectedAnnotation) return;
       const response = await fetch(
-        `http://localhost:8081/annotations/class/${selectedAnnotation.id}`,
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/class/${selectedAnnotation.id}`,
         {
           method: "PUT",
           headers: {
@@ -263,7 +263,7 @@ export default function Annotations() {
         const responses = await Promise.all(
           Object.keys(editedRows).map(id => {
             const row = editedRows[parseInt(id)];
-            return fetch(`http://localhost:8081/annotations/student/${id}`, {
+            return fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/student/${id}`, {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({

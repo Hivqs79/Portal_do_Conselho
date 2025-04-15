@@ -69,9 +69,10 @@ export default function Notifications() {
 
   const fetchNotifications = useCallback(async () => {
     const response = await fetch(
-      `http://localhost:8081/notification/user/${userId}?page=${page - 1
-      }&size=${rowsPerPage}&sort=id,desc`
+      `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/user/${userId}?page=${page - 1}
+      &size=${rowsPerPage}&sort=id,desc`
     );
+    console.log(process.env.URL_GENERAL_API);
     const data = await response.json();
     console.log(data);
     setNotifications(data);
@@ -83,7 +84,7 @@ export default function Notifications() {
 
   const setViewedNotification = async (id: number) => {
     const response = await fetch(
-      `http://localhost:8081/notification/${id}/is-viewed?isViewed=true`,
+      `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/${id}/is-viewed?isViewed=true`,
       {
         method: "PATCH",
       }
@@ -93,7 +94,7 @@ export default function Notifications() {
   };
 
   const handleDeleteNotification = async (id: number) => {
-    const response = await fetch(`http://localhost:8081/notification/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/${id}`, {
       method: "DELETE",
     });
     console.log(response);

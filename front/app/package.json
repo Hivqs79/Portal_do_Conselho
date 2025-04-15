@@ -23,6 +23,7 @@
     "dayjs": "^1.11.13",
     "kafka-node": "^5.0.0",
     "kafkajs": "^2.2.4",
+    "mui-one-time-password-input": "^5.0.0",
     "net": "^1.0.2",
     "next": "15.1.7",
     "react": "^19.0.0",

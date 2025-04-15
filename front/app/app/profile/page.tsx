@@ -17,7 +17,7 @@ export default function Profile() {
     whiteColor,
     colorByModeSecondary,
     constrastColor,
-    textBlackolor,
+    textBlackColor,
   } = useThemeContext();
 
   const {role} = useRoleContext();
@@ -84,7 +84,7 @@ export default function Profile() {
                 >
                   <Icon
                     IconPassed={LuPencilLine}
-                    color={textBlackolor}
+                    color={textBlackColor}
                     className="text-[1.5rem]"
                   />
                 </Button>

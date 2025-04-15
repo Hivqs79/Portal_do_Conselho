@@ -29,12 +29,10 @@ export default function ReleaseFeedback() {
     try {
       const fetchFeedbacks = async () => {
         const response = await fetch(
-          "http://localhost:8081/feedbacks/class?isReturned=false&page=" +
-            (page - 1) +
-            "&size=" +
-            rowsPerPage +
-            "&className=" +
-            feedbackSearch
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class?isReturned=false
+            &page=${page - 1}
+            &size=${rowsPerPage}
+            &className=${feedbackSearch}`
         );
         console.log("Response:", feedbackSearch);
         const data = await response.json();
@@ -69,7 +67,7 @@ export default function ReleaseFeedback() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8081/feedbacks/student?isReturned=false&councilId=${councilId}&studentName=${studentTerm}`,
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/student?isReturned=false&councilId=${councilId}&studentName=${studentTerm}`,
           {
             method: "GET",
             headers: {

@@ -146,7 +146,7 @@ export default function Council() {
   };
 
   const modifyCouncilStatus = async (id: number) => {
-    const response = await fetch("http://localhost:8081/council/modify/" + id, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/council/modify/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -159,7 +159,7 @@ export default function Council() {
   const createCouncil = async () => {
     console.log("testeCreate");
     setIsLoading(true);
-    const response = await fetch("http://localhost:8081/council", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/council`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -183,7 +183,7 @@ export default function Council() {
   const editCouncil = async () => {
     console.log("testeEdit");
     const response = await fetch(
-      "http://localhost:8081/council/" + visualizedCouncil?.id,
+      `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/council/${visualizedCouncil?.id}`,
       {
         method: "PUT",
         headers: {
@@ -280,8 +280,7 @@ export default function Council() {
   useEffect(() => {
     const fetchTeachers = async () => {
       const response = await fetch(
-        "http://localhost:8081/class/teacher/" +
-          (selectedClass ? selectedClass : "")
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class/teacher/${selectedClass}`
       );
       const data = await response.json();
       //TODO: Implement logic with teachers search
@@ -295,8 +294,7 @@ export default function Council() {
   useEffect(() => {
     const fetchClass = async () => {
       const response = await fetch(
-        "http://localhost:8081/class" +
-          (searchClass ? "?name=" + searchClass : "")
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class${searchClass ? "?name=" + searchClass : ""}`
       );
       const data = await response.json();
       setSelectedClass(data.content[0] && data.content[0].id);
@@ -308,7 +306,7 @@ export default function Council() {
   useEffect(() => {
     const fetchCouncil = async () => {
       const response = await fetch(
-        `http://localhost:8081/council?page=${page - 1}&size=${rowsPerPage}&className=${searchClass}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/council?page=${page - 1}&size=${rowsPerPage}&className=${searchClass}`
       );
       const data = await response.json();
       

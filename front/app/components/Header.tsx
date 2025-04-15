@@ -37,12 +37,13 @@ export default function Header({ variant }: HeaderProps) {
   const [notificationToastOpen, setNotificationToastOpen] = useState(false);
   const [incomingNotification, setIncomingNotification] = useState<NotificationType | null>(null);
   const router = useRouter();
+  const isSmall = windowWidth < 640;
 
   useEffect(() => {
     if (userId !== -1) {
       const fetchNotifications = async () => {
         const response = await fetch(
-          "http://localhost:8081/notification/user/" + userId
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/user/${userId}`
         );
         let data: ResponseApiPageable<NotificationType> = await response.json();
         console.log(data);
@@ -135,7 +136,7 @@ export default function Header({ variant }: HeaderProps) {
         </div>
         <Box className="flex flex-col justify-center items-start ml-2">
           <Typography
-            variant={windowWidth < 640 ? "md_text_regular" : "xl_text_regular"}
+            variant={isSmall ? "md_text_regular" : "xl_text_regular"}
             style={{ color: whiteColor }}
             onClick={() => {
               console.log("click");
@@ -161,7 +162,7 @@ export default function Header({ variant }: HeaderProps) {
             />
             <Typography
               variant={
-                windowWidth < 640 ? "xs_text_regular" : "sm_text_regular"
+                isSmall ? "xs_text_regular" : "sm_text_regular"
               }
               style={{
                 color: whiteColor,

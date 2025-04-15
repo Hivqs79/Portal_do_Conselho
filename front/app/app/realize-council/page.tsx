@@ -88,7 +88,7 @@ export default function RealizeCouncil() {
     backgroundColor,
     colorByModeSecondary,
     whiteColor,
-    textBlackolor,
+    textBlackColor,
   } = useThemeContext();
   const router = useRouter();
 
@@ -273,7 +273,7 @@ export default function RealizeCouncil() {
       const councilId = await fetchHappeningCouncil();
       if (councilId) {
         const classResponse = await fetch(
-          "http://localhost:8081/annotations/class?isHappening=true&isFinished=false",
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/class?isHappening=true&isFinished=false`,
           {
             method: "GET",
             headers: {
@@ -286,7 +286,7 @@ export default function RealizeCouncil() {
         console.log("council ID class and student: ", councilId);
 
         const studentResponse = await fetch(
-          `http://localhost:8081/annotations/student?councilId=${councilId}`,
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/student?councilId=${councilId}`,
           {
             method: "GET",
             headers: {
@@ -755,7 +755,7 @@ export default function RealizeCouncil() {
             >
               <Typography
                 variant={windowSize < 600 ? "sm_text_bold" : "lg_text_bold"}
-                color={textBlackolor}
+                color={textBlackColor}
               >
                 Cancelar Conselho
               </Typography>
