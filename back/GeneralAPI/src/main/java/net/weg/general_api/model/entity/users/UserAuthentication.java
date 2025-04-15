@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.weg.general_api.model.entity.security.PasswordResetToken;
 import net.weg.general_api.model.enums.RoleENUM;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,6 +35,9 @@ public class UserAuthentication implements UserDetails {
     private boolean enabled;
 
     private RoleENUM role;
+
+    @OneToMany(mappedBy = "userAuthentication")
+    private List<PasswordResetToken> passwordResetTokens;
 
     @OneToOne(mappedBy = "userAuthentication")
     @JsonIgnore
