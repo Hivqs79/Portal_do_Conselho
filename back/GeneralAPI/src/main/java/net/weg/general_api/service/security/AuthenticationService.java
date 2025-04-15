@@ -1,12 +1,8 @@
 package net.weg.general_api.service.security;
 
 import lombok.AllArgsConstructor;
-import net.weg.general_api.model.dto.request.LoginRequestDTO;
-import net.weg.general_api.model.dto.request.RegisterRequestDTO;
-import net.weg.general_api.model.entity.users.Pedagogic;
-import net.weg.general_api.model.entity.users.User;
+import net.weg.general_api.model.dto.request.users.LoginRequestDTO;
 import net.weg.general_api.model.entity.users.UserAuthentication;
-import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.PedagogicRepository;
 import net.weg.general_api.repository.UserAuthenticationRepository;
 import org.springframework.security.authentication.AuthenticationManager;
