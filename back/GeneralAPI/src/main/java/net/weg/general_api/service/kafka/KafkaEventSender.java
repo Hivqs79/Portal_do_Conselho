@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.exception.exceptions.KafkaException;
+import net.weg.general_api.model.entity.annotation.AnnotationStudent;
 import net.weg.general_api.model.entity.notification.Notification;
 import net.weg.general_api.service.notification.NotificationService;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,13 @@ public class KafkaEventSender {
 
             KafkaMessage message = new KafkaMessage();
             message.setHttpMethod(httpMethod);
+            System.out.println(":-:" + message);
+            if (object.getClass().getSimpleName().toLowerCase().equals("annotationstudent")) {
+                System.out.println(((AnnotationStudent) object).getStudent());
+            }
+            System.out.println(":-:" + object);
             message.setObject(object.toString());
+            System.out.println(":-:" + message);
             message.setDescription(descriptionLog);
             String jsonMessage = objectMapper.writeValueAsString(message);
 

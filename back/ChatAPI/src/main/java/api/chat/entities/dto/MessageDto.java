@@ -11,6 +11,7 @@ import java.time.*;
 @NoArgsConstructor
 /**
  * @author Vinícius Eduardo dos Santos
+ * @author Pedro Henrique Panstein
  */
 public class MessageDto {
 

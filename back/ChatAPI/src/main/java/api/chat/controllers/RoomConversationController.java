@@ -4,6 +4,7 @@ import api.chat.entities.dto.RoomConversationDto;
 import api.chat.entities.RoomConversation;
 import api.chat.service.RoomConversationService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,6 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 /**
  * @author Vinícius Eduardo dos Santos
+ * @author Pedro Henrique Panstein
  */
 public class RoomConversationController {
 
@@ -44,7 +46,7 @@ public class RoomConversationController {
                             "    \"user1\": 1 ,\n" +
                             "    \"user2\": 2\n" +
                             "}"))
-    ) RoomConversationDto dto){
+    ) RoomConversationDto dto) {
         RoomConversation room = roomService.register(dto);
 
         return new ResponseEntity<>(room, HttpStatus.CREATED);
@@ -57,7 +59,7 @@ public class RoomConversationController {
             content = @Content(schema = @Schema(implementation = RoomConversation.class)))
     @ApiResponse(responseCode = "400", description = "Invalid request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         roomService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -70,7 +72,7 @@ public class RoomConversationController {
                             "{\"id\":\"1\",\"name\":\"Ciclano\",\"email\":\"ciclano@example.com\",\"password\":\"senha321\"}]}")))
     @ApiResponse(responseCode = "400", description = "Invalid request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<RoomConversation> readOne(@PathVariable Long id){
+    public ResponseEntity<RoomConversation> readOne(@PathVariable Long id) {
         RoomConversation room = roomService.findById(id);
         return new ResponseEntity<>(room, HttpStatus.OK);
     }
@@ -83,8 +85,25 @@ public class RoomConversationController {
                             "{\"id\":\"1\",\"name\":\"Ciclano\",\"email\":\"ciclano@example.com\",\"password\":\"senha321\"}]}")))
     @ApiResponse(responseCode = "400", description = "Invalid request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<List<RoomConversation>> readAll(){
+    public ResponseEntity<List<RoomConversation>> readAll() {
         List<RoomConversation> roomList = roomService.findAll();
         return new ResponseEntity<>(roomList, HttpStatus.OK);
+    }
+
+    @GetMapping("/findAllRoomsOfAUser/{userId}")
+    @Operation(method = "GET", summary = "Find all rooms of a user",
+            description = "Search all rooms conversations that contain the specified user id")
+    @ApiResponse(responseCode = "200", description = "Rooms conversations found successfully",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = RoomConversation.class)),
+                    examples = @ExampleObject(value = "[{\"id\":1,\"usersId\":[1,2]}, {\"id\":2,\"usersId\":[1,3]}]")))
+    @ApiResponse(responseCode = "400", description = "Invalid user id")
+    @ApiResponse(responseCode = "404", description = "No rooms found for this user")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
+    public ResponseEntity<List<RoomConversation>> findAllRoomsOfAUser(@PathVariable Long userId) {
+        List<RoomConversation> rooms = roomService.findAllRoomsOfAUser(userId);
+        if (rooms.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
 }

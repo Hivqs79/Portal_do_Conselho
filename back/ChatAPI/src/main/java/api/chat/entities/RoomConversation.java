@@ -14,16 +14,13 @@ import java.util.List;
 @Builder
 /**
  * @author Vinícius Eduardo dos Santos
+ * @author Pedro Henrique Panstein
  */
 public class RoomConversation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ElementCollection
     private List<Long> usersId;
-
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "roomConversation")
-    @JsonIgnore
-    @ToString.Exclude
-    private List<Message> messages;
 }
