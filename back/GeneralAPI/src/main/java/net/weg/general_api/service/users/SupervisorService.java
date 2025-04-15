@@ -8,6 +8,8 @@ import net.weg.general_api.model.entity.users.Supervisor;
 import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.SupervisorRepository;
 import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.security.EmailApiClient;
+import net.weg.general_api.service.security.PasswordGeneratorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,7 @@ public class SupervisorService {
     private UserAuthenticationService userAuthenticationService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
+    private final EmailApiClient emailApiClient;
 
     public Page<UserResponseDTO> findSupervisorSpec(Specification<Supervisor> spec, Pageable pageable) {
         Page<Supervisor> supervisors = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -32,11 +35,20 @@ public class SupervisorService {
     public UserResponseDTO createSupervisor(UserRequestDTO supervisorRequestDTO) {
         Supervisor supervisor = modelMapper.map(supervisorRequestDTO, Supervisor.class);
 
+        String randomPassword = PasswordGeneratorService.generateSimpleAlphanumericPassword();
+
         supervisor.setUserAuthentication(
-                userAuthenticationService.saveUserAuthentication(supervisorRequestDTO.getEmail(), supervisorRequestDTO.getPassword(), RoleENUM.SUPERVISOR)
+                userAuthenticationService.saveUserAuthentication(supervisorRequestDTO.getEmail(), randomPassword, RoleENUM.SUPERVISOR)
         );
 
         Supervisor supervisorSaved = repository.save(supervisor);
+
+        emailApiClient.sendPasswordEmail(
+                supervisorRequestDTO.getEmail(),
+                supervisorRequestDTO.getName(), // Assumindo que existe um campo name no DTO
+                randomPassword
+        );
+
         kafkaEventSender.sendEvent(supervisorSaved, "POST", "New supervisor created");
         supervisorSaved.setCustomization(customizationService.setDefault(supervisorSaved));
 

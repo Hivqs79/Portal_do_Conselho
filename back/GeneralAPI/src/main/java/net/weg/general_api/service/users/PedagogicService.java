@@ -8,6 +8,8 @@ import net.weg.general_api.model.entity.users.Pedagogic;
 import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.PedagogicRepository;
 import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.security.EmailApiClient;
+import net.weg.general_api.service.security.PasswordGeneratorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,7 @@ public class PedagogicService {
     private UserAuthenticationService userAuthenticationService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
+    private final EmailApiClient emailApiClient;
 
     public Page<UserResponseDTO> findPedagogicSpec(Specification<Pedagogic> spec, Pageable pageable) {
         Page<Pedagogic> pedagogics = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -32,11 +35,20 @@ public class PedagogicService {
     public UserResponseDTO createPedagogic(UserRequestDTO userRequestDTO) {
         Pedagogic pedagogic = modelMapper.map(userRequestDTO, Pedagogic.class);
 
+        String randomPassword = PasswordGeneratorService.generateSimpleAlphanumericPassword();
+
         pedagogic.setUserAuthentication(
-                userAuthenticationService.saveUserAuthentication(userRequestDTO.getEmail(), userRequestDTO.getPassword(), RoleENUM.PEDAGOGIC)
+                userAuthenticationService.saveUserAuthentication(userRequestDTO.getEmail(), randomPassword, RoleENUM.PEDAGOGIC)
         );
 
         Pedagogic pedagogicSaved = repository.save(pedagogic);
+
+        emailApiClient.sendPasswordEmail(
+                userRequestDTO.getEmail(),
+                userRequestDTO.getName(), // Assumindo que existe um campo name no DTO
+                randomPassword
+        );
+
         kafkaEventSender.sendEvent(pedagogicSaved, "POST", "Pedagogic created");
         pedagogicSaved.setCustomization(customizationService.setDefault(pedagogicSaved));
 

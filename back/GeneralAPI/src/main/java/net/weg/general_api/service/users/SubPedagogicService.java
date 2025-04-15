@@ -8,6 +8,8 @@ import net.weg.general_api.model.entity.users.SubPedagogic;
 import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.SubPedagogicRepository;
 import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.security.EmailApiClient;
+import net.weg.general_api.service.security.PasswordGeneratorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,7 @@ public class SubPedagogicService {
     private UserAuthenticationService userAuthenticationService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
+    private final EmailApiClient emailApiClient;
 
     public Page<UserResponseDTO> findSubPedagogicSpec(Specification<SubPedagogic> spec, Pageable pageable) {
         Page<SubPedagogic> subPedagogics = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -32,11 +35,20 @@ public class SubPedagogicService {
     public UserResponseDTO createSubPedagogic(UserRequestDTO subPedagogicRequestDTO) {
         SubPedagogic subPedagogic = modelMapper.map(subPedagogicRequestDTO, SubPedagogic.class);
 
+        String randomPassword = PasswordGeneratorService.generateSimpleAlphanumericPassword();
+
         subPedagogic.setUserAuthentication(
-                userAuthenticationService.saveUserAuthentication(subPedagogicRequestDTO.getEmail(), subPedagogicRequestDTO.getPassword(), RoleENUM.SUBPEDAGOGIC)
+                userAuthenticationService.saveUserAuthentication(subPedagogicRequestDTO.getEmail(), randomPassword, RoleENUM.SUBPEDAGOGIC)
         );
 
         SubPedagogic subPedagogicSaved = repository.save(subPedagogic);
+
+        emailApiClient.sendPasswordEmail(
+                subPedagogicRequestDTO.getEmail(),
+                subPedagogicRequestDTO.getName(), // Assumindo que existe um campo name no DTO
+                randomPassword
+        );
+
         kafkaEventSender.sendEvent(subPedagogicSaved, "POST", "New subPedagogic created");
         subPedagogicSaved.setCustomization(customizationService.setDefault(subPedagogicSaved));
 
