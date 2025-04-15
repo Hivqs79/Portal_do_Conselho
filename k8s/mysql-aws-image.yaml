@@ -50,6 +50,7 @@ kind: Deployment
 metadata:
   name: mysql-aws-image-deployment
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: mysql-aws-image

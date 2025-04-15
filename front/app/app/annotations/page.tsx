@@ -137,7 +137,10 @@ export default function Annotations() {
 
   const headerButtonsStudent: TableHeaderButtons = {
     searchInput: true,
-    setSearch: (term: string) => setStudentSearch(term),
+    setSearch: (term: string) => {
+      setStudentSearch(term)
+      setPage(1)      
+    },
     searchValue: studentSearch,
   };
 
@@ -170,7 +173,7 @@ export default function Annotations() {
   useEffect(() => {
     const fetchClassAnnotations = async () => {
       const response = await fetch(
-        `http://localhost:8081/annotations/class?teacherId=${userId}&page=${page - 1
+        `http://localhost:8081/annotations/class?isHappening=false&isFinished=false&teacherId=${userId}&page=${page - 1
         }&size=${rowsPerPage}&className=${classSearch}`
       );
       const data = await response.json();
@@ -316,7 +319,10 @@ export default function Annotations() {
         page={classAnnotations ? classAnnotations.pageable.pageNumber + 1 : 1}
         setPage={setPage}
         rowsPerPage={rowsPerPage}
-        setRowsPerPage={(rowsPerPage: number) => setRowsPerPage(rowsPerPage)}
+        setRowsPerPage={(rowsPerPage: number) => {
+          setRowsPerPage(rowsPerPage); 
+          setPage(1); 
+        }}
       />
       <AnnotationsModal
         variant="annotations"

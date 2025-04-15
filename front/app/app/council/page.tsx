@@ -67,7 +67,10 @@ export default function Council() {
 
   const headerButtons: TableHeaderButtons = {
     searchInput: true,
-    setSearch: (term: string) => setSearchClass(term),
+    setSearch: (term: string) => {
+      setSearchClass(term); 
+      setPage(1);
+    },
     orderButton: true,
     filterButton: true,
   };
@@ -154,6 +157,7 @@ export default function Council() {
 
   const createCouncil = async () => {
     console.log("testeCreate");
+    setIsLoading(true);
     const response = await fetch("http://localhost:8081/council", {
       method: "POST",
       headers: {
@@ -171,6 +175,7 @@ export default function Council() {
     response.json().then((data) => {
       console.log(data);
       resetInputs();
+      setIsLoading(false);
     });
   };
 
@@ -280,6 +285,7 @@ export default function Council() {
       const data = await response.json();
       setTeachers(data);
     };
+    if (!selectedClass) return;
     fetchTeachers();
   }, [selectedClass, isCreate]);
 
@@ -344,9 +350,10 @@ export default function Council() {
             page={councils ? councils.pageable.pageNumber + 1 : 1}
             setPage={setPage}
             rowsPerPage={rowsPerPage}
-            setRowsPerPage={(rowsPerPage: number) =>
-              setRowsPerPage(rowsPerPage)
-            }
+            setRowsPerPage={(rowsPerPage: number) => {
+              setRowsPerPage(rowsPerPage);
+              setPage(1);
+            }}
           />
           <CouncilModal
             open={visualizedCouncil !== null}

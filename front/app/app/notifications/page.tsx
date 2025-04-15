@@ -1,10 +1,13 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import AccordionComponent from "@/components/AccordionComponent";
 import Title from "@/components/Title";
 import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, Checkbox, Typography } from "@mui/material";
 import PaginationTable from "@/components/table/Pagination";
+import { TableContent } from "@/interfaces/table/TableContent";
+import TableNotificationRow from "@/interfaces/table/row/TableNotificationRow";
+import { useRoleContext } from "@/hooks/useRole";
 
 export default function Notifications() {
   const {
@@ -13,19 +16,36 @@ export default function Notifications() {
     backgroundColor,
     textDarkColor,
     whiteColor,
+    constrastColor
   } = useThemeContext();
 
   const [selectedNotifications, setSelectedNotifications] = useState<number[]>(
     []
   );
-  const [notificationsMessage, setNotificationsMessage] = useState(false);
-  const isAllSelected = selectedNotifications.length === notifications.length;
+  const [notificationsSelectedMessage, setNotificationsSelectedMessage] =
+    useState(false);
+  const [notifications, setNotifications] = useState<TableContent | null>(null);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const { userId } = useRoleContext();
+  const isAllSelected =
+    notifications !== null &&
+    selectedNotifications.length === notifications.content.length;
+
+  const clickedNotification = localStorage.getItem("notificationClickedId");
+
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      localStorage.removeItem("notificationClickedId");
+    }, 5000);
+  }, []);
 
   const handleSelectAll = () => {
     if (isAllSelected) {
       setSelectedNotifications([]);
     } else {
-      setSelectedNotifications(notifications.map((_, index) => index));
+      if (notifications === null) return;
+      setSelectedNotifications(notifications.content.map((_, index) => index));
     }
   };
 
@@ -41,11 +61,44 @@ export default function Notifications() {
 
   useEffect(() => {
     if (selectedNotifications.length === 0) {
-      setNotificationsMessage(false);
+      setNotificationsSelectedMessage(false);
     } else {
-      setNotificationsMessage(true);
+      setNotificationsSelectedMessage(true);
     }
   }, [selectedNotifications]);
+
+  const fetchNotifications = async () => {
+    const response = await fetch(
+      `http://localhost:8081/notification/user/${userId}?page=${page - 1
+      }&size=${rowsPerPage}&sort=id,desc`
+    );
+    const data = await response.json();
+    console.log(data);
+    setNotifications(data);
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [userId, page, rowsPerPage]);
+
+  const setViewedNotification = async (id: number) => {
+    const response = await fetch(
+      `http://localhost:8081/notification/${id}/is-viewed?isViewed=true`,
+      {
+        method: "PATCH",
+      }
+    );
+    console.log(response);
+    fetchNotifications();
+  };
+
+  const handleDeleteNotification = async (id: number) => {
+    const response = await fetch(`http://localhost:8081/notification/${id}`, {
+      method: "DELETE",
+    });
+    console.log(response);
+    fetchNotifications();
+  };
 
   return (
     <Box>
@@ -65,18 +118,18 @@ export default function Notifications() {
                 onChange={handleSelectAll}
                 checked={isAllSelected}
               />
-              <Typography style={{ color: colorByMode }} variant="lg_text_bold">
+              <Typography style={{ color: colorByMode }} variant="md_text_bold">
                 Selecionar todos
               </Typography>
-              {notificationsMessage && (
+              {notificationsSelectedMessage && (
                 <Box
                   style={{ backgroundColor: colorByMode }}
                   className="h-[30px] w-[.125rem] ml-2"
                 ></Box>
               )}
             </Box>
-            {notificationsMessage && (
-              <Typography color={colorByMode} variant="lg_text_bold">
+            {notificationsSelectedMessage && (
+              <Typography color={colorByMode} variant="md_text_bold">
                 {selectedNotifications.length}
                 {selectedNotifications.length === 1
                   ? " mensagem selecionada"
@@ -85,13 +138,36 @@ export default function Notifications() {
             )}
           </Box>
           <Box className="flex flex-wrap gap-5">
-            <Button variant="contained">
-              <Typography variant="lg_text_bold" color={whiteColor}>
+            <Button
+              onClick={() => {
+                if (selectedNotifications.length === 0) return;
+                selectedNotifications.forEach((index) => {
+                  setViewedNotification(
+                    (notifications?.content[index] as TableNotificationRow).id
+                  );
+                });
+                setSelectedNotifications([]);
+              }}
+              variant="contained"
+            >
+              <Typography variant="sm_text_bold" color={whiteColor}>
                 Marcar como lida
               </Typography>
             </Button>
-            <Button variant="contained" color="terciary">
-              <Typography variant="lg_text_bold" color={textDarkColor}>
+            <Button
+              onClick={() => {
+                if (selectedNotifications.length === 0) return;
+                selectedNotifications.forEach((index) => {
+                  handleDeleteNotification(
+                    (notifications?.content[index] as TableNotificationRow).id
+                  );
+                });
+                setSelectedNotifications([]);
+              }}
+              variant="contained"
+              color="terciary"
+            >
+              <Typography variant="sm_text_bold" color={textDarkColor}>
                 Deletar
               </Typography>
             </Button>
@@ -99,31 +175,50 @@ export default function Notifications() {
         </Box>
 
         <Box className="flex flex-col gap-2">
-          {notifications.map((notification, index) => (
-            <Box key={index}>
-              <AccordionComponent
-                type="notification"
-                name={notification.title}
-                description={notification.description}
-                outlined
-                viwed={notification.viwed}
-                onChange={() => handleSelectNotification(index)}
-                checked={selectedNotifications.includes(index)}
-              />
-            </Box>
-          ))}
+          {notifications ? (
+            notifications?.content.map((notification, index) => {
+              notification = notification as TableNotificationRow;
+              return <Box key={index}>
+                <AccordionComponent
+                  type="notification"
+                  name={notification.title}
+                  outlined
+                  viewed={notification.viewed}
+                  onChangeCheckbox={() => handleSelectNotification(index)}
+                  checked={selectedNotifications.includes(index)}
+                  onClick={() => !notification.viewed && setViewedNotification(notification.id)}
+                  open={clickedNotification !== null && (() => {
+                    if (parseInt(clickedNotification) === notification.id && !notification.viewed) {
+                      setViewedNotification(notification.id)
+                      notification.viewed = true;
+                      return true;
+                    }
+                    return false;
+                  })()}
+                >
+                  <Typography variant="md_text_regular" color={constrastColor}>
+                    {notification.message}
+                  </Typography>
+                </AccordionComponent>
+              </Box>
+            })
+          ) : (
+            <Typography color={colorByMode} variant="lg_text_bold">
+              Não existem notificações
+            </Typography>
+          )}
         </Box>
-        <PaginationTable count={notifications.length} page={1} rowsPerPage={10} setCount={() => void 0} setPage={() => void 0} setRowsPerPage={() => void 0}/>
-          {/* // TODO: implementar paginação integrada com o backend de notificações */}
       </Box>
+      <PaginationTable
+        count={notifications ? notifications.totalPages : 0}
+        page={page}
+        setPage={setPage}
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={(rowsPerPage: number) => {
+          setRowsPerPage(rowsPerPage);
+          setPage(1);
+        }}
+      />
     </Box>
   );
 }
-
-const notifications = [
-  { viwed: true, title: "Notificação 1", description: "Lorem ipsum dolor sit amet." },
-  { viwed: false, title: "Notificação 2", description: "Consectetur adipisicing elit." },
-  { viwed: false, title: "Notificação 3", description: "Ad dolore cum expedita pariatur." },
-  { viwed: true, title: "Notificação 4", description: "Aliquam unde sunt nihil ex." },
-  { viwed: false, title: "Notificação 5", description: "Voluptate beatae exercitationem!" },
-];

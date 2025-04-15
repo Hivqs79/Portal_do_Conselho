@@ -1,10 +1,3 @@
-import Council from "./Council";
-import { Rank } from "./RankType";
+import Feedback from "./Feedback";
 
-export default interface FeedbackClass {
-  name: string;
-  rank: Rank;
-  council: Council;
-  strengths: string;
-  toImprove: string;
-}
+export default interface FeedbackClass extends Feedback {}

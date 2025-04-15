@@ -102,4 +102,7 @@ public class AnnotationStudentService {
         return modelMapper.map(annotationStudent, AnnotationStudentResponseDTO.class);
     }
 
+    public boolean existsByTeacherCouncilAndStudent(Long teacherId, Long councilId, Long studentId) {
+        return repository.existsByTeacher_IdAndCouncil_IdAndStudent_Id(teacherId, councilId, studentId);
+    }
 }

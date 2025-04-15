@@ -110,7 +110,10 @@ export default function ReleaseFeedback() {
 
   const headerButtonsStudent: TableHeaderButtons = {
     searchInput: true,
-    setSearch: (term: string) => setStudentTerm(term),
+    setSearch: (term: string) => {
+      setStudentTerm(term);
+      setPage(1);
+    },
   };
 
   const headerStudent: TableHeaderContent[] = [
@@ -150,7 +153,10 @@ export default function ReleaseFeedback() {
         page={feedbacks ? feedbacks.pageable.pageNumber + 1 : 1}
         setPage={setPage}
         rowsPerPage={rowsPerPage}
-        setRowsPerPage={(rowsPerPage: number) => setRowsPerPage(rowsPerPage)}
+        setRowsPerPage={(rowsPerPage: number) => {
+          setRowsPerPage(rowsPerPage);
+          setPage(1);
+        }}
       />
       <AnnotationsModal
         open={isOpen}

@@ -12,6 +12,7 @@ import net.weg.general_api.model.enums.RankENUM;
 @NoArgsConstructor
 public class AnnotationStudentRequestDTO {
     private RankENUM rank;
+    private Double last_frequency;
     private String strengths;
     private String toImprove;
     @NotNull(message = "{not.null.message}")

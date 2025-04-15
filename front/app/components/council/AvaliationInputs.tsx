@@ -3,7 +3,7 @@ import { useThemeContext } from "@/hooks/useTheme";
 import TextareaComponent from "../input/TextareaComponent";
 
 interface AvaliationInputsProps {
-  writeOnly: boolean;
+  readOnly: boolean;
   Positivecontent?: string | null;
   Negativecontent?: string | null;
   onPositiveChange?: (content: string) => void;
@@ -13,7 +13,7 @@ interface AvaliationInputsProps {
 }
 
 export default function AvaliationInputs({
-  writeOnly,
+  readOnly,
   Positivecontent,
   Negativecontent,
   onPositiveChange,
@@ -34,14 +34,14 @@ export default function AvaliationInputs({
   return (
     <>
       <div
-        style={{ borderColor: colorByModeSecondary }}
+        style={{ borderColor: colorByModeSecondary}}
         className={"w-full flex-col lg:flex-row rounded-b-big p-5 flex border-t-0 justify-center items-center flex-wrap gap-4 md:flex-nowrap " + (withoutBorder ? "border-0" : "border-[2px]")}
       >
         <TextareaComponent
           title="Pontos Positivos"
           content={Positivecontent as string}
-          readonly={writeOnly}
-          placeholder="Digite algo aqui..."
+          readonly={readOnly}
+          placeholder={readOnly ? "Nada aqui..." : "Digite algo aqui..."}
           onChange={handlePositiveChange}
           copyButton={copyButton}
         />
@@ -52,8 +52,8 @@ export default function AvaliationInputs({
         <TextareaComponent
           title="Pontos a melhorar"
           content={Negativecontent as string}
-          readonly={writeOnly}
-          placeholder="Digite algo aqui..."
+          readonly={readOnly}
+          placeholder={readOnly ? "Nada aqui..." : "Digite algo aqui..."}
           onChange={handleNegativeChange}
           copyButton={copyButton}
         />

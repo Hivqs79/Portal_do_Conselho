@@ -35,6 +35,10 @@ public class KafkaConsumerService {
     public void consumeCouncil(String message) throws JsonProcessingException {
         System.out.println("Consumed message: " + message);
         KafkaMessage kafkaMessage = objectMapper.readValue(message, KafkaMessage.class);
+        String httpMethod = kafkaMessage.getHttpMethod();
+        System.out.println("httpMethod: " + httpMethod);
+
+        if (!httpMethod.equals("POST")) return;
 
         String regex = "Council\\{\\s*id=(\\d+).*";
         Long councilId = Long.parseLong(kafkaMessage.getObject().replaceAll(regex, "$1"));
@@ -47,29 +51,37 @@ public class KafkaConsumerService {
                     .message("O conselho da turma: " + council.getAClass().getName() + " iniciado")
                     .userId(teacher.getId())
                     .build();
-            kafkaEventSender.sendNotification(notification);
 
-            annotationClassService.createAnnotationClass(
-                    new AnnotationClassRequestDTO(
-                            RankENUM.NONE,
-                            "",
-                            "",
-                            teacher.getId(),
-                            council.getId()
-                    )
-            );
-            for (Student student :council.getAClass().getStudents()) {
-                annotationStudentService.createAnnotationStudent(
-                        new AnnotationStudentRequestDTO(
+            if (!annotationClassService.existsByTeacherAndCouncil(teacher.getId(), council.getId())) {
+                annotationClassService.createAnnotationClass(
+                        new AnnotationClassRequestDTO(
                                 RankENUM.NONE,
                                 "",
                                 "",
                                 teacher.getId(),
-                                council.getId(),
-                                student.getId()
+                                council.getId()
                         )
                 );
+                kafkaEventSender.sendNotification(notification);
+            }
+
+            for (Student student : council.getAClass().getStudents()) {
+                if (!annotationStudentService.existsByTeacherCouncilAndStudent(
+                        teacher.getId(), council.getId(), student.getId())) {
+                    annotationStudentService.createAnnotationStudent(
+                            new AnnotationStudentRequestDTO(
+                                    RankENUM.NONE,
+                                    student.getLastFrequency(),
+                                    "",
+                                    "",
+                                    teacher.getId(),
+                                    council.getId(),
+                                    student.getId()
+                            )
+                    );
+                }
             }
         }
+
     }
 }

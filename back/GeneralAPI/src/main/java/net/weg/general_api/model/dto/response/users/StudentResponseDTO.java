@@ -15,7 +15,7 @@ public class StudentResponseDTO {
     private String name;
     private Boolean isRepresentant;
     private RankENUM lastRank;
-    private double lastFrequency;
+    private Double lastFrequency;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
     private UserAuthenticationResponseDTO userAuthentication;

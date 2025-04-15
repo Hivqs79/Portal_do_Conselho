@@ -1,5 +1,5 @@
 import { useThemeContext } from "@/hooks/useTheme";
-import { Badge, Box, Typography } from "@mui/material";
+import { Badge, Box, Fade, Slide, Snackbar, Typography } from "@mui/material";
 import LogoIcon from "./LogoIcon";
 import Icon from "./Icon";
 import { IoClose, IoMenu, IoSettingsOutline } from "react-icons/io5";
@@ -11,6 +11,15 @@ import Photo from "./profile/Photo";
 import Link from "next/link";
 import { useWindowWidth } from "@react-hook/window-size";
 import { useRoleContext } from "@/hooks/useRole";
+import NotificationMenu from "./NotificationMenu";
+import NotificationType from "@/interfaces/Notification";
+import Notification from "./Notification";
+import { ResponseApiPageable } from "@/interfaces/ResponseApiPageable";
+import { useRouter } from "next/navigation";
+
+const SlideLeft = (props: any) => {
+  return <Slide {...props} direction="left" />;
+};
 
 interface HeaderProps {
   variant?: string;
@@ -21,27 +30,40 @@ export default function Header({ variant }: HeaderProps) {
   const [openMenu, setOpenMenu] = useState(false);
   const boxRef = useRef<HTMLElement>(null);
   const windowWidth = useWindowWidth();
-  const [notifications, setNotifications] = useState(0);    
+  const [notifications, setNotifications] = useState<ResponseApiPageable<NotificationType> | null>();
   const { userId } = useRoleContext();
+  const [openNotificationMenu, setOpenNotificationMenu] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [notificationToastOpen, setNotificationToastOpen] = useState(false);
+  const [incomingNotification, setIncomingNotification] = useState<NotificationType | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-
     if (userId !== -1) {
       const fetchNotifications = async () => {
         const response = await fetch(
           "http://localhost:8081/notification/user/" + userId
         );
-        const data = await response.json();
+        let data: ResponseApiPageable<NotificationType> = await response.json();
         console.log(data);
-        setNotifications(data.totalElements);
+        data = {
+          ...data,
+          content: data.content.filter((notification) => !notification.viewed)
+        }
+        console.log(data);
+        setNotifications(data);        
       };
 
       const subscribe = async () => {
-        const eventSource = new EventSource("http://localhost:3090/events/notifications/" + userId);
+        const eventSource = new EventSource(
+          "http://localhost:3090/events/notifications/" + userId
+        );
 
         eventSource.onmessage = (event) => {
-          console.log("Nova mensagem:", JSON.parse(event.data));
+          const notification = JSON.parse(event.data);
+          console.log("Nova mensagem:", notification);
           fetchNotifications();
+          setIncomingNotification(notification);
         };
       };
 
@@ -49,6 +71,13 @@ export default function Header({ variant }: HeaderProps) {
       subscribe();
     }
   }, [userId]);
+
+  useEffect(() => {
+    if (incomingNotification !== null) {
+      console.log(incomingNotification);
+      setNotificationToastOpen(true);
+    }
+  }, [incomingNotification]);
 
   return (
     <Box
@@ -98,7 +127,6 @@ export default function Header({ variant }: HeaderProps) {
         </Link>
       </Box>
       <Box className="flex flex-row items-center">
-        {/* //TODO: substitute for a component of UserImage */}
         <div className="w-12 h-12 flex justify-center items-center rounded-full">
           <Link href={"/profile"}>
             <Photo idUser={1} rounded={true} classname="w-full h-full" />
@@ -109,6 +137,19 @@ export default function Header({ variant }: HeaderProps) {
           <Typography
             variant={windowWidth < 640 ? "md_text_regular" : "xl_text_regular"}
             style={{ color: whiteColor }}
+            onClick={() => {
+              console.log("click");
+              setIncomingNotification(
+                {
+                  "id": 1,
+                  "userId": 16,
+                  "title": "Novo conselho iniciado!",
+                  "message": "O conselho da turma: WU75 iniciado",
+                  "messageDateTime": new Date("2025-04-08T11:48:35.485102"),
+                  "viewed": false
+                }
+              );
+            }}
           >
             Usuário
           </Typography>
@@ -136,8 +177,14 @@ export default function Header({ variant }: HeaderProps) {
           style={{ backgroundColor: whiteColor }}
           className="w-[1px] h-[30px] mx-4"
         />
-        <span className=" sm:block">
-          <Badge badgeContent={notifications} color="secondary">
+        <span
+          className=" sm:block"
+          onClick={(e) => {
+            setOpenNotificationMenu(!openNotificationMenu);
+            setAnchorEl(e.currentTarget);
+          }}
+        >
+          <Badge badgeContent={notifications ? notifications.content.length : 0} color="secondary">
             <Icon
               IconPassed={VscBell}
               color={whiteColor}
@@ -145,6 +192,36 @@ export default function Header({ variant }: HeaderProps) {
             />
           </Badge>
         </span>
+        <NotificationMenu
+          open={openNotificationMenu}
+          close={() => setOpenNotificationMenu(false)}
+          anchorEl={anchorEl}
+          notifications={notifications ? notifications.content : []}
+        />
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={notificationToastOpen}
+          autoHideDuration={5000}
+          onClose={() => setNotificationToastOpen(false)}
+          TransitionComponent={SlideLeft}
+        >
+          <div>
+            {incomingNotification &&
+              <Notification
+                variant="toast"
+                notification={incomingNotification}
+                onClose={() => {
+                  setNotificationToastOpen(false);
+                }}
+                onClick={(notification) => {
+                  localStorage.setItem("notificationClickedId", notification.id.toString());
+                  router.push("/notifications");
+                  setNotificationToastOpen(false);
+                }}
+              />
+            }
+          </div>
+        </Snackbar>
       </Box>
     </Box>
   );

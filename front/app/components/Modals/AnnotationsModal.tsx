@@ -124,7 +124,7 @@ export default function AnnotationsModal({
               className="flex flex-col border-[2px] border-t-0 rounded-b-2xl"
             >
               <AvaliationInputs
-                writeOnly={variant !== "annotations"}
+                readOnly={variant !== "annotations"}
                 Positivecontent={classPositiveContent}
                 Negativecontent={classNegativeContent}
                 onPositiveChange={setClassPositiveContent}
@@ -168,7 +168,7 @@ export default function AnnotationsModal({
                                   onChangeRank={(rank: RankType) => rowButtonsStudent.setRank(rank, (row as TableAnnotationRow).student.id)}
                                 >
                                   <AvaliationInputs
-                                    writeOnly={variant !== "annotations"}
+                                    readOnly={variant !== "annotations"}
                                     Positivecontent={row.strengths}
                                     Negativecontent={row.toImprove}
                                     onPositiveChange={(content: string) => rowButtonsStudent.setPositiveStudentContent(content, (row as TableAnnotationRow).student.id)}

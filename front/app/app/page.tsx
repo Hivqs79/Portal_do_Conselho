@@ -3,6 +3,9 @@ import PaginationTable from "@/components/table/Pagination";
 import Table from "@/components/table/Table";
 import Title from "@/components/Title";
 import { useRoleContext } from "@/hooks/useRole";
+import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
+import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
+import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
 import { TableContent } from "@/interfaces/table/TableContent";
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -17,20 +20,30 @@ export default function Home() {
   const rowButtons: TableRowButtons = {
     visualizeIconButton: true,
   };
+
   const headerButtons: TableHeaderButtons = {
     searchInput: true,
     orderButton: true,
     filterButton: true,
   };
+  
+  const headers: TableHeaderContent[] = [
+    {
+      name: "Turma",
+    },
+    {
+      name: "Data",
+    },
+    {
+      name: "Horário",
+    },
+  ];
 
   useEffect(() => {
     const fetchTableContent = async () => {
       const response = await fetch("http://localhost:3030/feedback");
       const data: TableContent = await response.json();
-      setTableContent(data);
-      setPage(data.pageable.pageNumber + 1);
-      setCount(data.pageable.totalPages);
-      setRowsPerPage(data.pageable.pageSize);
+      setTableContent(data);                  
     };
     fetchTableContent();
   }, []);
@@ -45,7 +58,8 @@ export default function Home() {
           </Box>
           {tableContent && (
             <Table
-              content={tableContent}
+              tableContent={tableContent}
+              headers={headers}
               headerButtons={headerButtons}
               rowButtons={rowButtons}
             />
@@ -54,9 +68,11 @@ export default function Home() {
             page={page}
             setPage={setPage}
             count={count}
-            setCount={setCount}
             rowsPerPage={rowsPerPage}
-            setRowsPerPage={setRowsPerPage}
+            setRowsPerPage={(rowsPerPage: number) => {
+              setRowsPerPage(rowsPerPage);
+              setPage(1);
+            }}
           />
         </>
       )) ||

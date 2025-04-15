@@ -16,16 +16,18 @@ import { Rank as RankType } from "@/interfaces/RankType";
 import Rank from "./rank/Rank";
 
 interface AnotationProps {
-  type: "default" | "notification" | "council" | "table";
+  type: "default" | "notification" | "council" | "table" | "support";
   outlined?: boolean;
   frequency?: number | boolean;
   name: string;
   children: React.ReactNode;
-  onChange?: () => void;
+  onChangeCheckbox?: () => void;
   checked?: boolean;
-  viwed?: boolean;
+  viewed?: boolean;
   rank?: RankType;
   onChangeRank?: (rank: RankType) => void;
+  onClick?: () => void;
+  open?: boolean;
 }
 
 export default function AccordionComponent({
@@ -34,11 +36,13 @@ export default function AccordionComponent({
   frequency,
   children,
   outlined,
-  onChange,
+  onChangeCheckbox,
   checked,
-  viwed,
+  viewed = true,
   rank,
-  onChangeRank,
+  onChangeRank, 
+  onClick,
+  open = false
 }: AnotationProps) {
   const {
     primaryColor,
@@ -49,15 +53,17 @@ export default function AccordionComponent({
     colorByMode,
     secondaryColor,
   } = useThemeContext();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(open);
 
   return (
     <Accordion
+      expanded={isOpen}
       sx={{
         boxShadow:
-          type === "table"
+          type === "table" || type === "default"
             ? "none"
             : `inset 0px 0px 0px 2px ${colorByModeSecondary}`,
+          borderRadius: type === "table" ? "0px" : "16px",
         backgroundColor: outlined
           ? type === "table"
             ? "transparent"
@@ -72,7 +78,10 @@ export default function AccordionComponent({
       }}
     >
       <AccordionSummary
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          setIsOpen(!isOpen);
+          onClick && onClick();
+        }}
         expandIcon={
           <Icon
             IconPassed={IoIosArrowDown}
@@ -82,11 +91,11 @@ export default function AccordionComponent({
         }
         sx={{
           backgroundColor: outlined
-            ? viwed
+            ? (!viewed
               ? OpacityHex(secondaryColor, 0.18)
-              : type === "table"
-              ? "transparent"
-              : backgroundColor
+              : (type === "table"
+                ? "transparent"
+              : backgroundColor))
             : primaryColor,
           color: whiteColor,
           boxShadow:
@@ -106,11 +115,11 @@ export default function AccordionComponent({
             backgroundColor:
               type === "table"
                 ? OpacityHex(secondaryColor, 0.18)
-                : "transparent",
+                : type === "default" || type === "support" ? primaryColor : "transparent",
             boxShadow:
               type === "table"
                 ? `0px 2px 4px 2px ${OpacityHex(colorByModeSecondary, 0.18)}`
-                : "none",
+                : (type === "default" || type === "notification") ? `inset 0px 0px 0px 2px ${colorByModeSecondary}` : "none",
             "& .MuiAccordionSummary-content": {
               margin: "0px !important",
             },
@@ -128,7 +137,7 @@ export default function AccordionComponent({
               {type === "notification" && (
                 <Checkbox
                   onClick={(e) => e.stopPropagation()}
-                  onChange={onChange}
+                  onChange={onChangeCheckbox}
                   checked={checked}
                   className="!mr-2"
                   sx={{
@@ -139,7 +148,7 @@ export default function AccordionComponent({
                 />
               )}
               <Typography
-                variant="lg_text_bold"
+                variant="md_text_bold"
                 className="flex-1"
                 color={outlined ? colorByMode : whiteColor}
               >
@@ -158,12 +167,14 @@ export default function AccordionComponent({
             {rank && (
               <Box
                 onClick={(e) => !frequency && e.stopPropagation()}
-                className={`flex justify-end items-center ${frequency ? "w-1/5 lg:w-1/4" : ""}`}
+                className={`flex justify-end items-center ${
+                  frequency ? "w-1/5 lg:w-1/4" : ""
+                }`}
               >
                 <Rank
                   variant="annotation"
                   type={rank}
-                  outline={frequency ? true :false}
+                  outline={frequency ? true : false}
                   popover={frequency ? false : true}
                   onRankChange={onChangeRank}
                 />
@@ -175,10 +186,15 @@ export default function AccordionComponent({
       <AccordionDetails
         className={type === "table" ? "rounded-b-big" : ""}
         sx={{
-          backgroundColor: "transparent",
+          backgroundColor: type === "default" ? backgroundColor : "transparent",
+          borderBottomLeftRadius: type === "default" ? "16px" : "0px",
+          borderBottomRightRadius: type === "default" ? "16px" : "0px",
           borderTop: "none",
+          padding: type === "default" ? "0px !important" : "8px 0px !important",
           borderColor: colorByModeSecondary,
-          paddingLeft: "8px !important",
+          paddingLeft:
+            type !== "council" && type !== "default" ? "18px !important" : type === "default" ? "0px !important" : "8px !important",
+          paddingRight: type !== "council" && type !== "default" ? "18px !important" : "0px !important",
         }}
       >
         {type !== "council" && children}
