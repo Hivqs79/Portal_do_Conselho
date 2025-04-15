@@ -8,6 +8,8 @@ import net.weg.general_api.model.entity.users.Admin;
 import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.AdminRepository;
 import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.security.EmailApiClient;
+import net.weg.general_api.service.security.PasswordGeneratorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,7 @@ public class AdminService {
     private UserAuthenticationService userAuthenticationService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
+    private final EmailApiClient emailApiClient;
 
     public Page<UserResponseDTO> findAdminSpec(Specification<Admin> spec, Pageable pageable) {
         Page<Admin> admins = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -32,11 +35,20 @@ public class AdminService {
     public UserResponseDTO createAdmin(UserRequestDTO userRequestDTO) {
         Admin admin = modelMapper.map(userRequestDTO, Admin.class);
 
+        String randomPassword = PasswordGeneratorService.generateSimpleAlphanumericPassword();
+
         admin.setUserAuthentication(
-                userAuthenticationService.saveUserAuthentication(userRequestDTO.getEmail(), userRequestDTO.getPassword(), RoleENUM.ADMIN)
+                userAuthenticationService.saveUserAuthentication(userRequestDTO.getEmail(), randomPassword, RoleENUM.ADMIN)
         );
 
         Admin adminSaved = repository.save(admin);
+
+        emailApiClient.sendPasswordEmail(
+                userRequestDTO.getEmail(),
+                userRequestDTO.getName(), // Assumindo que existe um campo name no DTO
+                randomPassword
+        );
+
         kafkaEventSender.sendEvent(adminSaved, "POST", "New admin created");
         adminSaved.setCustomization(customizationService.setDefault(adminSaved));
 

@@ -10,6 +10,8 @@ import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.users.Student;
 import net.weg.general_api.repository.StudentRepository;
 import net.weg.general_api.service.classes.ClassService;
+import net.weg.general_api.service.security.EmailApiClient;
+import net.weg.general_api.service.security.PasswordGeneratorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,12 +24,13 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentService {
 
-    private StudentRepository repository;
-    private ClassService classService;
-    private CustomizationService customizationService;
-    private UserAuthenticationService userAuthenticationService;
-    private ModelMapper modelMapper;
+    private final StudentRepository repository;
+    private final ClassService classService;
+    private final CustomizationService customizationService;
+    private final UserAuthenticationService userAuthenticationService;
+    private final ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
+    private final EmailApiClient emailApiClient;
 
     public Page<StudentResponseDTO> findStudentSpec(Specification<Student> spec, Pageable pageable) {
         Page<Student> students = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -37,15 +40,24 @@ public class StudentService {
     public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {
         Student student = modelMapper.map(studentRequestDTO, Student.class);
 
+        String randomPassword = PasswordGeneratorService.generateSimpleAlphanumericPassword();
+
         student.setUserAuthentication(
-                userAuthenticationService.saveUserAuthentication(studentRequestDTO.getEmail(), studentRequestDTO.getPassword(), RoleENUM.STUDENT)
+                userAuthenticationService.saveUserAuthentication(studentRequestDTO.getEmail(), randomPassword, RoleENUM.STUDENT)
         );
 
         student.setClasses(classService.getClassesByIdList(studentRequestDTO.getClasses_id()));
         Student studentSaved = repository.save(student);
         studentSaved.setCustomization(customizationService.setDefault(studentSaved));
 
+        emailApiClient.sendPasswordEmail(
+                studentRequestDTO.getEmail(),
+                studentRequestDTO.getName(), // Assumindo que existe um campo name no DTO
+                randomPassword
+        );
+
         kafkaEventSender.sendEvent(studentSaved, "POST", "New student created");
+
         return modelMapper.map(studentSaved, StudentResponseDTO.class);
     }
 

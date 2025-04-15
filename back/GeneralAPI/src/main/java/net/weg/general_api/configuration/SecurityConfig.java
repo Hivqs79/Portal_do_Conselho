@@ -22,6 +22,7 @@ public class SecurityConfig {
     private final AuthorizationService authorizationService;
     private final JWTFilter jwtFilter;
 
+    /*
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -39,6 +40,23 @@ public class SecurityConfig {
                     authorizeRequests.requestMatchers(HttpMethod.POST, "subPedagogic").hasRole("PEDAGOGIC");
                     authorizeRequests.anyRequest().hasRole("ADMIN");
                     //TODO: Implementar o resto das URLs
+                })
+                .userDetailsService(authorizationService)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+        ;
+
+        return http.build();
+    }
+     */
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorizeRequests -> {
+                    authorizeRequests.anyRequest().permitAll();
                 })
                 .userDetailsService(authorizationService)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
