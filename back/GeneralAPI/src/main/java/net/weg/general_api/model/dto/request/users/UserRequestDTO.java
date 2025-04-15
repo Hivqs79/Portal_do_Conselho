@@ -18,6 +18,4 @@ public class UserRequestDTO {
     @Email(message = "{email.message}")
     private String email;
 
-    @NotBlank(message = "{not.blank.message}")
-    private String password;
 }
