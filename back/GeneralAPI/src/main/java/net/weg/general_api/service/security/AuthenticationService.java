@@ -43,8 +43,6 @@ public class AuthenticationService {
 
     public UserAuthentication changePassword(UserDetails userDetails, ModifyUserPasswordRequestDTO request) {
 
-
-
         if (userDetails == null) {
             //TODO: nova exceção
             throw new RuntimeException("Token invalid");
