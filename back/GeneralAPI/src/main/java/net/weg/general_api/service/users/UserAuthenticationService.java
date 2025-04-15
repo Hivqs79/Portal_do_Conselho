@@ -16,6 +16,14 @@ public class UserAuthenticationService {
     private final UserAuthenticationRepository repository;
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    public UserAuthentication findUserAuthentication (String username) {
+        return repository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public UserAuthentication saveUserAuthentication (UserAuthentication userAuthentication) {
+        return repository.save(userAuthentication);
+    }
+
     public UserAuthentication saveUserAuthentication (String username, String password, RoleENUM roleENUM) {
 
         UserAuthentication userAuthentication = UserAuthentication.builder()
