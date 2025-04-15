@@ -1,4 +1,4 @@
-package net.weg.general_api.model.entity.users;
+package net.weg.general_api.model.entity.security;
 
 import lombok.Data;
 
