@@ -44,6 +44,8 @@ public class EmailModel {
     private String turma;
     private String typeUser;
     private String typeContent;
+    private String token;
+    private String password;
 
     @PrePersist
     public void onPersist() {
