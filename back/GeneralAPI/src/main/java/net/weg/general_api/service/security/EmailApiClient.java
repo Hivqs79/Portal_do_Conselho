@@ -21,6 +21,7 @@ public class EmailApiClient {
         emailModel.setReciver(studentEmail);
         emailModel.setTitle("Cadastro Realizado");
         emailModel.setPassword(generatedPassword);
+        emailModel.setDate(LocalDateTime.now());
 
         ResponseEntity<EmailModel> response = restTemplate.postForEntity(
                 EMAIL_API_URL,
