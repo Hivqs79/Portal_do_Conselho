@@ -1,21 +1,20 @@
 package api.chat.entities.dto;
 
-import api.chat.entities.Message;
 import api.chat.entities.RoomConversation;
-import api.chat.service.MessageService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 /**
  * @author Vinícius Eduardo dos Santos
  * @author Pedro Henrique Panstein
  */
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RoomConversationDto {
 
     private List<Long> usersId;

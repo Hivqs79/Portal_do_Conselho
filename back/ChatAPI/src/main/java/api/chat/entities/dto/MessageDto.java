@@ -6,13 +6,14 @@ import lombok.*;
 
 import java.time.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 /**
  * @author Vinícius Eduardo dos Santos
  * @author Pedro Henrique Panstein
  */
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MessageDto {
 
     private String content;
