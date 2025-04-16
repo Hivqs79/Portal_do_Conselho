@@ -55,9 +55,9 @@ public class SecurityConfig {
 
                         // Configurações específicas para TeacherController
                         .requestMatchers(HttpMethod.GET, "/teacher/{id}").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/teacher/{id}").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.PUT, "/teacher/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.DELETE, "/teacher/{id}").hasRole("SUBPEDAGOGIC")
-                        .requestMatchers(HttpMethod.GET, "/teacher").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.GET, "/teacher").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.POST, "/teacher").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.PATCH, "/teacher/remove-class/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.PATCH, "/teacher/add-class/{id}").hasRole("SUBPEDAGOGIC")
@@ -65,63 +65,110 @@ public class SecurityConfig {
 
                         // Configurações para SupervisorController
                         .requestMatchers(HttpMethod.GET, "/supervisor/{id}").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/supervisor/{id}").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.PUT, "/supervisor/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.DELETE, "/supervisor/{id}").hasRole("SUBPEDAGOGIC")
-                        .requestMatchers(HttpMethod.GET, "/supervisor").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.GET, "/supervisor").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.POST, "/supervisor").hasRole("SUBPEDAGOGIC")
 
                         // Configurações para SubPedagogicController
                         .requestMatchers(HttpMethod.GET, "/subPedagogic/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.PUT, "/subPedagogic/{id}").hasRole("PEDAGOGIC")
                         .requestMatchers(HttpMethod.DELETE, "/subPedagogic/{id}").hasRole("PEDAGOGIC")
-                        .requestMatchers(HttpMethod.GET, "/subPedagogic").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.GET, "/subPedagogic").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.POST, "/subPedagogic").hasRole("PEDAGOGIC")
 
                         // Configurações para StudentController
                         .requestMatchers(HttpMethod.GET, "/student/{id}").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/student/{id}").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.PUT, "/student/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.DELETE, "/student/{id}").hasRole("SUBPEDAGOGIC")
-                        .requestMatchers(HttpMethod.GET, "/student").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.GET, "/student").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.POST, "/student").hasRole("SUBPEDAGOGIC")
-                        .requestMatchers(HttpMethod.PATCH, "/student/remove-class/{id}").hasAnyRole("SUBPEDAGOGIC")
-                        .requestMatchers(HttpMethod.PATCH, "/student/add-class/{id}").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.PATCH, "/student/remove-class/{id}").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.PATCH, "/student/add-class/{id}").hasRole("SUBPEDAGOGIC")
 
                         // Configurações para PedagogicController
                         .requestMatchers(HttpMethod.GET, "/pedagogic/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.PUT, "/pedagogic/{id}").hasRole("PEDAGOGIC")
                         .requestMatchers(HttpMethod.DELETE, "/pedagogic/{id}").hasRole("PEDAGOGIC")
-                        .requestMatchers(HttpMethod.GET, "/pedagogic").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.GET, "/pedagogic").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.POST, "/pedagogic").hasRole("ADMIN")
 
                         // Configurações para FeedbackUserController
                         .requestMatchers(HttpMethod.GET, "/feedbacks/user/{id}").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/feedbacks/user/{id}").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.PUT, "/feedbacks/user/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.DELETE, "/feedbacks/user/{id}").hasRole("SUBPEDAGOGIC")
-                        .requestMatchers(HttpMethod.GET, "/feedbacks/user").hasAnyRole("SUBPEDAGOGIC")
-                        .requestMatchers(HttpMethod.POST, "/feedbacks/user").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.GET, "/feedbacks/user").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.POST, "/feedbacks/user").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.PATCH, "/feedbacks/user/return/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.GET, "/feedbacks/user/find/{id}").authenticated()
 
                         // Configurações para FeedbackStudentController
                         .requestMatchers(HttpMethod.GET, "/feedbacks/student/{id}").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/feedbacks/student/{id}").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.PUT, "/feedbacks/student/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.DELETE, "/feedbacks/student/{id}").hasRole("SUBPEDAGOGIC")
-                        .requestMatchers(HttpMethod.GET, "/feedbacks/student").hasAnyRole("SUBPEDAGOGIC")
-                        .requestMatchers(HttpMethod.POST, "/feedbacks/student").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.GET, "/feedbacks/student").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.POST, "/feedbacks/student").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.PATCH, "/feedbacks/student/return/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.GET, "/feedbacks/student/find/{id}").authenticated()
 
                         // Configurações para FeedbackClassController
                         .requestMatchers(HttpMethod.GET, "/feedbacks/class/{id}").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/feedbacks/class/{id}").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.PUT, "/feedbacks/class/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.DELETE, "/feedbacks/class/{id}").hasRole("SUBPEDAGOGIC")
-                        .requestMatchers(HttpMethod.GET, "/feedbacks/class").hasAnyRole("SUBPEDAGOGIC")
-                        .requestMatchers(HttpMethod.POST, "/feedbacks/class").hasAnyRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.GET, "/feedbacks/class").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.POST, "/feedbacks/class").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.PATCH, "/feedbacks/class/return/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.GET, "/feedbacks/class/find/{id}").authenticated()
 
+                        // Configurações para CustomizationController
                         .requestMatchers(HttpMethod.PUT, "/customization/{user_id}").authenticated()
                         .requestMatchers(HttpMethod.GET, "/customization/{id}").authenticated()
+
+                        // Configurações para CouncilController
+                        .requestMatchers(HttpMethod.GET, "/council/{id}").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/council/{id}").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.DELETE, "/council/{id}").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.GET, "/council").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.POST, "/council").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.PATCH, "/council/modifyFinished/{id}").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.PATCH, "/council/modify/{id}").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.GET, "/council/annotations/{id}").authenticated()
+
+                        // Configurações para ClassController
+                        .requestMatchers(HttpMethod.GET, "/class/{id}").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/class/{id}").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.DELETE, "/class/{id}").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.GET, "/class").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.POST, "/class").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.GET, "/class/teacher/{id}").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/class/student/{id}").authenticated()
+
+                        // Configurações para AnnotationStudentController
+                        .requestMatchers(HttpMethod.GET, "/annotations/student/{id}").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/annotations/student/{id}").hasRole("TEACHER")
+                        .requestMatchers(HttpMethod.DELETE, "/annotations/student/{id}").hasRole("TEACHER")
+                        .requestMatchers(HttpMethod.GET, "/annotations/student").hasAnyRole("TEACHER", "SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.POST, "/annotations/student").hasRole("TEACHER")
+                        .requestMatchers(HttpMethod.GET, "/annotations/student/by/{id}").authenticated()
+
+                        // Configurações para AnnotationClassController
+                        .requestMatchers(HttpMethod.GET, "/annotations/class/{id}").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/annotations/class/{id}").hasRole("TEACHER")
+                        .requestMatchers(HttpMethod.DELETE, "/annotations/class/{id}").hasRole("TEACHER")
+                        .requestMatchers(HttpMethod.GET, "/annotations/class").hasAnyRole("TEACHER", "SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.POST, "/annotations/class").hasRole("TEACHER")
+
+                        // Configurações para AdminController (exclusivo para role ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/admin/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/admin/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/admin/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/admin").hasRole("ADMIN")
+
+                        // Tenho minhas duvidas...
+                        .requestMatchers("/notification/**").permitAll()
+                        .requestMatchers("/dashboard/**").permitAll()
+                        .requestMatchers("/pre-council/**").permitAll()
 
                         .anyRequest().authenticated()
                 )
