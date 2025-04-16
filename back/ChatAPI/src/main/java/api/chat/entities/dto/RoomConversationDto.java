@@ -1,32 +1,28 @@
 package api.chat.entities.dto;
 
-import api.chat.entities.Message;
 import api.chat.entities.RoomConversation;
-import api.chat.service.MessageService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * @author Vinícius Eduardo dos Santos
+ * @author Pedro Henrique Panstein
+ */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-/**
- * @author Vinícius Eduardo dos Santos
- */
 public class RoomConversationDto {
 
-    private Long id;
     private List<Long> usersId;
-    private List<Message> messagesList;
 
-    public RoomConversation convert(MessageService messageService) {
-
+    public RoomConversation convert() {
         return RoomConversation.builder()
-            .usersId(this.usersId)
-            .messages(messageService.findMessagesByIdRoom(id))
-            .build();
+                .usersId(this.usersId)
+                .build();
     }
 
 }

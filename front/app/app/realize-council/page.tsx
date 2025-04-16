@@ -791,7 +791,7 @@ export default function RealizeCouncil() {
         <CommentariesModal
           anotations={classCommentaries}
           student={false}
-          name={"teste"}
+          name={data ? data.aclass.name : localStorage.getItem("className")}
           onClose={closeTeacherModal}
         />
       )}
@@ -799,7 +799,9 @@ export default function RealizeCouncil() {
         <CommentariesModal
           anotations={studentCommentaries}
           student={true}
-          name={"teste"}
+          name={users && users.length > 0
+            ? users[currentStudentIndex]?.name
+            : ""}
           onClose={closeStudentModal}
         />
       )}

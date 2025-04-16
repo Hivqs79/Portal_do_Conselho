@@ -37,7 +37,7 @@ public class AnnotationStudentService {
 
     public AnnotationStudentResponseDTO createAnnotationStudent(AnnotationStudentRequestDTO annotationStudentRequestDTO) {
         AnnotationStudent annotationStudent = modelMapper.map(annotationStudentRequestDTO, AnnotationStudent.class);
-        
+
         Council council = councilService.findCouncilEntity(annotationStudentRequestDTO.getCouncil_id());
 
         if (!council.getTeachers().contains(teacherService.findTeacherEntity(annotationStudentRequestDTO.getTeacher_id()))) {
@@ -53,7 +53,7 @@ public class AnnotationStudentService {
         annotationStudent.setTeacher(teacherService.findTeacherEntity(annotationStudentRequestDTO.getTeacher_id())); //SETAR PROFESSOR
 
         AnnotationStudent annotationSaved = repository.save(annotationStudent);
-        kafkaEventSender.sendEvent(annotationSaved, "POST", "Student created");
+        kafkaEventSender.sendEvent(annotationSaved, "POST", "Annotation student created");
 
         return modelMapper.map(annotationSaved, AnnotationStudentResponseDTO.class);
     }

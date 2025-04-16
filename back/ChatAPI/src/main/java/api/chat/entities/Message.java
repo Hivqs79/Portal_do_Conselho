@@ -12,6 +12,7 @@ import java.time.*;
 @Builder
 /**
  * @author Vinícius Eduardo dos Santos
+ * @author Pedro Henrique Panstein
  */
 public class Message {
     @Id

@@ -23,6 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 /**
  * @author Vinícius Eduardo dos Santos
+ * @author Pedro Henrique Panstein
  */
 public class MessageController {
 
@@ -61,7 +62,7 @@ public class MessageController {
                             "\"roomConversation\":{\"id\":\"1\",\"users\":[]}}")))
     @ApiResponse(responseCode = "400", description = "Invalid request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<Message> findMessageById(@PathVariable Long id){
+    public ResponseEntity<Message> findMessageById(@PathVariable Long id) {
         Message message = service.findMessageById(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
@@ -78,9 +79,22 @@ public class MessageController {
                             "\"roomConversation\": {\"id\": \"1\", \"users\": []} }]}")))
     @ApiResponse(responseCode = "400", description = "Invalid request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<List<Message>> findMessagesByIdRoom(@PathVariable Long id){
+    public ResponseEntity<List<Message>> findMessagesByIdRoom(@PathVariable Long id) {
         List<Message> messages = service.findMessagesByIdRoom(id);
         return new ResponseEntity<>(messages, HttpStatus.OK);
+    }
+
+    @GetMapping("/last-message/{roomId}")
+    @Operation(method = "GET", summary = "Get last message of a room", description = "Retrieve the most recent message from a specific conversation room")
+    @ApiResponse(responseCode = "200", description = "Last message found successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Message.class), examples = {@ExampleObject(name = "Example message", value = "{\"id\":5,\"content\":\"Esta é a última mensagem\",\"currentTimeDate\":\"2025-04-16T15:30:00\",\"senderId\":1,\"roomConversation\":{\"id\":4}}")}))
+    @ApiResponse(responseCode = "404", description = "No messages found in this room")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
+    public ResponseEntity<Message> getLastMessageByRoomId(@PathVariable Long roomId) {
+        Message message = service.findLastMessageByRoomId(roomId);
+        if (message == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
 

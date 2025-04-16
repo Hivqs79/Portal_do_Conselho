@@ -23,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 /**
  * @author Vinícius Eduardo dos Santos
+ * @author Pedro Henrique Panstein
  */
 public class MessageService {
 
@@ -39,13 +40,13 @@ public class MessageService {
     public Message sendMessage(MessageDto dto) throws JsonProcessingException {
         Message message = dto.conversorMessage(roomConversationService);
         message = repository.save(message);
-        kafkaEventSender.sendEvent(objectMapper.writeValueAsString(message),"POST", "Sending a message","room" + message.getRoomConversation().getId());
+        //kafkaEventSender.sendEvent(objectMapper.writeValueAsString(message),"POST", "Sending a message","room" + message.getRoomConversation().getId());
         return message;
     }
 
     public void deleteMessage(Long idMessage) throws JsonProcessingException {
         Message message = findMessageById(idMessage);
-        kafkaEventSender.sendEvent(objectMapper.writeValueAsString(message),"DELETE", "Deleting a message");
+        //kafkaEventSender.sendEvent(objectMapper.writeValueAsString(message),"DELETE", "Deleting a message");
         repository.deleteById(idMessage);
     }
 
@@ -59,6 +60,7 @@ public class MessageService {
         return messages.get();
     }
 
-
-
+    public Message findLastMessageByRoomId(Long roomId) {
+        return repository.findFirstByRoomConversationIdOrderByCurrentTimeDateDesc(roomId);
+    }
 }

@@ -33,6 +33,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
   const { role, setRole, userId, setUserId } = useRoleContext();
   const pathname = usePathname();
   const isLoginPage = pathname?.includes("/login");
+  const isChatPage = pathname?.includes("/chat");
 
   useEffect(() => {
     if (!pathname) {
@@ -75,7 +76,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
         {!isLoginPage ? (
           <>
             <Header variant={role} />
-            <Box className="flex flex-col mb-24 mx-[5%] sm:mx-[15%]">
+            <Box className={`flex flex-col ${isChatPage ? "!pt-[10rem] mx-[1%] sm:mx-[4%] h-[90vh] mb-14" : "mx-[5%] sm:mx-[15%] mb-24"}`}>
               {children}
             </Box>
           </>
