@@ -11,7 +11,6 @@ import net.weg.general_api.model.enums.RoleENUM;
 public class UserAuthenticationResponseDTO {
     private Long id;
     private String username;
-    private String password;
     private Boolean accountNonExpired;
     private Boolean accountNonLocked;
     private Boolean credentialsNonExpired;
