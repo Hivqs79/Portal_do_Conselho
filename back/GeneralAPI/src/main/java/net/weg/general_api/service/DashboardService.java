@@ -26,7 +26,7 @@ public class DashboardService {
 
     public FrequencyAvarageDashboardResponseDTO getFrequencyAvarageDashboard(String className) {
 
-        System.out.println(className);
+        System.out.println("logDoBackend" + className);
         double averageFrequency = 0;
         HashMap<String, Double> map = new HashMap<>();
         int count = 0;
@@ -42,7 +42,7 @@ public class DashboardService {
             averageFrequency += student.getLastFrequency();
             count++;
             map.put(student.getName(), student.getLastFrequency());
-            System.out.println("Frequencia do aluno " + student.getId() + " : " + student.getLastFrequency() + "\nContador: " + count);
+            System.out.println("logDoBackend" + "Frequencia do aluno " + student.getId() + " : " + student.getLastFrequency() + "\nContador: " + count);
         }
 
         averageFrequency = averageFrequency / count;
@@ -52,7 +52,7 @@ public class DashboardService {
 
     public ClassRankDashboardResponseDTO getClassRankDashboard(String className, int year) {
 
-        System.out.println(className);
+        System.out.println("logDoBackend" + className);
         int excellent = 0, good = 0, average = 0, critical = 0, none = 0;
         List<Class> classList;
         Class aClass = classService.getClassByClassName(className);

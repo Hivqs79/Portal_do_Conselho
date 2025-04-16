@@ -31,7 +31,7 @@ public class Student extends User {
     )
     private List<Class> classes;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
     private List<FeedbackStudent> feedbackStudent;
 
     @Override

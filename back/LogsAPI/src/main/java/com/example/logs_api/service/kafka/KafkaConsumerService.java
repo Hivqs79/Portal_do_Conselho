@@ -45,7 +45,7 @@ public class KafkaConsumerService {
         KafkaMessageListenerContainer<String, String> container = new KafkaMessageListenerContainer<>(factory.getConsumerFactory(), containerProperties);
         container.setupMessageListener((MessageListener<String, String>) message -> {
             try {
-                System.out.println(message.value());
+                System.out.println("logDoBackend" + message.value());
                 consume(message.value());
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
@@ -57,7 +57,7 @@ public class KafkaConsumerService {
 
     @KafkaListener(topics = "#{T(java.util.Arrays).asList('${KAFKA_TOPICS}'.split(','))}", groupId = "group_logs_api")
     public void consume(String message) throws JsonProcessingException {
-        System.out.println("Consumed message: " + message);
+        System.out.println("logDoBackend" + "Consumed message: " + message);
         KafkaMessageDTO kafkaMessageDTO = objectMapper.readValue(message, KafkaMessageDTO.class);
 
         if (kafkaMessageDTO.getDescription().equals("Creating a conversation room")) {
@@ -74,13 +74,13 @@ public class KafkaConsumerService {
     }
 
     public void registryNewRoom(String message) throws JsonProcessingException {
-        System.out.println("New room object: " + message);
+        System.out.println("logDoBackend" + "New room object: " + message);
         String regex = "RoomConversation\\(id=(\\d+), usersId=\\[.*\\]\\)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(message);
         if (matcher.find()) {
             String roomId = matcher.group(1);
-            System.out.println("room-id: " + roomId);
+            System.out.println("logDoBackend" + "room-id: " + roomId);
             String topic = "room" + roomId;
             registryNewTopic(topic);
             topicService.createTopic(Topic.builder().topic(topic).build());

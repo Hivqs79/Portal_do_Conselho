@@ -30,7 +30,7 @@ public class EmailService {
             sender.send(message);
             return repository.save(email);
         }catch (MailException e){
-            System.out.println("O envio do Email não funcionou!");
+            System.out.println("logDoBackend" + "O envio do Email não funcionou!");
         }
         return null;
     }

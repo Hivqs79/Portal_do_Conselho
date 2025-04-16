@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -41,23 +42,42 @@ public class AnnotationStudentService {
     }
 
     @Async
+    @Transactional
     public CompletableFuture<AnnotationStudentResponseDTO> createAnnotationStudentAsync(
             AnnotationStudentRequestDTO annotationStudentRequestDTO) {
 
+        System.out.println("logDoBackend" + "Annotation student DTO inicial:, " + annotationStudentRequestDTO.getStudent_id());
+        System.out.println("logDoBackend" + annotationStudentRequestDTO);
+        try {
+            System.out.println("logDoBackend" + "Annotation student converter:, " + annotationStudentRequestDTO.getStudent_id());
+            System.out.println("logDoBackend" + annotationStudentRequestDTO.converter(councilService, teacherService, studentService));
+        } catch (Exception e) {
+            System.err.println(annotationStudentRequestDTO.getStudent_id() + " - Erro no try catch converter: " + e.getMessage());
+        }
         // Mapeamento inicial (síncrono)
         AnnotationStudent annotationStudent = modelMapper.map(annotationStudentRequestDTO, AnnotationStudent.class);
-        System.out.println("Annotation student inicial:, " + annotationStudentRequestDTO.getStudent_id());
-        System.out.println(annotationStudent);
+        try {
+            System.out.println("logDoBackend" + "Annotation student inicial:, " + annotationStudentRequestDTO.getStudent_id());
+            System.out.println("logDoBackend" + annotationStudent);
+        } catch (Exception e) {
+            System.err.println(annotationStudentRequestDTO.getStudent_id() + " - Erro no try catch modelMapper: " + e.getMessage());
+        }
 
         // Buscar conselho, professor e aluno de forma assíncrona e paralela
         CompletableFuture<Council> councilFuture = councilService.findCouncilEntityAsync(annotationStudentRequestDTO.getCouncil_id());
         CompletableFuture<Teacher> teacherFuture = teacherService.findTeacherEntityAsync(annotationStudentRequestDTO.getTeacher_id());
         CompletableFuture<Student> studentFuture = studentService.findStudentEntityAsync(annotationStudentRequestDTO.getStudent_id());
-        System.out.println("Começou todos os asyncs, " + annotationStudentRequestDTO.getStudent_id());
+        System.out.println("logDoBackend" + "Começou todos os asyncs, " + annotationStudentRequestDTO.getStudent_id());
         // Combinar todos os resultados
         return CompletableFuture.allOf(councilFuture, teacherFuture, studentFuture)
                 .thenComposeAsync(__ -> {
-                    System.out.println("Terminou todos os asyncs, " + annotationStudentRequestDTO.getStudent_id());
+                    try {
+                        System.out.println("logDoBackend" + "Council find:, " + annotationStudentRequestDTO.getStudent_id());
+                        System.out.println("logDoBackend" + councilFuture);
+                    } catch (Exception e) {
+                        System.err.println(annotationStudentRequestDTO.getStudent_id() + " - Erro no try catch print council: " + e.getMessage());
+                    }
+                    System.out.println("logDoBackend" + "Terminou todos os asyncs, " + annotationStudentRequestDTO.getStudent_id());
                     Council council = councilFuture.join();
                     Teacher teacher = teacherFuture.join();
                     Student student = studentFuture.join();
@@ -71,7 +91,7 @@ public class AnnotationStudentService {
                         throw new UserNotAssociatedException("The student is not associated with this council");
                     }
 
-                    System.out.println("Passou todos os if, " + annotationStudentRequestDTO.getStudent_id());
+                    System.out.println("logDoBackend" + "Passou todos os if, " + annotationStudentRequestDTO.getStudent_id());
 
                     // Configurar entidade
                     annotationStudent.setCouncil(council);
@@ -80,13 +100,21 @@ public class AnnotationStudentService {
 
                     // Salvar e enviar evento (pode ser feito em outra thread)
                     return CompletableFuture.supplyAsync(() -> {
-                        System.out.println("Objeto antes do save, " + annotationStudentRequestDTO.getStudent_id());
-                        System.out.println(annotationStudent);
-                        System.out.println("passou o print antes do save, " + annotationStudentRequestDTO.getStudent_id());
+                        try {
+                            System.out.println("logDoBackend" + "Objeto antes do save, " + annotationStudentRequestDTO.getStudent_id());
+                            System.out.println("logDoBackend" + annotationStudent);
+                            System.out.println("logDoBackend" + "passou o print antes do save, " + annotationStudentRequestDTO.getStudent_id());
+                        } catch (Exception e) {
+                            System.err.println(annotationStudentRequestDTO.getStudent_id() + " - Erro no try catch antes do save: " + e.getMessage());
+                        }
                         AnnotationStudent annotationSaved = repository.save(annotationStudent);
-                        System.out.println("Salvou o annotation, " + annotationStudentRequestDTO.getStudent_id());
-                        System.out.println(annotationSaved);
-                        System.out.println("Passsou o print, " + annotationStudentRequestDTO.getStudent_id());
+                        try {
+                            System.out.println("logDoBackend" + "Salvou o annotation, " + annotationStudentRequestDTO.getStudent_id());
+                            System.out.println("logDoBackend" + annotationSaved);
+                            System.out.println("logDoBackend" + "Passsou o print, " + annotationStudentRequestDTO.getStudent_id());
+                        } catch (Exception e) {
+                            System.err.println(annotationStudentRequestDTO.getStudent_id() + " - Erro no try catch depois do save: " + e.getMessage());
+                        }
                         kafkaEventSender.sendEvent(annotationSaved, "POST", "Annotation student created");
                         return modelMapper.map(annotationSaved, AnnotationStudentResponseDTO.class);
                     });

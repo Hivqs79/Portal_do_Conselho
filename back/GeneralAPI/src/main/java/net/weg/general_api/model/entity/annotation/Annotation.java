@@ -1,7 +1,10 @@
 package net.weg.general_api.model.entity.annotation;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.weg.general_api.model.entity.council.Council;
 import net.weg.general_api.model.entity.users.Teacher;
 import net.weg.general_api.model.enums.RankENUM;
@@ -10,6 +13,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Annotation {
 
@@ -30,7 +35,7 @@ public abstract class Annotation {
     @Column(columnDefinition = "TEXT")
     private String toImprove;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Council council;
 
     @ManyToOne
@@ -41,6 +46,14 @@ public abstract class Annotation {
 
     @Column(name = "update_date", nullable = false)
     private LocalDateTime updateDate;
+
+    public Annotation(RankENUM rank, String strengths, String toImprove, Council council, Teacher teacher) {
+        this.rank = rank;
+        this.strengths = strengths;
+        this.toImprove = toImprove;
+        this.council = council;
+        this.teacher = teacher;
+    }
 
     @PrePersist
     public void onPrePersist() {
@@ -61,8 +74,8 @@ public abstract class Annotation {
                 ", rank='" + rank + '\'' +
                 ", strengths='" + strengths + '\'' +
                 ", toImprove='" + toImprove + '\'' +
-                ", council=" + council.getId() +
-                ", teacher=" + teacher.getName() +
+                ", council=" + (council != null ? council.getId() : "null") +
+                ", teacher=" + (teacher != null ? teacher.getName() : "null") +
                 '}';
     }
 }

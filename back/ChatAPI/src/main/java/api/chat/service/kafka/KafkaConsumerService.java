@@ -8,6 +8,6 @@ public class KafkaConsumerService {
 
     @KafkaListener(topics = "room1", groupId = "group_id")
     public void consume(String message) {
-        System.out.println("Consumed message: " + message);
+        System.out.println("logDoBackend" + "Consumed message: " + message);
     }
 }
