@@ -14,6 +14,7 @@ import java.util.Optional;
 @AllArgsConstructor
 /**
  * @author Vinícius Eduardo dos Santos
+ * @author Pedro Henrique Panstein
  */
 public class RoomConversationService {
 
@@ -22,9 +23,9 @@ public class RoomConversationService {
     private KafkaEventSender kafkaEventSender;
 
     public RoomConversation register(RoomConversationDto dto){
-        RoomConversation room = dto.convert(messageService);
+        RoomConversation room = dto.convert();
         room = repositoryRoom.save(room);
-        kafkaEventSender.sendEvent(room, "POST", "Creating a conversation room");
+        //kafkaEventSender.sendEvent(room, "POST", "Creating a conversation room");
         return room;
     }
 
@@ -39,8 +40,12 @@ public class RoomConversationService {
 
     public void deleteById(Long id){
         RoomConversation roomConversation = this.findById(id);
-        kafkaEventSender.sendEvent(roomConversation, "DELETE", "Deleting a conversation room");
+        //kafkaEventSender.sendEvent(roomConversation, "DELETE", "Deleting a conversation room");
 
         repositoryRoom.deleteById(id);
+    }
+
+    public List<RoomConversation> findAllRoomsOfAUser(Long userId) {
+        return repositoryRoom.findByUsersIdContaining(userId);
     }
 }
