@@ -68,7 +68,7 @@ public class KafkaConsumerService {
             for (Student student : council.getAClass().getStudents()) {
                 if (!annotationStudentService.existsByTeacherCouncilAndStudent(
                         teacher.getId(), council.getId(), student.getId())) {
-                    annotationStudentService.createAnnotationStudent(
+                    annotationStudentService.createAnnotationStudentAsync(
                             new AnnotationStudentRequestDTO(
                                     RankENUM.NONE,
                                     student.getLastFrequency(),

@@ -13,6 +13,7 @@ import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
+import net.weg.general_api.exception.exceptions.UserNotAssociatedException;
 import net.weg.general_api.model.dto.request.annotation.AnnotationStudentRequestDTO;
 import net.weg.general_api.model.dto.response.annotation.AnnotationStudentResponseDTO;
 import net.weg.general_api.model.entity.annotation.AnnotationStudent;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/annotations/student")
@@ -47,8 +49,16 @@ public class AnnotationStudentController {
     @ApiResponse(responseCode = "400", description = "Invalid data", content = @Content(examples = @ExampleObject(value = "{\"status\":400,\"error\":\"Validation Error\",\"message\":[\"strengths: must not be blank\",\"toImprove: must not be blank\",\"teacher_id: must not be null\",\"council_id: must not be null\",\"student_id: must not be null\"]}")))
     @ApiResponse(responseCode = "404", description = "Teacher, student or council not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<AnnotationStudentResponseDTO> postAnnotationStudent(@RequestBody @Validated AnnotationStudentRequestDTO annotationStudentRequestDTO) {
-        return new ResponseEntity<>(service.createAnnotationStudent(annotationStudentRequestDTO), HttpStatus.OK);
+    public CompletableFuture<ResponseEntity<AnnotationStudentResponseDTO>> createAnnotation(
+            @RequestBody AnnotationStudentRequestDTO requestDTO) {
+        return service.createAnnotationStudentAsync(requestDTO)
+                .thenApply(ResponseEntity::ok)
+                .exceptionally(e -> {
+                    if (e.getCause() instanceof UserNotAssociatedException) {
+                        return ResponseEntity.badRequest().build();
+                    }
+                    return ResponseEntity.internalServerError().build();
+                });
     }
 
     @PutMapping("/{id}")
