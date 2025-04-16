@@ -47,9 +47,4 @@ public class EmailModel {
     private String token;
     private String password;
 
-    @PrePersist
-    public void onPersist() {
-        this.date = LocalDateTime.now();
-    }
-
 }

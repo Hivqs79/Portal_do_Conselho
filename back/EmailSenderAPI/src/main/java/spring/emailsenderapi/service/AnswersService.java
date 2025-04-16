@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import spring.emailsenderapi.model.EmailModel;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @AllArgsConstructor
@@ -23,8 +25,19 @@ public class AnswersService {
         /**
          * date and time formatting
          */
-        String dateFormat = String.valueOf(email.getDate());
-        String hourFormat = String.valueOf(email.getDate());
+        LocalDateTime dateTime = email.getDate();
+
+        if (dateTime == null) {
+            dateTime = LocalDateTime.now();
+        }
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dateFormat = dateTime.format(dateFormatter);
+        System.out.println("Dia: " + dateFormat);
+
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        String hourFormat = dateTime.format(timeFormatter);
+        System.out.println("Hora: " + hourFormat);
 
         switch (email.getTitle()) {
 
