@@ -15,7 +15,7 @@ export default function Chat() {
           if (userId <= 0) return;
           console.log("Fetching rooms for user ID:", userId);
           const response = await fetch(
-            `http://localhost:9999/room/findAllRoomsOfAUser/${userId}`,
+            `http://localhost:8082/room/findAllRoomsOfAUser/${userId}`,
             {
               method: "GET",
               headers: {
@@ -32,7 +32,7 @@ export default function Chat() {
           setRoomsData(data);
         }
       } catch (error) {
-        console.error("Error fetching rooms:", error);
+        console.log("Error fetching rooms:", error);
       }
     }
 
@@ -41,7 +41,7 @@ export default function Chat() {
 
   return (
     <Box className="h-full">
-      <SidebarRooms roomsData={roomsData ? roomsData : []} />
+      <SidebarRooms userRoleId={userId ? userId : 0} roomsData={roomsData ? roomsData : []} />
     </Box>
   );
 }
