@@ -163,7 +163,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/admin/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/admin/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/admin").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/admin").permitAll()
 
                         // Tenho minhas duvidas...
                         .requestMatchers("/notification/**").permitAll()
