@@ -38,7 +38,7 @@ public class EmailController {
     @ApiResponse(responseCode = "400", description = "Invalid request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<EmailModel> senderEmail(@Valid @RequestBody EmailModel email){
-        //answersService.answers(email);
+        answersService.answers(email);
         EmailModel message = service.sendEmail(email);
         return new ResponseEntity<>(message, HttpStatus.CREATED);
     }

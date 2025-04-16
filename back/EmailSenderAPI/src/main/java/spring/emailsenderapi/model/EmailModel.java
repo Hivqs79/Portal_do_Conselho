@@ -44,10 +44,7 @@ public class EmailModel {
     private String turma;
     private String typeUser;
     private String typeContent;
-
-    @PrePersist
-    public void onPersist() {
-        this.date = LocalDateTime.now();
-    }
+    private String token;
+    private String password;
 
 }

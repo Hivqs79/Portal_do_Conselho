@@ -27,13 +27,20 @@ public class UserAuthentication implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private boolean accountNonExpired;
+    @Column(nullable = false)
     private boolean accountNonLocked;
+    @Column(nullable = false)
     private boolean credentialsNonExpired;
+    @Column(nullable = false)
     private boolean enabled;
 
+    @Column(nullable = false)
     private RoleENUM role;
 
     @OneToMany(mappedBy = "userAuthentication")

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import net.weg.general_api.exception.exceptions.UserNotFoundException;
 import net.weg.general_api.model.dto.request.users.LoginRequestDTO;
 import net.weg.general_api.model.dto.request.users.ModifyUserPasswordRequestDTO;
+import net.weg.general_api.model.dto.response.LoginResponseDTO;
 import net.weg.general_api.model.entity.users.UserAuthentication;
 import net.weg.general_api.repository.PedagogicRepository;
 import net.weg.general_api.repository.UserAuthenticationRepository;
@@ -27,14 +28,14 @@ public class AuthenticationService {
 
     private final UserAuthenticationService userAuthenticationService;
 
-    public String login(LoginRequestDTO loginRequestDTO) {
+    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
 
         var authenticationToken = new UsernamePasswordAuthenticationToken(loginRequestDTO.username(), loginRequestDTO.password());
         Authentication auth = authenticationManager.authenticate(authenticationToken);
 
         var token = tokenService.generateToken((UserAuthentication) auth.getPrincipal());
 
-        return token;
+        return new LoginResponseDTO(token);
     }
 
     public static String encodePassword(String passwordPlainText) {
