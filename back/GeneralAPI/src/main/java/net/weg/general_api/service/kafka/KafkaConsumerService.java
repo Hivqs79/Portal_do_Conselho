@@ -26,23 +26,23 @@ public class KafkaConsumerService {
     private final CouncilService councilService;
     private final KafkaEventSender kafkaEventSender;
 
-    @KafkaListener(topics = "student", groupId = "group_general_api")
-    public void consume(String message) {
-        System.out.println("logDoBackend" + "Consumed message: " + message);
-    }
+//    @KafkaListener(topics = "student", groupId = "group_general_api")
+//    public void consume(String message) {
+//        System.out.println("logDoBackend" + "Consumed message: " + message);
+//    }
 
     @KafkaListener(topics = "council", groupId = "group_general_api")
     public void consumeCouncil(String message) throws JsonProcessingException {
-        System.out.println("logDoBackend" + "Consumed message: " + message);
+        System.out.println("Consumed message: " + message);
         KafkaMessage kafkaMessage = objectMapper.readValue(message, KafkaMessage.class);
         String httpMethod = kafkaMessage.getHttpMethod();
-        System.out.println("logDoBackend" + "httpMethod: " + httpMethod);
+        System.out.println("httpMethod: " + httpMethod);
 
         if (!httpMethod.equals("POST")) return;
 
         String regex = "Council\\{\\s*id=(\\d+).*";
         Long councilId = Long.parseLong(kafkaMessage.getObject().replaceAll(regex, "$1"));
-        System.out.println("logDoBackend" + "Id of council: " + councilId);
+        System.out.println("Id of council: " + councilId);
         Council council = councilService.findCouncilEntity(councilId);
 
         for (Teacher teacher : council.getTeachers()) {
@@ -68,7 +68,7 @@ public class KafkaConsumerService {
             for (Student student : council.getAClass().getStudents()) {
                 if (!annotationStudentService.existsByTeacherCouncilAndStudent(
                         teacher.getId(), council.getId(), student.getId())) {
-                    annotationStudentService.createAnnotationStudentAsync(
+                    annotationStudentService.createAnnotationStudent(
                             new AnnotationStudentRequestDTO(
                                     RankENUM.NONE,
                                     student.getLastFrequency(),

@@ -43,23 +43,15 @@ public class AnnotationStudentController {
         return service.findAnnotationStudentSpec(spec, pageable);
     }
 
-//    @PostMapping
-//    @Operation(method = "POST", summary = "Create student annotation", description = "Creates new student annotation")
-//    @ApiResponse(responseCode = "200", description = "Annotation created", content = @Content(schema = @Schema(implementation = AnnotationStudentResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"rank\":\"EXCELLENT\",\"strengths\":\"Good progress\",\"toImprove\":\"Needs more focus\",\"teacher\":{\"id\":1,\"name\":\"Teacher\",\"email\":\"teacher@email.com\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"student\":{\"id\":1,\"name\":\"Student\",\"email\":\"student@email.com\",\"isRepresentant\":false,\"lastRank\":\"BRONZE\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))
-//    @ApiResponse(responseCode = "400", description = "Invalid data", content = @Content(examples = @ExampleObject(value = "{\"status\":400,\"error\":\"Validation Error\",\"message\":[\"strengths: must not be blank\",\"toImprove: must not be blank\",\"teacher_id: must not be null\",\"council_id: must not be null\",\"student_id: must not be null\"]}")))
-//    @ApiResponse(responseCode = "404", description = "Teacher, student or council not found")
-//    @ApiResponse(responseCode = "500", description = "Server error")
-//    public ResponseEntity<AnnotationStudentResponseDTO> createAnnotation(
-//            @RequestBody AnnotationStudentRequestDTO requestDTO) {
-//        return service.createAnnotationStudentAsync(requestDTO)
-//                .thenApply(ResponseEntity::ok)
-//                .exceptionally(e -> {
-//                    if (e.getCause() instanceof UserNotAssociatedException) {
-//                        return ResponseEntity.badRequest().build();
-//                    }
-//                    return ResponseEntity.internalServerError().build();
-//                });
-//    }
+    @PostMapping
+    @Operation(method = "POST", summary = "Create student annotation", description = "Creates new student annotation")
+    @ApiResponse(responseCode = "200", description = "Annotation created", content = @Content(schema = @Schema(implementation = AnnotationStudentResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"rank\":\"EXCELLENT\",\"strengths\":\"Good progress\",\"toImprove\":\"Needs more focus\",\"teacher\":{\"id\":1,\"name\":\"Teacher\",\"email\":\"teacher@email.com\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"student\":{\"id\":1,\"name\":\"Student\",\"email\":\"student@email.com\",\"isRepresentant\":false,\"lastRank\":\"BRONZE\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))
+    @ApiResponse(responseCode = "400", description = "Invalid data", content = @Content(examples = @ExampleObject(value = "{\"status\":400,\"error\":\"Validation Error\",\"message\":[\"strengths: must not be blank\",\"toImprove: must not be blank\",\"teacher_id: must not be null\",\"council_id: must not be null\",\"student_id: must not be null\"]}")))
+    @ApiResponse(responseCode = "404", description = "Teacher, student or council not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<AnnotationStudentResponseDTO> postAnnotationStudent(@RequestBody @Validated AnnotationStudentRequestDTO annotationStudentRequestDTO) {
+        return new ResponseEntity<>(service.createAnnotationStudent(annotationStudentRequestDTO), HttpStatus.OK);
+    }
 
     @PutMapping("/{id}")
     @Operation(method = "PUT", summary = "Update student annotation", description = "Updates existing student annotation")
