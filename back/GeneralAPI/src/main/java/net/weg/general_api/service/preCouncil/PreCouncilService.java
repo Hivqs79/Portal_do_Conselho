@@ -9,6 +9,7 @@ import net.weg.general_api.repository.PreCouncilRepository;
 import net.weg.general_api.service.council.CouncilService;
 import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.kafka.KafkaProducerService;
+import net.weg.general_api.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ public class PreCouncilService {
 
     private PreCouncilRepository repository;
     private CouncilService councilService;
+    private TeacherService teacherService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
 
@@ -33,6 +35,7 @@ public class PreCouncilService {
         PreCouncil preCouncil = modelMapper.map(preCouncilRequestDTO, PreCouncil.class);
 
         preCouncil.setCouncil(councilService.findCouncilEntity(preCouncilRequestDTO.getCouncil_id())); //SETAR CONSELHO
+        preCouncil.setTeachers(teacherService.getTeachersByIdList(preCouncilRequestDTO.getTeachers_id()));
 
         PreCouncil preCouncilSaved = repository.save(preCouncil);
         kafkaEventSender.sendEvent(preCouncilSaved, "POST", "Pre council created");

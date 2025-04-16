@@ -20,7 +20,7 @@ interface CreateCouncilFormProps {
 export default function CouncilForm({
   councilInformation,
   verifyForm,
-  variant,  
+  variant,
 }: CreateCouncilFormProps) {
   const { colorByMode, colorByModeSecondary, whiteColor } = useThemeContext();
   const windowWidth = useWindowWidth();
@@ -35,16 +35,20 @@ export default function CouncilForm({
     classExistents,
     setDate,
     setTime,
+    setFinalDate,
     date,
     time,
+    finalDate,
     setSearchTeachers,
     setSearchClass,
     submitForm,
   } = councilInformation;
 
   useEffect(() => {
-    if (variant === "editing" && visualizedCouncil) {                 
-      setSelectedTeachers(Object.fromEntries(visualizedCouncil.teachers.map(t => [t.id, true])));
+    if (variant === "editing" && visualizedCouncil) {
+      setSelectedTeachers(
+        Object.fromEntries(visualizedCouncil.teachers.map((t) => [t.id, true]))
+      );
     }
   }, []);
 
@@ -80,22 +84,42 @@ export default function CouncilForm({
         />
         <Box className="flex flex-col w-full gap-4">
           <Typography color={colorByModeSecondary} variant="xl_text_bold">
-            Horário do conselho
+            {setTime ? "Horário do conselho" : "Prazo final"}
           </Typography>
-          <TimePicker
-            label="Horário do conselho"
-            onChange={(e) => e && setTime(e)}
-            value={time}
-            slots={{
-              openPickerIcon: Icon,
-            }}
-            slotProps={{
-              openPickerIcon: {
-                style: { color: colorByMode },
-                component: FaRegClock,
-              },
-            }}
-          />
+          {setTime ? (
+            <TimePicker
+              label="Horário do conselho"
+              onChange={(e) => e && setTime(e)}
+              value={time}
+              slots={{
+                openPickerIcon: Icon,
+              }}
+              slotProps={{
+                openPickerIcon: {
+                  style: { color: colorByMode },
+                  component: FaRegClock,
+                },
+              }}
+            />
+          ) : (
+            setFinalDate && (
+              <DatePicker
+                label="Prazo final"
+                minDate={dayjs()}
+                value={finalDate}
+                onChange={(e) => e && setFinalDate(e)}
+                slots={{
+                  openPickerIcon: Icon,
+                }}
+                slotProps={{
+                  openPickerIcon: {
+                    style: { color: colorByMode },
+                    component: FaRegCalendarAlt,
+                  },
+                }}
+              />
+            )
+          )}
         </Box>
       </Box>
       <Box className="flex flex-col gap-12">
@@ -132,10 +156,10 @@ export default function CouncilForm({
           <Button
             variant="contained"
             color="primary"
-            onClick={() => {         
+            onClick={() => {
               if (verifyForm && verifyForm()) {
                 setOpenConfirm(true);
-              }     
+              }
             }}
           >
             <Typography

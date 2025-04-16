@@ -55,9 +55,6 @@ public class Council {
     @OneToMany(mappedBy = "council")
     private List<Feedback> feedbacks;
 
-    @OneToOne(mappedBy = "council")
-    private PreCouncil preCouncil;
-
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
 

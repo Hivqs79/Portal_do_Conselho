@@ -5,12 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PreCouncilRequestDTO {
 
     @NotNull(message = "{not.null.message}")
-    private Long council_id;
+    private Long class_id;
 
+    private List<Long> teachers_id;
 }

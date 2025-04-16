@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.council.Council;
+import net.weg.general_api.model.entity.users.Teacher;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,11 +24,14 @@ public class PreCouncil {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private Council council;
+    @ManyToOne
+    private Class aClass;
 
     @OneToMany(mappedBy = "preCouncil")
     private List<PreCouncilSection> preCouncilSectionList;
+
+    @ManyToMany
+    private List<Teacher> teachers;
 
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
@@ -53,7 +58,7 @@ public class PreCouncil {
     public String toString() {
         return "PreCouncil{" +
                 "id=" + id +
-                ", council=" + council.getId() +
+                ", class=" + aClass.getId() +
                 ", preCouncilSectionList=" + preCouncilSectionList +
                 '}';
     }
