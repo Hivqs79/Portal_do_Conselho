@@ -1,5 +1,6 @@
 package net.weg.general_api.service.security;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.model.dto.request.ForgotPasswordRequestDTO;
 import net.weg.general_api.model.dto.request.ResetPasswordRequestDTO;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Random;
 
 @Service
@@ -25,25 +27,22 @@ public class PasswordRecoveryService {
     private final PasswordEncoder passwordEncoder;
     private final EmailApiClient emailApiClient;
 
-    // Gerar código aleatório de 6 dígitos
+
     private String generateVerificationCode() {
         Random random = new Random();
         return String.format("%06d", random.nextInt(999999));
     }
 
-    public ResponseEntity<?> initiatePasswordReset(ForgotPasswordRequestDTO request) {
-        // Buscar usuário pelo email (username)
+    public void initiatePasswordReset(ForgotPasswordRequestDTO request) {
         UserAuthentication user = userAuthenticationRepository.findByUsername(request.email())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-        // Invalidar tokens anteriores não usados
         passwordResetTokenRepository.findByUserAuthenticationAndUsedFalse(user)
                 .ifPresent(token -> {
                     token.setUsed(true);
                     passwordResetTokenRepository.save(token);
                 });
 
-        // Gerar novo token
         String code = generateVerificationCode();
         PasswordResetToken resetToken = PasswordResetToken.builder()
                 .token(code)
@@ -55,16 +54,14 @@ public class PasswordRecoveryService {
 
         emailApiClient.sendCodeEmail(
                 request.email(),
-                user.getUser().getName(), // Assumindo que existe um campo name no DTO
+                user.getUser().getName(),
                 code
         );
 
         System.out.println("Código: " + code);
-
-        return ResponseEntity.ok("Código de verificação enviado para o email");
     }
 
-    public ResponseEntity<?> verifyResetCode(VerifyCodeRequestDTO request) {
+    public void verifyResetCode(VerifyCodeRequestDTO request) {
         UserAuthentication user = userAuthenticationRepository.findByUsername(request.email())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
@@ -72,22 +69,20 @@ public class PasswordRecoveryService {
                 .orElseThrow(() -> new RuntimeException("Código inválido"));
 
         if (!token.getUserAuthentication().equals(user)) {
-            return ResponseEntity.badRequest().body("Código inválido para este usuário");
+            throw new RuntimeException("Código inválido para este usuário");
         }
 
         if (token.isExpired()) {
-            return ResponseEntity.badRequest().body("Código expirado");
+            throw new TokenExpiredException("Token inspirado", token.getExpiryDate().toInstant(ZoneOffset.of("-03:00")));
         }
 
         if (token.isUsed()) {
-            return ResponseEntity.badRequest().body("Código já utilizado");
+            throw new RuntimeException("Código já utilizado");
         }
 
-        return ResponseEntity.ok("Código válido");
     }
 
-    public ResponseEntity<?> resetPassword(ResetPasswordRequestDTO request) {
-        // Validar usuário e token
+    public void resetPassword(ResetPasswordRequestDTO request) {
         UserAuthentication user = userAuthenticationRepository.findByUsername(request.email())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
@@ -95,25 +90,21 @@ public class PasswordRecoveryService {
                 .orElseThrow(() -> new RuntimeException("Código inválido"));
 
         if (!token.getUserAuthentication().equals(user)) {
-            return ResponseEntity.badRequest().body("Código inválido para este usuário");
+            throw new RuntimeException("Código inválido para este usuário");
         }
 
         if (token.isExpired()) {
-            return ResponseEntity.badRequest().body("Código expirado");
+            throw new TokenExpiredException("Token inspirado", token.getExpiryDate().toInstant(ZoneOffset.of("-03:00")));
         }
 
         if (token.isUsed()) {
-            return ResponseEntity.badRequest().body("Código já utilizado");
+            throw new RuntimeException("Código já utilizado");
         }
 
-        // Atualizar senha
         user.setPassword(passwordEncoder.encode(request.newPassword()));
         userAuthenticationRepository.save(user);
 
-        // Marcar token como usado
         token.setUsed(true);
         passwordResetTokenRepository.save(token);
-
-        return ResponseEntity.ok("Senha redefinida com sucesso");
     }
 }
