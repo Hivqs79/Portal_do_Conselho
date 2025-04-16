@@ -169,6 +169,7 @@ public class SecurityConfig {
                         .requestMatchers("/notification/**").permitAll()
                         .requestMatchers("/dashboard/**").permitAll()
                         .requestMatchers("/pre-council/**").permitAll()
+                        .requestMatchers("/user/**").permitAll()
 
                         .anyRequest().authenticated()
                 )

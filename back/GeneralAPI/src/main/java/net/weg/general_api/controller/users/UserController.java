@@ -31,14 +31,6 @@ public class UserController {
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
-        User user = service.findUserEntity(id);
-        UserResponseDTO response = new UserResponseDTO(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getCreateDate(),
-                user.getUpdateDate(),
-                user.isEnabled());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(service.findUser(id), HttpStatus.OK);
     }
 }
