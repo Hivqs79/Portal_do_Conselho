@@ -41,9 +41,9 @@ public class AnnotationStudentService {
         return annotationStudents.map(annotationStudent -> modelMapper.map(annotationStudent, AnnotationStudentResponseDTO.class));
     }
 
-    @Async
+//    @Async
     @Transactional
-    public CompletableFuture<AnnotationStudentResponseDTO> createAnnotationStudentAsync(
+    public AnnotationStudentResponseDTO createAnnotationStudentAsync(
             AnnotationStudentRequestDTO annotationStudentRequestDTO) {
 
         System.out.println("logDoBackend" + "Annotation student DTO inicial:, " + annotationStudentRequestDTO.getStudent_id());
@@ -54,7 +54,6 @@ public class AnnotationStudentService {
         } catch (Exception e) {
             System.err.println(annotationStudentRequestDTO.getStudent_id() + " - Erro no try catch converter: " + e.getMessage());
         }
-        // Mapeamento inicial (síncrono)
         AnnotationStudent annotationStudent = modelMapper.map(annotationStudentRequestDTO, AnnotationStudent.class);
         try {
             System.out.println("logDoBackend" + "Annotation student inicial:, " + annotationStudentRequestDTO.getStudent_id());
@@ -63,24 +62,23 @@ public class AnnotationStudentService {
             System.err.println(annotationStudentRequestDTO.getStudent_id() + " - Erro no try catch modelMapper: " + e.getMessage());
         }
 
-        // Buscar conselho, professor e aluno de forma assíncrona e paralela
-        CompletableFuture<Council> councilFuture = councilService.findCouncilEntityAsync(annotationStudentRequestDTO.getCouncil_id());
-        CompletableFuture<Teacher> teacherFuture = teacherService.findTeacherEntityAsync(annotationStudentRequestDTO.getTeacher_id());
-        CompletableFuture<Student> studentFuture = studentService.findStudentEntityAsync(annotationStudentRequestDTO.getStudent_id());
+        Council council = councilService.findCouncilEntity(annotationStudentRequestDTO.getCouncil_id());
+        Teacher teacher = teacherService.findTeacherEntity(annotationStudentRequestDTO.getTeacher_id());
+        Student student = studentService.findStudentEntity(annotationStudentRequestDTO.getStudent_id());
         System.out.println("logDoBackend" + "Começou todos os asyncs, " + annotationStudentRequestDTO.getStudent_id());
         // Combinar todos os resultados
-        return CompletableFuture.allOf(councilFuture, teacherFuture, studentFuture)
-                .thenComposeAsync(__ -> {
-                    try {
-                        System.out.println("logDoBackend" + "Council find:, " + annotationStudentRequestDTO.getStudent_id());
-                        System.out.println("logDoBackend" + councilFuture);
-                    } catch (Exception e) {
-                        System.err.println(annotationStudentRequestDTO.getStudent_id() + " - Erro no try catch print council: " + e.getMessage());
-                    }
-                    System.out.println("logDoBackend" + "Terminou todos os asyncs, " + annotationStudentRequestDTO.getStudent_id());
-                    Council council = councilFuture.join();
-                    Teacher teacher = teacherFuture.join();
-                    Student student = studentFuture.join();
+//        return CompletableFuture.allOf(councilFuture, teacherFuture, studentFuture)
+//                .thenComposeAsync(__ -> {
+//                    System.out.println("logDoBackend" + "Terminou todos os asyncs, " + annotationStudentRequestDTO.getStudent_id());
+//                    try {
+//                        System.out.println("logDoBackend" + "Council find:, " + annotationStudentRequestDTO.getStudent_id());
+//                        System.out.println("logDoBackend" + councilFuture);
+//                    } catch (Exception e) {
+//                        System.err.println(annotationStudentRequestDTO.getStudent_id() + " - Erro no try catch print council: " + e.getMessage());
+//                    }
+//                    Council council = councilFuture.join();
+//                    Teacher teacher = teacherFuture.join();
+//                    Student student = studentFuture.join();
 
                     // Validações
                     if (!council.getTeachers().contains(teacher)) {
@@ -99,26 +97,26 @@ public class AnnotationStudentService {
                     annotationStudent.setTeacher(teacher);
 
                     // Salvar e enviar evento (pode ser feito em outra thread)
-                    return CompletableFuture.supplyAsync(() -> {
-                        try {
-                            System.out.println("logDoBackend" + "Objeto antes do save, " + annotationStudentRequestDTO.getStudent_id());
-                            System.out.println("logDoBackend" + annotationStudent);
-                            System.out.println("logDoBackend" + "passou o print antes do save, " + annotationStudentRequestDTO.getStudent_id());
-                        } catch (Exception e) {
-                            System.err.println(annotationStudentRequestDTO.getStudent_id() + " - Erro no try catch antes do save: " + e.getMessage());
-                        }
+//                    return CompletableFuture.supplyAsync(() -> {
+//                        try {
+//                            System.out.println("logDoBackend" + "Objeto antes do save, " + annotationStudentRequestDTO.getStudent_id());
+//                            System.out.println("logDoBackend" + annotationStudent);
+//                            System.out.println("logDoBackend" + "passou o print antes do save, " + annotationStudentRequestDTO.getStudent_id());
+//                        } catch (Exception e) {
+//                            System.err.println(annotationStudentRequestDTO.getStudent_id() + " - Erro no try catch antes do save: " + e.getMessage());
+//                        }
                         AnnotationStudent annotationSaved = repository.save(annotationStudent);
-                        try {
-                            System.out.println("logDoBackend" + "Salvou o annotation, " + annotationStudentRequestDTO.getStudent_id());
-                            System.out.println("logDoBackend" + annotationSaved);
-                            System.out.println("logDoBackend" + "Passsou o print, " + annotationStudentRequestDTO.getStudent_id());
-                        } catch (Exception e) {
-                            System.err.println(annotationStudentRequestDTO.getStudent_id() + " - Erro no try catch depois do save: " + e.getMessage());
-                        }
+//                        try {
+//                            System.out.println("logDoBackend" + "Salvou o annotation, " + annotationStudentRequestDTO.getStudent_id());
+//                            System.out.println("logDoBackend" + annotationSaved);
+//                            System.out.println("logDoBackend" + "Passsou o print, " + annotationStudentRequestDTO.getStudent_id());
+//                        } catch (Exception e) {
+//                            System.err.println(annotationStudentRequestDTO.getStudent_id() + " - Erro no try catch depois do save: " + e.getMessage());
+//                        }
                         kafkaEventSender.sendEvent(annotationSaved, "POST", "Annotation student created");
                         return modelMapper.map(annotationSaved, AnnotationStudentResponseDTO.class);
-                    });
-                });
+//                    });
+//                });
     }
 
     public AnnotationStudentResponseDTO findAnnotationStudent(Long id) {
