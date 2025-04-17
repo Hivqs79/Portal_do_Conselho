@@ -34,6 +34,13 @@ public class EmailApiClient {
                 .build());
     }
 
+    public void sendCouncilInfoEmail(String recipient, String ownerName, String aClass, LocalDateTime startDateTime) {
+        sendEmail(buildEmailModel(recipient, ownerName, "Conselho Marcado")
+                .turma(aClass)
+                .date(startDateTime)
+                .build());
+    }
+
     private EmailModel.EmailModelBuilder buildEmailModel(String recipient, String ownerName, String title) {
         return EmailModel.builder()
                 .owner(ownerName)

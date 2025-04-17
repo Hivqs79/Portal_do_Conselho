@@ -7,9 +7,11 @@ import net.weg.general_api.model.dto.request.council.CouncilRequestDTO;
 import net.weg.general_api.model.dto.response.council.CouncilResponseDTO;
 import net.weg.general_api.model.entity.annotation.Annotation;
 import net.weg.general_api.model.entity.council.Council;
+import net.weg.general_api.model.entity.users.Teacher;
 import net.weg.general_api.repository.CouncilRepository;
 import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.security.EmailService;
 import net.weg.general_api.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -23,11 +25,12 @@ import java.util.List;
 @AllArgsConstructor
 public class CouncilService {
 
-    private CouncilRepository repository;
-    private ModelMapper modelMapper;
-    private ClassService classService;
-    private TeacherService teacherService;
+    private final CouncilRepository repository;
+    private final ModelMapper modelMapper;
+    private final ClassService classService;
+    private final TeacherService teacherService;
     private final KafkaEventSender kafkaEventSender;
+    private final EmailService emailService;
 
     public Page<CouncilResponseDTO> findCouncilSpec(Specification<Council> spec, Pageable pageable) {
         Page<Council> councils = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -38,9 +41,21 @@ public class CouncilService {
         Council council = modelMapper.map(councilRequestDTO, Council.class);
 
         council.setAClass(classService.findClassEntity(councilRequestDTO.getClass_id())); //SETAR CLASSE
-        council.setTeachers(teacherService.getTeachersByIdList(councilRequestDTO.getTeachers_id())); //SETAR PROFESSOR
+
+        List<Teacher> teachers = teacherService.getTeachersByIdList(councilRequestDTO.getTeachers_id());
+        council.setTeachers(teachers); //SETAR PROFESSORES
 
         Council councilSaved = repository.save(council);
+
+        teachers.forEach(teacher -> {
+            emailService.sendCouncilInfoEmailAsync(
+                    teacher.getUserAuthentication().getUsername(),
+                    teacher.getName(),
+                    council.getAClass().getName(),
+                    council.getStartDateTime()
+            );
+        });
+
         kafkaEventSender.sendEvent(councilSaved, "POST", "Council created");
 
         return modelMapper.map(councilSaved, CouncilResponseDTO.class);
