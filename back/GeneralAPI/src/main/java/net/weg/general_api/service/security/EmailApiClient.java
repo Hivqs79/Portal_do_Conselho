@@ -29,7 +29,7 @@ public class EmailApiClient {
     }
 
     public void sendCodeEmail(String recipient, String ownerName, String code) {
-        sendEmail(buildEmailModel(recipient, ownerName, "Código de Recuperação da Senha")
+        sendEmail(buildEmailModel(recipient, ownerName, "Recuperacao Senha")
                 .token(code)
                 .build());
     }

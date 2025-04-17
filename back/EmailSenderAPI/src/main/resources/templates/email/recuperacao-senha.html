@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Código de Recuperação da Senha - Portal do Conselho</title>
+    <style type="text/css">
+        /* Estilos base para compatibilidade com clientes de email */
+        body {
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        table, td {
+            border-collapse: collapse;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
+        }
+
+        p {
+            margin: 10px 0;
+            padding: 0;
+        }
+
+        /* Estilos específicos para o template */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+        }
+
+        .logo-container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 300px;
+            max-width: 90%;
+            height: auto;
+        }
+
+        .subtitle {
+            color: #0056b3;
+            font-size: 18px;
+            text-align: center;
+            padding: 0 20px 20px 20px;
+        }
+
+        .content {
+            padding: 20px;
+            color: #333333;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .verification-code {
+            background-color: #f5f5f5;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #0056b3;
+        }
+
+        .highlight-box {
+            background-color: #f5f5f5;
+            border-left: 4px solid #0056b3;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .button-container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .button {
+            background-color: #0056b3;
+            color: #ffffff !important;
+            display: inline-block;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            color: #333333;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+
+        .divider {
+            border-top: 1px solid #eeeeee;
+            margin: 20px 0;
+        }
+
+        /* Estilos responsivos */
+        @media screen and (max-width: 480px) {
+            .container {
+                width: 100% !important;
+            }
+
+            .content, .button-container, .footer {
+                padding: 15px !important;
+            }
+
+            .button {
+                display: block !important;
+                width: 80% !important;
+                margin: 0 auto !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f4f4;">
+<!-- Tabela principal -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f4f4; padding: 20px 0;">
+    <tr>
+        <td align="center">
+            <!-- Container do email -->
+            <table class="container" border="0" cellpadding="0" cellspacing="0" width="600">
+                <!-- Logo -->
+                <tr>
+                    <td class="logo-container">
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoPortalConselho-LMhWEPYWXP7Cw9Ld8Wy9jGnBHh1KrS.png" alt="Portal do Conselho" style="width: 300px; max-width: 90%; height: auto;" />
+                    </td>
+                </tr>
+
+                <!-- Subtítulo (Tipo de caso) -->
+                <tr>
+                    <td class="subtitle">
+                        Código de Recuperação da Senha
+                    </td>
+                </tr>
+
+                <!-- Conteúdo (Mensagem do backend) -->
+                <tr>
+                    <td class="content">
+                        <p>Prezado(a) {{owner}},</p>
+
+                        <p>Recebemos uma solicitação para redefinição da senha da sua conta.</p>
+                        <p>Segue abaixo o seu código de verificação exclusivo:</p>
+
+                        <div class="verification-code">
+                            {{token}}
+                        </div>
+
+                        <p>Este código é válido por 1 hora e deve ser utilizado na página de recuperação de senha.</p>
+
+                        <div class="highlight-box" style="background-color: #fff8e1; border-left-color: #ffc107;">
+                            <p><strong>Importante:</strong></p>
+                            <ul>
+                                <li>Nunca compartilhe este código com terceiros</li>
+                                <li>Nossa equipe nunca solicitará sua senha ou código por telefone</li>
+                                <li>Caso não tenha solicitado esta alteração, ignore este e-mail</li>
+                            </ul>
+                        </div>
+
+                        <div class="highlight-box" style="background-color: #e8f5e9; border-left-color: #4caf50;">
+                            <p><strong>Para sua segurança, recomendamos:</strong></p>
+                            <ol>
+                                <li>Criar uma senha forte ao redefinir</li>
+                                <li>Não repetir senhas utilizadas em outros serviços</li>
+                                <li>Atualizar periodicamente suas credenciais</li>
+                            </ol>
+                        </div>
+
+                        <p>Atenciosamente,<br />
+                            Equipe de Suporte<br />
+                            Portal do Conselho</p>
+
+                        <div class="divider"></div>
+
+                        <p style="font-size: 12px; color: #777777;">
+                            Esta é uma mensagem automática. Por favor, não responda este e-mail.<br />
+                            Caso necessite de ajuda, entre em contato através do nosso site oficial.
+                        </p>
+                    </td>
+                </tr>
+
+                <!-- Botão -->
+                <tr>
+                    <td class="button-container">
+                        <a href="https://www.youtube.com/" class="button">Acessar site</a>
+                    </td>
+                </tr>
+
+                <!-- Rodapé -->
+                <tr>
+                    <td class="footer">
+                        Entre em contato através desse site <a href="#">contato</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
