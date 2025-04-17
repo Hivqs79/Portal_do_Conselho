@@ -4,11 +4,12 @@ import Header from "@/components/Header";
 import { RoleProvider, useRoleContext } from "@/hooks/useRole";
 import { ThemeProviderContext, useThemeContext } from "@/hooks/useTheme";
 import { Box, ThemeProvider } from "@mui/material";
-import { usePathname, useRouter } from "next/navigation";
-import { ReactElement, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { ReactElement, useEffect, useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/pt-br";
+import LoadingPage from "@/components/LoadingPage";
 
 export default function InnerLayout({ children }: { children: ReactElement }) {
   return (
@@ -29,10 +30,20 @@ function CoreLayout({ children }: { children: ReactElement }) {
     primaryColor,
     secondaryColor,
     terciaryColor,
+    reloadTheme
   } = useThemeContext();
   const { role, setRole, userId, setUserId } = useRoleContext();
   const pathname = usePathname();
   const isLoginPage = pathname?.includes("/login");
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);  
+
+  useEffect(() => {
+    reloadTheme();
+  }, [hydrated])
 
   useEffect(() => {
     if (!pathname) {
@@ -68,6 +79,10 @@ function CoreLayout({ children }: { children: ReactElement }) {
     }        
     console.log("teste inner");
   }, [userId, setUserId]);
+
+  if (!hydrated) {
+    return <LoadingPage message="Carregando tema..." />;
+  }
 
   return (
     <ThemeProvider theme={theme}>

@@ -1,7 +1,7 @@
 "use client";
 import { Box, Button, Icon, Typography } from "@mui/material";
 import SelectTable from "../table/SelectTable";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useThemeContext } from "@/hooks/useTheme";
 import { TimePicker } from "@mui/x-date-pickers";
@@ -44,13 +44,15 @@ export default function CouncilForm({
     submitForm,
   } = councilInformation;
 
-  useEffect(() => {
-    if (variant === "editing" && visualizedCouncil) {
-      setSelectedTeachers(
-        Object.fromEntries(visualizedCouncil.teachers.map((t) => [t.id, true]))
-      );
+  const setSelectedTeachersCallback = useCallback(() => {
+    if (variant === "editing" && visualizedCouncil) {                 
+      setSelectedTeachers(Object.fromEntries(visualizedCouncil.teachers.map(t => [t.id, true])));
     }
-  }, []);
+  }, [variant, visualizedCouncil, setSelectedTeachers]);
+
+  useEffect(() => {
+    setSelectedTeachersCallback();
+  }, [setSelectedTeachersCallback]);
 
   return (
     <Box
@@ -130,7 +132,10 @@ export default function CouncilForm({
             </Typography>
             <SelectTable
               value={selectedClass}
-              setRadioSelectedItem={setSelectedClass}
+              setRadioSelectedItem={(classId) => {
+                setSelectedClass(classId);
+                setSelectedTeachers({});
+              }}
               name="Lista de Turmas"
               rows={classExistents}
               selectType="single"

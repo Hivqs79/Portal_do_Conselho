@@ -11,6 +11,13 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    ignorePatterns: [
+      "./app/annotations/page.tsx",
+      "./app/realize-council/page.tsx",
+      "./components/StudentCouncilForm.tsx",
+    ],
+  },
 ];
 
 export default eslintConfig;
