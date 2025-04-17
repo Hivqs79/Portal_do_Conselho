@@ -15,12 +15,13 @@ interface ThemeLoginContextType {
 
 const ThemeLoginContext = createContext<ThemeLoginContextType | undefined>(undefined);
 
-const mode = (typeof window !== "undefined" ? localStorage.getItem("mode") : "light") || "light";
+const mode = (typeof window !== "undefined" ? localStorage.getItem("mode")?.replaceAll("\\", "").replaceAll("\"", "") : "light") || "light";
 const bluePrimary = colors.pallete.blue.primary;
 const blueSecondary = colors.pallete.blue.secondary;
 const blueTerciary = colors.pallete.blue.terciary;
 const colorByMode = (mode == "light" ? bluePrimary : blueTerciary);
 const colorByModeSecondary = (mode == "light" ? bluePrimary : blueSecondary);
+console.log(mode);
 
 const BlueTextField = styled(TextField)<TextFieldProps>(({ }) => ({
     "& .MuiOutlinedInput-root": {
