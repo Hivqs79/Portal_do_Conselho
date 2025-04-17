@@ -9,6 +9,7 @@ import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.SubPedagogicRepository;
 import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.security.EmailApiClient;
+import net.weg.general_api.service.security.EmailService;
 import net.weg.general_api.service.security.PasswordGeneratorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,7 @@ public class SubPedagogicService {
     private UserAuthenticationService userAuthenticationService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
-    private final EmailApiClient emailApiClient;
+    private final EmailService emailService;
 
     public Page<UserResponseDTO> findSubPedagogicSpec(Specification<SubPedagogic> spec, Pageable pageable) {
         Page<SubPedagogic> subPedagogics = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -43,7 +44,7 @@ public class SubPedagogicService {
 
         SubPedagogic subPedagogicSaved = repository.save(subPedagogic);
 
-        emailApiClient.sendPasswordEmail(
+        emailService.sendPasswordEmailAsync(
                 subPedagogicRequestDTO.getEmail(),
                 subPedagogicRequestDTO.getName(), // Assumindo que existe um campo name no DTO
                 randomPassword

@@ -9,11 +9,13 @@ import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.AdminRepository;
 import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.security.EmailApiClient;
+import net.weg.general_api.service.security.EmailService;
 import net.weg.general_api.service.security.PasswordGeneratorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +27,7 @@ public class AdminService {
     private UserAuthenticationService userAuthenticationService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
-    private final EmailApiClient emailApiClient;
+    private final EmailService emailService;
 
     public Page<UserResponseDTO> findAdminSpec(Specification<Admin> spec, Pageable pageable) {
         Page<Admin> admins = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -34,7 +36,6 @@ public class AdminService {
 
     public UserResponseDTO createAdmin(UserRequestDTO userRequestDTO) {
         Admin admin = modelMapper.map(userRequestDTO, Admin.class);
-
         String randomPassword = PasswordGeneratorService.generateSimpleAlphanumericPassword();
 
         admin.setUserAuthentication(
@@ -43,9 +44,9 @@ public class AdminService {
 
         Admin adminSaved = repository.save(admin);
 
-        emailApiClient.sendPasswordEmail(
+        emailService.sendPasswordEmailAsync(
                 userRequestDTO.getEmail(),
-                userRequestDTO.getName(), // Assumindo que existe um campo name no DTO
+                userRequestDTO.getName(),
                 randomPassword
         );
 
