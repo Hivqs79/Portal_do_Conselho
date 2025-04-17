@@ -220,7 +220,7 @@ public class SecurityConfig {
     }
 
     /*
-    HABILITAR TUDO!!!
+    SE QUISER DESABILITAR O SISTEMA DE AUTENTICAÇÃO!!!
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 

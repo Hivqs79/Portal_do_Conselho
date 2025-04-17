@@ -26,6 +26,7 @@ public class PasswordRecoveryService {
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailApiClient emailApiClient;
+    private final EmailService emailService;
 
 
     private String generateVerificationCode() {
@@ -52,7 +53,7 @@ public class PasswordRecoveryService {
 
         passwordResetTokenRepository.save(resetToken);
 
-        emailApiClient.sendCodeEmail(
+        emailService.sendCodeEmailAsync(
                 request.email(),
                 user.getUser().getName(),
                 code
