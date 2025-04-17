@@ -1,11 +1,13 @@
 package net.weg.general_api.service.security;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Slf4j // Usando Lombok para logs
 public class EmailService {
 
     private final EmailApiClient emailApiClient;
@@ -13,25 +15,22 @@ public class EmailService {
     @Async("taskExecutor")
     public void sendPasswordEmailAsync(String email, String name, String password) {
         try {
-            System.out.println("Iniciando envio assíncrono de e-mail para: " + email);
+            log.info("Enviando e-mail com senha para: {}", email);
             emailApiClient.sendPasswordEmail(email, name, password);
-            System.out.println("E-mail enviado com sucesso para: " + email);
         } catch (Exception e) {
-            System.err.println("Falha ao enviar e-mail para " + email);
-            e.printStackTrace();
+            log.error("Falha ao enviar e-mail de senha para {}", email, e);
+            //TODO: Podemos adicionar aqui uma tentativa de reenvio ou notificação
         }
     }
 
     @Async("taskExecutor")
     public void sendCodeEmailAsync(String email, String name, String code) {
         try {
-            System.out.println("Iniciando envio assíncrono de e-mail para: " + email);
+            log.info("Enviando e-mail com código para: {}", email);
             emailApiClient.sendCodeEmail(email, name, code);
-            System.out.println("E-mail enviado com sucesso para: " + email);
         } catch (Exception e) {
-            System.err.println("Falha ao enviar e-mail para " + email);
-            e.printStackTrace();
+            log.error("Falha ao enviar e-mail de código para {}", email, e);
+            //TODO: Mesma estratégia de tratamento de erro da sendPasswordEmailAsync
         }
     }
-
 }

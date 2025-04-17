@@ -1,58 +1,64 @@
 package net.weg.general_api.service.security;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.weg.general_api.exception.exceptions.EmailSendingException;
+import net.weg.general_api.exception.exceptions.EmailServiceUnavailableException;
 import net.weg.general_api.model.entity.security.EmailModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class EmailApiClient {
 
     private static final String EMAIL_API_URL = "http://localhost:8074/email/send";
+    private static final String DEFAULT_SENDER = "portal.do.conselho.email@gmail.com";
 
-    public void sendPasswordEmail(String studentEmail, String studentName, String generatedPassword) {
-        RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
-        EmailModel emailModel = new EmailModel();
-        emailModel.setOwner(studentName);
-        emailModel.setSender("portal.do.conselho.email@gmail.com");
-        emailModel.setReciver(studentEmail);
-        emailModel.setTitle("Cadastro Realizado");
-        emailModel.setPassword(generatedPassword);
-        emailModel.setDate(LocalDateTime.now());
-
-        ResponseEntity<EmailModel> response = restTemplate.postForEntity(
-                EMAIL_API_URL,
-                emailModel,
-                EmailModel.class
-        );
-
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new RuntimeException("Falha ao enviar e-mail com as credenciais");
-        }
+    public void sendPasswordEmail(String recipient, String ownerName, String generatedPassword) {
+        sendEmail(buildEmailModel(recipient, ownerName, "Cadastro Realizado")
+                .password(generatedPassword)
+                .build());
     }
 
-    public void sendCodeEmail(String studentEmail, String studentName, String code) {
-        RestTemplate restTemplate = new RestTemplate();
+    public void sendCodeEmail(String recipient, String ownerName, String code) {
+        sendEmail(buildEmailModel(recipient, ownerName, "Código de Recuperação da Senha")
+                .token(code)
+                .build());
+    }
 
-        EmailModel emailModel = new EmailModel();
-        emailModel.setOwner(studentName);
-        emailModel.setSender("portal.do.conselho.email@gmail.com");
-        emailModel.setReciver(studentEmail);
-        emailModel.setTitle("Código de Recuperação da Senha");
-        emailModel.setToken(code);
-        emailModel.setDate(LocalDateTime.now());
+    private EmailModel.EmailModelBuilder buildEmailModel(String recipient, String ownerName, String title) {
+        return EmailModel.builder()
+                .owner(ownerName)
+                .sender(DEFAULT_SENDER)
+                .reciver(recipient)
+                .title(title)
+                .date(LocalDateTime.now());
+    }
 
-        ResponseEntity<EmailModel> response = restTemplate.postForEntity(
-                EMAIL_API_URL,
-                emailModel,
-                EmailModel.class
-        );
+    private void sendEmail(EmailModel emailModel) {
+        try {
+            log.debug("Enviando e-mail para: {}", emailModel.getReciver());
+            ResponseEntity<EmailModel> response = restTemplate.postForEntity(
+                    EMAIL_API_URL,
+                    emailModel,
+                    EmailModel.class
+            );
 
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new RuntimeException("Falha ao enviar e-mail com as credenciais");
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                throw new EmailSendingException("Falha ao enviar e-mail. Status: " + response.getStatusCode());
+            }
+            log.info("E-mail enviado com sucesso para: {}", emailModel.getReciver());
+        } catch (RestClientException e) {
+            log.error("Erro ao comunicar com serviço de e-mail", e);
+            throw new EmailServiceUnavailableException("Serviço de e-mail indisponível", e);
         }
     }
 }

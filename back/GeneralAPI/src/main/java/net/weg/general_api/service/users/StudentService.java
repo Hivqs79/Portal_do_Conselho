@@ -53,7 +53,7 @@ public class StudentService {
 
         emailService.sendPasswordEmailAsync(
                 studentRequestDTO.getEmail(),
-                studentRequestDTO.getName(), // Assumindo que existe um campo name no DTO
+                studentRequestDTO.getName(),
                 randomPassword
         );
 
