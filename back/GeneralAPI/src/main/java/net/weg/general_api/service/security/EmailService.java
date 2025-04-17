@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @AllArgsConstructor
 @Slf4j // Usando Lombok para logs
@@ -33,4 +35,16 @@ public class EmailService {
             //TODO: Mesma estratégia de tratamento de erro da sendPasswordEmailAsync
         }
     }
+
+    @Async("taskExecutor")
+    public void sendCouncilInfoEmailAsync(String email, String name, String aClass, LocalDateTime startDateTime) {
+        try {
+            log.info("Enviando e-mail com código para: {}", email);
+            emailApiClient.sendCouncilInfoEmail(email, name, aClass, startDateTime);
+        } catch (Exception e) {
+            log.error("Falha ao enviar e-mail de código para {}", email, e);
+            //TODO: Mesma estratégia de tratamento de erro da sendPasswordEmailAsync
+        }
+    }
+
 }
