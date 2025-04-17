@@ -1,11 +1,13 @@
 package net.weg.general_api.model.entity.security;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
+@Builder
 public class EmailModel {
     private String owner;
     private String sender;
