@@ -11,6 +11,7 @@ import net.weg.general_api.model.entity.users.Student;
 import net.weg.general_api.repository.StudentRepository;
 import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.security.EmailApiClient;
+import net.weg.general_api.service.security.EmailService;
 import net.weg.general_api.service.security.PasswordGeneratorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -30,7 +31,7 @@ public class StudentService {
     private final UserAuthenticationService userAuthenticationService;
     private final ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
-    private final EmailApiClient emailApiClient;
+    private final EmailService emailService;
 
     public Page<StudentResponseDTO> findStudentSpec(Specification<Student> spec, Pageable pageable) {
         Page<Student> students = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -50,7 +51,7 @@ public class StudentService {
         Student studentSaved = repository.save(student);
         studentSaved.setCustomization(customizationService.setDefault(studentSaved));
 
-        emailApiClient.sendPasswordEmail(
+        emailService.sendPasswordEmailAsync(
                 studentRequestDTO.getEmail(),
                 studentRequestDTO.getName(), // Assumindo que existe um campo name no DTO
                 randomPassword

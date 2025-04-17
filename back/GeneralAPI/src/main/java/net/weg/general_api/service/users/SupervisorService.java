@@ -9,6 +9,7 @@ import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.SupervisorRepository;
 import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.security.EmailApiClient;
+import net.weg.general_api.service.security.EmailService;
 import net.weg.general_api.service.security.PasswordGeneratorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,7 @@ public class SupervisorService {
     private UserAuthenticationService userAuthenticationService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
-    private final EmailApiClient emailApiClient;
+    private final EmailService emailService;
 
     public Page<UserResponseDTO> findSupervisorSpec(Specification<Supervisor> spec, Pageable pageable) {
         Page<Supervisor> supervisors = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -43,7 +44,7 @@ public class SupervisorService {
 
         Supervisor supervisorSaved = repository.save(supervisor);
 
-        emailApiClient.sendPasswordEmail(
+        emailService.sendPasswordEmailAsync(
                 supervisorRequestDTO.getEmail(),
                 supervisorRequestDTO.getName(), // Assumindo que existe um campo name no DTO
                 randomPassword

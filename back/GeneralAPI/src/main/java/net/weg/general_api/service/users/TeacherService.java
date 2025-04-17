@@ -12,6 +12,7 @@ import net.weg.general_api.repository.TeacherRepository;
 import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.security.EmailApiClient;
+import net.weg.general_api.service.security.EmailService;
 import net.weg.general_api.service.security.PasswordGeneratorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -32,7 +33,7 @@ public class TeacherService {
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
     private UserAuthenticationService userAuthenticationService;
-    private final EmailApiClient emailApiClient;
+    private final EmailService emailService;
 
     public Page<TeacherResponseDTO> findTeacherSpec(Specification<Teacher> spec, Pageable pageable) {
         Page<Teacher> teachers = repository.getAllByEnabledIsTrue(spec, pageable);
@@ -41,7 +42,6 @@ public class TeacherService {
 
     public TeacherResponseDTO createTeacher(TeacherRequestDTO teacherRequestDTO) {
         Teacher teacher = modelMapper.map(teacherRequestDTO, Teacher.class);
-
         String randomPassword = PasswordGeneratorService.generateSimpleAlphanumericPassword();
 
         teacher.setUserAuthentication(
@@ -51,7 +51,7 @@ public class TeacherService {
 
         Teacher teacherSaved = repository.save(teacher);
 
-        emailApiClient.sendPasswordEmail(
+        emailService.sendPasswordEmailAsync(
                 teacherRequestDTO.getEmail(),
                 teacherRequestDTO.getName(), // Assumindo que existe um campo name no DTO
                 randomPassword
