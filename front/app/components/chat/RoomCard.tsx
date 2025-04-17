@@ -6,10 +6,11 @@ import OpacityHex from "@/utils/OpacityHex";
 interface RoomCardProps {
   name: string;
   userId: number;
-  handleSetUserDetails: (userId: number, name: string) => void;
+  roomId: number;
+  handleSetUserDetails: (userId: number, name: string, roomId: number) => void;
 }
 
-export default function RoomCard({ name, userId, handleSetUserDetails }: RoomCardProps) {
+export default function RoomCard({ name, userId, roomId, handleSetUserDetails }: RoomCardProps) {
   const { colorByModeSecondary, textBlackolor } = useThemeContext();
 
   return (
@@ -22,7 +23,7 @@ export default function RoomCard({ name, userId, handleSetUserDetails }: RoomCar
         },
       }}
       className="flex cursor-pointer transition-all duration-300 justify-start items-center gap-6 border-b-2 p-3"
-      onClick={() => handleSetUserDetails(userId, name)}
+      onClick={() => handleSetUserDetails(userId, name, roomId)}
     >
       <Photo idUser={userId} rounded classname="w-[60px] h-[60px]" />
       <Typography variant="md_text_bold">{name}</Typography>

@@ -14,6 +14,7 @@ export default function Chat() {
   const [selectedUser, setSelectedUser] = useState<{
     userId: number;
     name: string;
+    roomId: number;
   } | null>(null);
   const { primaryColor, colorByModeSecondary } = useThemeContext();
 
@@ -61,7 +62,7 @@ export default function Chat() {
         {selectedUser ? (
           <Box className="h-full max-h-[calc(100vh-64px)] flex flex-col">
             <HeaderMessagesRoom selectedUser={selectedUser ? selectedUser : { userId: 0, name: "" }}/>
-            <MessagesRoom/>
+            <MessagesRoom userId={userId ? userId : 0} roomId={selectedUser ? selectedUser.roomId : 0}/>
           </Box>
         ) : (
           <Box className="flex flex-col justify-center items-center h-full gap-10">

@@ -190,7 +190,28 @@ export default function Components() {
           <Typography variant="tn_text_light">tn_text_light</Typography>
         </Box>
       </Box>
-      <Box className="!flex !flex-row !flex-wrap">
+
+      <TextareaComponent readonly={false} title="Pontos Positivos" />
+      <TextareaComponent
+        readonly={true}
+        title="Pontos Positivos"
+        content="teste"
+      />
+      <Box>
+        <Rank variant="default" type="excellent" outline={true} popover={false} />
+        <Rank variant="default" type="good" outline={true} popover={false} />
+        <Rank variant="default" type="average" outline={true} popover={false} />
+        <Rank variant="default" type="critical" outline={true} popover={false} />
+
+        <Rank variant="default" type="excellent" outline={false} popover={false} />
+        <Rank variant="default" type="good" outline={false} popover={false} />
+        <Rank variant="default" type="average" outline={false} popover={false} />
+        <Rank variant="default" type="critical" outline={false} popover={false} />
+      </Box>
+ 
+      <Photo idUser={1} rounded={false} classname="w-20 h-20" />
+      <Photo idUser={1} rounded={true} classname="w-20 h-20" /> */}
+      <Box className="!flex !flex-row !flex-wrap !mt-52">
         <Icon IconPassed={IoFolderOpenOutline} />
         <Icon IconPassed={BsHouse} />
         <Icon IconPassed={LuPencilLine} />
@@ -240,27 +261,7 @@ export default function Components() {
         <Icon IconPassed={PiPlayBold} />
       </Box>
 
-      <TextareaComponent readonly={false} title="Pontos Positivos" />
-      <TextareaComponent
-        readonly={true}
-        title="Pontos Positivos"
-        content="teste"
-      />
-      <Box>
-        <Rank variant="default" type="excellent" outline={true} popover={false} />
-        <Rank variant="default" type="good" outline={true} popover={false} />
-        <Rank variant="default" type="average" outline={true} popover={false} />
-        <Rank variant="default" type="critical" outline={true} popover={false} />
-
-        <Rank variant="default" type="excellent" outline={false} popover={false} />
-        <Rank variant="default" type="good" outline={false} popover={false} />
-        <Rank variant="default" type="average" outline={false} popover={false} />
-        <Rank variant="default" type="critical" outline={false} popover={false} />
-      </Box>
- 
-      <Photo idUser={1} rounded={false} classname="w-20 h-20" />
-      <Photo idUser={1} rounded={true} classname="w-20 h-20" /> */}
-      <Box
+      {/* <Box
         style={{ backgroundColor: OpacityHex(colorByModeSecondary, 0.2) }}
         className="p-2 mt-32 rounded-big w-full"
       >
@@ -272,11 +273,13 @@ export default function Components() {
               name={anotation.name}
               outlined={false}
             >
-              <Typography variant="md_text_regular">{anotation.description}</Typography>
+              <Typography variant="md_text_regular">
+                {anotation.description}
+              </Typography>
             </AccordionComponent>
           ))}
         </span>
-      </Box>
+      </Box> */}
     </Container>
   );
 }

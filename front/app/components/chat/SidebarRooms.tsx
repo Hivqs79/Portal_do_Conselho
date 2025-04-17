@@ -11,7 +11,7 @@ import OpacityHex from "@/utils/OpacityHex";
 interface SidebarRoomsProps {
   userRoleId: number;
   roomsData: Room[];
-  onUserSelect: (user: { userId: number; name: string }) => void;
+  onUserSelect: (user: { userId: number; name: string; roomId: number }) => void;
 }
 
 export default function SidebarRooms({
@@ -22,17 +22,16 @@ export default function SidebarRooms({
   const [users, setUsers] = useState<Record<number, string>>({});
   const [isMobile, setIsMobile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { terciaryColor, colorByModeSecondary, textBlackolor } =
+  const { terciaryColor, colorByModeSecondary, textBlackolor, backgroundColor } =
     useThemeContext();
 
-  // Verifica o tamanho da tela e atualiza o estado
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 1024);
-      if (window.innerWidth > 1024) setSidebarOpen(true); // Sempre mostra em telas maiores
+      if (window.innerWidth > 1024) setSidebarOpen(true);
     };
 
-    handleResize(); // Verifica no carregamento inicial
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -58,8 +57,9 @@ export default function SidebarRooms({
     }
   }, [roomsData]);
 
-  const handleSetUserDetails = (userId: number, name: string) => {
-    onUserSelect({ userId, name });
+  const handleSetUserDetails = (userId: number, name: string, roomId: number) => {
+    console.log("User ID:", userId, "Name:", name, "Room ID:", roomId);
+    onUserSelect({ userId, name, roomId });
   };
 
   return (
@@ -89,12 +89,12 @@ export default function SidebarRooms({
 
       <Box
         style={{
-          backgroundColor: "transparent",
+          backgroundColor: backgroundColor,
           borderColor: colorByModeSecondary,
         }}
         className={`rounded-normal border-2 h-full p-2 ${
           isMobile
-            ? `fixed top-40 left-0 z-1100 h-auto w-64 transform ${
+            ? `fixed top-40 left-0 z-[1100] h-auto w-64 transform ${
                 sidebarOpen ? "translate-x-0 left-2" : "-translate-x-full"
               } transition-transform duration-300 ease-in-out`
             : "w-full max-w-96"
@@ -117,6 +117,7 @@ export default function SidebarRooms({
                       key={userId}
                       name={users[userId]}
                       userId={userId}
+                      roomId={room.id}
                       handleSetUserDetails={handleSetUserDetails}
                     />
                   )
