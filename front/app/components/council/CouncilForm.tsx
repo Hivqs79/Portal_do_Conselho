@@ -15,12 +15,14 @@ interface CreateCouncilFormProps {
   councilInformation: CouncilFormProps;
   verifyForm?: () => boolean;
   variant: string;
+  type: "council" | "pre-council";
 }
 
 export default function CouncilForm({
   councilInformation,
   verifyForm,
   variant,
+  type
 }: CreateCouncilFormProps) {
   const { colorByMode, colorByModeSecondary, whiteColor } = useThemeContext();
   const windowWidth = useWindowWidth();
@@ -62,10 +64,10 @@ export default function CouncilForm({
       <Box className="flex flex-col md:flex-row w-full justify-between gap-8">
         <Box className="flex flex-col w-full gap-4">
           <Typography color={colorByModeSecondary} variant="xl_text_bold">
-            Data do conselho
+            Data {type === "pre-council" ? "de início": "do conselho"}
           </Typography>
           <DatePicker
-            label="Data do conselho"
+            label={`Data ${type === "pre-council" ? "de início": "do conselho"}`}
             minDate={dayjs()}
             value={date}
             onChange={(e) => e && setDate(e)}
@@ -86,7 +88,7 @@ export default function CouncilForm({
         />
         <Box className="flex flex-col w-full gap-4">
           <Typography color={colorByModeSecondary} variant="xl_text_bold">
-            {setTime ? "Horário do conselho" : "Prazo final"}
+            {setTime ? "Horário do conselho" : "Data final"}
           </Typography>
           {setTime ? (
             <TimePicker
@@ -106,7 +108,7 @@ export default function CouncilForm({
           ) : (
             setFinalDate && (
               <DatePicker
-                label="Prazo final"
+                label="Data final"
                 minDate={dayjs()}
                 value={finalDate}
                 onChange={(e) => e && setFinalDate(e)}
@@ -173,7 +175,7 @@ export default function CouncilForm({
               }
               color={whiteColor}
             >
-              Salvar e revisar o conselho
+              Salvar e revisar o {type === "pre-council" ? "pré-": ""}conselho
             </Typography>
           </Button>
         )}
@@ -184,6 +186,7 @@ export default function CouncilForm({
         councilInformation={councilInformation}
         confirmFunction={submitForm}
         variant="confirm"
+        type={type}
       />
     </Box>
   );

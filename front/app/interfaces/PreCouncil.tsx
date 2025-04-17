@@ -1,8 +1,14 @@
-import Council from "./Council"
+import Class from "./Class"
 import { Teacher } from "./Teacher"
+
+type PreCouncilStatus = "answered" | "not-answered" | "released" | "scheduled";
 
 export default interface PreCouncil {
     id: number,
-    council: Council,
-    teachers: Teacher[]
+    startDateTime: Date,
+    finalDateTime: Date,
+    aclass: Class,
+    teachers: Teacher[],
+    answered: boolean,
+    status?: PreCouncilStatus,
 };

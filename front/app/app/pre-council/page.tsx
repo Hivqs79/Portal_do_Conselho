@@ -1,4 +1,5 @@
 "use client";
+import SwapButton from "@/components/SwapButton";
 import Title from "@/components/Title";
 import CouncilForm from "@/components/council/CouncilForm";
 import CouncilModal from "@/components/council/CouncilModal";
@@ -9,17 +10,24 @@ import { useThemeContext } from "@/hooks/useTheme";
 import Class from "@/interfaces/Class";
 import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
 import { Teacher } from "@/interfaces/Teacher";
+import { TableContent } from "@/interfaces/table/TableContent";
+import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
+import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
 import TablePreCouncilRow from "@/interfaces/table/row/TablePreCouncilRow";
+import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 import { Box, Snackbar } from "@mui/material";
 import dayjs from "dayjs";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
+type PreCouncilStatus = "answered" | "not-answered" | "released" | "scheduled";
 
 export default function PreCouncil() {
   const { redDanger } = useThemeContext();
   const [isCreate, setIsCreate] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [preCouncils, setPreCouncils] = useState<TableContent | null>(null);
   const [visualizedCouncil, setVisualizedCouncil] =
     useState<TableRowPossibleTypes | null>(null);
   const [selectedTeachers, setSelectedTeachers] = useState<{
@@ -33,8 +41,37 @@ export default function PreCouncil() {
   const [searchTeachers, setSearchTeachers] = useState<string>("");
   const [searchClass, setSearchClass] = useState<string>("");
   const [isEditing, setIsEditing] = useState(false);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const createCouncil = async () => {
+  const rowButtons: TableRowButtons = {
+      releaseButton: true,      
+      visualizeIconButton: true,
+      onClickVisualize: (row: TableRowPossibleTypes) => {
+        setVisualizedCouncil(row);
+        setSelectedClass((row as TablePreCouncilRow).aclass.id);
+        setDate(dayjs((row as TablePreCouncilRow).startDateTime));
+        setFinalDate(dayjs((row as TablePreCouncilRow).finalDateTime));
+      },      
+    };
+  
+    const headerButtons: TableHeaderButtons = {
+      searchInput: true,
+      setSearch: (term: string) => {
+        setSearchClass(term); 
+        setPage(1);
+      },
+      orderButton: true,
+      filterButton: true,
+    };
+  
+    const headers: TableHeaderContent[] = [
+      { name: "Turma" },
+      { name: "Data" },
+      { name: "Horário" },
+    ];
+    
+  const createPreCouncil = async () => {
     console.log("testeCreate");
     setIsLoading(true);
     const response = await fetch("http://localhost:8081/pre-council", {
@@ -44,6 +81,8 @@ export default function PreCouncil() {
       },
       body: JSON.stringify({
         class_id: selectedClass,
+        startDateTime: date,
+        finalDateTime: finalDate,
         teachers_id: Object.keys(selectedTeachers)
           .filter((id) => selectedTeachers[id])
           .map((id) => parseInt(id)),
@@ -56,6 +95,14 @@ export default function PreCouncil() {
     });
   };
 
+  const resetInputs = () => {
+    setDate(null);
+    setFinalDate(null);
+    setSelectedTeachers({});
+    setSearchClass("");
+    setSearchTeachers("");
+  };
+
   const councilInformation: CouncilFormProps = {
     visualizedCouncil: visualizedCouncil as TablePreCouncilRow,
     selectedTeachers: selectedTeachers,
@@ -65,13 +112,13 @@ export default function PreCouncil() {
     teachers: teachers,
     classExistents: classExistents,
     setDate: setDate,
-    setFinalDate: setFinalDate,   
-    date: date,    
-    finalDate: finalDate,    
+    setFinalDate: setFinalDate,
+    date: date,
+    finalDate: finalDate,
     setSearchTeachers: setSearchTeachers,
     setSearchClass: setSearchClass,
     // submitForm: isEditing ? editCouncil : createCouncil,
-    submitForm: () => {},
+    submitForm: createPreCouncil,
   };
 
   const verifyInputs = () => {
@@ -92,7 +139,7 @@ export default function PreCouncil() {
         "Não é possível agendar pré-conselhos para datas passadas"
       );
       return false;
-    }    
+    }
     if (finalDate.isBefore(now, "day")) {
       setSnackbarMessage(
         "Não é possível agendar pré-conselhos para datas passadas"
@@ -106,8 +153,8 @@ export default function PreCouncil() {
     }
 
     if (finalDate.isSame(date, "day")) {
-        setSnackbarMessage("A data final não pode ser igual a data inicial");
-        return false;
+      setSnackbarMessage("A data final não pode ser igual a data inicial");
+      return false;
     }
 
     if (!Object.keys(selectedTeachers).length) {
@@ -123,11 +170,40 @@ export default function PreCouncil() {
     return true;
   };
 
+  const processPreCouncilData = (preCouncil: TablePreCouncilRow): TablePreCouncilRow => {
+    if (!preCouncil.startDateTime || !preCouncil.finalDateTime) return preCouncil;
+
+    const now = dayjs();
+    const preCouncilStartDate = dayjs(preCouncil.startDateTime);
+    const preCouncilFinalDate = dayjs(preCouncil.finalDateTime);
+
+    let status: PreCouncilStatus = "scheduled";
+    let buttonText = "Agendado";
+    let isDisabled = true;
+
+    if (preCouncilStartDate < now && now < preCouncilFinalDate) {
+      status = "released";
+      buttonText = "Liberado";
+      isDisabled = true;
+    } else if (preCouncilFinalDate < now) {
+      status = preCouncil.answered ? "answered" : "not-answered";
+      buttonText = preCouncil.answered ? "Respondido" : "Não respondido";
+      isDisabled = true;
+    }
+
+    return {
+      ...preCouncil,
+      status,
+      buttonText,
+      isDisabled,
+    };
+  };
+
   useEffect(() => {
     const fetchClass = async () => {
       const response = await fetch(
         "http://localhost:8081/class" +
-          (searchClass ? "?name=" + searchClass : "")
+        (searchClass ? "?name=" + searchClass : "")
       );
       const data = await response.json();
       setSelectedClass(data.content[0] && data.content[0].id);
@@ -140,7 +216,7 @@ export default function PreCouncil() {
     const fetchTeachers = async () => {
       const response = await fetch(
         "http://localhost:8081/class/teacher/" +
-          (selectedClass ? selectedClass : "")
+        (selectedClass ? selectedClass : "")
       );
       const data = await response.json();
       setTeachers(data);
@@ -148,45 +224,73 @@ export default function PreCouncil() {
     if (!selectedClass) return;
     fetchTeachers();
   }, [selectedClass, isCreate]);
-  
+
+  useEffect(() => {
+    const fetchCouncil = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council?page=${page - 1}&size=${rowsPerPage}
+        &className=${searchClass}`
+      );
+      const data = await response.json();
+
+      setPreCouncils({
+        ...data,
+        content: data.content.map(processPreCouncilData)
+      });
+    };
+
+    fetchCouncil();
+  }, [isCreate, isEditing, page, rowsPerPage, searchClass]);
+
   return (
     <Box>
       <Title textHighlight="Pré-conselho" />
+      <SwapButton
+        button1Text={"Adicionar Pré-conselho"}
+        button2Text={"Visualizar Pré-conselhos"}
+        onClickButton1={() => setIsCreate(true)}
+        onClickButton2={() => {
+          setIsCreate(false);
+          resetInputs();
+        }}
+      />
       {isCreate ? (
         <CouncilForm
           councilInformation={councilInformation}
           verifyForm={verifyInputs}
           variant="create"
+          type="pre-council"
         />
       ) : (
-        // <>
-        //       <Table
-        //         tableContent={councils}
-        //         headers={headers}
-        //         headerButtons={headerButtons}
-        //         rowButtons={rowButtons}
-        //       />
-        //       <PaginationTable
-        //         count={councils ? councils.totalPages : 0}
-        //         page={councils ? councils.pageable.pageNumber + 1 : 1}
-        //         setPage={setPage}
-        //         rowsPerPage={rowsPerPage}
-        //         setRowsPerPage={(rowsPerPage: number) => {
-        //           setRowsPerPage(rowsPerPage);
-        //           setPage(1);
-        //         }}
-        //       />
-        //       <CouncilModal
-        //         open={visualizedCouncil !== null}
-        //         close={() => setVisualizedCouncil(null)}
-        //         councilInformation={councilInformation}
-        //         confirmFunction={editCouncil}
-        //         verifyForm={verifyInputs}
-        //         setEditing={(value: boolean) => setIsEditing(value)}
-        //         editing={isEditing}
-        //         variant="details"
-        //       />
-        <></>
+        <>
+          <Table
+            tableContent={preCouncils}
+            headers={headers}
+            headerButtons={headerButtons}
+            rowButtons={rowButtons}
+          />
+          <PaginationTable
+            count={preCouncils ? preCouncils.totalPages : 0}
+            page={preCouncils ? preCouncils.pageable.pageNumber + 1 : 1}
+            setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={(rowsPerPage: number) => {
+              setRowsPerPage(rowsPerPage);
+              setPage(1);
+            }}
+          />
+          <CouncilModal
+            open={visualizedCouncil !== null}
+            close={() => setVisualizedCouncil(null)}
+            councilInformation={councilInformation}
+            confirmFunction={() => {}}
+            verifyForm={verifyInputs}
+            setEditing={(value: boolean) => setIsEditing(value)}
+            editing={isEditing}
+            variant="details"
+            type="pre-council"
+          />
+        </>
       )}
       <Snackbar
         open={!!snackbarMessage}

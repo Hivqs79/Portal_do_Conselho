@@ -25,6 +25,7 @@ interface CouncilModalProps {
   editing?: boolean;
   variant: string;
   councilInformation: CouncilFormProps;
+  type: "council" | "pre-council";
 }
 
 export default function CouncilModal({
@@ -36,6 +37,7 @@ export default function CouncilModal({
   editing,
   variant,
   councilInformation,
+  type,
 }: CouncilModalProps) {
   const {
     primaryColor,
@@ -54,17 +56,24 @@ export default function CouncilModal({
   const time = councilInformation.visualizedCouncil
     ? dayjs(councilInformation.visualizedCouncil.startDateTime)
     : councilInformation.time;
+
+  const finalDate = councilInformation.visualizedCouncil
+    ? "finalDateTime" in councilInformation.visualizedCouncil ?
+      dayjs(councilInformation.visualizedCouncil.finalDateTime)
+      : null
+    : councilInformation.finalDate;
+
   const teachers = councilInformation.visualizedCouncil
     ? (councilInformation.visualizedCouncil.teachers as Teacher[])
     : isArray(councilInformation.teachers) &&
-      councilInformation.teachers.filter(
-        (t) => councilInformation.selectedTeachers[t.id]
-      );
+    councilInformation.teachers.filter(
+      (t) => councilInformation.selectedTeachers[t.id]
+    );
   const classSelected = councilInformation.visualizedCouncil
     ? (councilInformation.visualizedCouncil.aclass as Class)
     : (councilInformation.classExistents.find(
-        (c) => c.id === councilInformation.selectedClass
-      ) as Class);
+      (c) => c.id === councilInformation.selectedClass
+    ) as Class);
   const [openConfirm, setOpenConfirm] = useState(false);
 
   return (
@@ -86,11 +95,11 @@ export default function CouncilModal({
           <Box className="flex items-center flex-row w-full">
             <Box className="flex flex-col w-full">
               <Typography variant="xl_text_bold" color={colorByModeSecondary}>
-                {variant === "confirm" ? "Confirmar " : "Detalhes do "}conselho
+                {variant === "confirm" ? "Confirmar " : "Detalhes do "}{type === "pre-council" ? "pré-" : ""}conselho
               </Typography>
               {variant === "confirm" && (
                 <Typography variant="md_text_regular">
-                  Confirme as informações abaixo sobre o conselho que será
+                  Confirme as informações abaixo sobre o {type === "pre-council" ? "pré-" : ""}conselho que será
                   adicionado
                 </Typography>
               )}
@@ -128,6 +137,7 @@ export default function CouncilModal({
               councilInformation={councilInformation}
               verifyForm={verifyForm}
               variant="editing"
+              type={type}
             />
           ) : (
             <>
@@ -137,10 +147,10 @@ export default function CouncilModal({
                     color={colorByModeSecondary}
                     variant="xl_text_bold"
                   >
-                    Data do conselho
+                    Data {type === "pre-council" ? "de início": "do conselho"}
                   </Typography>
                   <DatePicker
-                    label="Data do conselho"
+                    label={`Data ${type === "pre-council" ? "de início": "do conselho"}`}
                     disabled
                     value={date}
                     slotProps={{
@@ -156,19 +166,31 @@ export default function CouncilModal({
                     color={colorByModeSecondary}
                     variant="xl_text_bold"
                   >
-                    Horário do conselho
+                    {type === "pre-council" ? "Data final" : "Horário do conselho"}
                   </Typography>
-                  <TimePicker
-                    label="Horário do conselho"
-                    disabled
-                    value={time}
-                    slotProps={{
-                      openPickerIcon: {
-                        style: { color: colorByMode },
-                        component: FaRegClock,
-                      },
-                    }}
-                  />
+                  {type === "council" ?
+                    <TimePicker
+                      label="Horário do conselho"
+                      disabled
+                      value={time}
+                      slotProps={{
+                        openPickerIcon: {
+                          style: { color: colorByMode },
+                          component: FaRegClock,
+                        },
+                      }}
+                    />
+                    : <DatePicker
+                      label="Data final"
+                      disabled
+                      value={finalDate}
+                      slotProps={{
+                        openPickerIcon: {
+                          style: { color: colorByMode },
+                          component: FaRegCalendarAlt,
+                        },
+                      }}
+                    />}
                 </Box>
               </Box>
               <Box className="flex flex-col md:flex-row md:gap-8">
@@ -199,8 +221,8 @@ export default function CouncilModal({
                       }}
                     >
                       {teachers &&
-                      teachers.length !== 0 &&
-                      isArray(teachers) ? (
+                        teachers.length !== 0 &&
+                        isArray(teachers) ? (
                         teachers.map((teacher, index) => (
                           <Typography
                             key={teacher.id}
@@ -282,7 +304,7 @@ export default function CouncilModal({
                     variant="xl_text_bold"
                     style={{ color: whiteColor }}
                   >
-                    {editing ? "Salvar " : "Criar "} conselho
+                    {editing ? "Salvar " : "Criar "}{type === "pre-council" ? "pré-": ""}conselho
                   </Typography>
                 </Button>
               </Box>
@@ -291,17 +313,14 @@ export default function CouncilModal({
           {openConfirm && (
             <ConfirmChanges
               type="default"
-              title={`Tem certeza que deseja ${
-                editing ? "editar" : "criar"
-              } esse conselho?`}
-              description={`Ao confirmar, este conselho ${
-                editing
+              title={`Tem certeza que deseja ${editing ? "editar" : "criar"
+                } esse ${type === "pre-council" ? "pré-": ""}conselho?`}
+              description={`Ao confirmar, este ${type === "pre-council" ? "pré-": ""}conselho ${editing
                   ? "será atualizado"
-                  : "irá para a lista de conselhos para realizar"
-              }, mas não se preocupe, você poderá editá-lo ${
-                editing ? "novamente" : ""
-              } a qualquer momento.`}
-              confirmButtonText={`${editing ? "Editar" : "Criar"} conselho`}
+                  : `irá para a lista de ${type === "pre-council" ? "pré-conselhos criados": "conselhos para realizar"}`
+                }, mas não se preocupe, você poderá editá-lo ${editing ? "novamente" : ""
+                } a qualquer momento.`}
+              confirmButtonText={`${editing ? "Editar" : "Criar"} ${type === "pre-council" ? "pré-": ""}conselho`}
               onClose={() => setOpenConfirm(false)}
               firstConfirmButton={() => {
                 setOpenConfirm(false);

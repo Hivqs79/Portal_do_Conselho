@@ -6,6 +6,7 @@ import net.weg.general_api.model.dto.request.preCouncil.PreCouncilRequestDTO;
 import net.weg.general_api.model.dto.response.preCouncil.PreCouncilResponseDTO;
 import net.weg.general_api.model.entity.preCouncil.PreCouncil;
 import net.weg.general_api.repository.PreCouncilRepository;
+import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.council.CouncilService;
 import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.kafka.KafkaProducerService;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class PreCouncilService {
 
     private PreCouncilRepository repository;
-    private CouncilService councilService;
+    private ClassService classService;
     private TeacherService teacherService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
@@ -34,7 +35,7 @@ public class PreCouncilService {
     public PreCouncilResponseDTO createPreCouncil(PreCouncilRequestDTO preCouncilRequestDTO) {
         PreCouncil preCouncil = modelMapper.map(preCouncilRequestDTO, PreCouncil.class);
 
-        preCouncil.setCouncil(councilService.findCouncilEntity(preCouncilRequestDTO.getCouncil_id())); //SETAR CONSELHO
+        preCouncil.setAClass(classService.findClassEntity(preCouncilRequestDTO.getClass_id()));
         preCouncil.setTeachers(teacherService.getTeachersByIdList(preCouncilRequestDTO.getTeachers_id()));
 
         PreCouncil preCouncilSaved = repository.save(preCouncil);
@@ -57,7 +58,8 @@ public class PreCouncilService {
         PreCouncil preCouncil = findPreCouncilEntity(id);
         modelMapper.map(preCouncilRequestDTO, preCouncil);
 
-        preCouncil.setCouncil(councilService.findCouncilEntity(preCouncilRequestDTO.getCouncil_id())); //SETAR CONSELHO
+        preCouncil.setAClass(classService.findClassEntity(preCouncilRequestDTO.getClass_id()));
+        preCouncil.setTeachers(teacherService.getTeachersByIdList(preCouncilRequestDTO.getTeachers_id()));
 
         PreCouncil updatedPreCouncil = repository.save(preCouncil);
         kafkaEventSender.sendEvent(updatedPreCouncil, "PUT", "Pre council updated");

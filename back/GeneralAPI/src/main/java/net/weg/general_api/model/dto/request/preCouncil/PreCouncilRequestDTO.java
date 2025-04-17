@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -16,4 +17,10 @@ public class PreCouncilRequestDTO {
     private Long class_id;
 
     private List<Long> teachers_id;
+
+    @NotNull(message = "{not.null.message}")
+    private LocalDateTime startDateTime;
+
+    @NotNull(message = "{not.null.message}")
+    private LocalDateTime finalDateTime;
 }

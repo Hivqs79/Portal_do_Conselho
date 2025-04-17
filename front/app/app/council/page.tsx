@@ -328,8 +328,7 @@ export default function Council() {
         onClickButton1={() => setIsCreate(true)}
         onClickButton2={() => {
           setIsCreate(false);
-          setSearchClass("");
-          setSearchTeachers("");
+          resetInputs();
         }}
       />
       {isCreate ? (
@@ -337,6 +336,7 @@ export default function Council() {
           councilInformation={councilInformation}
           verifyForm={verifyInputs}
           variant="create"
+          type="council"
         />
       ) : (
         <>
@@ -365,6 +365,7 @@ export default function Council() {
             setEditing={(value: boolean) => setIsEditing(value)}
             editing={isEditing}
             variant="details"
+            type="council"
           />
         </>
       )}

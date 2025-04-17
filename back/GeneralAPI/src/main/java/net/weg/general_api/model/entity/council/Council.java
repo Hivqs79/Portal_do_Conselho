@@ -82,7 +82,6 @@ public class Council {
                 ", aClass=" + aClass +
                 ", startDateTime=" + startDateTime +
                 ", teachers=" + teachers +
-                ", preCouncil=" + preCouncil +
                 ", isHappening=" + isHappening +
                 '}';
     }

@@ -15,6 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class PreCouncilResponseDTO {
     private Long id;
+    private LocalDateTime startDateTime;
+    private LocalDateTime finalDateTime;
     private ClassResponseDTO aClass;
     private List<TeacherResponseDTO> teachers;
     private LocalDateTime createDate;

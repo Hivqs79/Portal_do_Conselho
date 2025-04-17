@@ -33,6 +33,12 @@ public class PreCouncil {
     @ManyToMany
     private List<Teacher> teachers;
 
+    @Column(nullable = false)
+    private LocalDateTime startDateTime;
+
+    @Column(nullable = false)
+    private LocalDateTime finalDateTime;
+
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
 
