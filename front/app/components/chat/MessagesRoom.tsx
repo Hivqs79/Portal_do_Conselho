@@ -33,7 +33,7 @@ export default function MessagesRoom({ roomId, userId }: MessagesRoomProps) {
       console.log("room fetch id: ", roomId);
       const fetchMessages = async () => {
         const resposnse = await fetch(
-          `http://localhost:9999/message/messages-room/${roomId}`
+          `http://localhost:8082/message/messages-room/${roomId}`
         );
         const data = await resposnse.json();
         console.log(data);
@@ -55,7 +55,7 @@ export default function MessagesRoom({ roomId, userId }: MessagesRoomProps) {
   return (
     <Box
       style={{ borderColor: colorByModeSecondary }}
-      className="border-2 border-t-0 rounded-b-normal h-full p-2"
+      className="flex flex-col justify-between border-2 border-t-0 rounded-b-normal h-full p-2"
     >
       <Box
         ref={messagesContainerRef}
@@ -66,7 +66,7 @@ export default function MessagesRoom({ roomId, userId }: MessagesRoomProps) {
         ))}
       </Box>
 
-      <Box className="mt-5">
+      <Box>
         <InputMessage />
       </Box>
     </Box>

@@ -9,7 +9,7 @@ import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function Chat() {
-  const { userId } = useRoleContext();
+  const { userId, role } = useRoleContext();
   const [roomsData, setRoomsData] = useState<Room[]>();
   const [selectedUser, setSelectedUser] = useState<{
     userId: number;
@@ -25,7 +25,7 @@ export default function Chat() {
           if (userId <= 0) return;
           console.log("Fetching rooms for user ID:", userId);
           const response = await fetch(
-            `http://localhost:9999/room/findAllRoomsOfAUser/${userId}`,
+            `http://localhost:8082/room/findAllRoomsOfAUser/${userId}`,
             {
               method: "GET",
               headers: {
@@ -54,6 +54,7 @@ export default function Chat() {
   return (
     <Box className="flex gap-4 h-full">
       <SidebarRooms
+        userRole={role ? role : ""}
         userRoleId={userId ? userId : 0}
         roomsData={roomsData ? roomsData : []}
         onUserSelect={setSelectedUser}
@@ -68,7 +69,7 @@ export default function Chat() {
           <Box className="flex flex-col justify-center items-center h-full gap-10">
             <LogoIcon className="max-w-60 max-h-60" color={primaryColor} />
             <Typography color={colorByModeSecondary} className="text-center" variant="h4_title">
-              Selecione um usuário para iniciar uma conversa
+              Selecione um usuário para abrir a conversa
             </Typography>
           </Box>
         )}

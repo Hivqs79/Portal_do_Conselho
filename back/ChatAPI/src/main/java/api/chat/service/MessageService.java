@@ -40,7 +40,7 @@ public class MessageService {
     public Message sendMessage(MessageDto dto) throws JsonProcessingException {
         Message message = dto.conversorMessage(roomConversationService);
         message = repository.save(message);
-        kafkaEventSender.sendEvent(objectMapper.writeValueAsString(message),"POST", "Sending a message","room" + message.getRoomConversation().getId());
+        //kafkaEventSender.sendEvent(objectMapper.writeValueAsString(message),"POST", "Sending a message","room" + message.getRoomConversation().getId());
         return message;
     }
 

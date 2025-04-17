@@ -1,6 +1,6 @@
 "use client";
 import { useThemeContext } from "@/hooks/useTheme";
-import { Box, Typography, IconButton } from "@mui/material";
+import { Box, Typography, IconButton, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import Search from "../table/Search";
 import RoomCard from "./RoomCard";
@@ -11,19 +11,29 @@ import OpacityHex from "@/utils/OpacityHex";
 interface SidebarRoomsProps {
   userRoleId: number;
   roomsData: Room[];
-  onUserSelect: (user: { userId: number; name: string; roomId: number }) => void;
+  userRole: string;
+  onUserSelect: (user: {
+    userId: number;
+    name: string;
+    roomId: number;
+  }) => void;
 }
 
 export default function SidebarRooms({
   roomsData,
   userRoleId,
+  userRole,
   onUserSelect,
 }: SidebarRoomsProps) {
   const [users, setUsers] = useState<Record<number, string>>({});
   const [isMobile, setIsMobile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { terciaryColor, colorByModeSecondary, textBlackolor, backgroundColor } =
-    useThemeContext();
+  const {
+    terciaryColor,
+    colorByModeSecondary,
+    textBlackolor,
+    backgroundColor,
+  } = useThemeContext();
 
   useEffect(() => {
     const handleResize = () => {
@@ -57,7 +67,11 @@ export default function SidebarRooms({
     }
   }, [roomsData]);
 
-  const handleSetUserDetails = (userId: number, name: string, roomId: number) => {
+  const handleSetUserDetails = (
+    userId: number,
+    name: string,
+    roomId: number
+  ) => {
     console.log("User ID:", userId, "Name:", name, "Room ID:", roomId);
     onUserSelect({ userId, name, roomId });
   };
@@ -92,12 +106,12 @@ export default function SidebarRooms({
           backgroundColor: backgroundColor,
           borderColor: colorByModeSecondary,
         }}
-        className={`rounded-normal border-2 h-full p-2 ${
+        className={`rounded-normal border-2 p-2 ${
           isMobile
             ? `fixed top-40 left-0 z-[1100] h-auto w-64 transform ${
                 sidebarOpen ? "translate-x-0 left-2" : "-translate-x-full"
               } transition-transform duration-300 ease-in-out`
-            : "w-full max-w-96"
+            : "w-full max-w-96 "
         }`}
         sx={{
           overflowY: "auto",
@@ -109,24 +123,36 @@ export default function SidebarRooms({
         <Search type="chat" />
         <Box className="mt-2 flex flex-col">
           {roomsData?.length > 0 ? (
-            roomsData.map((room) =>
-              room.usersId?.map(
-                (userId) =>
-                  userId !== userRoleId && (
-                    <RoomCard
-                      key={userId}
-                      name={users[userId]}
-                      userId={userId}
-                      roomId={room.id}
-                      handleSetUserDetails={handleSetUserDetails}
-                    />
-                  )
-              )
-            )
+            <>
+              {userRole === "pedagogic" && (
+                <Button fullWidth variant="contained">
+                  Iniciar uma conversa
+                </Button>
+              )}
+              {roomsData.map((room) =>
+                room.usersId?.map(
+                  (userId) =>
+                    userId !== userRoleId && (
+                      <RoomCard
+                        key={userId}
+                        name={users[userId]}
+                        userId={userId}
+                        roomId={room.id}
+                        handleSetUserDetails={handleSetUserDetails}
+                      />
+                    )
+                )
+              )}
+            </>
           ) : (
-            <Typography variant="md_text_bold">
-              Você ainda não tem nenhuma conversa
-            </Typography>
+            <Box className="flex flex-col justify-center items-center gap-5 mt-2">
+              <Button fullWidth variant="contained">
+                Iniciar uma conversa {/* //TODO: FAZER UM MODAL PARA CRIAR SALAS */}
+              </Button>
+              <Typography variant="md_text_bold">
+                Você ainda não tem nenhuma conversa
+              </Typography>
+            </Box>
           )}
         </Box>
       </Box>
