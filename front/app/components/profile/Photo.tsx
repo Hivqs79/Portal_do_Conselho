@@ -30,7 +30,7 @@ export default function Photo({
         return; //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO
       } //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO
 
-      fetch(`http://localhost:3060/image/${imageId}`) //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO
+      fetch(`${process.env.NEXT_PUBLIC_URL_AWS_API}/image/${imageId}`) //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO
         .then((res) => {
           if (!res.ok) {
             console.log("Imagem não encontrada, default img selecionada")

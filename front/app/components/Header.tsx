@@ -57,7 +57,7 @@ export default function Header({ variant }: HeaderProps) {
 
       const subscribe = async () => {
         const eventSource = new EventSource(
-          "http://localhost:3090/events/notifications/" + userId
+          `${process.env.NEXT_PUBLIC_URL_KAFKA_WORKSERVICE_API}/events/notifications/${userId}`
         );
 
         eventSource.onmessage = (event) => {

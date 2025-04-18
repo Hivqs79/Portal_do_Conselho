@@ -1,3 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: front-env
+data:
+  NEXT_PUBLIC_URL_GENERAL_API: "http://general-api-service:8081"
+  NEXT_PUBLIC_URL_CHAT_API: "http://chat-api-service:8082"
+  NEXT_PUBLIC_URL_AWS_API: "http://aws-api-service:3060"
+  NEXT_PUBLIC_URL_KAFKA_WORKSERVICE_API: "http://kafka-work-service:3090"
+  
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,6 +26,9 @@ spec:
       containers:
       - name: front
         image: hivqs79/portal-do-conselho_front-app:latest
+        envFrom:
+          - configMapRef:
+              name: front-env
         ports:
         - containerPort: 3000
         resources:

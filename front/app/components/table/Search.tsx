@@ -1,4 +1,5 @@
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { useThemeContext } from "@/hooks/useTheme";
 import Icon from "../Icon";
@@ -10,7 +11,10 @@ interface SearchProps {
 export default function Search({ setSearch }: SearchProps) {
     const { primaryColor, secondaryColor } = useThemeContext();
     const [isFocused, setIsFocused] = useState(false); 
-    const randomId = `search-input-${crypto.randomUUID()}`;
+    const [randomId, setRandomId] = useState("");
+    useEffect(() => {
+        setRandomId(`search-input-${Date.now()}-${Math.floor(Math.random() * 1000)}`);
+    }, []);
 
     return (
         <>
