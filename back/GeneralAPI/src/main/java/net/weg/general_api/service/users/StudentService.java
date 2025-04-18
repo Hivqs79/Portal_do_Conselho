@@ -17,9 +17,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @AllArgsConstructor
@@ -131,4 +133,8 @@ public class StudentService {
         return repository.findByClassNameAndFrequency(className, 0);
     }
 
+    @Async
+    public CompletableFuture<Student> findStudentEntityAsync(Long studentId) {
+        return CompletableFuture.completedFuture(findStudentEntity(studentId));
+    }
 }

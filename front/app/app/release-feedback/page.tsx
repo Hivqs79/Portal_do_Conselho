@@ -5,7 +5,6 @@ import Table from "@/components/table/Table";
 import Title from "@/components/Title";
 import FeedbackClass from "@/interfaces/FeedbackClass";
 import FeedbackStudent from "@/interfaces/FeedbackStudent";
-import { Rank } from "@/interfaces/RankType";
 import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
 import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
 import TableFeedbackRow from "@/interfaces/table/row/TableFeedbackRow";
@@ -25,25 +24,22 @@ export default function ReleaseFeedback() {
   const [studentContent, setStudentContent] = useState<TableRowPossibleTypes[]>();
   const [councilId, setCouncilId] = useState<number>(0);
   const [classContent, setClassContent] = useState<FeedbackClass>();
-  const [releasedModalOpen, setReleasedModalOpen] = useState(false);
 
   useEffect(() => {
     try {
       const fetchFeedbacks = async () => {
         const response = await fetch(
-          "http://localhost:8081/feedbacks/class?isReturned=false&page=" +
-            (page - 1) +
-            "&size=" +
-            rowsPerPage +
-            "&className=" +
-            feedbackSearch
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class?isReturned=false
+            &page=${page - 1}
+            &size=${rowsPerPage}
+            &className=${feedbackSearch}`
         );
         console.log("Response:", feedbackSearch);
         const data = await response.json();
         console.log("THIS data", data)
         setFeedbacks(data);
       };
-      fetchFeedbacks();console.log(councilId)
+      fetchFeedbacks();
     } catch (error) {
       console.log("Error fetching data:", error);
     }
@@ -62,7 +58,6 @@ export default function ReleaseFeedback() {
       console.log("councilId", councilId);
     },
     onClickRealize: async () => {
-      setReleasedModalOpen(true);
     },
   };
 
@@ -72,7 +67,7 @@ export default function ReleaseFeedback() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8081/feedbacks/student?isReturned=false&councilId=${councilId}&studentName=${studentTerm}`,
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/student?isReturned=false&councilId=${councilId}&studentName=${studentTerm}`,
           {
             method: "GET",
             headers: {
@@ -88,7 +83,7 @@ export default function ReleaseFeedback() {
         const data = await response.json();
         console.log("alunos: ", data.content);
         if (data.content.length > 0) {
-          let frequency = "frequency" in data.content[0] ? data.content[0].frequency : null;
+          const frequency = "frequency" in data.content[0] ? data.content[0].frequency : null;
           console.log("frequency", frequency);
         }
         setStudentContent(data.content as FeedbackStudent[]);

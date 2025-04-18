@@ -3,7 +3,7 @@ import { useThemeContext } from "@/hooks/useTheme";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { IoClose } from "react-icons/io5";
 import Icon from "../Icon";
-import { useEffect, useState, useRef } from "react"; // Adicione useRef
+import { useEffect, useState, useRef, useCallback } from "react";
 import OpacityHex from "@/utils/OpacityHex";
 
 interface ConfirmChangesProps {
@@ -36,7 +36,7 @@ export default function ConfirmChanges({
   const [isValid, setIsValid] = useState(true);
   const {
     whiteColor,
-    textBlackolor,
+    textBlackColor,
     colorByModeSecondary,
     backgroundColor,
     redDanger,
@@ -46,33 +46,7 @@ export default function ConfirmChanges({
   const [confirmColorHex, setConfirmColorHex] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (confirmColor === "red") {
-      setConfirmColorHex(redDanger);
-    } else if (confirmColor === "green") {
-      setConfirmColorHex(greenConfirm);
-    }
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      onClose();
-    }
-    if (event.key === "Enter") {
-      const result = handleConfirmClick();
-      if (result) {
-        console.log("oi: ", result);
-        onClose();
-      }
-    }
-  };
-
-  function handleConfirmClick() {
+  const handleConfirmClick = useCallback(() => {
     if (inputRef.current?.value === spanValue) {
       if (secondConfirmButton) {
         console.log("teste");
@@ -87,7 +61,33 @@ export default function ConfirmChanges({
         setIsValid(true);
       }, 3000);
     }
-  }
+  }, [inputRef, spanValue, secondConfirmButton, onClose]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+      if (event.key === "Enter") {
+        const result = handleConfirmClick();
+        if (result) {
+          console.log("oi: ", result);
+          onClose();
+        }
+      }
+    };
+
+    if (confirmColor === "red") {
+      setConfirmColorHex(redDanger);
+    } else if (confirmColor === "green") {
+      setConfirmColorHex(greenConfirm);
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [confirmColor, redDanger, greenConfirm, onClose, handleConfirmClick]);    
 
   const onCloseConfirmModal = () => {
     setIsModalConfirmOpen(false);
@@ -139,7 +139,7 @@ export default function ConfirmChanges({
                 variant="contained"
                 color="terciary"
               >
-                <Typography variant="lg_text_bold" color={textBlackolor}>
+                <Typography variant="lg_text_bold" color={textBlackColor}>
                   Voltar
                 </Typography>
               </Button>
@@ -225,7 +225,7 @@ export default function ConfirmChanges({
                   variant="contained"
                   color="terciary"
                 >
-                  <Typography variant="lg_text_bold" color={textBlackolor}>
+                  <Typography variant="lg_text_bold" color={textBlackColor}>
                     Voltar
                   </Typography>
                 </Button>

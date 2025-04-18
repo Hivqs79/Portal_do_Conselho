@@ -26,10 +26,10 @@ public class KafkaConsumerService {
     private final CouncilService councilService;
     private final KafkaEventSender kafkaEventSender;
 
-    @KafkaListener(topics = "student", groupId = "group_general_api")
-    public void consume(String message) {
-        System.out.println("Consumed message: " + message);
-    }
+//    @KafkaListener(topics = "student", groupId = "group_general_api")
+//    public void consume(String message) {
+//        System.out.println("logDoBackend" + "Consumed message: " + message);
+//    }
 
     @KafkaListener(topics = "council", groupId = "group_general_api")
     public void consumeCouncil(String message) throws JsonProcessingException {

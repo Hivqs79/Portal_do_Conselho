@@ -29,7 +29,16 @@ export default function PasswordRecuperation() {
             onChange= {(e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value)}
           />
           
-          <BlueButton variant="contained" className="!mb-12 !w-64" onClick={() => setInputError(!inputError)}>Enviar email</BlueButton>               
+          <BlueButton 
+            variant="contained"
+            className="!mb-12 !w-64" 
+            onClick={() => {
+              setInputError(!inputError);
+              console.log(email);
+            }}
+          >
+            Enviar email
+          </BlueButton>               
       </Box>
     );
 }

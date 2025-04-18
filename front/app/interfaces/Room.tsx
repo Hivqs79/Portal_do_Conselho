@@ -1,4 +1,4 @@
 interface Room {
   id: number;
-  usersid: number[];
+  usersId: number[];
 }

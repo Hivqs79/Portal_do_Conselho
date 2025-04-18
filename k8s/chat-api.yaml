@@ -20,7 +20,7 @@ spec:
         env:
         - name: SPRING_DATASOURCE_URL
           valueFrom:
-            configMapKeyRef:
+            configMapKeyRef:  
               name: mysql-chat-config
               key: jdbc-url
         - name: SPRING_DATASOURCE_USERNAME
@@ -35,11 +35,11 @@ spec:
               key: password
         resources:
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 300m
+            memory: 512Mi
           limits:
-            cpu: 200m
-            memory: 256Mi                
+            cpu: 500m
+            memory: 1024Mi               
         
 
 ---

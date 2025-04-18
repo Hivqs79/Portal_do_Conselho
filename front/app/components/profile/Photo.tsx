@@ -21,6 +21,7 @@ export default function Photo({
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null);
 
+  console.log("editPhoto", editPhoto);
   useEffect(() => {
     if (idUser) {
       const imageId = parseInt(localStorage.getItem("imageid") || "0"); //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO

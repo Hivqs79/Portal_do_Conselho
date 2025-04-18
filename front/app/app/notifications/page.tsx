@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState, useCallback } from "react";
 import AccordionComponent from "@/components/AccordionComponent";
 import Title from "@/components/Title";
 import { useThemeContext } from "@/hooks/useTheme";
@@ -67,23 +67,24 @@ export default function Notifications() {
     }
   }, [selectedNotifications]);
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     const response = await fetch(
-      `http://localhost:8081/notification/user/${userId}?page=${page - 1
-      }&size=${rowsPerPage}&sort=id,desc`
+      `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/user/${userId}?page=${page - 1}
+      &size=${rowsPerPage}&sort=id,desc`
     );
+    console.log(process.env.URL_GENERAL_API);
     const data = await response.json();
     console.log(data);
     setNotifications(data);
-  };
+  }, [userId, page, rowsPerPage]);
 
   useEffect(() => {
     fetchNotifications();
-  }, [userId, page, rowsPerPage]);
+  }, [userId, page, rowsPerPage, fetchNotifications]);
 
   const setViewedNotification = async (id: number) => {
     const response = await fetch(
-      `http://localhost:8081/notification/${id}/is-viewed?isViewed=true`,
+      `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/${id}/is-viewed?isViewed=true`,
       {
         method: "PATCH",
       }
@@ -93,7 +94,7 @@ export default function Notifications() {
   };
 
   const handleDeleteNotification = async (id: number) => {
-    const response = await fetch(`http://localhost:8081/notification/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/${id}`, {
       method: "DELETE",
     });
     console.log(response);

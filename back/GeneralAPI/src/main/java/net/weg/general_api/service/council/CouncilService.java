@@ -17,9 +17,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @AllArgsConstructor
@@ -134,5 +136,10 @@ public class CouncilService {
         }
         repository.save(council);
         return modelMapper.map(council, CouncilResponseDTO.class);
+    }
+
+    @Async
+    public CompletableFuture<Council> findCouncilEntityAsync(Long id) {
+        return CompletableFuture.completedFuture(findCouncilEntity(id));
     }
 }
