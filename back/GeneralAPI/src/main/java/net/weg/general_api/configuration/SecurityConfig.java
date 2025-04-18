@@ -63,6 +63,7 @@ public class SecurityConfig {
 
                         // Configurações específicas para TeacherController
                         .requestMatchers(HttpMethod.GET, "/teacher/{id}").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/teacher/by-class/{id}").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/teacher/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.DELETE, "/teacher/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.GET, "/teacher").hasRole("SUBPEDAGOGIC")

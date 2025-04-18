@@ -2,6 +2,7 @@ package net.weg.general_api.repository;
 
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
+import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.users.Student;
 import net.weg.general_api.model.entity.users.Teacher;
 import net.weg.general_api.model.entity.users.User;
@@ -23,5 +24,23 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, JpaSpec
 
         return findAll(enabledSpec, pageable);
     }
+
+    default Page<Teacher> findAllByClassIdAndSpec(Long classId, Specification<Teacher> spec, Pageable pageable) {
+        Specification<Teacher> finalSpec = Specification.where(spec)
+                .and((root, query, cb) -> {
+                    // Join com a tabela de classes (ManyToMany)
+                    Join<Teacher, Class> classJoin = root.join("classes");
+                    // Filtra pelo ID da classe
+                    return cb.equal(classJoin.get("id"), classId);
+                })
+                .and((root, query, cb) -> {
+                    // Verifica se o usuário está ativo (enabled = true)
+                    Join<Teacher, User> userJoin = root.join("userAuthentication", JoinType.INNER);
+                    return cb.isTrue(userJoin.get("enabled"));
+                });
+
+        return findAll(finalSpec, pageable);
+    }
+
 
 }

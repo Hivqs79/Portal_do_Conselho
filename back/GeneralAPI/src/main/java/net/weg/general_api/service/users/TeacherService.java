@@ -40,6 +40,11 @@ public class TeacherService {
         return teachers.map(teacher -> modelMapper.map(teacher, TeacherResponseDTO.class));
     }
 
+    public Page<TeacherResponseDTO> findTeacherSpecByClass(Specification<Teacher> spec, Long classId, Pageable pageable) {
+        Page<Teacher> teachers = repository.findAllByClassIdAndSpec(classId, spec, pageable);
+        return teachers.map(teacher -> modelMapper.map(teacher, TeacherResponseDTO.class));
+    }
+
     public TeacherResponseDTO createTeacher(TeacherRequestDTO teacherRequestDTO) {
         Teacher teacher = modelMapper.map(teacherRequestDTO, Teacher.class);
         String randomPassword = PasswordGeneratorService.generateSimpleAlphanumericPassword();
