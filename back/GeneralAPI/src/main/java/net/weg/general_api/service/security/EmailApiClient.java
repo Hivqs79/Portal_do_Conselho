@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Slf4j
 public class EmailApiClient {
 
-    private static final String EMAIL_API_URL = "http://localhost:8074/email/send";
+    private static final String EMAIL_API_URL = "email-api-service:8083/email/send";
     private static final String DEFAULT_SENDER = "portal.do.conselho.email@gmail.com";
 
     private final RestTemplate restTemplate;
