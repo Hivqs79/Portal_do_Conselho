@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${title}</title>
+    <style type="text/css">
+        /* Estilos inline para melhor compatibilidade */
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        table {
+            border-collapse: collapse;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+        }
+
+        .logo-container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #0056b3;
+            font-size: 18px;
+            text-align: center;
+            padding: 0 20px 20px 20px;
+        }
+
+        .content {
+            padding: 20px;
+            color: #333333;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .highlight-box {
+            background-color: #f5f5f5;
+            border-left: 4px solid #0056b3;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .button-container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .button {
+            background-color: #0056b3;
+            color: #ffffff;
+            display: inline-block;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            color: #333333;
+            font-size: 14px;
+        }
+
+        .divider {
+            border-top: 1px solid #eeeeee;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f4f4;">
+<!-- Tabela principal -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f4f4; padding: 20px 0;">
+    <tr>
+        <td align="center">
+            <!-- Container do email -->
+            <table class="container" border="0" cellpadding="0" cellspacing="0" width="600">
+                <!-- Logo -->
+                <tr>
+                    <td class="logo-container">
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoPortalConselho-LMhWEPYWXP7Cw9Ld8Wy9jGnBHh1KrS.png" alt="Portal do Conselho" style="width: 300px; max-width: 90%; height: auto;" />
+                    </td>
+                </tr>
+
+                <!-- Subtítulo -->
+                <tr>
+                    <td class="subtitle" style="color: #0056b3; font-size: 18px; text-align: center; padding: 0 20px 20px 20px;">
+                        ${title}
+                    </td>
+                </tr>
+
+                <!-- Conteúdo -->
+                <tr>
+                    <td class="content" style="padding: 20px; color: #333333; font-size: 14px; line-height: 1.6; text-align: left;">
+                        <p>Prezado(a) ${owner},</p>
+
+                        <p>Sua conta foi criada e está pronta para ser acessada!</p>
+
+                        <div style="background-color: #f5f5f5; border-left: 4px solid #0056b3; padding: 15px; margin: 15px 0;">
+                            <p><strong>Abaixo estão suas credenciais de acesso:</strong></p>
+                            <p>E-mail: ${reciver}</p>
+                            <p>Senha: ${password}</p>
+                        </div>
+
+                        <div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0;">
+                            <p><strong>Importante:</strong></p>
+                            <ul>
+                                <li>Nunca compartilhe estas credenciais com terceiros</li>
+                                <li>Recomendamos que altere sua senha após o primeiro login</li>
+                                <li>Caso não tenha solicitado esta alteração, ignore este e-mail</li>
+                            </ul>
+                        </div>
+
+                        <div style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 15px 0;">
+                            <p><strong>Para sua segurança, recomendamos:</strong></p>
+                            <ol>
+                                <li>Criar uma senha forte ao redefinir</li>
+                                <li>Não repetir senhas utilizadas em outros serviços</li>
+                                <li>Atualizar periodicamente suas credenciais</li>
+                            </ol>
+                        </div>
+
+                        <p>Atenciosamente,<br />
+                            Equipe de Suporte<br />
+                            Portal do Conselho</p>
+
+                        <div style="border-top: 1px solid #eeeeee; margin: 20px 0;"></div>
+
+                        <p style="font-size: 12px; color: #777777;">
+                            Esta é uma mensagem automática. Por favor, não responda este e-mail.<br />
+                            Caso necessite de ajuda, entre em contato através do nosso site oficial.
+                        </p>
+                    </td>
+                </tr>
+
+                <!-- Botão -->
+                <tr>
+                    <td class="button-container">
+                        <a href=${siteUrl} class="button">Acessar site</a>
+                    </td>
+                </tr>
+
+                <!-- Rodapé -->
+                <tr>
+                    <td class="footer">
+                        Entre em contato através do nosso <a href=${contactUrl}>site</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

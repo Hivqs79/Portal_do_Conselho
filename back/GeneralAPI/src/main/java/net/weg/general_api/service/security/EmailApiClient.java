@@ -29,8 +29,15 @@ public class EmailApiClient {
     }
 
     public void sendCodeEmail(String recipient, String ownerName, String code) {
-        sendEmail(buildEmailModel(recipient, ownerName, "Código de Recuperação da Senha")
+        sendEmail(buildEmailModel(recipient, ownerName, "Recuperacao Senha")
                 .token(code)
+                .build());
+    }
+
+    public void sendCouncilInfoEmail(String recipient, String ownerName, String aClass, LocalDateTime startDateTime) {
+        sendEmail(buildEmailModel(recipient, ownerName, "Conselho Marcado")
+                .turma(aClass)
+                .date(startDateTime)
                 .build());
     }
 

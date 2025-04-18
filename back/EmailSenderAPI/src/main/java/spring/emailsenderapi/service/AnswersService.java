@@ -7,6 +7,8 @@ import spring.emailsenderapi.model.EmailModel;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -15,35 +17,63 @@ import java.time.format.DateTimeFormatter;
  */
 public class AnswersService {
 
+    private final EmailTemplateService templateService;
+
+    public String answers(EmailModel email) {
+        return templateService.processTemplate(email.getTitle().toLowerCase().replace(" ", "-"),
+                createVariablesMap(email));
+    }
+
+    private Map<String, String> createVariablesMap(EmailModel email) {
+        System.out.println(email.toString());
+        Map<String, String> variables = new HashMap<>();
+        variables.put("owner", email.getOwner());
+        variables.put("reciver", email.getReciver());
+        variables.put("password", email.getPassword());
+        variables.put("token", email.getToken());
+        variables.put("turma", email.getTurma());
+
+        LocalDateTime dateTime = email.getDate();
+
+        if (dateTime != null) {
+            System.out.println("Entrou");
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dateFormat = dateTime.format(dateFormatter);
+            System.out.println("Date format = " + dateFormat);
+
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+            String hourFormat = dateTime.format(timeFormatter);
+            System.out.println("Hour format = " + hourFormat);
+
+            variables.put("dateFormat", dateFormat);
+            variables.put("hourFormat", hourFormat);
+        }
+
+        System.out.println("Variaveis = "+ variables);
+        return variables;
+    }
+
     /**
      * Function where a json is received with the information for sending the email, with the formatting depending on the subject
      *
      * @param email
      * @return String
      */
+
+    /*
     public String answers(EmailModel email) {
+
+
         /**
          * date and time formatting
-         */
-        LocalDateTime dateTime = email.getDate();
 
-        if (dateTime == null) {
-            dateTime = LocalDateTime.now();
-        }
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String dateFormat = dateTime.format(dateFormatter);
-        System.out.println("Dia: " + dateFormat);
-
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        String hourFormat = dateTime.format(timeFormatter);
-        System.out.println("Hora: " + hourFormat);
 
         switch (email.getTitle()) {
 
             /**
              * answers related to account creation
-             */
+
             case "Cadastro Realizado":
                 email.setContent("Prezado(a) " + email.getOwner() + ",\n\n"
                         + "Sua conta foi criada e está pronta para ser acessada!\n" +
@@ -68,7 +98,7 @@ public class AnswersService {
 
             /**
              * answers related password recover
-             */
+
             case "Código de Recuperação da Senha":
                 email.setContent("Prezado(a) " + email.getOwner() + ",\n\n" +
                         "Recebemos uma solicitação para redefinição da senha da sua conta. \n" +
@@ -93,7 +123,7 @@ public class AnswersService {
 
             /**
              * answers related to advice
-             */
+
             case "Conselho Marcado":
                 email.setContent("Prezado(a) professor(a) " + email.getOwner() + ",\n\n"
                         + "Você foi convidado(a) a participar do conselho da turma " + email.getTurma() + ",\n"
@@ -123,7 +153,7 @@ public class AnswersService {
 
             /**
              * pre-advice related answers
-             */
+
             case "Pré-Conselho Disponível":
                 email.setContent("Prezado(a) aluno(a) " + email.getOwner() + ",\n\n"
                         + "Informamos que o Pré-Conselho já está disponível para preenchimento.\n"
@@ -144,7 +174,7 @@ public class AnswersService {
 
             /**
              * message related responses
-             */
+
             case "Mensagem Recebida":
                 email.setContent("Prezado(a) " + email.getTypeUser() + " " + email.getOwner() + ",\n\n"
                         + "Você recebeu uma nova mensagem relacionada ao " + email.getTypeContent() + ".\n"
@@ -156,7 +186,7 @@ public class AnswersService {
 
             /**
              * responses related to reports
-             */
+
             case "Relatório Disponível":
                 email.setContent("Prezado(a) pedagogo " + email.getOwner() + ",\n\n"
                         + "O relatório consolidado do conselho realizado no dia " + dateFormat + " da turma " + email.getTurma() + " já está disponível para download.\n"
@@ -167,7 +197,7 @@ public class AnswersService {
 
             /**
              * answers related to advice
-             */
+
             case "Feedback Disponível":
                 email.setContent("Prezado(a) " + email.getTypeUser() + " " + email.getOwner() + ",\n\n"
                         + "Informamos que um feedback referente ao seu desempenho no Conselho Escolar foi disponibilizado no portal.\n"
@@ -179,7 +209,7 @@ public class AnswersService {
 
             /**
              * feedback related responses
-             */
+
             case "Visualização do Conselho Diponível":
                 email.setContent("Prezado(a) supervisor(a) " + email.getOwner() + ",\n\n"
                         + "O conselho realizado no dia " + dateFormat + " da turma " + email.getTurma() + " está disponível para visualização no portal.\n"
@@ -190,7 +220,7 @@ public class AnswersService {
 
             /**
              * answers related to notes
-             */
+
             case "Anotações Fechadas":
                 email.setContent("Prezado(a) professor(a)" + email.getOwner() + ",\n\n"
                         + "Informamos que as anotações para o conselho da turma " + email.getTurma() + " foram encerradas.\n"
@@ -202,7 +232,8 @@ public class AnswersService {
         }
         /**
          * return content format
-         */
+
         return email.getContent();
     }
+     */
 }

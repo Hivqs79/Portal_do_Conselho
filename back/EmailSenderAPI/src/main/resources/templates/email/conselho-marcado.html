@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conselho Marcado - Portal do Conselho</title>
+    <style type="text/css">
+        /* Estilos base para compatibilidade com clientes de email */
+        body {
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        table, td {
+            border-collapse: collapse;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
+        }
+
+        p {
+            margin: 10px 0;
+            padding: 0;
+        }
+
+        /* Estilos específicos para o template */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+        }
+
+        .logo-container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 300px;
+            max-width: 90%;
+            height: auto;
+        }
+
+        .subtitle {
+            color: #0056b3;
+            font-size: 18px;
+            text-align: center;
+            padding: 0 20px 20px 20px;
+        }
+
+        .content {
+            padding: 20px;
+            color: #333333;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .meeting-details {
+            background-color: #e3f2fd;
+            border-left: 4px solid #0056b3;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .button-container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .button {
+            background-color: #0056b3;
+            color: #ffffff !important;
+            display: inline-block;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            color: #333333;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+
+        /* Estilos responsivos */
+        @media screen and (max-width: 480px) {
+            .container {
+                width: 100% !important;
+            }
+
+            .content, .button-container, .footer {
+                padding: 15px !important;
+            }
+
+            .button {
+                display: block !important;
+                width: 80% !important;
+                margin: 0 auto !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f4f4;">
+<!-- Tabela principal -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f4f4; padding: 20px 0;">
+    <tr>
+        <td align="center">
+            <!-- Container do email -->
+            <table class="container" border="0" cellpadding="0" cellspacing="0" width="600">
+                <!-- Logo -->
+                <tr>
+                    <td class="logo-container">
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoPortalConselho-LMhWEPYWXP7Cw9Ld8Wy9jGnBHh1KrS.png" alt="Portal do Conselho" style="width: 300px; max-width: 90%; height: auto;" />
+                    </td>
+                </tr>
+
+                <!-- Subtítulo (Tipo de caso) -->
+                <tr>
+                    <td class="subtitle">
+                        Conselho Marcado
+                    </td>
+                </tr>
+
+                <!-- Conteúdo (Mensagem do backend) -->
+                <tr>
+                    <td class="content">
+                        <p>Prezado(a) professor(a) ${owner},</p>
+
+                        <p>Você foi convidado(a) a participar do conselho da turma ${turma}.</p>
+
+                        <div class="meeting-details">
+                            <p><strong>Detalhes do Conselho:</strong></p>
+                            <p>Turma: ${turma}</p>
+                            <p>Data: ${dateFormat}</p>
+                            <p>Hora: ${hourFormat}</p>
+                        </div>
+
+                        <p>Caso deseje, já é possível acessar o site para fazer anotações sobre a turma.</p>
+
+                        <p>Atenciosamente,<br />
+                            Equipe do Portal do Conselho</p>
+                    </td>
+                </tr>
+
+                <!-- Botão -->
+                <tr>
+                    <td class="button-container">
+                        <a href=${siteUrl} class="button">Acessar site</a>
+                    </td>
+                </tr>
+
+                <!-- Rodapé -->
+                <tr>
+                    <td class="footer">
+                        Entre em contato através do nosso <a href=${contactUrl}>site</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
