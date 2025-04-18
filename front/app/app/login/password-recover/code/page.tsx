@@ -7,7 +7,7 @@ import { useState } from "react";
 export default function Code() {
     const { BlueButton, colorByMode } = useThemeLoginContext();
     const [inputError, setInputError] = useState(false);
-    const [otp, setOtp] = useState<number | string>(0);
+    const [otp, setOtp] = useState("");
     
     return (
         <Box className="w-full lg:w-3/4 flex flex-col items-center">
@@ -21,7 +21,7 @@ export default function Code() {
                 Digite o código de recuperação enviado por email
             </Alert>
           }
-          <OTPInput otp={otp || ''} setOtp={setOtp}/>
+          <OTPInput otp={otp} setOtp={setOtp}/>
           
           <BlueButton variant="contained" className="!mb-12 !mt-16 !w-64" onClick={() => setInputError(!inputError)}>Verificar código</BlueButton>               
       </Box>

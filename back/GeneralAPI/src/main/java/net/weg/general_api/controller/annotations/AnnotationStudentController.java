@@ -13,6 +13,7 @@ import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
+import net.weg.general_api.exception.exceptions.UserNotAssociatedException;
 import net.weg.general_api.model.dto.request.annotation.AnnotationStudentRequestDTO;
 import net.weg.general_api.model.dto.response.annotation.AnnotationStudentResponseDTO;
 import net.weg.general_api.model.entity.annotation.AnnotationStudent;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/annotations/student")

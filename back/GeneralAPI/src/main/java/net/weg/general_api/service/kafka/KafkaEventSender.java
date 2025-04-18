@@ -21,21 +21,21 @@ public class KafkaEventSender {
     public void sendEvent(Object object, String httpMethod, String descriptionLog) {
         try {
             String topic = object.getClass().getSimpleName().toLowerCase();
-            System.out.println("topic: " + topic);
-
-            KafkaMessage message = new KafkaMessage();
-            message.setHttpMethod(httpMethod);
-            System.out.println(":-:" + message);
-            if (object.getClass().getSimpleName().toLowerCase().equals("annotationstudent")) {
-                System.out.println(((AnnotationStudent) object).getStudent());
+            System.out.println("logDoBackend" + "topic: " + topic);
+                KafkaMessage message = new KafkaMessage();
+                message.setHttpMethod(httpMethod);
+            try {
+                message.setObject(object.toString());
+            } catch (Exception e) {
+                System.err.println("Erro no try catch: " + e.getMessage());
             }
-            System.out.println(":-:" + object);
-            message.setObject(object.toString());
-            System.out.println(":-:" + message);
             message.setDescription(descriptionLog);
             String jsonMessage = objectMapper.writeValueAsString(message);
-
-            System.out.println("jsonMessage: " + jsonMessage);
+            try {
+                System.out.println("logDoBackend" + "jsonMessage: " + jsonMessage);
+            } catch (Exception e) {
+                System.err.println("Erro no try catch: " + e.getMessage());
+            }
             kafkaProducerService.sendMessage(topic, jsonMessage);
         } catch (JsonProcessingException e) {
             throw new KafkaException("Failed to serialize KafkaMessage object: " + e);

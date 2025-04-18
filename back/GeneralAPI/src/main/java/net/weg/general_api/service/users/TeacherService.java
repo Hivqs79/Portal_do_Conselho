@@ -18,9 +18,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -131,5 +133,9 @@ public class TeacherService {
         repository.save(teacher);
 
         return modelMapper.map(teacher, TeacherResponseDTO.class);
+    }
+    @Async
+    public CompletableFuture<Teacher> findTeacherEntityAsync(Long teacherId) {
+        return CompletableFuture.completedFuture(findTeacherEntity(teacherId));
     }
 }

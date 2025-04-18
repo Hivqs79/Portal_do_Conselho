@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
 
   if (pathname === "/realize-council" || pathname === "/council") {
     try {
-      const res = await fetch("http://localhost:8081/council?isHappening=true", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/council?isHappening=true`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

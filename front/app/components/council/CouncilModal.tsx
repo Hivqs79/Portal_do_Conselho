@@ -45,7 +45,7 @@ export default function CouncilModal({
     backgroundColor,
     redDanger,
     whiteColor,
-    textBlackolor,
+    textBlackColor,
   } = useThemeContext();
 
   const date = councilInformation.visualizedCouncil
@@ -258,7 +258,7 @@ export default function CouncilModal({
                   color="terciary"
                 >
                   <Typography
-                    style={{ color: textBlackolor }}
+                    style={{ color: textBlackColor }}
                     variant="xl_text_bold"
                   >
                     Cancelar
@@ -306,7 +306,7 @@ export default function CouncilModal({
               firstConfirmButton={() => {
                 setOpenConfirm(false);
                 close();
-                confirmFunction && confirmFunction();
+                confirmFunction?.();
               }}
             />
           )}

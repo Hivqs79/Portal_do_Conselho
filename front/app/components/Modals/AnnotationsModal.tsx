@@ -12,8 +12,8 @@ import TableAnnotationRow from "@/interfaces/table/row/TableAnnotationRow";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 import { useEffect, useRef } from "react";
 import { Rank as RankType } from "@/interfaces/RankType";
-import TableFeedbackRow from "@/interfaces/table/row/TableFeedbackRow";
 import FeedbackStudent from "@/interfaces/FeedbackStudent";
+import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
 
 interface AnnotationsModalProps {
   open: boolean;
@@ -27,7 +27,7 @@ interface AnnotationsModalProps {
   headerButtonsClass: TableHeaderButtons;
   contentStudent: TableRowPossibleTypes[] | null;
   headersStudent: TableHeaderContent[];
-  rowButtonsStudent: any;
+  rowButtonsStudent: TableRowButtons;
   headerButtonsStudent: TableHeaderButtons;
 }
 export default function AnnotationsModal({
@@ -165,14 +165,14 @@ export default function AnnotationsModal({
                                   outlined={true}
                                   key={index}
                                   rank={row.rank}
-                                  onChangeRank={(rank: RankType) => rowButtonsStudent.setRank(rank, (row as TableAnnotationRow).student.id)}
+                                  onChangeRank={(rank: RankType) => rowButtonsStudent.setRank && rowButtonsStudent.setRank(rank, (row as TableAnnotationRow).student.id)}
                                 >
                                   <AvaliationInputs
                                     readOnly={variant !== "annotations"}
                                     Positivecontent={row.strengths}
                                     Negativecontent={row.toImprove}
-                                    onPositiveChange={(content: string) => rowButtonsStudent.setPositiveStudentContent(content, (row as TableAnnotationRow).student.id)}
-                                    onNegativeChange={(content: string) => rowButtonsStudent.setNegativeStudentContent(content, (row as TableAnnotationRow).student.id)}
+                                    onPositiveChange={(content: string) => rowButtonsStudent.setPositiveStudentContent && rowButtonsStudent.setPositiveStudentContent(content, (row as TableAnnotationRow).student.id)}
+                                    onNegativeChange={(content: string) => rowButtonsStudent.setNegativeStudentContent && rowButtonsStudent.setNegativeStudentContent(content, (row as TableAnnotationRow).student.id)}
                                     copyButton={true}
                                     withoutBorder={true}
                                   />

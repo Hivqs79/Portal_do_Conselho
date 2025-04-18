@@ -10,21 +10,21 @@ interface SearchProps {
 }
 
 export default function Search({ setSearch, type }: SearchProps) {
-    const { primaryColor, secondaryColor, colorByModeSecondary, terciaryColor, whiteColor } = useThemeContext();
+    const { primaryColor, secondaryColor, colorByModeSecondary, colorByMode, whiteColor, backgroundColor } = useThemeContext();
     const [isFocused, setIsFocused] = useState(false); 
     const randomId = `search-input-${crypto.randomUUID()}`;
 
     return (
         <>
-            <Icon IconPassed={IoSearch} isButton={true} classNameButton="lg:!hidden"/>                
+            <Icon IconPassed={IoSearch} isButton={true} classNameButton={type === "chat" ? "!hidden" : "lg:!hidden"}/>
 
-            <div className={`relative w-full ${type === "chat" ? "" : "max-w-xs"} cursor-text hidden lg:block`}>
+            <div className={`relative w-full ${type === "chat" ? "" : "max-w-xs hidden lg:block"} cursor-text`}>
                 <label
                     htmlFor={randomId}
-                    style={{ backgroundColor: type === "chat" ? terciaryColor : primaryColor, color: type === "chat" ? primaryColor : whiteColor }}
-                    className={`cursor-text absolute left-4 font-semibold transition-all ${type === "chat" ? "pt-[.5rem]" : " "} ${
+                    style={{ backgroundColor: type === "chat" ? backgroundColor : primaryColor, color: type === "chat" ? colorByModeSecondary : whiteColor }}
+                    className={`cursor-text absolute left-4 font-semibold transition-all ${type === "chat" ? "pt-[.42rem]" : " "} ${
                         isFocused
-                        ? "top-[-8px] font-normal text-xs pt-0"
+                        ? `top-[-8px] font-normal text-xs !pt-0`
                         : "top-[10px] -translate-y-[5px] text-base"
                     }`}
                 >
@@ -33,8 +33,8 @@ export default function Search({ setSearch, type }: SearchProps) {
                 <input
                     id={randomId}
                     type="text"
-                    style={{ borderColor: type === "chat" ? colorByModeSecondary : secondaryColor }}
-                    className={`w-full pl-4 pr-10 ${type === "chat" ? "h-[50px]" : "h-[36px]"} text-white text-sm font-semibold border-2 rounded-md bg-transparent focus:outline-none`}
+                    style={{ borderColor: type === "chat" ? colorByModeSecondary : secondaryColor, color: colorByMode}}
+                    className={`w-full pl-4 pr-10 ${type === "chat" ? "h-[50px]" : "h-[36px]"} text-sm font-semibold border-2 rounded-md bg-transparent focus:outline-none`}
                     onFocus={() => setIsFocused(true)}
                     onBlur={(e) => setIsFocused(e.target.value !== "")}
                     onChange={(e) => setSearch && setSearch(e.target.value)}

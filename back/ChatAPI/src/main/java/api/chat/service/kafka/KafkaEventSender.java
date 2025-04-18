@@ -13,12 +13,12 @@ public class KafkaEventSender {
 
     public void sendEvent(Object object, String httpMethod, String descriptionLog, String topic) {
         try {
-            System.out.println("topic: " + topic);
+            System.out.println("logDoBackend" + "topic: " + topic);
 
             KafkaMessage message = new KafkaMessage(httpMethod, object.toString(), descriptionLog);
             String jsonMessage = objectMapper.writeValueAsString(message);
 
-            System.out.println("jsonMessage: " + jsonMessage);
+            System.out.println("logDoBackend" + "jsonMessage: " + jsonMessage);
             kafkaProducerService.sendMessage(topic, jsonMessage);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to serialize KafkaMessage object: " + e);

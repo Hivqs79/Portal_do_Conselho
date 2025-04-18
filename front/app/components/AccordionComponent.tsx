@@ -82,7 +82,7 @@ export default function AccordionComponent({
       <AccordionSummary
         onClick={() => {
           setIsOpen(!isOpen);
-          onClick && onClick();
+          if(onClick) onClick();
         }}
         expandIcon={
           <Icon

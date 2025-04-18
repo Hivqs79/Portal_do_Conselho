@@ -12,7 +12,7 @@ public class NotificationKafkaConsumer {
     @KafkaListener(topics = "notification", groupId = "group_notification")
     public void consumeNotification(String message) {
         try {
-            System.out.println("Notification kc: " + message);
+            System.out.println("logDoBackend" + "Notification kc: " + message);
         } catch (Exception e) {
             throw new KafkaException("Error processing notification message: " + e.getMessage());
         }

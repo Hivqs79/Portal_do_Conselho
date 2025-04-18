@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Typography } from "@mui/material";
 import { HiOutlineFilter } from "react-icons/hi";
 import { VscSettings } from "react-icons/vsc";
@@ -10,12 +10,13 @@ import Rank from "../rank/Rank";
 import { Decryptor } from "@/encryption/Decryptor";
 import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
 import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
+import { Rank as RankType } from "@/interfaces/RankType";
 
 interface TableHeaderProps {
   variant: "table" | "council" | "annotation";
   headers: TableHeaderContent[];
   headerButtons: TableHeaderButtons;
-  rank?: any;
+  rank?: RankType;
   openCommentsModal?: (open: boolean) => void;
 }
 
@@ -34,8 +35,8 @@ export default function TableHeader({
     orderButton,
     searchInput,
     setSearch,
-    setFilter,
-    setOrder,
+    // setFilter,
+    // setOrder,
     setRank,
     rank,
     rankText,
@@ -58,9 +59,15 @@ export default function TableHeader({
     }
   };
 
-  useEffect(() => { 
-    (setRank && variant !== "annotation") && setRank(actualRank);
-  }, [actualRank]);
+  const handleRankChange = useCallback(() => {
+    if (setRank && variant !== "annotation" && actualRank) {
+      setRank(actualRank)
+    };
+   }, [actualRank, setRank, variant])
+
+  useEffect(() => {     
+    handleRankChange();
+  }, [handleRankChange]);
 
   if (variant == "table" || variant == "annotation") {
     return (
@@ -131,7 +138,7 @@ export default function TableHeader({
                   <Rank
                     variant="council"
                     outline={false}
-                    type={actualRank}
+                    type={actualRank ? actualRank : "NONE"}
                     popover={true}
                     onRankChange={setActualRank}
                   />

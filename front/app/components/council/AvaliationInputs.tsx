@@ -24,11 +24,11 @@ export default function AvaliationInputs({
   const { colorByModeSecondary } = useThemeContext();
 
   const handlePositiveChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    onPositiveChange && onPositiveChange(e.target.value);
+    if(onPositiveChange) onPositiveChange(e.target.value);
   };
 
   const handleNegativeChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    onNegativeChange && onNegativeChange(e.target.value);
+    if(onNegativeChange) onNegativeChange(e.target.value);
   };
 
   return (

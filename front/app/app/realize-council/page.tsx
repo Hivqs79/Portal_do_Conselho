@@ -16,7 +16,7 @@ import CommentariesModal from "@/components/modals/CommentariesModal";
 import ConfirmChanges from "@/components/modals/ConfirmChanges";
 import ConfirmMessagesModal from "@/components/modals/ConfirmMessagesModal";
 import LoadingModal from "@/components/modals/LoadingModal";
-import { Rank as RankType } from "@/interfaces/RankType";
+import { Rank, Rank as RankType } from "@/interfaces/RankType";
 
 type CouncilData = {
   id: number;
@@ -67,14 +67,9 @@ export default function RealizeCouncil() {
   const [data, setData] = useState<CouncilData | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
-  const [positiveContent, setPositiveContent] = useState("");
-  const [negativeContent, setNegativeContent] = useState("");
-
   const [positiveClassContent, setPositiveClassContent] = useState("");
   const [negativeClassContent, setNegativeClassContent] = useState("");
-  const [actualRank, setActualRank] = useState<
-    "none" | "average" | "excellent" | "good" | "critical"
-  >("none");
+  const [actualRank, setActualRank] = useState<Rank>("NONE");
   const windowSize = useWindowWidth();
   const [isModalTeacherOpen, setIsModalTeacherOpen] = useState(false);
   const [isModalStudentOpen, setIsModalStudentOpen] = useState(false);
@@ -87,15 +82,14 @@ export default function RealizeCouncil() {
     message: string;
     error: boolean;
   }>({ title: "", message: "", error: false });
-  const [finalJson, setFinalJson] = useState<FinalJson>();
   const [classCommentaries, setClassCommentaries] = useState([]);
-  const [studentCommentaries, setStudentCommentaries] = useState([]);
+  const [studentCommentaries, setStudenteCommentaries] = useState([]);
   const {
     constrastColor,
     backgroundColor,
     colorByModeSecondary,
     whiteColor,
-    textBlackolor,
+    textBlackColor,
   } = useThemeContext();
   const router = useRouter();
 
@@ -201,7 +195,7 @@ export default function RealizeCouncil() {
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
     }
-  }, []);
+  }, [data]);
 
   // Efeito para lidar com mudanças no índice do aluno atual
   useEffect(() => {
@@ -280,7 +274,7 @@ export default function RealizeCouncil() {
       const councilId = await fetchHappeningCouncil();
       if (councilId) {
         const classResponse = await fetch(
-          "http://localhost:8081/annotations/class?isHappening=true&isFinished=false",
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/class?isHappening=true&isFinished=false`,
           {
             method: "GET",
             headers: {
@@ -293,7 +287,7 @@ export default function RealizeCouncil() {
         console.log("council ID class and student: ", councilId);
         console.log("Nam: ", users[currentStudentIndex]?.name);
         const studentResponse = await fetch(
-          `http://localhost:8081/annotations/student?councilId=${councilId}&studentName=${users[currentStudentIndex]?.name}`,
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/student?councilId=${councilId}&studentName=${users[currentStudentIndex]?.name}`,
           {
             method: "GET",
             headers: {
@@ -302,8 +296,7 @@ export default function RealizeCouncil() {
           }
         );
         const studentComentaries = await studentResponse.json();
-        setStudentCommentaries(studentComentaries.content);
-
+        setStudenteCommentaries(studentComentaries.content);
         console.log("Class API Response: ", classComentaries);
         console.log("Student API Response: ", studentComentaries);
       }
@@ -323,7 +316,7 @@ export default function RealizeCouncil() {
 
   const handleRankChange = (rank: string) => {
     setActualRank(
-      rank as "none" | "average" | "excellent" | "good" | "critical"
+      rank as Rank
     );
     saveEncryptedData("rank", rank);
   };
@@ -385,7 +378,6 @@ export default function RealizeCouncil() {
         studentsData,
         councilClassName
       );
-      setFinalJson(formattedJson);
       setModalMessage({
         title: "Conselho finalizado com sucesso!",
         message:
@@ -473,11 +465,9 @@ export default function RealizeCouncil() {
     const ClasspositiveContent = getDecryptedData("positiveContent");
 
     let studentsData: { [key: string]: any } = {};
-    let councilClassName: string = "";
 
     const savedData = localStorage.getItem("studentsData");
     if (data) {
-      councilClassName = data.aclass.name;
       if (savedData) {
         const decryptedData = Decryptor(savedData);
         if (decryptedData) {
@@ -722,7 +712,7 @@ export default function RealizeCouncil() {
                     setRank: handleRankChange,
                   }}
                   openCommentsModal={openTeacherModal}
-                  rank={actualRank}
+                  rank={actualRank ? actualRank : "NONE"}
                 />
               </table>
               <AvaliationInputs
@@ -748,8 +738,8 @@ export default function RealizeCouncil() {
                 }
                 frequencia={verifyFrequency()}
                 comments=""
-                negativeContent={negativeContent || ""}
-                positiveContent={positiveContent || ""}
+                negativeContent={""}
+                positiveContent={""}
                 rank={(actualRank as RankType) || "NONE"}
                 onNext={handleNextStudent}
                 onPrevious={handlePreviousStudent}
@@ -766,7 +756,7 @@ export default function RealizeCouncil() {
             >
               <Typography
                 variant={windowSize < 600 ? "sm_text_bold" : "lg_text_bold"}
-                color={textBlackolor}
+                color={textBlackColor}
               >
                 Cancelar Conselho
               </Typography>
