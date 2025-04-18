@@ -6,7 +6,11 @@ import { RiEmojiStickerLine } from "react-icons/ri";
 import { useState, useRef, useEffect } from "react";
 import EmojiPicker, { Theme, EmojiClickData } from "emoji-picker-react";
 
-export default function InputMessage() {
+interface InputMessageProps {
+  sendMessage: (message: string) => void;
+}
+
+export default function InputMessage({ sendMessage }: InputMessageProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const emojiButtonRef = useRef<HTMLSpanElement>(null);
@@ -19,10 +23,6 @@ export default function InputMessage() {
     setIsOpen(false);
     setTimeout(() => inputRef.current?.focus(), 0);
   };
-
-  useEffect(() => {
-    console.log(message);
-  }, [message])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -46,6 +46,12 @@ export default function InputMessage() {
         autoComplete="off"
         inputRef={inputRef}
         value={message}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && message.trim()) {
+            sendMessage(message);
+            setMessage("");
+          }
+        }}
         onChange={(e) => {
           setMessage(e.target.value);
         }}
@@ -70,7 +76,16 @@ export default function InputMessage() {
                   color={colorByModeSecondary}
                 />
               </span>
-              <Icon IconPassed={LuSend} color={colorByModeSecondary} />
+              <span
+                onClick={() => {
+                  if (message.trim()) {
+                    sendMessage(message);
+                    setMessage("");
+                  }
+                }}
+              >
+                <Icon IconPassed={LuSend} color={colorByModeSecondary} />
+              </span>
             </Box>
           ),
         }}

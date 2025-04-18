@@ -30,7 +30,7 @@ export default function Message({ type, content, time }: MessageProps) {
         maxWidth: "60%",
         margin: "4px 8px",
         alignSelf: isSender ? "flex-end" : "flex-start",
-        textAlign: isSender ? "right" : "left",
+        textAlign: "left",
         "&::after": {
           content: '""',
           position: "absolute",
@@ -59,6 +59,7 @@ export default function Message({ type, content, time }: MessageProps) {
         sx={{
           color: textBlackolor,
           opacity: 0.7,
+          userSelect: "none",
           fontSize: "0.7rem",
           alignSelf: isSender ? "flex-end" : "flex-start",
           marginTop: "4px",

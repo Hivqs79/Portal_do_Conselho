@@ -63,7 +63,7 @@ export default function Chat() {
         {selectedUser ? (
           <Box className="h-full max-h-[calc(100vh-64px)] flex flex-col">
             <HeaderMessagesRoom selectedUser={selectedUser ? selectedUser : { userId: 0, name: "" }}/>
-            <MessagesRoom userId={userId ? userId : 0} roomId={selectedUser ? selectedUser.roomId : 0}/>
+            <MessagesRoom key={selectedUser ? selectedUser.roomId : 0} userId={userId ? userId : 0} roomId={selectedUser ? selectedUser.roomId : 0}/>
           </Box>
         ) : (
           <Box className="flex flex-col justify-center items-center h-full gap-10">
