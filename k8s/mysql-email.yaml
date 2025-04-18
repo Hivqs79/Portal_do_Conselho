@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-email-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /mnt/data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-email-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-email-secret
+type: Opaque
+data:
+  username: cm9vdA== 
+  password: cm9vdA== 
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-email-config
+data:
+  jdbc-url: jdbc:mysql://mysql-email-service:3306/email_db?createDatabaseIfNotExist=true
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-email-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-email
+  template:
+    metadata:
+      labels:
+        app: mysql-email
+    spec:
+      containers:
+      - name: mysql-email
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-email-secret
+              key: password
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-email-persistent-storage
+          mountPath: /var/lib/mysql
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 400m
+            memory: 1Gi
+      volumes:
+      - name: mysql-email-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-email-pvc
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-email-service
+spec:
+  selector:
+    app: mysql-email
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP

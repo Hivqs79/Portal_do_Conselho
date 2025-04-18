@@ -1,0 +1,5 @@
+FROM openjdk:21
+EXPOSE 8081
+WORKDIR /app/spring
+COPY ../back/EmailSenderAPI/target/EmailAPI.jar /app/spring/email-service.jar
+ENTRYPOINT ["java", "-jar", "email-service.jar"]

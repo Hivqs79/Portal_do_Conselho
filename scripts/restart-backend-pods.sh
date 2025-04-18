@@ -6,6 +6,7 @@ DEPLOYMENTS=(
     # "chat-api" 
     # "logs-api"
     # "aws-image-api"
+    # "email-api"
     )
 
 for DEPLOYMENT in "${DEPLOYMENTS[@]}"; do
