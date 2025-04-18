@@ -145,15 +145,15 @@
                 <!-- Conteúdo (Mensagem do backend) -->
                 <tr>
                     <td class="content">
-                        <p>Prezado(a) professor(a) {{owner}},</p>
+                        <p>Prezado(a) professor(a) ${owner},</p>
 
-                        <p>Você foi convidado(a) a participar do conselho da turma {{turma}}.</p>
+                        <p>Você foi convidado(a) a participar do conselho da turma ${turma}.</p>
 
                         <div class="meeting-details">
                             <p><strong>Detalhes do Conselho:</strong></p>
-                            <p>Turma: {{turma}}</p>
-                            <p>Data: {{dateFormat}}</p>
-                            <p>Horário: {{hourFormat}}</p>
+                            <p>Turma: ${turma}</p>
+                            <p>Data: ${dateFormat}</p>
+                            <p>Hora: ${hourFormat}</p>
                         </div>
 
                         <p>Caso deseje, já é possível acessar o site para fazer anotações sobre a turma.</p>
@@ -166,14 +166,14 @@
                 <!-- Botão -->
                 <tr>
                     <td class="button-container">
-                        <a href={{siteUrl}} class="button">Acessar site</a>
+                        <a href=${siteUrl} class="button">Acessar site</a>
                     </td>
                 </tr>
 
                 <!-- Rodapé -->
                 <tr>
                     <td class="footer">
-                        Entre em contato através desse site <a href={{contactUrl}}>contato</a>
+                        Entre em contato através desse site <a href=${contactUrl}>contato</a>
                     </td>
                 </tr>
             </table>

@@ -163,13 +163,13 @@
                 <!-- Conteúdo (Mensagem do backend) -->
                 <tr>
                     <td class="content">
-                        <p>Prezado(a) {{owner}},</p>
+                        <p>Prezado(a) ${owner},</p>
 
                         <p>Recebemos uma solicitação para redefinição da senha da sua conta.</p>
                         <p>Segue abaixo o seu código de verificação exclusivo:</p>
 
                         <div class="verification-code">
-                            {{token}}
+                            ${token}
                         </div>
 
                         <p>Este código é válido por 1 hora e deve ser utilizado na página de recuperação de senha.</p>
@@ -208,14 +208,14 @@
                 <!-- Botão -->
                 <tr>
                     <td class="button-container">
-                        <a href="https://www.youtube.com/" class="button">Acessar site</a>
+                        <a href=${siteUrl} class="button">Acessar site</a>
                     </td>
                 </tr>
 
                 <!-- Rodapé -->
                 <tr>
                     <td class="footer">
-                        Entre em contato através desse site <a href="#">contato</a>
+                        Entre em contato através desse site <a href=${contactUrl}>contato</a>
                     </td>
                 </tr>
             </table>

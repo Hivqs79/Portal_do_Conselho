@@ -38,8 +38,7 @@ public class EmailTemplateService {
         for (Map.Entry<String, String> entry : variables.entrySet()) {
             String replacement = entry.getValue() != null ? entry.getValue() : "";
             // Substitui ambos os formatos ${var} e {{var}}
-            result = result.replace("${" + entry.getKey() + "}", replacement)
-                    .replace("{{" + entry.getKey() + "}}", replacement);
+            result = result.replace("${" + entry.getKey() + "}", replacement);
         }
         return result;
     }
