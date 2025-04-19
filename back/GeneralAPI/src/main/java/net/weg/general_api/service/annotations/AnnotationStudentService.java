@@ -11,18 +11,15 @@ import net.weg.general_api.model.entity.users.Student;
 import net.weg.general_api.model.entity.users.Teacher;
 import net.weg.general_api.repository.AnnotationStudentRepository;
 import net.weg.general_api.service.council.CouncilService;
-import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.kafka.producer.KafkaEventSender;
 import net.weg.general_api.service.users.StudentService;
 import net.weg.general_api.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.concurrent.CompletableFuture;
 
 @Service
 @AllArgsConstructor

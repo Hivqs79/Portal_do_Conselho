@@ -2,7 +2,7 @@ package net.weg.general_api.service.users;
 
 import lombok.AllArgsConstructor;
 import net.weg.general_api.exception.exceptions.UserNotFoundException;
-import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.kafka.producer.KafkaEventSender;
 import net.weg.general_api.model.dto.request.users.StudentRequestDTO;
 import net.weg.general_api.model.dto.response.users.StudentResponseDTO;
 import net.weg.general_api.model.entity.classes.Class;

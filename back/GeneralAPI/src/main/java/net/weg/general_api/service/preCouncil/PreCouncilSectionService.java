@@ -6,7 +6,7 @@ import net.weg.general_api.model.dto.request.preCouncil.PreCouncilSectionRequest
 import net.weg.general_api.model.dto.response.preCouncil.PreCouncilSectionResponseDTO;
 import net.weg.general_api.model.entity.preCouncil.PreCouncilSection;
 import net.weg.general_api.repository.PreCouncilSectionRepository;
-import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.kafka.producer.KafkaEventSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,4 +66,7 @@ public class PreCouncilSectionService {
         return modelMapper.map(preCouncilSection, PreCouncilSectionResponseDTO.class);
     }
 
+    public boolean existPreCouncilSectionByPreCouncilAndTopic(Long preCouncilId, String topic) {
+        return repository.existsByPreCouncil_IdAndTopic(preCouncilId, topic);
+    }
 }

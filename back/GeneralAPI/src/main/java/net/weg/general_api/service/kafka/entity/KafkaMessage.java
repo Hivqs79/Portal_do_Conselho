@@ -1,4 +1,4 @@
-package net.weg.general_api.service.kafka;
+package net.weg.general_api.service.kafka.entity;
 
 import lombok.Data;
 

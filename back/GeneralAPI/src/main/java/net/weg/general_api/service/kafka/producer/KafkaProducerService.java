@@ -1,4 +1,4 @@
-package net.weg.general_api.service.kafka;
+package net.weg.general_api.service.kafka.producer;
 
 import lombok.AllArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;

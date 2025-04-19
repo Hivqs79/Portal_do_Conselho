@@ -8,7 +8,7 @@ import net.weg.general_api.model.entity.annotation.AnnotationClass;
 import net.weg.general_api.model.entity.council.Council;
 import net.weg.general_api.repository.AnnotationClassRepository;
 import net.weg.general_api.service.council.CouncilService;
-import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.kafka.producer.KafkaEventSender;
 import net.weg.general_api.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;

@@ -1,4 +1,4 @@
-package net.weg.general_api.service.kafka;
+package net.weg.general_api.service.kafka.listener;
 
 import lombok.AllArgsConstructor;
 import org.springframework.kafka.KafkaException;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class NotificationKafkaConsumer {
+public class NotificationListener {
 
     @KafkaListener(topics = "notification", groupId = "group_notification")
     public void consumeNotification(String message) {

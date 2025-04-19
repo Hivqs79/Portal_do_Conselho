@@ -14,4 +14,6 @@ public interface PreCouncilSectionRepository extends JpaRepository<PreCouncilSec
 
         return findAll(enabledSpec, pageable);
     }
+
+    boolean existsByPreCouncil_IdAndTopic(Long preCouncilId, String topic);
 }

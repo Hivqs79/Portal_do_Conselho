@@ -72,7 +72,6 @@ export default function Notifications() {
       `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/user/${userId}?page=${page - 1}
       &size=${rowsPerPage}&sort=id,desc`
     );
-    console.log(process.env.URL_GENERAL_API);
     const data = await response.json();
     console.log(data);
     setNotifications(data);

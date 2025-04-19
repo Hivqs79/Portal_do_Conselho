@@ -3,7 +3,6 @@ package net.weg.general_api.service.notification;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.model.entity.notification.Notification;
 import net.weg.general_api.repository.NotificationRepository;
-import net.weg.general_api.service.kafka.KafkaEventSender;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

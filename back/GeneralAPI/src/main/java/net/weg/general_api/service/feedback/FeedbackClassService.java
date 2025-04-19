@@ -11,7 +11,7 @@ import net.weg.general_api.model.entity.feedback.FeedbackClass;
 import net.weg.general_api.repository.FeedbackClassRepository;
 import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.council.CouncilService;
-import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.kafka.producer.KafkaEventSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

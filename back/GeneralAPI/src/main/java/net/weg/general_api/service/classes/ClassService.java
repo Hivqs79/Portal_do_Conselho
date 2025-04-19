@@ -9,7 +9,7 @@ import net.weg.general_api.model.dto.response.users.TeacherResponseDTO;
 import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.users.Student;
 import net.weg.general_api.repository.ClassRepository;
-import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.kafka.producer.KafkaEventSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

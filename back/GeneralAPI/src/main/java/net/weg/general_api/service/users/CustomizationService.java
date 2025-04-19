@@ -8,7 +8,7 @@ import net.weg.general_api.model.entity.users.Customization;
 import net.weg.general_api.model.entity.users.User;
 import net.weg.general_api.model.enums.*;
 import net.weg.general_api.repository.CustomizationRepository;
-import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.kafka.producer.KafkaEventSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

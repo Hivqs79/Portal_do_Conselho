@@ -6,7 +6,7 @@ import net.weg.general_api.model.dto.request.users.AdminRequestDTO;
 import net.weg.general_api.model.dto.response.users.AdminResponseDTO;
 import net.weg.general_api.model.entity.users.Admin;
 import net.weg.general_api.repository.AdminRepository;
-import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.kafka.producer.KafkaEventSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
