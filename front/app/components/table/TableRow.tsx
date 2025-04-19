@@ -70,8 +70,6 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
 
   const rank = "rank" in content && content.rank;
 
-  console.log(content);
-
   return (
     <>
       <tr

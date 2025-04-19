@@ -7,13 +7,9 @@ import AvaliationInputs from "../council/AvaliationInputs";
 import TableHeader from "../table/TableHeader";
 import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
 import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
-import AccordionComponent from "../AccordionComponent";
-import TableAnnotationRow from "@/interfaces/table/row/TableAnnotationRow";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
-import { useEffect, useRef } from "react";
-import { Rank as RankType } from "@/interfaces/RankType";
-import FeedbackStudent from "@/interfaces/FeedbackStudent";
 import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
+import AccordionTable from "../table/AccordionTable";
 
 interface AnnotationsModalProps {
   open: boolean;
@@ -47,36 +43,6 @@ export default function AnnotationsModal({
 }: AnnotationsModalProps) {
   const { colorByModeSecondary, redDanger, backgroundColor } =
     useThemeContext();
-  const studentsAnnotations = useRef<HTMLElement | null>(null);
-
-  const updateStudentsAnnotationsSize = () => {
-    const element = studentsAnnotations.current;
-    if (element) {
-      const elementInside = element.children[0] as HTMLElement;
-
-      if (element.getBoundingClientRect().height <= 420) {
-        element.style.paddingRight = "0px";
-        if (elementInside) {
-          elementInside.style.paddingRight = "0px";
-        }
-      } else {
-        element.style.paddingRight = "4px";
-        if (elementInside) {
-          elementInside.style.paddingRight = "4px";
-        }
-      }
-    }
-  };
-
-  useEffect(() => {
-    updateStudentsAnnotationsSize();
-  }, [contentStudent]);
-
-  const handleAccordionClick = () => {
-    setTimeout(() => {
-      updateStudentsAnnotationsSize();
-    }, 250);
-  };
 
   return (
     <Modal
@@ -132,68 +98,14 @@ export default function AnnotationsModal({
                 copyButton={true}
                 withoutBorder={true}
               />
-              <Box className="p-5">
-                <Box>
-                  <table className="w-full rounded-t-2xl overflow-hidden">
-                    <TableHeader
-                      variant="annotation"
-                      headers={headersStudent}
-                      headerButtons={headerButtonsStudent}
-                    />
-                  </table>
-
-                  <Box
-                    style={{ borderColor: colorByModeSecondary }}
-                    className="flex flex-col border-[2px] pr-2 border-t-0 rounded-b-big"
-                    ref={studentsAnnotations}
-                  >
-                    <Box className="flex flex-col pr-2 max-h-[420px] overflow-y-auto">
-                      {contentStudent && contentStudent.length > 0 ? (
-                        contentStudent.map(
-                          (row: TableRowPossibleTypes, index: number) => {
-                            if (variant === "feedback") {
-                              row = row as FeedbackStudent;
-                            } else {
-                              row = row as TableAnnotationRow;
-                            }
-                            return (
-                              <Box onClick={handleAccordionClick} key={index}>
-                                <AccordionComponent
-                                  name={row.student.name}
-                                  frequency={variant === "feedback" ? ("frequency" in row) ? (row.frequency as number | boolean | undefined) : false : false}
-                                  type="table"
-                                  outlined={true}
-                                  key={index}
-                                  rank={row.rank}
-                                  onChangeRank={(rank: RankType) => rowButtonsStudent.setRank && rowButtonsStudent.setRank(rank, (row as TableAnnotationRow).student.id)}
-                                >
-                                  <AvaliationInputs
-                                    readOnly={variant !== "annotations"}
-                                    Positivecontent={row.strengths}
-                                    Negativecontent={row.toImprove}
-                                    onPositiveChange={(content: string) => rowButtonsStudent.setPositiveStudentContent && rowButtonsStudent.setPositiveStudentContent(content, (row as TableAnnotationRow).student.id)}
-                                    onNegativeChange={(content: string) => rowButtonsStudent.setNegativeStudentContent && rowButtonsStudent.setNegativeStudentContent(content, (row as TableAnnotationRow).student.id)}
-                                    copyButton={true}
-                                    withoutBorder={true}
-                                  />
-                                </AccordionComponent>
-                              </Box>
-                            );
-                          }
-                        )
-                      ) : (
-                        <Box className="flex w-full justify-center my-4">
-                          <Typography
-                            variant="lg_text_regular"
-                            color={colorByModeSecondary}
-                          >
-                            Sem anotações
-                          </Typography>
-                        </Box>
-                      )}
-                    </Box>
-                  </Box>
-                </Box>
+              <Box className="p-5">                
+                <AccordionTable
+                  variant="annotation"
+                  headers={headersStudent}
+                  headerButtons={headerButtonsStudent}
+                  rowButtons={rowButtonsStudent}
+                  content={contentStudent}
+                />
               </Box>
             </Box>
           </Box>

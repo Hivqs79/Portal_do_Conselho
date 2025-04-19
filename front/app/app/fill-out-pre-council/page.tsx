@@ -1,11 +1,69 @@
 "use client";
 import PreCouncilSection from "@/components/pre-council/PreCouncilSection";
+import AccordionTable from "@/components/table/AccordionTable";
 import Title from "@/components/Title";
 import { useThemeContext } from "@/hooks/useTheme";
+import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
+import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
+import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
 import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
 export default function FillOutPreCouncil() {
     const { backgroundColor, colorByModeSecondary } = useThemeContext();
+
+    const headersTeachers: TableHeaderContent[] = [
+        { name: "Professor(a)" },
+    ];
+
+    const rowButtonsTeachers: TableRowButtons = {
+        setPositiveContent: (content: string, idTeacher: number) => {
+            if (!selectedStudents) return;
+            setIdStudentChanged(idTeacher);
+            setSelectedStudents(
+                selectedStudents.map((row) => {
+                    if (row.student.id === idTeacher) {
+                        return {
+                            ...row,
+                            strengths: content,
+                        };
+                    }
+                    return row;
+                })
+            );
+        },
+        setNegativeContent: (content: string, idTeacher: number) => {
+            if (!selectedStudents) return;
+            setIdStudentChanged(idTeacher);
+            setSelectedStudents(
+                selectedStudents.map((row) => {
+                    if (row.student.id === idTeacher) {
+                        return {
+                            ...row,
+                            toImprove: content,
+                        };
+                    }
+                    return row;
+                })
+            );
+        },
+    };
+
+    useEffect(() => {
+        const fetchSections = async () => {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/student?councilId=${councilId}&teacherId=${teacherId}&studentName=${studentSearch}`
+            );
+            const data = await response.json();
+            setSelectedStudents(data.content);
+        };
+        if (!selectedAnnotation) return;
+        fetchStudentAnnotations(
+            selectedAnnotation.council.id,
+            selectedAnnotation.teacher.id
+        );
+    }, [selectedAnnotation?.id, studentSearch]);
+
     return (
         <Box>
             <Title textHighlight="Pré-conselho" />
@@ -47,66 +105,14 @@ export default function FillOutPreCouncil() {
                         ambiente virtual, critérios de avaliação claros, as atividades e conteúdos propostos são
                         coerentes ao tempo de aula.
                     </Typography>
-                    {/* <table className="w-full rounded-t-2xl overflow-hidden">
-                                        <TableHeader
-                                          variant="annotation"
-                                          headers={headersStudent}
-                                          headerButtons={headerButtonsStudent}
-                                        />
-                                      </table>
-                    
-                                      <Box
-                                        style={{ borderColor: colorByModeSecondary }}
-                                        className="flex flex-col border-[2px] pr-2 border-t-0 rounded-b-big"
-                                        ref={studentsAnnotations}
-                                      >
-                                        <Box className="flex flex-col pr-2 max-h-[420px] overflow-y-auto">
-                                          {contentStudent && contentStudent.length > 0 ? (
-                                            contentStudent.map(
-                                              (row: TableRowPossibleTypes, index: number) => {
-                                                if (variant === "feedback") {
-                                                  row = row as FeedbackStudent;
-                                                } else {
-                                                  row = row as TableAnnotationRow;
-                                                }
-                                                return (
-                                                  <Box onClick={handleAccordionClick} key={index}>
-                                                    <AccordionComponent
-                                                      name={row.student.name}
-                                                      frequency={variant === "feedback" ? ("frequency" in row) ? (row.frequency as number | boolean | undefined) : false : false}
-                                                      type="table"
-                                                      outlined={true}
-                                                      key={index}
-                                                      rank={row.rank}
-                                                      onChangeRank={(rank: RankType) => rowButtonsStudent.setRank && rowButtonsStudent.setRank(rank, (row as TableAnnotationRow).student.id)}
-                                                    >
-                                                      <AvaliationInputs
-                                                        readOnly={variant !== "annotations"}
-                                                        Positivecontent={row.strengths}
-                                                        Negativecontent={row.toImprove}
-                                                        onPositiveChange={(content: string) => rowButtonsStudent.setPositiveStudentContent && rowButtonsStudent.setPositiveStudentContent(content, (row as TableAnnotationRow).student.id)}
-                                                        onNegativeChange={(content: string) => rowButtonsStudent.setNegativeStudentContent && rowButtonsStudent.setNegativeStudentContent(content, (row as TableAnnotationRow).student.id)}
-                                                        copyButton={true}
-                                                        withoutBorder={true}
-                                                      />
-                                                    </AccordionComponent>
-                                                  </Box>
-                                                );
-                                              }
-                                            )
-                                          ) : (
-                                            <Box className="flex w-full justify-center my-4">
-                                              <Typography
-                                                variant="lg_text_regular"
-                                                color={colorByModeSecondary}
-                                              >
-                                                Sem anotações
-                                              </Typography>
-                                            </Box>
-                                          )}
-                                        </Box>
-                                      </Box> */}
                 </Box>
+                <AccordionTable
+                    variant="pre-council"
+                    headers={headersTeachers}
+                    headerButtons={[] as TableHeaderButtons}
+                    rowButtons={rowButtonsTeachers}
+                    content={null}
+                />
             </Box>
         </Box>
     )

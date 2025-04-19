@@ -85,7 +85,7 @@ export default function Annotations() {
     { name: "Turma " + selectedAnnotation?.council.aclass.name },
   ];
 
-  const rowButtonsStudent = {
+  const rowButtonsStudent: TableRowButtons = {
     setRank: (rank: Rank, idStudent: number) => {
       if (!selectedStudents) return;
       setIdStudentChanged(idStudent);
@@ -101,7 +101,7 @@ export default function Annotations() {
         })
       );
     },
-    setPositiveStudentContent: (content: string, idStudent: number) => {
+    setPositiveContent: (content: string, idStudent: number) => {
       if (!selectedStudents) return;
       setIdStudentChanged(idStudent);
       setSelectedStudents(
@@ -116,7 +116,7 @@ export default function Annotations() {
         })
       );
     },
-    setNegativeStudentContent: (content: string, idStudent: number) => {
+    setNegativeContent: (content: string, idStudent: number) => {
       if (!selectedStudents) return;
       setIdStudentChanged(idStudent);
       setSelectedStudents(

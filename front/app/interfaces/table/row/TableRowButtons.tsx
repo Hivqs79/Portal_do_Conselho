@@ -18,7 +18,7 @@ export interface TableRowButtons {
     onClickVisualize?: (row: TableRowPossibleTypes) => void;
     onClickRealease?: (row: TableRowPossibleTypes) => void;
     onClickAnnotation?: (row: TableRowPossibleTypes) => void;
-    setRank?: (rank: Rank, idStudent: number) => void;
-    setPositiveStudentContent?: (content: string, idStudent: number) => void;
-    setNegativeStudentContent?: (content: string, idStudent: number) => void;
+    setRank?: (rank: Rank, id: number) => void;
+    setPositiveContent?: (content: string, id: number) => void;
+    setNegativeContent?: (content: string, id: number) => void;
 }
