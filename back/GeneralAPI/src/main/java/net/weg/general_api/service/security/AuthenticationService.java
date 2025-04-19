@@ -6,6 +6,7 @@ import net.weg.general_api.model.dto.request.users.LoginRequestDTO;
 import net.weg.general_api.model.dto.request.users.ModifyUserPasswordRequestDTO;
 import net.weg.general_api.model.dto.response.LoginResponseDTO;
 import net.weg.general_api.model.entity.users.UserAuthentication;
+import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.PedagogicRepository;
 import net.weg.general_api.repository.UserAuthenticationRepository;
 import net.weg.general_api.service.users.UserAuthenticationService;
@@ -33,9 +34,14 @@ public class AuthenticationService {
         var authenticationToken = new UsernamePasswordAuthenticationToken(loginRequestDTO.username(), loginRequestDTO.password());
         Authentication auth = authenticationManager.authenticate(authenticationToken);
 
-        var token = tokenService.generateToken((UserAuthentication) auth.getPrincipal());
+        UserAuthentication userAuth = (UserAuthentication) auth.getPrincipal();
 
-        return new LoginResponseDTO(token);
+        var token = tokenService.generateToken(userAuth);
+        Long userId = userAuth.getUser().getId();
+        RoleENUM role = userAuth.getRole();
+        String name = userAuth.getUser().getName();
+
+        return new LoginResponseDTO(token, userId, role, name);
     }
 
     public static String encodePassword(String passwordPlainText) {
