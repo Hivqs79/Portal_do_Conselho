@@ -19,6 +19,7 @@ public class PreCouncilResponseDTO {
     private LocalDateTime finalDateTime;
     private ClassResponseDTO aClass;
     private List<TeacherResponseDTO> teachers;
+    private boolean answered;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
     private boolean enabled;

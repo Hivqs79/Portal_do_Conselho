@@ -14,4 +14,6 @@ public interface PreCouncilRepository extends JpaRepository<PreCouncil, Long>, J
 
         return findAll(enabledSpec, pageable);
     }
+
+    PreCouncil findPreCouncilByAClass_IdAndAnswered(Long classId, boolean answered);
 }

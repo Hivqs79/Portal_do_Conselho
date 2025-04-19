@@ -78,5 +78,13 @@ public class PreCouncilController {
     public ResponseEntity<PreCouncilResponseDTO> getPreCouncil(@Parameter(description = "Pre-council ID", example = "1") @PathVariable Long id) {
         return new ResponseEntity<>(service.findPreCouncil(id), HttpStatus.OK);
     }
-    
+
+    @GetMapping("/leader/{idLeader}")
+    @Operation(method = "GET", summary = "Get pre-council", description = "Returns pre-council by ID of class leader")
+    @ApiResponse(responseCode = "200", description = "Pre-council found", content = @Content(schema = @Schema(implementation = PreCouncilResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))
+    @ApiResponse(responseCode = "404", description = "Pre-council not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<PreCouncilResponseDTO> getPreCouncilByLeaderId(@Parameter(description = "Class leader ID", example = "1") @PathVariable Long idLeader) {
+        return new ResponseEntity<>(service.getPreCouncilByLeaderId(idLeader), HttpStatus.OK);
+    }
 }

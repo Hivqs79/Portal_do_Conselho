@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class PreCouncilSectionService {
@@ -68,5 +70,10 @@ public class PreCouncilSectionService {
 
     public boolean existPreCouncilSectionByPreCouncilAndTopic(Long preCouncilId, String topic) {
         return repository.existsByPreCouncil_IdAndTopic(preCouncilId, topic);
+    }
+
+    public List<PreCouncilSectionResponseDTO> getAllByPreCouncilId(Long idPreCouncil) {
+        List<PreCouncilSection> preCouncilSectionList = repository.getAllByPreCouncil_Id(idPreCouncil);
+        return preCouncilSectionList.stream().map(preCouncilSection -> modelMapper.map(preCouncilSection, PreCouncilSectionResponseDTO.class)).toList();
     }
 }

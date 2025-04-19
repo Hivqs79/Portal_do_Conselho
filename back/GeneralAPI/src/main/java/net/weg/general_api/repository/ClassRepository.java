@@ -19,4 +19,6 @@ public interface ClassRepository extends JpaRepository<Class, Long>, JpaSpecific
 
     Class findClassByName(String name);
 
+    List<Class> findAllByStudents_Id(Long studentId);
+
 }

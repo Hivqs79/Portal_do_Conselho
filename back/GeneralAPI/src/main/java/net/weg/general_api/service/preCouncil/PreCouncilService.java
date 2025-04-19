@@ -1,9 +1,11 @@
 package net.weg.general_api.service.preCouncil;
 
 import lombok.AllArgsConstructor;
+import net.weg.general_api.exception.exceptions.ClassNotFoundException;
 import net.weg.general_api.exception.exceptions.PreCouncilNotFoundException;
 import net.weg.general_api.model.dto.request.preCouncil.PreCouncilRequestDTO;
 import net.weg.general_api.model.dto.response.preCouncil.PreCouncilResponseDTO;
+import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.preCouncil.PreCouncil;
 import net.weg.general_api.repository.PreCouncilRepository;
 import net.weg.general_api.service.classes.ClassService;
@@ -14,6 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -72,4 +77,12 @@ public class PreCouncilService {
         return modelMapper.map(preCouncil, PreCouncilResponseDTO.class);
     }
 
+    public PreCouncilResponseDTO getPreCouncilByLeaderId(Long idLeader) {
+        List<Class> classList = classService.getClassesByLeaderId(idLeader);
+        Class newestClass = classList.stream()
+                .max(Comparator.comparing(Class::getCreateDate))
+                .orElseThrow(() -> new ClassNotFoundException("Class with leader id:" + idLeader + " not found"));
+        PreCouncil preCouncil = repository.findPreCouncilByAClass_IdAndAnswered(newestClass.getId(), true);
+        return modelMapper.map(preCouncil, PreCouncilResponseDTO.class);
+    }
 }

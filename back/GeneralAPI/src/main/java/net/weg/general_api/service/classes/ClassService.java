@@ -95,4 +95,8 @@ public class ClassService {
         return repository.findAll();
     }
 
+    public List<Class> getClassesByLeaderId(Long idLeader) {
+        return repository.findAllByStudents_Id(idLeader);
+    }
+
 }

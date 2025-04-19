@@ -34,6 +34,9 @@ public class PreCouncil {
     private List<Teacher> teachers;
 
     @Column(nullable = false)
+    private boolean answered;
+
+    @Column(nullable = false)
     private LocalDateTime startDateTime;
 
     @Column(nullable = false)
@@ -50,6 +53,7 @@ public class PreCouncil {
 
     @PrePersist
     public void onPrePersist() {
+        this.setAnswered(false);
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
         this.setEnabled(true);
