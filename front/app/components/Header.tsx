@@ -27,6 +27,7 @@ interface HeaderProps {
 
 export default function Header({ variant }: HeaderProps) {
   const { primaryColor, whiteColor } = useThemeContext();
+  const { setName, setUserId, setRole, setToken, name } = useRoleContext();
   const [openMenu, setOpenMenu] = useState(false);
   const boxRef = useRef<HTMLElement>(null);
   const windowWidth = useWindowWidth();
@@ -80,6 +81,17 @@ export default function Header({ variant }: HeaderProps) {
     }
   }, [incomingNotification]);
 
+  const logout = () => {
+    //deletar o cookie 'token'
+    localStorage.removeItem("user");
+    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    setName("");
+    setUserId(-1);
+    setRole("");
+    setToken("");
+    router.push("/login");
+  }
+
   return (
     <Box
       style={{ backgroundColor: primaryColor }}
@@ -89,11 +101,13 @@ export default function Header({ variant }: HeaderProps) {
       <Box className="flex flex-row items-center">
         {variant === "admin" ? (
           <>
-            <Icon
+            <div onClick={() => router.push("/configurations")}>
+              <Icon
               IconPassed={IoSettingsOutline}
               color={whiteColor}
               className="w-8 h-8"
-            />
+              />
+            </div>
           </>
         ) : (
           <>
@@ -152,9 +166,9 @@ export default function Header({ variant }: HeaderProps) {
               );
             }}
           >
-            Usuário
+            {name ? name.split(" ")[0] : ""}
           </Typography>
-          <Box className="flex flex-row items-center cursor-pointer">
+          <Box onClick={() => logout()} className="flex flex-row items-center cursor-pointer">
             <Icon
               IconPassed={LuLogOut}
               color={whiteColor}

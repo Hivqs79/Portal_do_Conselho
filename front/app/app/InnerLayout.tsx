@@ -10,6 +10,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/pt-br";
 import LoadingPage from "@/components/LoadingPage";
+import { Decryptor } from "@/encryption/Decryptor";
 
 export default function InnerLayout({ children }: { children: ReactElement }) {
   return (
@@ -30,9 +31,9 @@ function CoreLayout({ children }: { children: ReactElement }) {
     primaryColor,
     secondaryColor,
     terciaryColor,
-    reloadTheme
+    reloadTheme,
   } = useThemeContext();
-  const { role, setRole, userId, setUserId } = useRoleContext();
+  const { role, setName, setRole, setToken, setUserId } = useRoleContext();
   const pathname = usePathname();
   const isLoginPage = pathname?.includes("/login");
   const [hydrated, setHydrated] = useState(false);
@@ -40,17 +41,29 @@ function CoreLayout({ children }: { children: ReactElement }) {
 
   useEffect(() => {
     setHydrated(true);
-  }, []);  
+  }, []);
 
   useEffect(() => {
     reloadTheme();
-  }, [hydrated])
+  }, [hydrated]);
 
   useEffect(() => {
+    if (!isLoginPage) {
+      const userCookie = document.cookie.split("; ").find(row => row.startsWith("user="));
+
+      if (userCookie) {
+        const decryptedUser = Decryptor(decodeURIComponent(userCookie.split("=")[1]));
+        setName(decryptedUser?.name || "");
+        setUserId(decryptedUser?.userId || -1);
+        setRole(decryptedUser?.role || "");
+        const tokenCookie = document.cookie.split("; ").find(row => row.startsWith("token="));
+        setToken(tokenCookie ? tokenCookie.split("=")[1] : "");
+      }
+    }
+
     if (!pathname) {
       document.cookie = `lastRoute=/; path=/`;
     }
-
     if (pathname !== "/realize-council") {
       document.cookie = `lastRoute=${pathname}; path=/`;
     }
@@ -68,19 +81,6 @@ function CoreLayout({ children }: { children: ReactElement }) {
     );
   }, [secondaryColor, primaryColor, terciaryColor]);
 
-  useEffect(() => {
-    if (role === "") {
-      setRole("pedagogic");
-    }        
-  }, [role, setRole]);
-
-  useEffect(() => {
-    if (userId === -1) {
-      setUserId(16);
-    }        
-    console.log("teste inner");
-  }, [userId, setUserId]);
-
   if (!hydrated) {
     return <LoadingPage message="Carregando tema..." />;
   }
@@ -91,7 +91,13 @@ function CoreLayout({ children }: { children: ReactElement }) {
         {!isLoginPage ? (
           <>
             <Header variant={role} />
-            <Box className={`flex flex-col ${isChatPage ? "!pt-[10rem] mx-[1%] sm:mx-[4%] h-[90vh] mb-14" : "mx-[5%] sm:mx-[15%] mb-24"}`}>
+            <Box
+              className={`flex flex-col ${
+                isChatPage
+                  ? "!pt-[10rem] mx-[1%] sm:mx-[4%] h-[90vh] mb-14"
+                  : "mx-[5%] sm:mx-[15%] mb-24"
+              }`}
+            >
               {children}
             </Box>
           </>

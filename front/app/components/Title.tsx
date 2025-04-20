@@ -12,10 +12,10 @@ interface TitleProps {
 
 export default function Title({textHighlight, text, isWelcomeMensage=false, className = ""}: TitleProps) {
     const { colorByModeSecondary } = useThemeContext();
-    const { role } = useRoleContext();
+    const { name } = useRoleContext();
 
     if (isWelcomeMensage) {
-        textHighlight = `Bem vindo(a), ${role}`;
+        textHighlight = `Bem vindo(a), ${name ? name.split(" ")[0] : ""}`;
         text = "ao Portal do Conselho";
     }
     return (
