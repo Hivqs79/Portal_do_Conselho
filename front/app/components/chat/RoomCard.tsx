@@ -11,7 +11,7 @@ interface RoomCardProps {
 }
 
 export default function RoomCard({ name, userId, roomId, handleSetUserDetails }: RoomCardProps) {
-  const { colorByModeSecondary, textBlackolor } = useThemeContext();
+  const { colorByModeSecondary, blackColor } = useThemeContext();
 
   return (
     <Box
@@ -19,7 +19,7 @@ export default function RoomCard({ name, userId, roomId, handleSetUserDetails }:
       sx={{
         "&:hover": {
           backgroundColor: OpacityHex(colorByModeSecondary, 0.3),
-          color: textBlackolor,
+          color: blackColor,
         },
       }}
       className="flex cursor-pointer transition-all duration-300 justify-start items-center gap-6 border-b-2 p-3"

@@ -8,7 +8,7 @@ interface MessageProps {
 }
 
 export default function Message({ type, content, time }: MessageProps) {
-  const { secondaryColor, textBlackolor, terciaryColor } = useThemeContext();
+  const { secondaryColor, blackColor, terciaryColor } = useThemeContext();
 
   const isSender = type === "sender";
   const bubbleColor = isSender ? secondaryColor : terciaryColor;
@@ -48,7 +48,7 @@ export default function Message({ type, content, time }: MessageProps) {
     >
       <Typography
         sx={{ wordBreak: "break-word" }}
-        color={textBlackolor}
+        color={blackColor}
         variant="md_text_regular"
       >
         {content}
@@ -57,7 +57,7 @@ export default function Message({ type, content, time }: MessageProps) {
       <Typography
         variant="caption"
         sx={{
-          color: textBlackolor,
+          color: blackColor,
           opacity: 0.7,
           userSelect: "none",
           fontSize: "0.7rem",

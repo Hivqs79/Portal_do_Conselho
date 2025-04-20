@@ -17,6 +17,7 @@ import ConfirmChanges from "@/components/modals/ConfirmChanges";
 import ConfirmMessagesModal from "@/components/modals/ConfirmMessagesModal";
 import LoadingModal from "@/components/modals/LoadingModal";
 import { Rank, Rank as RankType } from "@/interfaces/RankType";
+import { useRoleContext } from "@/hooks/useRole";
 
 type CouncilData = {
   id: number;
@@ -64,6 +65,7 @@ type FinalJson = {
 };
 
 export default function RealizeCouncil() {
+  const { token } = useRoleContext();
   const [data, setData] = useState<CouncilData | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
@@ -224,7 +226,14 @@ export default function RealizeCouncil() {
   const fetchUsersInClass = async (idClass: number) => {
     try {
       const response = await fetch(
-        "http://localhost:8081/class/student/" + idClass
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class/student/${idClass}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const users = await response.json();
       return users;
@@ -279,6 +288,7 @@ export default function RealizeCouncil() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -292,6 +302,7 @@ export default function RealizeCouncil() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -419,10 +430,11 @@ export default function RealizeCouncil() {
       strengths: formattedJson?.["council-form"].class.ClasspositiveContent,
       toImprove: formattedJson?.["council-form"].class.ClassnegativeContent,
     });
-    await fetch("http://localhost:8081/feedbacks/class", {
+    await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         rank: formattedJson?.["council-form"].class.ClassRank,
@@ -434,10 +446,11 @@ export default function RealizeCouncil() {
 
     if (formattedJson) {
       formattedJson["council-form"].users.forEach(async (user) => {
-        await fetch("http://localhost:8081/feedbacks/student", {
+        await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/student`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             rank: user.rank,
@@ -450,10 +463,11 @@ export default function RealizeCouncil() {
         });
       });
       await changeCouncilState();
-      await fetch("http://localhost:8081/council/modifyFinished/" + idCouncil, {
+      await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/council/modifyFinished/` + idCouncil, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
     }
@@ -599,11 +613,12 @@ export default function RealizeCouncil() {
   async function fetchHappeningCouncil() {
     try {
       const res = await fetch(
-        "http://localhost:8081/council?isHappening=true",
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/council?isHappening=true`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -631,11 +646,12 @@ export default function RealizeCouncil() {
       const id = await fetchHappeningCouncil();
       if (id) {
         const modifyRes = await fetch(
-          `http://localhost:8081/council/modify/${id}`,
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/council/modify/${id}`,
           {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           }
         );

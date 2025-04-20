@@ -27,7 +27,7 @@ export default function Notifications() {
   const [notifications, setNotifications] = useState<TableContent | null>(null);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { userId } = useRoleContext();
+  const { userId, token } = useRoleContext();
   const isAllSelected =
     notifications !== null &&
     selectedNotifications.length === notifications.content.length;
@@ -70,7 +70,14 @@ export default function Notifications() {
   const fetchNotifications = useCallback(async () => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/user/${userId}?page=${page - 1}
-      &size=${rowsPerPage}&sort=id,desc`
+      &size=${rowsPerPage}&sort=id,desc`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     console.log(process.env.URL_GENERAL_API);
     const data = await response.json();
@@ -87,6 +94,10 @@ export default function Notifications() {
       `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/${id}/is-viewed?isViewed=true`,
       {
         method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
     console.log(response);
@@ -96,6 +107,10 @@ export default function Notifications() {
   const handleDeleteNotification = async (id: number) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/${id}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      }
     });
     console.log(response);
     fetchNotifications();

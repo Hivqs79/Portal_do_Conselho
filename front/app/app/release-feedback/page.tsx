@@ -3,6 +3,7 @@ import AnnotationsModal from "@/components/modals/AnnotationsModal";
 import PaginationTable from "@/components/table/Pagination";
 import Table from "@/components/table/Table";
 import Title from "@/components/Title";
+import { useRoleContext } from "@/hooks/useRole";
 import FeedbackClass from "@/interfaces/FeedbackClass";
 import FeedbackStudent from "@/interfaces/FeedbackStudent";
 import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
@@ -15,6 +16,7 @@ import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function ReleaseFeedback() {
+  const { token } = useRoleContext();
   const [feedbacks, setFeedbacks] = useState<TableContent | null>(null);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -32,7 +34,14 @@ export default function ReleaseFeedback() {
           `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class?isReturned=false
             &page=${page - 1}
             &size=${rowsPerPage}
-            &className=${feedbackSearch}`
+            &className=${feedbackSearch}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log("Response:", feedbackSearch);
         const data = await response.json();
@@ -72,6 +81,7 @@ export default function ReleaseFeedback() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           }
         );

@@ -21,8 +21,6 @@ export async function middleware(request: NextRequest) {
     supervisior: supervisiorRoutes
   };
 
-
-
   function isLikelyJwt(token: string): boolean {
     const parts = token.split(".");
     return parts.length === 3 && parts.every(part => part.length > 0);
@@ -53,7 +51,12 @@ export async function middleware(request: NextRequest) {
     }
   };
 
+  if (!isTokenPresent && pathname === "/") {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
   if (isTokenPresent  && pathname === "/login" || pathname === "/password-recover" || pathname === "/password-recover/code" || pathname === "/password-recover/new-password") {
+    console.log("teste aaaaa")
     return NextResponse.redirect(new URL("/", request.url));
   }
 
@@ -73,6 +76,7 @@ export async function middleware(request: NextRequest) {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
@@ -103,6 +107,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/",
     "/add-user",
     "/annotations",
     "/chat",

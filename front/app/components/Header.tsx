@@ -27,7 +27,7 @@ interface HeaderProps {
 
 export default function Header({ variant }: HeaderProps) {
   const { primaryColor, whiteColor } = useThemeContext();
-  const { setName, setUserId, setRole, setToken, name } = useRoleContext();
+  const { setName, setUserId, setRole, setToken, name, token } = useRoleContext();
   const [openMenu, setOpenMenu] = useState(false);
   const boxRef = useRef<HTMLElement>(null);
   const windowWidth = useWindowWidth();
@@ -44,7 +44,14 @@ export default function Header({ variant }: HeaderProps) {
     if (userId !== -1) {
       const fetchNotifications = async () => {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/user/${userId}`
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/user/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         let data: ResponseApiPageable<NotificationType> = await response.json();
         console.log(data);

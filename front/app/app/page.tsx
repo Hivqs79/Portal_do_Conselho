@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [page, setPage] = useState(1);
+  const {token} = useRoleContext();
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableContent, setTableContent] = useState<TableContent>();
   const { role } = useRoleContext();
@@ -40,7 +41,13 @@ export default function Home() {
 
   useEffect(() => {
     const fetchTableContent = async () => {
-      const response = await fetch("http://localhost:3030/feedback");
+      const response = await fetch("http://localhost:3030/feedback", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+
+        }
+      });
       const data: TableContent = await response.json();
       setTableContent(data);                  
     };

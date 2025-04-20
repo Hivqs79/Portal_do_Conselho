@@ -7,6 +7,7 @@ import RoomCard from "./RoomCard";
 import Icon from "../Icon";
 import { IoClose, IoMenu } from "react-icons/io5";
 import OpacityHex from "@/utils/OpacityHex";
+import { useRoleContext } from "@/hooks/useRole";
 
 interface SidebarRoomsProps {
   userRoleId: number;
@@ -25,13 +26,14 @@ export default function SidebarRooms({
   userRole,
   onUserSelect,
 }: SidebarRoomsProps) {
+  const { token } = useRoleContext();
   const [users, setUsers] = useState<Record<number, string>>({});
   const [isMobile, setIsMobile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const {
     terciaryColor,
     colorByModeSecondary,
-    textBlackolor,
+    blackColor,
     backgroundColor,
   } = useThemeContext();
 
@@ -49,7 +51,13 @@ export default function SidebarRooms({
   async function fetchUserInRoom(userID: number) {
     try {
       if (userRoleId === userID) return;
-      const response = await fetch(`http://localhost:8081/user/${userID}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/user/${userID}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       setUsers((prev) => ({ ...prev, [userID]: data.name }));
     } catch (error) {
@@ -94,9 +102,9 @@ export default function SidebarRooms({
           }}
         >
           {sidebarOpen ? (
-            <Icon IconPassed={IoClose} color={textBlackolor} />
+            <Icon IconPassed={IoClose} color={blackColor} />
           ) : (
-            <Icon IconPassed={IoMenu} color={textBlackolor} />
+            <Icon IconPassed={IoMenu} color={blackColor} />
           )}
         </IconButton>
       )}
