@@ -10,6 +10,8 @@ import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
 import { Rank as RankType } from "@/interfaces/RankType";
 import TableAnnotationRow from "@/interfaces/table/row/TableAnnotationRow";
 import { useEffect, useRef } from "react";
+import TablePreCouncilSectionRowProps from "@/interfaces/table/row/TablePreCouncilSectionRow";
+import TablePreCouncilSectionRow from "@/interfaces/table/row/TablePreCouncilSectionRow";
 
 interface AccordionTableProps {
   variant: "feedback" | "annotation" | "pre-council";
@@ -31,42 +33,47 @@ export default function AccordionTable({
   const { colorByModeSecondary } = useThemeContext();
 
   const tableRef = useRef<HTMLElement | null>(null);
-  
-    const updateTableSize = () => {
-      const element = tableRef.current;
-      if (element) {
-        const elementInside = element.children[0] as HTMLElement;
-  
-        if (element.getBoundingClientRect().height <= 420) {
-          element.style.paddingRight = "0px";
-          if (elementInside) {
-            elementInside.style.paddingRight = "0px";
-          }
-        } else {
-          element.style.paddingRight = "4px";
-          if (elementInside) {
-            elementInside.style.paddingRight = "4px";
-          }
+
+  const updateTableSize = () => {
+    const element = tableRef.current;
+    if (element) {
+      const elementInside = element.children[0] as HTMLElement;
+
+      if (element.getBoundingClientRect().height <= 420) {
+        element.style.paddingRight = "0px";
+        if (elementInside) {
+          elementInside.style.paddingRight = "0px";
+        }
+      } else {
+        element.style.paddingRight = "4px";
+        if (elementInside) {
+          elementInside.style.paddingRight = "6px";
         }
       }
-    };
-  
-    useEffect(() => {
+
+      const firstRow = elementInside?.children[0]?.children[0]?.children[0]?.children[0] as HTMLElement;
+      if (firstRow) {
+        firstRow.style.borderTop = `none`;
+      }
+    }
+  };
+
+  useEffect(() => {
+    updateTableSize();
+  }, [content]);
+
+  const accordionClick = () => {
+    handleAccordionClick?.();
+    setTimeout(() => {
       updateTableSize();
-    }, [content]);
-  
-    const accordionClick = () => {
-      handleAccordionClick?.();
-      setTimeout(() => {
-        updateTableSize();
-      }, 250);
-    };
+    }, 250);
+  };
 
   return (
     <Box>
       <table className="w-full rounded-t-2xl overflow-hidden">
         <TableHeader
-          variant="annotation"
+          variant={variant != "feedback" ? variant : "annotation"}
           headers={headers}
           headerButtons={headerButtons}
         />
@@ -84,7 +91,7 @@ export default function AccordionTable({
                 return (
                   <Box onClick={accordionClick} key={index}>
                     <AccordionComponent
-                      name={"student" in row ? row.student.name : 
+                      name={"student" in row ? row.student.name :
                         "topic" in row ? row.topic : ""
                       }
                       frequency={variant === "feedback" ? ("frequency" in row) ? (row.frequency as number | boolean | undefined) : false : false}
@@ -98,11 +105,11 @@ export default function AccordionTable({
                         readOnly={variant == "feedback"}
                         Positivecontent={"strengths" in row ? row.strengths : null}
                         Negativecontent={"toImprove" in row ? row.toImprove : null}
-                        onPositiveChange={(content: string) => rowButtons.setPositiveContent && 
-                          rowButtons.setPositiveContent(content, (row as TableAnnotationRow).student.id)
+                        onPositiveChange={(content: string) => rowButtons.setPositiveContent &&
+                          rowButtons.setPositiveContent(content, variant !== "pre-council" ? (row as TableAnnotationRow).student.id : (row as TablePreCouncilSectionRow).id)
                         }
-                        onNegativeChange={(content: string) => rowButtons.setNegativeContent && 
-                          rowButtons.setNegativeContent(content, (row as TableAnnotationRow).student.id)
+                        onNegativeChange={(content: string) => rowButtons.setNegativeContent &&
+                          rowButtons.setNegativeContent(content, variant !== "pre-council" ? (row as TableAnnotationRow).student.id : (row as TablePreCouncilSectionRow).id)
                         }
                         copyButton={true}
                         withoutBorder={true}

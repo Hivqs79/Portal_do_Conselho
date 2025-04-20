@@ -30,7 +30,7 @@ public class PreCouncil {
     @OneToMany(mappedBy = "preCouncil")
     private List<PreCouncilSection> preCouncilSectionList;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Teacher> teachers;
 
     @Column(nullable = false)

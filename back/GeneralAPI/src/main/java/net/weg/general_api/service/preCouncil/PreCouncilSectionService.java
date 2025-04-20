@@ -3,7 +3,9 @@ package net.weg.general_api.service.preCouncil;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.exception.exceptions.PreCouncilSectionNotFoundException;
 import net.weg.general_api.model.dto.request.preCouncil.PreCouncilSectionRequestDTO;
+import net.weg.general_api.model.dto.response.preCouncil.PreCouncilResponseDTO;
 import net.weg.general_api.model.dto.response.preCouncil.PreCouncilSectionResponseDTO;
+import net.weg.general_api.model.entity.preCouncil.PreCouncil;
 import net.weg.general_api.model.entity.preCouncil.PreCouncilSection;
 import net.weg.general_api.repository.PreCouncilSectionRepository;
 import net.weg.general_api.service.kafka.producer.KafkaEventSender;
@@ -50,10 +52,12 @@ public class PreCouncilSectionService {
     }
 
     public PreCouncilSectionResponseDTO updatePreCouncilSection(PreCouncilSectionRequestDTO preCouncilSectionRequestDTO, Long id) {
-        PreCouncilSection preCouncilSection = findPreCouncilSectionEntity(id);
-        modelMapper.map(preCouncilSectionRequestDTO, preCouncilSection);
-
-        preCouncilSection.setPreCouncil(preCouncilService.findPreCouncilEntity(preCouncilSectionRequestDTO.getPreCouncil_id()));
+        PreCouncilSection preCouncilSection = this.findPreCouncilSectionEntity(id);
+        preCouncilSection.setId(id);
+        preCouncilSection.setStrengths(preCouncilSectionRequestDTO.getStrengths());
+        preCouncilSection.setToImprove(preCouncilSectionRequestDTO.getToImprove());
+        PreCouncil preCouncil = preCouncilService.findPreCouncilEntity(preCouncilSectionRequestDTO.getPreCouncil_id());
+        preCouncilSection.setPreCouncil(preCouncil);
 
         PreCouncilSection updatedPreCouncilSection = repository.save(preCouncilSection);
         kafkaEventSender.sendEvent(updatedPreCouncilSection, "PUT", "PreCouncil section updated");
@@ -74,6 +78,12 @@ public class PreCouncilSectionService {
 
     public List<PreCouncilSectionResponseDTO> getAllByPreCouncilId(Long idPreCouncil) {
         List<PreCouncilSection> preCouncilSectionList = repository.getAllByPreCouncil_Id(idPreCouncil);
+        return preCouncilSectionList.stream().map(preCouncilSection -> modelMapper.map(preCouncilSection, PreCouncilSectionResponseDTO.class)).toList();
+    }
+
+    public List<PreCouncilSectionResponseDTO> getAllByLeaderId(Long idLeader) {
+        PreCouncilResponseDTO preCouncil = preCouncilService.getPreCouncilByLeaderId(idLeader);
+        List<PreCouncilSection> preCouncilSectionList = repository.getAllByPreCouncil_Id(preCouncil.getId());
         return preCouncilSectionList.stream().map(preCouncilSection -> modelMapper.map(preCouncilSection, PreCouncilSectionResponseDTO.class)).toList();
     }
 }

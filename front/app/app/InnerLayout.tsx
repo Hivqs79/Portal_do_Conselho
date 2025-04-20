@@ -75,7 +75,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
 
   useEffect(() => {
     if (userId === -1) {
-      setUserId(16);
+      setUserId(2);
     }        
     console.log("teste inner");
   }, [userId, setUserId]);

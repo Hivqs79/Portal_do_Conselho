@@ -13,7 +13,7 @@ import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons
 import { Rank as RankType } from "@/interfaces/RankType";
 
 interface TableHeaderProps {
-  variant: "table" | "council" | "annotation";
+  variant: "table" | "council" | "annotation" | "pre-council";
   headers: TableHeaderContent[];
   headerButtons: TableHeaderButtons;
   rank?: RankType;
@@ -60,7 +60,7 @@ export default function TableHeader({
   };
 
   const handleRankChange = useCallback(() => {
-    if (setRank && variant !== "annotation" && actualRank) {
+    if (setRank && variant !== "annotation" && variant !== "pre-council" && actualRank) {
       setRank(actualRank)
     };
    }, [actualRank, setRank, variant])
@@ -69,13 +69,13 @@ export default function TableHeader({
     handleRankChange();
   }, [handleRankChange]);
 
-  if (variant == "table" || variant == "annotation") {
+  if (variant == "table" || variant == "annotation" || variant == "pre-council") {
     return (
       <thead
         style={{ backgroundColor: primaryColor, boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}` }}
         className="flex justify-between w-full rounded-t-big"
       >
-        <tr className={"flex w-full justify-between items-center p-3 " + (variant == "annotation" && "px-5")}>
+        <tr className={"flex w-full justify-between items-center p-3 " + (variant == "annotation" ? " px-5" : "") + (variant == "pre-council" ? " p-6" : "")}>
           {headers.map((header, index) => (
             <th
               key={index}

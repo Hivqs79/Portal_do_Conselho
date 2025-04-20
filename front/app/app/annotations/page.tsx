@@ -44,7 +44,6 @@ export default function Annotations() {
   const rowButtons: TableRowButtons = {
     annotationButton: true,
     onClickAnnotation: (row: TableRowPossibleTypes) => {
-      console.log(row);
       setIsModalOpen(true);
       setSelectedAnnotation(row as TableAnnotationRow);
     },
@@ -66,18 +65,7 @@ export default function Annotations() {
 
   const headerButtonsClass: TableHeaderButtons = {
     rank: selectedAnnotation?.rank ? selectedAnnotation.rank : "NONE",
-    setRank: (rank: Rank) => {
-      if (!selectedAnnotation) return;
-
-      setSelectedAnnotation({
-        id: selectedAnnotation.id,
-        rank: rank,
-        strengths: selectedAnnotation.strengths,
-        toImprove: selectedAnnotation.toImprove,
-        council: selectedAnnotation.council,
-        teacher: selectedAnnotation.teacher,
-      });
-    },
+    setRank: (rank: Rank) => setClassContent(rank, "rank"),
     rankText: "Classificar turma: ",
   };
 
@@ -85,52 +73,32 @@ export default function Annotations() {
     { name: "Turma " + selectedAnnotation?.council.aclass.name },
   ];
 
+  const setStudentContent = (content: string | Rank, idStudent: number, type: "strengths" | "toImprove" | "rank") => {
+    if (!selectedStudents) return;
+    setIdStudentChanged(idStudent);
+    setSelectedStudents(
+      selectedStudents.map((row) => {
+        if (row.student.id === idStudent) {
+          return {
+            ...row,
+            [type]: content,
+          };
+        }
+        return row;
+      })
+    );
+  };
+
   const rowButtonsStudent: TableRowButtons = {
     setRank: (rank: Rank, idStudent: number) => {
-      if (!selectedStudents) return;
-      setIdStudentChanged(idStudent);
-      setSelectedStudents(
-        selectedStudents.map((row) => {
-          if (row.student.id === idStudent) {
-            return {
-              ...row,
-              rank: rank,
-            };
-          }
-          return row;
-        })
-      );
+      setStudentContent(rank, idStudent, "rank");
     },
     setPositiveContent: (content: string, idStudent: number) => {
-      if (!selectedStudents) return;
-      setIdStudentChanged(idStudent);
-      setSelectedStudents(
-        selectedStudents.map((row) => {
-          if (row.student.id === idStudent) {
-            return {
-              ...row,
-              strengths: content,
-            };
-          }
-          return row;
-        })
-      );
+      setStudentContent(content, idStudent, "strengths");
     },
     setNegativeContent: (content: string, idStudent: number) => {
-      if (!selectedStudents) return;
-      setIdStudentChanged(idStudent);
-      setSelectedStudents(
-        selectedStudents.map((row) => {
-          if (row.student.id === idStudent) {
-            return {
-              ...row,
-              toImprove: content,
-            };
-          }
-          return row;
-        })
-      );
-    },
+      setStudentContent(content, idStudent, "toImprove");
+    }
   };
 
   const headerButtonsStudent: TableHeaderButtons = {
@@ -144,27 +112,11 @@ export default function Annotations() {
 
   const headersStudent: TableHeaderContent[] = [{ name: "Nome" }];
 
-  function setPositiveClassContent(content: string) {
+  function setClassContent(content: string | Rank, type: "strengths" | "toImprove" | "rank") {
     if (!selectedAnnotation) return;
     setSelectedAnnotation({
-      id: selectedAnnotation.id,
-      rank: selectedAnnotation.rank,
-      strengths: content,
-      toImprove: selectedAnnotation.toImprove,
-      council: selectedAnnotation.council,
-      teacher: selectedAnnotation.teacher,
-    });
-  }
-
-  function setNegativeClassContent(content: string) {
-    if (!selectedAnnotation) return;
-    setSelectedAnnotation({
-      id: selectedAnnotation.id,
-      rank: selectedAnnotation.rank,
-      strengths: selectedAnnotation.strengths,
-      toImprove: content,
-      council: selectedAnnotation.council,
-      teacher: selectedAnnotation.teacher,
+      ...selectedAnnotation,
+      [type]: content,
     });
   }
 
@@ -327,11 +279,11 @@ export default function Annotations() {
         classPositiveContent={
           selectedAnnotation?.strengths ? selectedAnnotation.strengths : ""
         }
-        setClassPositiveContent={setPositiveClassContent}
+        setClassPositiveContent={(content: string) => setClassContent(content, "strengths")}
         classNegativeContent={
           selectedAnnotation?.toImprove ? selectedAnnotation.toImprove : ""
         }
-        setClassNegativeContent={setNegativeClassContent}
+        setClassNegativeContent={(content: string) => setClassContent(content, "toImprove")}
         headerButtonsClass={headerButtonsClass}
         headersClass={headersClass}
         contentStudent={selectedStudents}

@@ -82,7 +82,7 @@ public class PreCouncilListener {
             detectIfSectionExistAndCreate(
                     preCouncilId,
                     teacher.getName(),
-                    "Docentes Conteúdo da Unidade Curricular, teoria x prática. Organização e Planejamento das aulas. Domínio do docente em desenvolver as capacidades relacionadas aos conteúdos. Relacionamento Professor X Aluno. Apresenta descrição da aula e organização do conteúdo no ambiente virtual, critérios de avaliação claros, as atividades e conteúdos propostos são coerentes ao tempo de aula."
+                    "Teacher section"
             );
         }
     }

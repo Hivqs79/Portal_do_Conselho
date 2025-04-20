@@ -17,8 +17,6 @@ public class PreCouncilSectionRequestDTO {
     private String topic;
     @NotBlank(message = "{not.blank.message}")
     private String description;
-    @NotBlank(message = "{not.blank.message}")
     private String strengths;
-    @NotBlank(message = "{not.blank.message}")
     private String toImprove;
 }

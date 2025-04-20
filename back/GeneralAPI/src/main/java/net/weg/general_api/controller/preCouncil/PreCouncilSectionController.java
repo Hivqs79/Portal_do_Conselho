@@ -83,10 +83,19 @@ public class PreCouncilSectionController {
 
     @GetMapping("/pre-council/{idPreCouncil}")
     @Operation(method = "GET", summary = "Get all pre-councils section", description = "Returns pre-council sections by pre-council ID")
-    @ApiResponse(responseCode = "200", description = "Section found", content = @Content(schema = @Schema(implementation = PreCouncilSectionResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"topic\":\"Student Performance\",\"description\":\"Detailed analysis\",\"strengths\":\"Good results\",\"toImprove\":\"More practice needed\",\"preCouncil\":{\"id\":1,\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\"},\"createDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))
-    @ApiResponse(responseCode = "404", description = "Section not found")
+    @ApiResponse(responseCode = "200", description = "Sections found", content = @Content(schema = @Schema(implementation = PreCouncilSectionResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"topic\":\"Student Performance\",\"description\":\"Detailed analysis\",\"strengths\":\"Good results\",\"toImprove\":\"More practice needed\",\"preCouncil\":{\"id\":1,\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\"},\"createDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))
+    @ApiResponse(responseCode = "404", description = "Sections not found")
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<List<PreCouncilSectionResponseDTO>> getAllByPreCouncilId(@Parameter(description = "Pre-council ID", example = "1") @PathVariable Long idPreCouncil) {
         return new ResponseEntity<>(service.getAllByPreCouncilId(idPreCouncil), HttpStatus.OK);
+    }
+
+    @GetMapping("/leader/{idLeader}")
+    @Operation(method = "GET", summary = "Get all pre-councils section", description = "Returns pre-council sections by leader ID of pre-council class")
+    @ApiResponse(responseCode = "200", description = "Sections found", content = @Content(schema = @Schema(implementation = PreCouncilSectionResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"topic\":\"Student Performance\",\"description\":\"Detailed analysis\",\"strengths\":\"Good results\",\"toImprove\":\"More practice needed\",\"preCouncil\":{\"id\":1,\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\"},\"createDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))
+    @ApiResponse(responseCode = "404", description = "Sections not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<List<PreCouncilSectionResponseDTO>> getAllByLeaderId(@Parameter(description = "Leader ID of pre-council class", example = "1") @PathVariable Long idLeader) {
+        return new ResponseEntity<>(service.getAllByLeaderId(idLeader), HttpStatus.OK);
     }
 }

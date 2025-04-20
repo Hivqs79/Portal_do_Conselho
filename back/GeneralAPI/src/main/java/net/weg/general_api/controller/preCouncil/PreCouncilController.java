@@ -61,6 +61,15 @@ public class PreCouncilController {
         return new ResponseEntity<>(service.updatePreCouncil(preCouncilRequestDTO, id), HttpStatus.OK);
     }
 
+    @PatchMapping("/finalize/{id}")
+    @Operation(method = "PUT", summary = "Finalize pre-council", description = "Finalizes a pre-council by it's id")
+    @ApiResponse(responseCode = "200", description = "Pre-council finalized", content = @Content(schema = @Schema(implementation = PreCouncilResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-02T00:00:00\"}")))
+    @ApiResponse(responseCode = "404", description = "Pre-council or council not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<PreCouncilResponseDTO> finalizePreCouncil(@Parameter(description = "Pre-council ID", example = "1") @PathVariable Long id) {
+        return new ResponseEntity<>(service.finalizePreCouncil(id), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     @Operation(method = "DELETE", summary = "Disable pre-council", description = "Disables pre-council")
     @ApiResponse(responseCode = "200", description = "Pre-council disabled", content = @Content(schema = @Schema(implementation = PreCouncilResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-03T00:00:00\"}")))

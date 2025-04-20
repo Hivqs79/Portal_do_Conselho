@@ -82,7 +82,14 @@ public class PreCouncilService {
         Class newestClass = classList.stream()
                 .max(Comparator.comparing(Class::getCreateDate))
                 .orElseThrow(() -> new ClassNotFoundException("Class with leader id:" + idLeader + " not found"));
-        PreCouncil preCouncil = repository.findPreCouncilByAClass_IdAndAnswered(newestClass.getId(), true);
+        PreCouncil preCouncil = repository.findPreCouncilByAClassIdAndAnswered(newestClass.getId(), false).getFirst();
+        return modelMapper.map(preCouncil, PreCouncilResponseDTO.class);
+    }
+
+    public PreCouncilResponseDTO finalizePreCouncil(Long id) {
+        PreCouncil preCouncil = this.findPreCouncilEntity(id);
+        preCouncil.setAnswered(true);
+        preCouncil = repository.save(preCouncil);
         return modelMapper.map(preCouncil, PreCouncilResponseDTO.class);
     }
 }

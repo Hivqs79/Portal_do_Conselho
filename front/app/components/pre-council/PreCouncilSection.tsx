@@ -26,14 +26,18 @@ export default function PreCouncilSection({
         <Box style={{ borderColor: colorByModeSecondary, backgroundColor: primaryColor }} className="border-[2px] rounded-big overflow-hidden">
             <Box style={{ backgroundColor: primaryColor, boxShadow: `inset 0px -2px 0px 0px ${colorByModeSecondary}` }} className="flex justify-between items-center w-full p-6">
                 <Box className="flex flex-col gap-2">
-                    <Typography variant={"lg_text_bold"} color={whiteColor}>{title}</Typography>
-                    <Typography variant={"md_text_regular"} color={whiteColor}>{description}</Typography>
+                    <Typography variant={"md_text_bold"} color={whiteColor}>{title}</Typography>
                 </Box>
             </Box>
             <Box
                 style={{ backgroundColor: backgroundColor }}
                 className="px-2"
             >
+                {description !== "Teacher section" &&
+                    <Box style={{ borderColor: colorByModeSecondary }} className="p-4 border-b">
+                        <Typography variant={"md_text_regular"}>{description}</Typography>
+                    </Box>
+                }
                 <AvaliationInputs
                     readOnly={false}
                     withoutBorder

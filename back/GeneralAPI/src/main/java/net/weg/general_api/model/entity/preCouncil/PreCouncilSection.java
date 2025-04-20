@@ -20,7 +20,7 @@ public class PreCouncilSection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private PreCouncil preCouncil;
 
