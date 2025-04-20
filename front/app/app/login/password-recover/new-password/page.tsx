@@ -1,7 +1,9 @@
 "use client";
 import Icon from "@/components/Icon";
+import { useRoleContext } from "@/hooks/useRole";
 import { useThemeLoginContext } from "@/hooks/useThemeLogin";
 import { Alert, Box, IconButton, InputAdornment, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { SetStateAction, useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
@@ -12,7 +14,72 @@ export default function Code() {
     const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
     const [password, setPassword] = useState("");    
     const [passwordConfirmation, setPasswordConfirmation] = useState("");    
-    
+    const { code, email, setEmail, setCode } = useRoleContext();
+    const router = useRouter();
+
+    const verifyCode = async () => {
+      if (password !== passwordConfirmation) {
+        setInputError(true);
+        setTimeout(() => {
+          setInputError(false);
+        }, 3000);
+      } else {
+        if (password === "" || passwordConfirmation === "") {
+          setInputError(true);
+          setTimeout(() => {
+            setInputError(false);
+          }, 3000);
+        } else {
+          try {
+            if (email !== "" && code !== "" && password !== "" && passwordConfirmation !== "") {
+              await fetchPasswordRecoverNewPassword(email, password);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    };
+
+    /**
+     * localhost:{porta}/auth/recovery/reset-password
+body
+{
+    "email": "mateushb123@gmail.com",
+    "code": "828896",
+    "newPassword": "senha nova X"
+}
+
+     */
+
+    const fetchPasswordRecoverNewPassword = async (email: string, password: string) => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/auth/recovery/reset-password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            code: code,
+            newPassword: password,
+          }),
+        }
+      ).then((data) => {
+        if (data.status === 404 || data.status === 400) {
+          setInputError(true);
+          setTimeout(() => {
+            setInputError(false);
+          }, 3000);
+          return;
+        }
+        setEmail("");
+        setCode("");
+        router.push("/login");
+      })
+    };
+
     return (
         <Box className="w-full lg:w-3/4 flex flex-col items-center">
           <Typography variant="lg_text_bold" color={colorByMode} className={`w-full !mb-` + (inputError ? "4" : "8")}>Digite sua nova senha</Typography>
@@ -66,7 +133,7 @@ export default function Code() {
                 }}
             />
           
-          <BlueButton variant="contained" className="!mb-12 !mt-4 !w-64" onClick={() => {setInputError(password !== passwordConfirmation);console.log(password);console.log(passwordConfirmation);}}>Verificar código</BlueButton>               
+          <BlueButton variant="contained" className="!mb-12 !mt-4 !w-64" onClick={() => verifyCode()}>Salvar Nova Senha</BlueButton>               
       </Box>
     );
 }

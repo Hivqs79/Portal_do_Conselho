@@ -75,7 +75,7 @@ export default function Notifications() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -96,7 +96,7 @@ export default function Notifications() {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -109,7 +109,7 @@ export default function Notifications() {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
       }
     });
     console.log(response);

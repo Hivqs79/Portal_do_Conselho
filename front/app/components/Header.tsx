@@ -49,7 +49,7 @@ export default function Header({ variant }: HeaderProps) {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -89,8 +89,8 @@ export default function Header({ variant }: HeaderProps) {
   }, [incomingNotification]);
 
   const logout = () => {
-    //deletar o cookie 'token'
-    localStorage.removeItem("user");
+    //deletar o cookie 'user'
+    document.cookie = 'user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     setName("");
     setUserId(-1);

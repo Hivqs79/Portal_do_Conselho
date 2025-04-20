@@ -33,7 +33,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
     terciaryColor,
     reloadTheme,
   } = useThemeContext();
-  const { role, setName, setRole, setToken, setUserId } = useRoleContext();
+  const { role, token, setName, setRole, setToken, setUserId } = useRoleContext();
   const pathname = usePathname();
   const isLoginPage = pathname?.includes("/login");
   const [hydrated, setHydrated] = useState(false);
@@ -68,6 +68,9 @@ function CoreLayout({ children }: { children: ReactElement }) {
       document.cookie = `lastRoute=${pathname}; path=/`;
     }
   }, [pathname]);
+
+  console.log("role aaaa", role);
+  console.log("token aaaa", token);
 
   useEffect(() => {
     document.documentElement.style.setProperty("--primary-color", primaryColor);

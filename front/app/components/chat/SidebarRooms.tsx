@@ -55,7 +55,7 @@ export default function SidebarRooms({
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
         },
       });
       const data = await response.json();
