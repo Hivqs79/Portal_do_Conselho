@@ -2,6 +2,8 @@ package net.weg.general_api.service.users;
 
 import lombok.AllArgsConstructor;
 import net.weg.general_api.exception.exceptions.UserNotFoundException;
+import net.weg.general_api.model.dto.response.classes.ClassResponseDTO;
+import net.weg.general_api.model.dto.response.users.UserAuthenticationResponseDTO;
 import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.model.dto.request.users.StudentRequestDTO;
@@ -20,6 +22,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -66,8 +69,25 @@ public class StudentService {
 
     public StudentResponseDTO findStudent(Long id) {
         Student studentFound = findStudentEntity(id);
+        StudentResponseDTO studentResponseDTO = new StudentResponseDTO();
 
-        return modelMapper.map(studentFound, StudentResponseDTO.class);
+        List<ClassResponseDTO> classResponseDTOS = new ArrayList<>();
+
+        for (Class clazz : studentFound.getClasses()) {
+            classResponseDTOS.add(modelMapper.map(clazz, ClassResponseDTO.class));
+        }
+
+        studentResponseDTO.setId(studentFound.getId());
+        studentResponseDTO.setName(studentFound.getName());
+        studentResponseDTO.setIsRepresentant(studentFound.getIsRepresentant());
+        studentResponseDTO.setLastRank(studentFound.getLastRank());
+        studentResponseDTO.setLastFrequency(studentFound.getLastFrequency());
+        studentResponseDTO.setCreateDate(studentFound.getCreateDate());
+        studentResponseDTO.setUpdateDate(studentFound.getUpdateDate());
+        studentResponseDTO.setAClass(classResponseDTOS);
+        studentResponseDTO.setUserAuthentication(modelMapper.map(studentFound.getUserAuthentication(), UserAuthenticationResponseDTO.class));
+
+        return studentResponseDTO;
     }
 
     public Student findStudentEntity(Long id) {

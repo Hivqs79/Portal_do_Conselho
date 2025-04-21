@@ -5,6 +5,7 @@ import net.weg.general_api.exception.exceptions.UserNotFoundException;
 import net.weg.general_api.model.dto.request.users.LoginRequestDTO;
 import net.weg.general_api.model.dto.request.users.ModifyUserPasswordRequestDTO;
 import net.weg.general_api.model.dto.response.LoginResponseDTO;
+import net.weg.general_api.model.dto.response.users.UserAuthenticationResponseDTO;
 import net.weg.general_api.model.entity.users.UserAuthentication;
 import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.PedagogicRepository;
@@ -48,7 +49,7 @@ public class AuthenticationService {
         return passwordEncoder.encode(passwordPlainText);
     }
 
-    public UserAuthentication changePassword(UserDetails userDetails, ModifyUserPasswordRequestDTO request) {
+    public UserAuthenticationResponseDTO changePassword(UserDetails userDetails, ModifyUserPasswordRequestDTO request) {
 
         if (userDetails == null) {
             //TODO: nova exceção
@@ -63,8 +64,16 @@ public class AuthenticationService {
         }
 
         user.setPassword(passwordEncoder.encode(request.newPassword()));
+        UserAuthenticationResponseDTO userAuthenticationResponseDTO = new UserAuthenticationResponseDTO();
+        userAuthenticationResponseDTO.setId(user.getId());
+        userAuthenticationResponseDTO.setUsername(user.getUsername());
+        userAuthenticationResponseDTO.setAccountNonExpired(user.isAccountNonExpired());
+        userAuthenticationResponseDTO.setCredentialsNonExpired(user.isCredentialsNonExpired());
+        userAuthenticationResponseDTO.setEnabled(user.isEnabled());
+        userAuthenticationResponseDTO.setRole(user.getRole());
+
         userAuthenticationService.saveUserAuthentication(user);
 
-        return user;
+        return userAuthenticationResponseDTO;
     }
 }

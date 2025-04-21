@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 interface MessageProps {
   type: "sender" | "receiver";
   content: string;
-  time: string; // Formato: "2025-04-16T16:54:26"
+  time: string;
 }
 
 export default function Message({ type, content, time }: MessageProps) {

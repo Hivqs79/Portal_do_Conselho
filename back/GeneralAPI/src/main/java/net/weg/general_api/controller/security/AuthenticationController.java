@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import net.weg.general_api.model.dto.request.users.LoginRequestDTO;
 import net.weg.general_api.model.dto.request.users.ModifyUserPasswordRequestDTO;
 import net.weg.general_api.model.dto.response.LoginResponseDTO;
+import net.weg.general_api.model.dto.response.users.UserAuthenticationResponseDTO;
 import net.weg.general_api.model.entity.users.UserAuthentication;
 import net.weg.general_api.service.security.AuthenticationService;
 import org.springframework.http.HttpStatus;
@@ -43,7 +44,7 @@ public class AuthenticationController {
     @ApiResponse(responseCode = "401", description = "Não autorizado", content = @Content(examples = @ExampleObject(value = "{\"status\":401,\"error\":\"Unauthorized\",\"message\":\"Credenciais inválidas\"}")))
     @ApiResponse(responseCode = "403", description = "Senha atual incorreta", content = @Content(examples = @ExampleObject(value = "{\"status\":403,\"error\":\"Forbidden\",\"message\":\"Senha atual não confere\"}")))
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    public ResponseEntity<UserAuthentication> changePassword(@RequestBody @Validated ModifyUserPasswordRequestDTO modifyUserPasswordRequestDTO, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<UserAuthenticationResponseDTO> changePassword(@RequestBody @Validated ModifyUserPasswordRequestDTO modifyUserPasswordRequestDTO, @AuthenticationPrincipal UserDetails userDetails) {
         return new ResponseEntity<>(service.changePassword(userDetails, modifyUserPasswordRequestDTO), HttpStatus.OK);
     }
 }

@@ -45,6 +45,8 @@ public class MessageService {
         chatEvent.put("roomId", message.getRoomConversation().getId());
         chatEvent.put("message", message);
 
+        System.out.println("veio daqui");
+
         kafkaEventSender.sendEvent(
                 objectMapper.writeValueAsString(chatEvent),
                 "POST",
@@ -52,24 +54,26 @@ public class MessageService {
                 "chat_messages"
         );
 
-        List<Long> usersIds = message.getRoomConversation().getUsersId();
+        System.out.println("e chegou aqui");
 
-        for (Long userId : usersIds) {
-            if (!Objects.equals(userId, message.getSenderId())) {
-                Notification notification = Notification.builder()
-                        .title("Você recebeu uma nova mensagem!")
-                        .message(message.getContent())
-                        .userId(userId)
-                        .build();
-
-                kafkaEventSender.sendEvent(
-                        notification,
-                        "POST",
-                        "Mensagem enviada para usuario de id: ",
-                        "notification"
-                );
-            }
-        }
+        //List<Long> usersIds = message.getRoomConversation().getUsersId();
+//
+        //for (Long userId : usersIds) {
+        //    if (!Objects.equals(userId, message.getSenderId())) {
+        //        Notification notification = Notification.builder()
+        //                .title("Você recebeu uma nova mensagem!")
+        //                .message(message.getContent())
+        //                .userId(userId)
+        //                .build();
+//
+        //        kafkaEventSender.sendEvent(
+        //                notification,
+        //                "POST",
+        //                "Mensagem enviada para usuario de id: ",
+        //                "notification"
+        //        );
+        //    }
+        //}
 
         return message;
     }

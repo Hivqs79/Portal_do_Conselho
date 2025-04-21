@@ -10,28 +10,28 @@ const consumer = new kafka.Consumer(
   kafkaClient,
   [
     { topic: "notification", partition: 0 },
-    { topic: "chat_messages", partition: 0 }
+    { topic: "chat_messages", partition: 0 },
   ],
   { autoCommit: true }
 );
 
 // Objeto para armazenar todas as conexões
 const connections = {
-  notifications: {}, // Conexões de notificação por userId
-  chats: {}         // Conexões de chat por roomId -> userId
+  notifications: {},
+  chats: {},
 };
 
 // Endpoint para notificações
 app.get("/events/notifications/:userId", (req, res) => {
   const userId = req.params.userId;
-  
+
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
 
   console.log(`Conexão SSE iniciada para notificações do usuário: ${userId}`);
-  
+
   // Armazena a conexão
   connections.notifications[userId] = res;
 
@@ -44,13 +44,17 @@ app.get("/events/notifications/:userId", (req, res) => {
 // Endpoint para chat
 app.get("/events/chat/:roomId/:userId", (req, res) => {
   const { roomId, userId } = req.params;
-  
+
   res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
 
-  console.log(`Conexão SSE iniciada para chat na sala ${roomId} (usuário ${userId})`);
+  console.log(
+    `Conexão SSE iniciada para chat na sala ${roomId} (usuário ${userId})`
+  );
 
   // Inicializa a sala se não existir
   if (!connections.chats[roomId]) {
@@ -61,9 +65,11 @@ app.get("/events/chat/:roomId/:userId", (req, res) => {
   connections.chats[roomId][userId] = res;
 
   req.on("close", () => {
-    console.log(`Conexão de chat fechada para sala ${roomId} (usuário ${userId})`);
+    console.log(
+      `Conexão de chat fechada para sala ${roomId} (usuário ${userId})`
+    );
     delete connections.chats[roomId][userId];
-    
+
     // Remove a sala se não houver mais conexões
     if (Object.keys(connections.chats[roomId]).length === 0) {
       delete connections.chats[roomId];
@@ -76,11 +82,11 @@ consumer.on("message", (message) => {
 
   try {
     const data = JSON.parse(message.value);
-    
+
     // Notificações
     if (message.topic === "notification") {
       const userId = data.userId || (data.data && data.data.userId);
-      
+
       if (!userId) {
         console.error("UserId não encontrado na mensagem:", message.value);
         return;
@@ -88,27 +94,34 @@ consumer.on("message", (message) => {
 
       if (connections.notifications[userId]) {
         console.log(`Enviando notificação para usuário ${userId}`);
-        connections.notifications[userId].write(`data: ${JSON.stringify(data)}\n\n`);
+        connections.notifications[userId].write(
+          `data: ${JSON.stringify(data)}\n\n`
+        );
       }
     }
     // Mensagens de chat
     else if (message.topic === "chat_messages") {
       const parsedData = JSON.parse(data.object); // Parse o objeto dentro da mensagem
-      
+
       if (parsedData.type === "chat_message") {
         const roomId = parsedData.roomId;
         const messageData = parsedData.message;
-        
+
         // Envia a mensagem para todos os usuários conectados naquela sala
         if (connections.chats[roomId]) {
-          Object.values(connections.chats[roomId]).forEach(client => {
+          Object.values(connections.chats[roomId]).forEach((client) => {
             client.write(`data: ${JSON.stringify(messageData)}\n\n`);
           });
         }
       }
     }
   } catch (error) {
-    console.error("Erro ao processar mensagem:", error, "Mensagem original:", message.value);
+    console.error(
+      "Erro ao processar mensagem:",
+      error,
+      "Mensagem original:",
+      message.value
+    );
   }
 });
 
