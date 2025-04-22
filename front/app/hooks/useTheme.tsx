@@ -129,17 +129,9 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   };
 
   function getThemeMode() {
-    // if (mode === "dark" && !isDarkMode) {
-    //   this.changeThemeMode();
-    //   return "dark";
-    // }
-    // if (mode === "light" && isDarkMode) {
-    //   this.changeThemeMode();
-    //   return "light";
-    // }
-    // return isDarkMode ? "dark" : "light";    
-
-    return mode.replaceAll("\\", "").replaceAll("\"", "") === "dark" ? "dark" : "light";
+    const modeNow = mode.replaceAll("\\", "").replaceAll("\"", "") === "light" ? "light" : "dark";
+    document.body.className = modeNow;
+    return modeNow;
   }
 
   function getFontSize() {
@@ -624,9 +616,6 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   const darkGrayColor = lighterColor(blackColor);
   const redDanger = colors.redDanger;
   const greenConfirm = colors.greenConfirm;
-  // const lighterColor = (color: string) => lighterColor(color);
-  // const darkerColor = darkerColor;
-  // const getThemePallete = (): PossibleColors => getThemePallete() as PossibleColors;
 
   const changeThemeMode = () => {
     setMode(mode.replaceAll("\\", "").replaceAll("\"", "") === "light" ? JSON.stringify("dark") : JSON.stringify("light"));
