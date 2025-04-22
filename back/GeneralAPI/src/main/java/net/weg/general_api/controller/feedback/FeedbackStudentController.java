@@ -101,5 +101,13 @@ public class FeedbackStudentController {
         return new ResponseEntity<>(service.returnFeedbackStudent(id), HttpStatus.OK);
     }
 
-    
+    @PatchMapping("/view/{id}")
+    @Operation(method = "PATCH", summary = "View student feedback status", description = "Modifies isViewed status, false to true")
+    @ApiResponse(responseCode = "200", description = "Feedbacks found", content = @Content(schema = @Schema(implementation = List.class), examples = @ExampleObject(value = "[{\"id\":1,\"rank\":\"AVERAGE\",\"strengths\":\"Excellent class\",\"toImprove\":\"None\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}]")))
+    @ApiResponse(responseCode = "404", description = "Student not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<FeedbackStudentResponseDTO> viewFeedbackStudent(@Parameter(description = "Feedback ID", example = "1") @PathVariable Long id) {
+        return new ResponseEntity<>(service.viewFeedbackStudent(id), HttpStatus.OK);
+    }
+
 }
