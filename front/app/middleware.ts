@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
     "/notifications",
     "/",
   ];
-  const adminRoutes = ["/configurations", "/profile"];
+  const adminRoutes = ["/configurations"];
   const studentRoutes = [...globalRoutes];
   const leaderRoutes = [...globalRoutes, "/fill-out-pre-council"];
   const teacherRoutes = [...globalRoutes, "/annotations", "/council-historic"];
@@ -48,7 +48,6 @@ export async function middleware(request: NextRequest) {
   const pathname = url.pathname;
   const encryptedToken = request.cookies.get("token")?.value;
   const authToken = Decryptor(encryptedToken ? encryptedToken : "");
-  console.log("testea aa: ", authToken);
   const isTokenPresent = authToken && isLikelyJwt(String(authToken));
 
   const checkRoutePermission = () => {
@@ -87,7 +86,6 @@ export async function middleware(request: NextRequest) {
     pathname === "/password-recover/code" ||
     pathname === "/password-recover/new-password"
   ) {
-    console.log("teste aaaaa");
     return NextResponse.redirect(new URL("/", request.url));
   }
 
@@ -129,7 +127,6 @@ export async function middleware(request: NextRequest) {
       }
 
       if (pathname === "/council" && hasActiveCouncil) {
-        console.log(hasActiveCouncil);
         return NextResponse.redirect(new URL("/realize-council", request.url));
       }
     } catch (err) {

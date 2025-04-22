@@ -167,7 +167,7 @@ export default function SidebarRooms({
         }}
         className={`rounded-normal border-2 p-2 ${
           isMobile
-            ? `fixed top-40 left-0 z-[1100] h-auto w-64 transform ${
+            ? `fixed top-40 left-0 z-[11] h-auto w-64 transform ${
                 sidebarOpen ? "translate-x-0 left-2" : "-translate-x-full"
               } transition-transform duration-300 ease-in-out`
             : "w-full max-w-96 "

@@ -58,9 +58,12 @@ export default function AddUserModal({ type, onClose }: AddUserModalProps) {
   });
   const { backgroundColor, primaryColor, redDanger } = useThemeContext();
 
-  const filterUsersWithoutRoom = async (users: any[], currentUserId: number | undefined) => {
+  const filterUsersWithoutRoom = async (
+    users: any[],
+    currentUserId: number | undefined
+  ) => {
     if (!currentUserId) return [];
-    
+
     const filteredUsers = await Promise.all(
       users.map(async (user: any) => {
         try {
@@ -74,23 +77,25 @@ export default function AddUserModal({ type, onClose }: AddUserModalProps) {
               body: JSON.stringify({ usersId: [currentUserId, user.id] }),
             }
           );
-          
+
           const roomData = await roomResponse.text();
           return roomData === "Não foi encontrada nenhuma sala" ? user : null;
         } catch (error) {
           console.error("Error checking room:", error);
-          return user; // In case of error, include the user by default
+          return user;
         }
       })
     );
-  
-    return filteredUsers.filter(user => user !== null);
+
+    return filteredUsers.filter((user) => user !== null);
   };
 
   const fetchStudents = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/student?page=${pageStudent - 1}&size=${rowsPerPageStudent}&name=${studentTerm}`,
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/student?page=${
+          pageStudent - 1
+        }&size=${rowsPerPageStudent}&name=${studentTerm}`,
         {
           method: "GET",
           headers: {
@@ -99,33 +104,44 @@ export default function AddUserModal({ type, onClose }: AddUserModalProps) {
           },
         }
       );
-      
+
       const data = await response.json();
-      
+
       if (!data.content) {
-        setStudentData({ content: [], pageable: { pageNumber: 0 }, totalPages: 0 });
+        setStudentData({
+          content: [],
+          pageable: { pageNumber: 0 },
+          totalPages: 0,
+        });
         return;
       }
-  
-      const validStudents = await filterUsersWithoutRoom(data.content, userId ? userId : 0);
-      
+
+      const validStudents = await filterUsersWithoutRoom(
+        data.content,
+        userId ? userId : 0
+      );
+
       setStudentData({
         ...data,
         content: validStudents,
         totalElements: validStudents.length,
       });
-      
     } catch (error) {
       console.error("Error fetching students:", error);
-      setStudentData({ content: [], pageable: { pageNumber: 0 }, totalPages: 0 });
+      setStudentData({
+        content: [],
+        pageable: { pageNumber: 0 },
+        totalPages: 0,
+      });
     }
   };
-  
 
   const fetchTeachers = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/teacher?page=${pageTeacher - 1}&size=${rowsPerPageTeacher}&name=${teacherTerm}`,
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/teacher?page=${
+          pageTeacher - 1
+        }&size=${rowsPerPageTeacher}&name=${teacherTerm}`,
         {
           method: "GET",
           headers: {
@@ -134,32 +150,44 @@ export default function AddUserModal({ type, onClose }: AddUserModalProps) {
           },
         }
       );
-      
+
       const data = await response.json();
-      
+
       if (!data.content) {
-        setTeacherData({ content: [], pageable: { pageNumber: 0 }, totalPages: 0 });
+        setTeacherData({
+          content: [],
+          pageable: { pageNumber: 0 },
+          totalPages: 0,
+        });
         return;
       }
-  
-      const validTeachers = await filterUsersWithoutRoom(data.content, userId ? userId : 0);
-      
+
+      const validTeachers = await filterUsersWithoutRoom(
+        data.content,
+        userId ? userId : 0
+      );
+
       setTeacherData({
         ...data,
         content: validTeachers,
         totalElements: validTeachers.length,
       });
-      
     } catch (error) {
       console.error("Error fetching teachers:", error);
-      setTeacherData({ content: [], pageable: { pageNumber: 0 }, totalPages: 0 });
+      setTeacherData({
+        content: [],
+        pageable: { pageNumber: 0 },
+        totalPages: 0,
+      });
     }
   };
 
   const fetchSupervisior = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/supervisor?page=${pageSupervisior - 1}&size=${rowsPerPageSupervisior}&name=${supervisiorTerm}`,
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/supervisor?page=${
+          pageSupervisior - 1
+        }&size=${rowsPerPageSupervisior}&name=${supervisiorTerm}`,
         {
           method: "GET",
           headers: {
@@ -168,25 +196,35 @@ export default function AddUserModal({ type, onClose }: AddUserModalProps) {
           },
         }
       );
-      
+
       const data = await response.json();
-      
+
       if (!data.content) {
-        setsupervisiorData({ content: [], pageable: { pageNumber: 0 }, totalPages: 0 });
+        setsupervisiorData({
+          content: [],
+          pageable: { pageNumber: 0 },
+          totalPages: 0,
+        });
         return;
       }
-  
-      const validSupervisors = await filterUsersWithoutRoom(data.content, userId ? userId : 0);
-      
+
+      const validSupervisors = await filterUsersWithoutRoom(
+        data.content,
+        userId ? userId : 0
+      );
+
       setsupervisiorData({
         ...data,
         content: validSupervisors,
         totalElements: validSupervisors.length,
       });
-      
     } catch (error) {
       console.error("Error fetching supervisors:", error);
-      setsupervisiorData({ content: [], pageable: { pageNumber: 0 }, totalPages: 0 });
+      setsupervisiorData({
+        content: [],
+        pageable: { pageNumber: 0 },
+        totalPages: 0,
+      });
     }
   };
 
@@ -194,6 +232,7 @@ export default function AddUserModal({ type, onClose }: AddUserModalProps) {
     if (role === "pedagogic" || role === "subpedagogic") {
       await fetchStudents();
       await fetchTeachers();
+      await fetchSupervisior();
     } else {
       await fetch(
         `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pedagogic?name=${userTerm}`,
@@ -346,6 +385,7 @@ export default function AddUserModal({ type, onClose }: AddUserModalProps) {
       sx={{
         display: "flex",
         p: 1,
+        zIndex: 1000,
         alignItems: "center",
         justifyContent: "center",
         border: "none",
@@ -355,106 +395,110 @@ export default function AddUserModal({ type, onClose }: AddUserModalProps) {
       <Box
         onClick={(e) => e.stopPropagation()}
         style={{ backgroundColor: backgroundColor }}
-        className="p-5 rounded-lg w-full max-w-[800px] m-5 h-full max-h-[800px] overflow-y-scroll"
+        className="p-2 rounded-lg w-full max-w-[800px] m-5 z-[101]"
       >
-        <Box className="flex justify-between items-center">
-          <Typography variant="lg_text_bold" color={primaryColor}>
-            Iniciar uma nova conversa
-          </Typography>
-          <Box onClick={onClose}>
-            <Icon
-              IconPassed={IoClose}
-              color={redDanger}
-              className="cursor-pointer text-[2rem]"
-            />
+        <Box  className="p-3 h-full max-h-[800px] overflow-y-scroll">
+          <Box className="flex justify-between items-center">
+            <Typography variant="lg_text_bold" color={primaryColor}>
+              Iniciar uma nova conversa
+            </Typography>
+            <Box onClick={onClose}>
+              <Icon
+                IconPassed={IoClose}
+                color={redDanger}
+                className="cursor-pointer text-[2rem]"
+              />
+            </Box>
           </Box>
+          {type === "user" && (
+            <Box className="flex flex-col gap-10 mt-10">
+              <Typography variant="lg_text_bold" color={primaryColor}>
+                Você só pode iniciar uma conversa com alguém do pedagógico
+              </Typography>
+              <Table
+                withoutOutline
+                tableContent={userData ? userData : null}
+                headers={headers}
+                headerButtons={headerButtons}
+                rowButtons={rowButtons}
+              />
+            </Box>
+          )}
+          {type === "pedagogic" && (
+            <Box className="flex flex-col gap-5 mt-10">
+              <Typography variant="lg_text_bold" color={primaryColor}>
+                Alunos:
+              </Typography>
+              <Table
+                withoutOutline
+                tableContent={studentData ? studentData : null}
+                headers={headers}
+                headerButtons={headerButtonsStudent}
+                rowButtons={rowButtons}
+              />
+              <PaginationTable
+                count={studentData ? studentData.totalPages : 0}
+                page={studentData ? studentData.pageable.pageNumber + 1 : 1}
+                setPage={setPageStudent}
+                rowsPerPage={rowsPerPageStudent}
+                setRowsPerPage={(rowsPerPage: number) => {
+                  setRowsPerPageStudent(rowsPerPage);
+                  setPageStudent(1);
+                }}
+              />
+              <Typography variant="lg_text_bold" color={primaryColor}>
+                Professores:
+              </Typography>
+              <Table
+                withoutOutline
+                tableContent={teacherData ? teacherData : null}
+                headers={headers}
+                headerButtons={headerButtonsTeacher}
+                rowButtons={rowButtons}
+              />
+              <PaginationTable
+                count={teacherData ? teacherData.totalPages : 0}
+                page={teacherData ? teacherData.pageable.pageNumber + 1 : 1}
+                setPage={setPageTeacher}
+                rowsPerPage={rowsPerPageTeacher}
+                setRowsPerPage={(rowsPerPage: number) => {
+                  setRowsPerPageTeacher(rowsPerPage);
+                  setPageTeacher(1);
+                }}
+              />
+              <Typography variant="lg_text_bold" color={primaryColor}>
+                Supervisores:
+              </Typography>
+              <Table
+                withoutOutline
+                tableContent={supervisiorData ? supervisiorData : null}
+                headers={headers}
+                headerButtons={headerButtonsSupervisior}
+                rowButtons={rowButtons}
+              />
+              <PaginationTable
+                count={supervisiorData ? supervisiorData.totalPages : 0}
+                page={
+                  supervisiorData ? supervisiorData.pageable.pageNumber + 1 : 1
+                }
+                setPage={setPageSupervisior}
+                rowsPerPage={rowsPerPageSupervisior}
+                setRowsPerPage={(rowsPerPage: number) => {
+                  setRowsPerPageSupervisior(rowsPerPage);
+                  setPageSupervisior(1);
+                }}
+              />
+            </Box>
+          )}
+          {isOpen && (
+            <ConfirmMessagesModal
+              description={descriptionMessage}
+              error={isError}
+              title={titleMessage}
+            />
+          )}
+          {isLoading && <LoadingModal />}
         </Box>
-        {type === "user" && (
-          <Box className="flex flex-col gap-10 mt-10">
-            <Typography variant="lg_text_bold" color={primaryColor}>
-              Você só pode iniciar uma conversa com alguém do pedagógico
-            </Typography>
-            <Table
-              withoutOutline
-              tableContent={userData ? userData : null}
-              headers={headers}
-              headerButtons={headerButtons}
-              rowButtons={rowButtons}
-            />
-          </Box>
-        )}
-        {type === "pedagogic" && (
-          <Box className="flex flex-col gap-5 mt-10">
-            <Typography variant="lg_text_bold" color={primaryColor}>
-              Alunos:
-            </Typography>
-            <Table
-              withoutOutline
-              tableContent={studentData ? studentData : null}
-              headers={headers}
-              headerButtons={headerButtonsStudent}
-              rowButtons={rowButtons}
-            />
-            <PaginationTable
-              count={studentData ? studentData.totalPages : 0}
-              page={studentData ? studentData.pageable.pageNumber + 1 : 1}
-              setPage={setPageStudent}
-              rowsPerPage={rowsPerPageStudent}
-              setRowsPerPage={(rowsPerPage: number) => {
-                setRowsPerPageStudent(rowsPerPage);
-                setPageStudent(1);
-              }}
-            />
-            <Typography variant="lg_text_bold" color={primaryColor}>
-              Professores:
-            </Typography>
-            <Table
-              withoutOutline
-              tableContent={teacherData ? teacherData : null}
-              headers={headers}
-              headerButtons={headerButtonsTeacher}
-              rowButtons={rowButtons}
-            />
-            <PaginationTable
-              count={teacherData ? teacherData.totalPages : 0}
-              page={teacherData ? teacherData.pageable.pageNumber + 1 : 1}
-              setPage={setPageTeacher}
-              rowsPerPage={rowsPerPageTeacher}
-              setRowsPerPage={(rowsPerPage: number) => {
-                setRowsPerPageTeacher(rowsPerPage);
-                setPageTeacher(1);
-              }}
-            />
-            <Typography variant="lg_text_bold" color={primaryColor}>
-              Supervisores:
-            </Typography>
-            <Table
-              withoutOutline
-              tableContent={supervisiorData ? supervisiorData : null}
-              headers={headers}
-              headerButtons={headerButtonsSupervisior}
-              rowButtons={rowButtons}
-            />
-            <PaginationTable
-              count={supervisiorData ? supervisiorData.totalPages : 0}
-              page={supervisiorData ? supervisiorData.pageable.pageNumber + 1 : 1}
-              setPage={setPageSupervisior}
-              rowsPerPage={rowsPerPageSupervisior}
-              setRowsPerPage={(rowsPerPage: number) => {
-                setRowsPerPageSupervisior(rowsPerPage);
-                setPageSupervisior(1);
-              }}
-            />
-          </Box>
-        )}
-        {isOpen && (
-          <ConfirmMessagesModal
-            description={descriptionMessage}
-            error={isError}
-            title={titleMessage}
-          />
-        )}
-        {isLoading && <LoadingModal />}
       </Box>
     </Modal>
   );

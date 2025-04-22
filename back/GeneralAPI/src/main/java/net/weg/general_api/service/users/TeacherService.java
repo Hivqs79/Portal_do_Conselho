@@ -5,6 +5,7 @@ import net.weg.general_api.exception.exceptions.UserNotFoundException;
 import net.weg.general_api.model.dto.request.users.TeacherRequestDTO;
 import net.weg.general_api.model.dto.response.classes.ClassResponseDTO;
 import net.weg.general_api.model.dto.response.users.TeacherResponseDTO;
+import net.weg.general_api.model.dto.response.users.UserAuthenticationResponseDTO;
 import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.users.Teacher;
 import net.weg.general_api.model.enums.RoleENUM;
@@ -39,7 +40,14 @@ public class TeacherService {
 
     public Page<TeacherResponseDTO> findTeacherSpec(Specification<Teacher> spec, Pageable pageable) {
         Page<Teacher> teachers = repository.getAllByEnabledIsTrue(spec, pageable);
-        return teachers.map(teacher -> modelMapper.map(teacher, TeacherResponseDTO.class));
+        return teachers.map(teacher -> new TeacherResponseDTO(
+                teacher.getId(),
+                teacher.getName(),
+                teacher.getCreateDate(),
+                teacher.getUpdateDate(),
+                teacher.getClasses().stream().map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class)).toList(),
+                modelMapper.map(teacher.getUserAuthentication(), UserAuthenticationResponseDTO.class)
+        ));
     }
 
     public Page<TeacherResponseDTO> findTeacherSpecByClass(Specification<Teacher> spec, Long classId, Pageable pageable) {

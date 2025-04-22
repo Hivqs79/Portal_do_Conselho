@@ -24,7 +24,6 @@ export function RoleProvider({ children }: { children: React.ReactNode }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [code, setCode] = useState("");
-    console.log("teste role");
     return (
         <roleContext.Provider value={{ role, setRole, userId, setUserId, token, setToken, name, setName, email, setEmail, code, setCode }}>
             {children}

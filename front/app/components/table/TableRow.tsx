@@ -35,7 +35,9 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     visualizeButton,
     onClickVisualize,
     editButton,
+    onClickEdit,
     deleteButton,
+    onClickDelete,
     seeButton,
     inicializeButton,
     onClickInicialize,
@@ -44,7 +46,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     closeButton,
     releasedButton,
     releaseButton,
-  } = rowButtons;
+} = rowButtons;
 
   let date =
     "startDateTime" in content
@@ -70,7 +72,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
       return content.student?.name || "";
     }
     if ("aclass" in content) {
-      return content.aclass?.name || "name" in content ? (content as any).name : "";
+      return content.aclass?.name ? content.aclass?.name : "name" in content ? (content as any).name : "";
     }
     if ("name" in content) {
       return content.name;
@@ -78,7 +80,28 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     return "";
   })();
 
+  const funcao = "userAuthentication" in content ? content.userAuthentication.role : "";
+
   const rank = "rank" in content && content.rank;
+
+  const transformRole = (role: string) => {
+    switch (role) {
+      case "STUDENT":
+        return "Aluno";
+      case "TEACHER":
+        return "Professor";
+      case "SUPERVISOR":
+        return "Supervisor";
+      case "PEDAGOGIC":
+        return "Pedagógico";
+      case "SUBPEDAGOGIC":
+        return "Subpedagógico";
+      case "ADMIN":
+        return "Administrador";
+      default:
+        return role;
+    }
+  };
 
   return (
     <>
@@ -92,6 +115,16 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
         <td style={{ color: constrastColor }} className="flex-1">
           <Typography variant="lg_text_regular">{name}</Typography>
         </td>
+        {funcao && (
+          <td
+            style={{ color: constrastColor }}
+            className="hidden md:flex-1 md:flex text-center lg:justify-center"
+          >
+            <Typography variant="lg_text_regular">
+              {transformRole(funcao)}
+            </Typography>
+          </td>
+        )}
         {date && (
           <td
             style={{ color: constrastColor }}
@@ -157,7 +190,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
             <TableButton
               text={anotationButton ? "Anotar" : "Editar"}
               icon={LuPencilLine}
-              onClick={() => onClickAnnotation && onClickAnnotation(content)}
+              onClick={() => onClickAnnotation && onClickAnnotation(content) || onClickEdit && onClickEdit(content)}
             />
           )}
           {(releasedButton || releaseButton) && (
@@ -176,7 +209,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
             />
           )}
           {closeButton && <TableButton text="Fechar" icon={IoClose} />}
-          {deleteButton && <TableButton text="Excluir" icon={LuTrash} />}
+          {deleteButton && <TableButton text="Excluir" onClick={() => onClickDelete && onClickDelete(content)} icon={LuTrash} />}
         </td>
       </tr>
     </>

@@ -489,7 +489,7 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
         MuiMenu: {
           styleOverrides: {
             root: {
-              zIndex: 25,
+              zIndex: 9999,
             },
             paper: {
               backgroundColor: primary_color,

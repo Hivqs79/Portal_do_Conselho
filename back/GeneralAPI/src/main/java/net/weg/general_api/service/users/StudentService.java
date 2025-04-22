@@ -40,7 +40,17 @@ public class StudentService {
 
     public Page<StudentResponseDTO> findStudentSpec(Specification<Student> spec, Pageable pageable) {
         Page<Student> students = repository.getAllByEnabledIsTrue(spec, pageable);
-        return students.map(student -> modelMapper.map(student, StudentResponseDTO.class));
+        return students.map(student -> new StudentResponseDTO(
+                student.getId(),
+                student.getName(),
+                student.getIsRepresentant(),
+                student.getLastRank(),
+                student.getLastFrequency(),
+                student.getCreateDate(),
+                student.getUpdateDate(),
+                student.getClasses().stream().map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class)).toList(),
+                modelMapper.map(student.getUserAuthentication(), UserAuthenticationResponseDTO.class)
+        ));
     }
 
     public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {

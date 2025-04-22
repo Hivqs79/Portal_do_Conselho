@@ -15,6 +15,8 @@ export interface TableRowButtons {
     closeButton?: boolean;
     releasedButton?: boolean;
     releaseButton?: boolean;
+    onClickEdit?: (row: TableRowPossibleTypes) => void;
+    onClickDelete?: (row: TableRowPossibleTypes) => void;
     onClickRealize?: (row: TableRowPossibleTypes) => void;
     onClickInicialize?: (row: TableRowPossibleTypes) => void;
     onClickVisualize?: (row: TableRowPossibleTypes) => void;
