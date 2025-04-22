@@ -1,10 +1,11 @@
 "use client";
 import AnnotationsModal from "@/components/modals/AnnotationsModal";
+import SwapButton from "@/components/SwapButton";
 import PaginationTable from "@/components/table/Pagination";
 import Table from "@/components/table/Table";
 import Title from "@/components/Title";
-import FeedbackClass from "@/interfaces/FeedbackClass";
-import FeedbackStudent from "@/interfaces/FeedbackStudent";
+import FeedbackClass from "@/interfaces/feedback/FeedbackClass";
+import FeedbackStudent from "@/interfaces/feedback/FeedbackStudent";
 import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
 import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
 import TableFeedbackRow from "@/interfaces/table/row/TableFeedbackRow";
@@ -13,6 +14,10 @@ import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTy
 import { TableContent } from "@/interfaces/table/TableContent";
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
+import PreCouncil from "../pre-council/page";
+import PreCouncilModal from "@/components/pre-council/PreCouncilModal";
+import TablePreCouncilRow from "@/interfaces/table/row/TablePreCouncilRow";
+import FeedbackUser from "@/interfaces/feedback/FeedbackUser";
 
 export default function ReleaseFeedback() {
   const [feedbacks, setFeedbacks] = useState<TableContent | null>(null);
@@ -24,15 +29,16 @@ export default function ReleaseFeedback() {
   const [studentContent, setStudentContent] = useState<TableRowPossibleTypes[]>();
   const [councilId, setCouncilId] = useState<number>(0);
   const [classContent, setClassContent] = useState<FeedbackClass>();
+  const [releaseCouncil, setReleaseCouncil] = useState<boolean>(true);
+  const [preCouncils, setPreCouncils] = useState<TableContent | null>(null);
+  const [preCouncilId, setPreCouncilId] = useState<number>(0);
+  const [preCouncilFeedbacks, setPreCouncilFeedbacks] = useState<FeedbackUser[]>([]);
 
   useEffect(() => {
     try {
       const fetchFeedbacks = async () => {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class?isReturned=false
-            &page=${page - 1}
-            &size=${rowsPerPage}
-            &className=${feedbackSearch}`
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class?isReturned=false&page=${page - 1}&size=${rowsPerPage}&className=${feedbackSearch}`
         );
         console.log("Response:", feedbackSearch);
         const data = await response.json();
@@ -45,7 +51,22 @@ export default function ReleaseFeedback() {
     }
   }, [page, rowsPerPage, feedbackSearch]);
 
-  const rowButtons: TableRowButtons = {
+  useEffect(() => {
+    try {
+      const fetchPreCouncils = async () => {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council?answered=true&page=${page - 1}&size=${rowsPerPage}&className=${feedbackSearch}`
+        );
+        const data = await response.json();
+        setPreCouncils(data);
+      };
+      fetchPreCouncils();
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  }, [page, rowsPerPage]);
+
+  const rowButtonsCouncil: TableRowButtons = {
     rankVisualizer: true,
     releaseButton: true,
     visualizeIconButton: true,
@@ -57,11 +78,23 @@ export default function ReleaseFeedback() {
       setCouncilId(councilId);
       console.log("councilId", councilId);
     },
-    onClickRealize: async () => {
+    onClickRelease: async () => {
     },
   };
 
-  console.log("Student content: ", studentContent);
+  const rowButtonsPreCouncil: TableRowButtons = {
+    releaseButton: true,
+    visualizeIconButton: true,
+    onClickVisualize: async (row: TableRowPossibleTypes) => {
+      setIsOpen(true);
+      console.log("Row clicked:", row);
+      const preCouncilId = (row as TablePreCouncilRow).id;
+      setPreCouncilId(preCouncilId);
+      console.log("preCouncilId", preCouncilId);
+    },
+    onClickRelease: async () => {
+    },
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,6 +127,21 @@ export default function ReleaseFeedback() {
 
     fetchData();
   }, [councilId, studentTerm]);
+
+  useEffect(() => {
+    const fetchFeedbackUsers = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/user?isReturned=false&preCouncilId=${preCouncilId}`
+        );
+        const data = await response.json();
+        setPreCouncilFeedbacks(data as FeedbackUser[]);
+      } catch (error) {
+        console.log("Error fetching data:", error);
+      }
+    }
+    fetchFeedbackUsers();
+  }, [preCouncilId]);
 
   const headerButtonsClass: TableHeaderButtons = {
     rank: "EXCELLENT",
@@ -128,24 +176,43 @@ export default function ReleaseFeedback() {
     filterButton: true,
   };
 
-  const headers: TableHeaderContent[] = [
+  const headersCouncil: TableHeaderContent[] = [
     { name: "Turma" },
     { name: "Data" },
     { name: "Horário" },
   ];
 
+  const headersPreCouncil: TableHeaderContent[] = [
+    { name: "Turma" },
+    { name: "Data" },
+    { name: "Data final" },
+  ];
+
+  useEffect(() => {
+    setPage(1);
+    setRowsPerPage(5);
+    setFeedbackSearch("");
+    setIsOpen(false);
+  }, [releaseCouncil]);
+
   return (
     <Box>
       <Title textHighlight="Liberação" text="de feedbacks" />
+      <SwapButton
+        button1Text="Conselhos"
+        button2Text="Pré-conselhos"
+        onClickButton1={() => setReleaseCouncil(true)}
+        onClickButton2={() => setReleaseCouncil(false)}
+      />
       <Table
-        tableContent={feedbacks}
-        headers={headers}
+        tableContent={releaseCouncil ? feedbacks : preCouncils}
+        headers={releaseCouncil ? headersCouncil : headersPreCouncil  }
         headerButtons={headerButtons}
-        rowButtons={rowButtons}
+        rowButtons={releaseCouncil ? rowButtonsCouncil : rowButtonsPreCouncil}
       />
       <PaginationTable
-        count={feedbacks ? feedbacks.totalPages : 0}
-        page={feedbacks ? feedbacks.pageable.pageNumber + 1 : 1}
+        count={releaseCouncil ? (feedbacks ? feedbacks.totalPages : 0) : (preCouncils ? preCouncils.totalPages : 0)}
+        page={releaseCouncil ? (feedbacks ? feedbacks.pageable.pageNumber + 1 : 1) : (preCouncils ? preCouncils.pageable.pageNumber + 1 : 1)}
         setPage={setPage}
         rowsPerPage={rowsPerPage}
         setRowsPerPage={(rowsPerPage: number) => {
@@ -154,7 +221,7 @@ export default function ReleaseFeedback() {
         }}
       />
       <AnnotationsModal
-        open={isOpen}
+        open={isOpen && releaseCouncil}
         close={() => setIsOpen(false)}
         classNegativeContent={classContent?.toImprove ?? ""}
         classPositiveContent={classContent?.strengths ?? ""}
@@ -165,6 +232,12 @@ export default function ReleaseFeedback() {
         headersStudent={headerStudent}
         rowButtonsStudent={rowButtonsStudent}
         variant="feedback"
+        readOnly={true}
+      />
+      <PreCouncilModal 
+        open={isOpen && !releaseCouncil} 
+        close={() => setIsOpen(false)}
+        preCouncilSections={preCouncilFeedbacks} 
       />
     </Box>
   );

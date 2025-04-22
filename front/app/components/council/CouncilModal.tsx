@@ -6,15 +6,16 @@ import { IoClose } from "react-icons/io5";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { FaRegCalendarAlt, FaRegClock } from "react-icons/fa";
 import dayjs from "dayjs";
-import { Teacher } from "@/interfaces/Teacher";
+import { Teacher } from "@/interfaces/users/Teacher";
 import { SiGoogleclassroom } from "react-icons/si";
 import Class from "@/interfaces/Class";
 import { LuPencilLine } from "react-icons/lu";
 import CouncilForm from "@/components/council/CouncilForm";
-import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
+import { CouncilFormProps } from "@/interfaces/council/CouncilFormProps";
 import { isArray } from "util";
 import { useState } from "react";
 import ConfirmChanges from "../modals/ConfirmChanges";
+import OpacityHex from "@/utils/OpacityHex";
 
 interface CouncilModalProps {
   open: boolean;
@@ -26,6 +27,7 @@ interface CouncilModalProps {
   variant: string;
   councilInformation: CouncilFormProps;
   type: "council" | "pre-council";
+  awaitingAnswer?: boolean
 }
 
 export default function CouncilModal({
@@ -38,6 +40,7 @@ export default function CouncilModal({
   variant,
   councilInformation,
   type,
+  awaitingAnswer
 }: CouncilModalProps) {
   const {
     primaryColor,
@@ -48,6 +51,7 @@ export default function CouncilModal({
     redDanger,
     whiteColor,
     textBlackColor,
+    getThemeMode
   } = useThemeContext();
 
   const date = councilInformation.visualizedCouncil
@@ -93,7 +97,7 @@ export default function CouncilModal({
       >
         <Box className="flex flex-col w-full max-h-[80vh] overflow-y-auto p-6  gap-10">
           <Box className="flex items-center flex-row w-full">
-            <Box className="flex flex-col w-full">
+            <Box className="flex flex-col w-full mr-4">
               <Typography variant="xl_text_bold" color={colorByModeSecondary}>
                 {variant === "confirm" ? "Confirmar " : "Detalhes do "}{type === "pre-council" ? "pré-" : ""}conselho
               </Typography>
@@ -105,13 +109,13 @@ export default function CouncilModal({
               )}
             </Box>
             <Box className="flex w-fit h-fit gap-1">
-              {variant !== "confirm" && !editing && (
+              {(variant !== "confirm" && !editing && (awaitingAnswer !== undefined ? !awaitingAnswer : true)) && (
                 <Icon
                   IconPassed={LuPencilLine}
-                  colorButton={terciaryColor}
+                  colorButton={getThemeMode() === "light" ? terciaryColor : OpacityHex(primaryColor, 0.5)}
                   className="size-10"
                   classNameButton="!p-1 !max-w-[36px]"
-                  color={primaryColor}
+                  color={terciaryColor}
                   isButton={true}
                   onClick={() => setEditing && setEditing(true)}
                 />
@@ -141,16 +145,21 @@ export default function CouncilModal({
             />
           ) : (
             <>
-              <Box className="flex flex-col md:flex-row md:gap-8">
+              {awaitingAnswer &&
+                <Typography variant="lg_text_regular" color={redDanger}>
+                  O pré-conselho está dentro do período para resposta, aguarde até o prazo final para visualizar as respostas.
+                </Typography>
+              }
+              <Box className="flex flex-col md:flex-row gap-8">
                 <Box className="flex flex-col w-full gap-4">
                   <Typography
                     color={colorByModeSecondary}
                     variant="xl_text_bold"
                   >
-                    Data {type === "pre-council" ? "de início": "do conselho"}
+                    Data {type === "pre-council" ? "de início" : "do conselho"}
                   </Typography>
                   <DatePicker
-                    label={`Data ${type === "pre-council" ? "de início": "do conselho"}`}
+                    label={`Data ${type === "pre-council" ? "de início" : "do conselho"}`}
                     disabled
                     value={date}
                     slotProps={{
@@ -193,7 +202,7 @@ export default function CouncilModal({
                     />}
                 </Box>
               </Box>
-              <Box className="flex flex-col md:flex-row md:gap-8">
+              <Box className="flex flex-col md:flex-row gap-8">
                 <Box className="w-full">
                   <Typography
                     color={colorByModeSecondary}
@@ -271,7 +280,6 @@ export default function CouncilModal({
                 <Button
                   variant="contained"
                   onClick={() => {
-                    close();
                     if (setEditing) {
                       setEditing(false);
                     }
@@ -281,7 +289,7 @@ export default function CouncilModal({
                 >
                   <Typography
                     style={{ color: textBlackColor }}
-                    variant="xl_text_bold"
+                    variant="md_text_bold"
                   >
                     Cancelar
                   </Typography>
@@ -301,10 +309,10 @@ export default function CouncilModal({
                   color="primary"
                 >
                   <Typography
-                    variant="xl_text_bold"
+                    variant="md_text_bold"
                     style={{ color: whiteColor }}
                   >
-                    {editing ? "Salvar " : "Criar "}{type === "pre-council" ? "pré-": ""}conselho
+                    {editing ? "Salvar" : "Criar"}
                   </Typography>
                 </Button>
               </Box>
@@ -314,13 +322,13 @@ export default function CouncilModal({
             <ConfirmChanges
               type="default"
               title={`Tem certeza que deseja ${editing ? "editar" : "criar"
-                } esse ${type === "pre-council" ? "pré-": ""}conselho?`}
-              description={`Ao confirmar, este ${type === "pre-council" ? "pré-": ""}conselho ${editing
-                  ? "será atualizado"
-                  : `irá para a lista de ${type === "pre-council" ? "pré-conselhos criados": "conselhos para realizar"}`
+                } esse ${type === "pre-council" ? "pré-" : ""}conselho?`}
+              description={`Ao confirmar, este ${type === "pre-council" ? "pré-" : ""}conselho ${editing
+                ? "será atualizado"
+                : `irá para a lista de ${type === "pre-council" ? "pré-conselhos criados" : "conselhos para realizar"}`
                 }, mas não se preocupe, você poderá editá-lo ${editing ? "novamente" : ""
                 } a qualquer momento.`}
-              confirmButtonText={`${editing ? "Editar" : "Criar"} ${type === "pre-council" ? "pré-": ""}conselho`}
+              confirmButtonText={`${editing ? "Editar" : "Criar"} ${type === "pre-council" ? "pré-" : ""}conselho`}
               onClose={() => setOpenConfirm(false)}
               firstConfirmButton={() => {
                 setOpenConfirm(false);

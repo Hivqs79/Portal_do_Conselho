@@ -4,16 +4,18 @@ import Title from "@/components/Title";
 import CouncilForm from "@/components/council/CouncilForm";
 import CouncilModal from "@/components/council/CouncilModal";
 import LoadingModal from "@/components/modals/LoadingModal";
+import PreCouncilModal from "@/components/pre-council/PreCouncilModal";
 import PaginationTable from "@/components/table/Pagination";
 import Table from "@/components/table/Table";
 import { useThemeContext } from "@/hooks/useTheme";
 import Class from "@/interfaces/Class";
-import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
-import { Teacher } from "@/interfaces/Teacher";
+import { CouncilFormProps } from "@/interfaces/council/CouncilFormProps";
+import { Teacher } from "@/interfaces/users/Teacher";
 import { TableContent } from "@/interfaces/table/TableContent";
 import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
 import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
 import TablePreCouncilRow from "@/interfaces/table/row/TablePreCouncilRow";
+import TablePreCouncilSectionRow from "@/interfaces/table/row/TablePreCouncilSectionRow";
 import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 import { Box, Snackbar } from "@mui/material";
@@ -43,10 +45,11 @@ export default function PreCouncil() {
   const [isEditing, setIsEditing] = useState(false);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [preCouncilSections, setPreCouncilSections] = useState<TablePreCouncilSectionRow[]>([]);
 
   const rowButtons: TableRowButtons = {
-      releaseButton: true,      
       visualizeIconButton: true,
+      preCouncilButton: true,
       onClickVisualize: (row: TableRowPossibleTypes) => {
         setVisualizedCouncil(row);
         setSelectedClass((row as TablePreCouncilRow).aclass.id);
@@ -68,7 +71,7 @@ export default function PreCouncil() {
     const headers: TableHeaderContent[] = [
       { name: "Turma" },
       { name: "Data" },
-      { name: "Horário" },
+      { name: "Data final" },
     ];
     
   const createPreCouncil = async () => {
@@ -103,6 +106,32 @@ export default function PreCouncil() {
     setSearchTeachers("");
   };
 
+  const editPreCouncil = async () => {
+    console.log("testeEdit");
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council/${visualizedCouncil?.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },        
+        body: JSON.stringify({
+          startDateTime: date,
+          finalDateTime: finalDate,
+          class_id: selectedClass,
+          teachers_id: Object.keys(selectedTeachers)
+            .filter((id) => selectedTeachers[id])
+            .map((id) => parseInt(id)),
+        }),
+      }
+    );
+    response.json().then((data) => {
+      console.log(data);
+      setIsEditing(false);
+      resetInputs();
+    });
+  };
+
   const councilInformation: CouncilFormProps = {
     visualizedCouncil: visualizedCouncil as TablePreCouncilRow,
     selectedTeachers: selectedTeachers,
@@ -117,8 +146,7 @@ export default function PreCouncil() {
     finalDate: finalDate,
     setSearchTeachers: setSearchTeachers,
     setSearchClass: setSearchClass,
-    // submitForm: isEditing ? editCouncil : createCouncil,
-    submitForm: createPreCouncil,
+    submitForm: isEditing ? editPreCouncil : createPreCouncil,
   };
 
   const verifyInputs = () => {
@@ -181,13 +209,18 @@ export default function PreCouncil() {
     let buttonText = "Agendado";
     let isDisabled = true;
 
-    if (preCouncilStartDate < now && now < preCouncilFinalDate) {
+    if (preCouncil.answered) {
+      status = "answered";
+      buttonText = "Respondido";
+      isDisabled = true;
+    }
+    else if (preCouncilStartDate < now && now < preCouncilFinalDate) {
       status = "released";
       buttonText = "Liberado";
       isDisabled = true;
     } else if (preCouncilFinalDate < now) {
-      status = preCouncil.answered ? "answered" : "not-answered";
-      buttonText = preCouncil.answered ? "Respondido" : "Não respondido";
+      status = "not-answered";
+      buttonText = "Não respondido";
       isDisabled = true;
     }
 
@@ -242,6 +275,19 @@ export default function PreCouncil() {
     fetchCouncil();
   }, [isCreate, isEditing, page, rowsPerPage, searchClass]);
 
+  useEffect(() => {
+    const fetchPreCouncilSections = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council/section/pre-council/${visualizedCouncil?.id}`
+      );
+      const data = await response.json();
+      setPreCouncilSections(data);
+    }
+    if (visualizedCouncil !== null && (visualizedCouncil as TablePreCouncilRow).status !== "scheduled") {
+      fetchPreCouncilSections();
+    }    
+  }, [visualizedCouncil]);
+
   return (
     <Box>
       <Title textHighlight="Pré-conselho" />
@@ -280,15 +326,34 @@ export default function PreCouncil() {
             }}
           />
           <CouncilModal
-            open={visualizedCouncil !== null}
+            open={
+              visualizedCouncil !== null && 
+              (
+                (visualizedCouncil as TablePreCouncilRow).status === "scheduled" 
+                  || 
+                (visualizedCouncil as TablePreCouncilRow).status === "released"
+              )
+            }
             close={() => setVisualizedCouncil(null)}
             councilInformation={councilInformation}
-            confirmFunction={() => {}}
+            confirmFunction={editPreCouncil}
             verifyForm={verifyInputs}
             setEditing={(value: boolean) => setIsEditing(value)}
             editing={isEditing}
             variant="details"
             type="pre-council"
+            awaitingAnswer={(visualizedCouncil as TablePreCouncilRow)?.status === "released"}
+          />
+          <PreCouncilModal 
+            open={
+              visualizedCouncil !== null && 
+              (visualizedCouncil as TablePreCouncilRow)?.status !== "scheduled" &&
+              (visualizedCouncil as TablePreCouncilRow)?.status !== "released"
+            }
+            close={() => setVisualizedCouncil(null)}
+            preCouncilSections={preCouncilSections}
+            answered={(visualizedCouncil as TablePreCouncilRow)?.answered}
+            readOnly={true}
           />
         </>
       )}
