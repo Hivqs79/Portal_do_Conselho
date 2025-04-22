@@ -3,6 +3,7 @@ package net.weg.general_api.controller.dashboard;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.model.dto.response.ClassRankDashboardResponseDTO;
 import net.weg.general_api.model.dto.response.FrequencyAvarageDashboardResponseDTO;
+import net.weg.general_api.model.dto.response.SatisfiedFeedbackDashboardResponseDTO;
 import net.weg.general_api.model.dto.response.VisualizedFeedbackDashboardResponseDTO;
 import net.weg.general_api.service.dashboard.DashboardService;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,12 @@ public class DashboardController {
     public ResponseEntity<VisualizedFeedbackDashboardResponseDTO> getVisualizedFeedback(
             @PathVariable String className) {
         return new ResponseEntity<>(service.getVisualizedFeedbackDashboard(className), HttpStatus.OK);
+    }
+
+    @GetMapping("/satisfied-feedbacks/{className}")
+    public ResponseEntity<SatisfiedFeedbackDashboardResponseDTO> getSatisfiedFeedback(
+            @PathVariable String className) {
+        return new ResponseEntity<>(service.getSatisfiedFeedbackDashboard(className), HttpStatus.OK);
     }
 
 

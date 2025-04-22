@@ -3,6 +3,7 @@ package net.weg.general_api.service.dashboard;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.model.dto.response.ClassRankDashboardResponseDTO;
 import net.weg.general_api.model.dto.response.FrequencyAvarageDashboardResponseDTO;
+import net.weg.general_api.model.dto.response.SatisfiedFeedbackDashboardResponseDTO;
 import net.weg.general_api.model.dto.response.VisualizedFeedbackDashboardResponseDTO;
 import net.weg.general_api.model.dto.response.users.StudentResponseDTO;
 import net.weg.general_api.model.entity.classes.Class;
@@ -154,5 +155,49 @@ public class DashboardService {
                 nonViewedStudents.stream().map(student -> modelMapper.map(student, StudentResponseDTO.class)).toList()
         );
     }
+
+    public SatisfiedFeedbackDashboardResponseDTO getSatisfiedFeedbackDashboard(String className) {
+        List<FeedbackStudent> latestFeedbacks = feedbackStudentService.getLatestFeedbackStudentsbyClassName(className);
+        latestFeedbacks = latestFeedbacks.stream().filter(FeedbackStudent::isViewed).toList();
+
+        if (latestFeedbacks.isEmpty()) {
+            return new SatisfiedFeedbackDashboardResponseDTO(0, 0, 0.0, 0.0, List.of(), List.of());
+        }
+
+        Map<Boolean, List<FeedbackStudent>> partitioned = latestFeedbacks.stream()
+                .collect(Collectors.partitioningBy(FeedbackStudent::isSatisfied));
+
+        List<FeedbackStudent> satisfiedFeedbacks = partitioned.get(true);
+        List<FeedbackStudent> nonSatisfiedFeedbacks = partitioned.get(false);
+
+        // Calcula totais
+        int totalSatisfied = satisfiedFeedbacks != null ? satisfiedFeedbacks.size() : 0;
+        int totalNonSatisfied = nonSatisfiedFeedbacks != null ? nonSatisfiedFeedbacks.size() : 0;
+        int totalStudents = latestFeedbacks.size();
+
+        // Calcula porcentagens
+        double satisfiedPercent = totalStudents > 0 ? (totalSatisfied * 100.0) / totalStudents : 0.0;
+        double nonSatisfiedPercent = totalStudents > 0 ? (totalNonSatisfied * 100.0) / totalStudents : 0.0;
+
+        // Extrai listas de estudantes
+        List<Student> satisfiedStudents = satisfiedFeedbacks != null ?
+                satisfiedFeedbacks.stream().map(FeedbackStudent::getStudent).collect(Collectors.toList()) :
+                List.of();
+
+
+        List<Student> nonViewedStudents = nonSatisfiedFeedbacks != null ?
+                nonSatisfiedFeedbacks.stream().map(FeedbackStudent::getStudent).collect(Collectors.toList()) :
+                List.of();
+
+        return new SatisfiedFeedbackDashboardResponseDTO(
+                totalSatisfied,
+                totalNonSatisfied,
+                satisfiedPercent,
+                nonSatisfiedPercent,
+                satisfiedStudents.stream().map(student -> modelMapper.map(student, StudentResponseDTO.class)).toList(),
+                nonViewedStudents.stream().map(student -> modelMapper.map(student, StudentResponseDTO.class)).toList()
+        );
+    }
+
 
 }
