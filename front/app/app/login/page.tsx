@@ -58,7 +58,7 @@ export default function Login() {
           }
         }
         if (data.token) { 
-          document.cookie = `token=${data.token}; path=/; secure`;
+          document.cookie = `token=${encodeURIComponent(Encryptor(data.token))}; path=/; secure`;
           const user = { role: data.role.toLowerCase(), userId: data.userId, name: data.name };
           document.cookie = `user=${encodeURIComponent(Encryptor(user))}; path=/; secure`;
           setToken(data.token);

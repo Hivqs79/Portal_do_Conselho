@@ -33,7 +33,8 @@ function CoreLayout({ children }: { children: ReactElement }) {
     terciaryColor,
     reloadTheme,
   } = useThemeContext();
-  const { role, token, setName, setRole, setToken, setUserId } = useRoleContext();
+  const { role, token, setName, setRole, setToken, setUserId } =
+    useRoleContext();
   const pathname = usePathname();
   const isLoginPage = pathname?.includes("/login");
   const [hydrated, setHydrated] = useState(false);
@@ -47,17 +48,32 @@ function CoreLayout({ children }: { children: ReactElement }) {
     reloadTheme();
   }, [hydrated]);
 
+  const getTokenFromCookie = () => {
+    try {
+      const tokenCookie = document.cookie.split("; ").find((row) => row.startsWith("token="));
+      const encodedToken = tokenCookie?.split("=")[1] || "";
+      const decodedToken = decodeURIComponent(encodedToken);
+      const decryptedData = Decryptor(decodedToken);
+      return decryptedData;
+    } catch (error) {
+      console.log("Error in getTokenFromCookie:", error);
+      return "";
+    }
+  };
+
   useEffect(() => {
     if (!isLoginPage) {
-      const userCookie = document.cookie.split("; ").find(row => row.startsWith("user="));
+      const userCookie = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("user="));
 
       if (userCookie) {
         const decryptedUser = Decryptor(decodeURIComponent(userCookie.split("=")[1]));
         setName(decryptedUser?.name || "");
         setUserId(decryptedUser?.userId || -1);
         setRole(decryptedUser?.role || "");
-        const tokenCookie = document.cookie.split("; ").find(row => row.startsWith("token="));
-        setToken(tokenCookie ? tokenCookie.split("=")[1] : "");
+        const token = getTokenFromCookie();
+        setToken(token as string);
       }
     }
 
