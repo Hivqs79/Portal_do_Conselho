@@ -99,7 +99,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/pedagogic/{id}").hasRole("SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.PUT, "/pedagogic/{id}").hasRole("PEDAGOGIC")
                         .requestMatchers(HttpMethod.DELETE, "/pedagogic/{id}").hasRole("PEDAGOGIC")
-                        .requestMatchers(HttpMethod.GET, "/pedagogic").hasRole("SUBPEDAGOGIC")
+                        .requestMatchers(HttpMethod.GET, "/pedagogic").authenticated()
                         .requestMatchers(HttpMethod.POST, "/pedagogic").hasRole("ADMIN")
 
                         // Configurações para FeedbackUserController

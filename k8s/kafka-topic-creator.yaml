@@ -14,6 +14,7 @@ spec:
           - |
             kafka-topics.sh --create --topic notification --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
             kafka-topics.sh --create --topic chat_messages --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
+            kafka-topics.sh --create --topic room_events --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
             kafka-topics.sh --create --topic annotationclass --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
             kafka-topics.sh --create --topic annotationstudent --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1
             kafka-topics.sh --create --topic class --bootstrap-server kafka-service:9092 --partitions 1 --replication-factor 1

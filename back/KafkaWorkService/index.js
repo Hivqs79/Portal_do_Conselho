@@ -11,6 +11,7 @@ const consumer = new kafka.Consumer(
   [
     { topic: "notification", partition: 0 },
     { topic: "chat_messages", partition: 0 },
+    { topic: "room_events", partition: 0 }
   ],
   { autoCommit: true }
 );
@@ -19,6 +20,7 @@ const consumer = new kafka.Consumer(
 const connections = {
   notifications: {},
   chats: {},
+  rooms: {}
 };
 
 // Endpoint para notificações
@@ -41,6 +43,24 @@ app.get("/events/notifications/:userId", (req, res) => {
   });
 });
 
+app.get("/events/rooms/:userId", (req, res) => {
+  const userId = req.params.userId;
+
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+
+  console.log(`Conexão SSE iniciada para atualizações de sala do usuário: ${userId}`);
+
+  connections.rooms[userId] = res;
+
+  req.on("close", () => {
+    console.log(`Conexão de sala fechada para o usuário: ${userId}`);
+    delete connections.rooms[userId];
+  });
+});
+
 // Endpoint para chat
 app.get("/events/chat/:roomId/:userId", (req, res) => {
   const { roomId, userId } = req.params;
@@ -51,6 +71,7 @@ app.get("/events/chat/:roomId/:userId", (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
+  
 
   console.log(
     `Conexão SSE iniciada para chat na sala ${roomId} (usuário ${userId})`
@@ -114,6 +135,18 @@ consumer.on("message", (message) => {
           });
         }
       }
+    } else if (message.topic === "room_events") {
+      const parsedData = JSON.parse(data.object);
+      
+      if (parsedData.type === "room_created") {
+        parsedData.usersId.forEach(userId => {
+          if (connections.rooms[userId]) {
+            connections.rooms[userId].write(
+              `data: ${JSON.stringify({ type: "room_created", room: parsedData.room })}\n\n`
+            );
+          }
+        });
+      }
     }
   } catch (error) {
     console.error(
@@ -134,4 +167,5 @@ app.listen(3090, () => {
   console.log("Endpoints disponíveis:");
   console.log("- GET /events/notifications/:userId");
   console.log("- GET /events/chat/:roomId/:userId");
+  console.log("- GET /events/room/:userId");
 });
