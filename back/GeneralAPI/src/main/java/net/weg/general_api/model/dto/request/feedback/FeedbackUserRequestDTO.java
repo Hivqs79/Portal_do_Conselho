@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class FeedbackUserRequestDTO {
 
     @NotNull(message = "{not.null.message}")
-    private Long council_id;
+    private Long pre_council_id;
     @NotBlank(message = "{not.blank.message}")
     private String strengths;
     @NotBlank(message = "{not.blank.message}")

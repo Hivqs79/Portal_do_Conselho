@@ -16,7 +16,6 @@ public abstract class Feedback {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Council council;
 
     @Column(nullable = false, columnDefinition = "TEXT")

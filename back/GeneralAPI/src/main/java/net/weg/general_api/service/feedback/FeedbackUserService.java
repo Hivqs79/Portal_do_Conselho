@@ -8,10 +8,12 @@ import net.weg.general_api.model.dto.request.feedback.FeedbackUserRequestDTO;
 import net.weg.general_api.model.dto.response.feedback.FeedbackUserResponseDTO;
 import net.weg.general_api.model.entity.council.Council;
 import net.weg.general_api.model.entity.feedback.FeedbackUser;
+import net.weg.general_api.model.entity.preCouncil.PreCouncil;
 import net.weg.general_api.model.entity.users.User;
 import net.weg.general_api.repository.FeedbackUserRepository;
 import net.weg.general_api.service.council.CouncilService;
 import net.weg.general_api.service.kafka.producer.KafkaEventSender;
+import net.weg.general_api.service.preCouncil.PreCouncilService;
 import net.weg.general_api.service.users.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,7 @@ public class FeedbackUserService {
 
     private FeedbackUserRepository repository;
     private CouncilService councilService;
+    private PreCouncilService preCouncilService;
     private UserService userService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
@@ -39,15 +42,15 @@ public class FeedbackUserService {
 
     public FeedbackUserResponseDTO createFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO) {
 
-        if (repository.existsFeedbackUserByCouncil_IdAndAndUser_Id(feedbackUserRequestDTO.getCouncil_id(), feedbackUserRequestDTO.getUser_id())) {
+        if (repository.existsFeedbackUserByPreCouncil_IdAndAndUser_Id(feedbackUserRequestDTO.getPre_council_id(), feedbackUserRequestDTO.getUser_id())) {
             throw new StudentFeedbackAlreadyExistException("Student feedback already exists");
         }
 
-        Council council = councilService.findCouncilEntity(feedbackUserRequestDTO.getCouncil_id());
+        PreCouncil preCouncil = preCouncilService.findPreCouncilEntity(feedbackUserRequestDTO.getPre_council_id());
         User user = userService.findUserEntity(feedbackUserRequestDTO.getUser_id());
 
         FeedbackUser feedbackUser = modelMapper.map(feedbackUserRequestDTO, FeedbackUser.class);
-        feedbackUser.setCouncil(council); //SETAR CONSELHO
+        feedbackUser.setPreCouncil(preCouncil); //SETAR CONSELHO
         feedbackUser.setUser(user); //SETAR USUARIO
 
         FeedbackUser feedbackSaved = repository.save(feedbackUser);
@@ -68,8 +71,7 @@ public class FeedbackUserService {
 
     public FeedbackUserResponseDTO updateFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO, Long id) {
 
-        if (repository.existsFeedbackUserByCouncil_IdAndAndUser_Id(feedbackUserRequestDTO.getCouncil_id(), feedbackUserRequestDTO.getUser_id())
-                && !findFeedbackEntity(id).getUser().equals(userService.findUserEntity(feedbackUserRequestDTO.getUser_id()))) {
+        if (repository.existsFeedbackUserByPreCouncil_IdAndAndUser_Id(feedbackUserRequestDTO.getPre_council_id(), feedbackUserRequestDTO.getUser_id())) {
             throw new UserFeedbackAlreadyExistException("User feedback already exists");
         }
 

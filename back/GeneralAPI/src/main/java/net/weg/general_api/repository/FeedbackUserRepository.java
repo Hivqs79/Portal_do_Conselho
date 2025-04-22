@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface FeedbackUserRepository extends JpaRepository<FeedbackUser, Long>, JpaSpecificationExecutor<FeedbackUser> {
 
-    boolean existsFeedbackUserByCouncil_IdAndAndUser_Id(Long council_id, Long user_id);
+    boolean existsFeedbackUserByPreCouncil_IdAndAndUser_Id(Long pre_council_id, Long user_id);
 
     default Page<FeedbackUser> getAllByEnabledIsTrue(Specification<FeedbackUser> spec, Pageable pageable) {
         Specification<FeedbackUser> enabledSpec = Specification.where(spec)
@@ -22,5 +22,4 @@ public interface FeedbackUserRepository extends JpaRepository<FeedbackUser, Long
 
         return findAll(enabledSpec, pageable);
     }
-
 }

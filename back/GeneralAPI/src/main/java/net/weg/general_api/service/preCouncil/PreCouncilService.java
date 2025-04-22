@@ -90,6 +90,7 @@ public class PreCouncilService {
         PreCouncil preCouncil = this.findPreCouncilEntity(id);
         preCouncil.setAnswered(true);
         preCouncil = repository.save(preCouncil);
+        kafkaEventSender.sendEvent(preCouncil, "PATCH", "Pre-council finalized");
         return modelMapper.map(preCouncil, PreCouncilResponseDTO.class);
     }
 }

@@ -41,7 +41,7 @@ public class Class {
     @Column(nullable = false)
     private boolean enabled;
 
-    @ManyToMany(mappedBy = "classes")
+    @ManyToMany(mappedBy = "classes", fetch = FetchType.EAGER)
     private List<Teacher> teachers;
 
     @ManyToMany(mappedBy = "classes", fetch = FetchType.EAGER)

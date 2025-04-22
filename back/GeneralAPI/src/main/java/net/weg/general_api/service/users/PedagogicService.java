@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class PedagogicService {
@@ -25,6 +27,10 @@ public class PedagogicService {
     public Page<PedagogicResponseDTO> findPedagogicSpec(Specification<Pedagogic> spec, Pageable pageable) {
         Page<Pedagogic> pedagogics = repository.getAllByEnabledIsTrue(spec, pageable);
         return pedagogics.map(pedagogic -> modelMapper.map(pedagogic, PedagogicResponseDTO.class));
+    }
+
+    public List<Pedagogic> findAllPedagogicEntity() {
+        return repository.findAll();
     }
 
     public PedagogicResponseDTO createPedagogic(PedagogicRequestDTO pedagogicRequestDTO) {

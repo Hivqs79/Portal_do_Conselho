@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.weg.general_api.model.dto.response.council.CouncilResponseDTO;
+import net.weg.general_api.model.dto.response.preCouncil.PreCouncilResponseDTO;
 import net.weg.general_api.model.dto.response.users.UserResponseDTO;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class FeedbackUserResponseDTO {
     private Long id;
-    private CouncilResponseDTO council;
+    private PreCouncilResponseDTO preCouncil;
     private String strengths;
     private String toImprove;
     private UserResponseDTO user;

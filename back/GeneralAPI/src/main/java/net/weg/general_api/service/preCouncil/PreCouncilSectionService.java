@@ -15,6 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -83,6 +87,9 @@ public class PreCouncilSectionService {
 
     public List<PreCouncilSectionResponseDTO> getAllByLeaderId(Long idLeader) {
         PreCouncilResponseDTO preCouncil = preCouncilService.getPreCouncilByLeaderId(idLeader);
+        if (preCouncil.getStartDateTime().isAfter(LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))) || preCouncil.getFinalDateTime().isBefore(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))) {
+            return new ArrayList<>();
+        }
         List<PreCouncilSection> preCouncilSectionList = repository.getAllByPreCouncil_Id(preCouncil.getId());
         return preCouncilSectionList.stream().map(preCouncilSection -> modelMapper.map(preCouncilSection, PreCouncilSectionResponseDTO.class)).toList();
     }

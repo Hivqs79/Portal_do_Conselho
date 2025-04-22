@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.weg.general_api.model.entity.preCouncil.PreCouncil;
 import net.weg.general_api.model.entity.users.User;
 
 import java.time.LocalDateTime;
@@ -24,12 +25,16 @@ public class FeedbackUser extends Feedback {
     @Column(nullable = false)
     private boolean isSatisfied;
 
+    @ManyToOne
+    private PreCouncil preCouncil;
+
     @Override
     public String toString() {
         return "FeedbackUser{" +
                 "user=" + user.getName() +
                 ", isViewed=" + isViewed +
                 ", isSatisfied=" + isSatisfied +
+                ", preCouncil=" + preCouncil +
                 '}';
     }
 
