@@ -184,7 +184,7 @@ export default function SidebarRooms({
           {roomsData?.length > 0 ? (
             <>
               {userRole === "pedagogic" && (
-                <Button fullWidth onClick={role !== "pedagogic" ? addPedagogicUser : addUser} variant="contained">
+                <Button fullWidth onClick={role !== "pedagogic" && role !== "subpedagogic"  ? addPedagogicUser : addUser} variant="contained">
                   Iniciar uma conversa
                 </Button>
               )}
@@ -216,7 +216,7 @@ export default function SidebarRooms({
           )}
         </Box>
         {openAddUserModal && (
-          <AddUserModal type={role !== "pedagogic" ? "user" : "pedagogic"} onClose={() => setOpenAddUserModal(false)}/>
+          <AddUserModal type={role !== "pedagogic" && role !== "subpedagogic" ? "user" : "pedagogic"} onClose={() => setOpenAddUserModal(false)}/>
         )}
       </Box>
     </>
