@@ -25,6 +25,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/pre-council")
 @AllArgsConstructor
@@ -37,7 +39,7 @@ public class PreCouncilController {
     @ApiResponse(responseCode = "200", description = "Pre-councils found", content = @Content(schema = @Schema(implementation = Page.class), examples = @ExampleObject(value = "{\"content\":[{\"id\":1,\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}],\"pageable\":{\"pageNumber\":0,\"pageSize\":10,\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true}},\"totalElements\":1,\"totalPages\":1}")))
     @ApiResponse(responseCode = "400", description = "Invalid parameters")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public Page<PreCouncilResponseDTO> searchPreCouncil(@And({@Spec(path = "id", spec = Equal.class), @Spec(path = "aClass.name", params = "className", spec = Like.class), @Spec(path = "answered", params = "answered", spec = Equal.class), @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class), @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class), @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class), @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)}) Specification<PreCouncil> spec, Pageable pageable) {
+    public Page<PreCouncilResponseDTO> searchPreCouncil(@And({@Spec(path = "id", spec = Equal.class), @Spec(path = "aClass.name", params = "className", spec = Like.class), @Spec(path = "answered", params = "answered", spec = Equal.class), @Spec(path = "isReturned", params = "returned", spec = Equal.class), @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class), @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class), @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class), @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)}) Specification<PreCouncil> spec, Pageable pageable) {
         return service.findPreCouncilSpec(spec, pageable);
     }
 
@@ -62,7 +64,7 @@ public class PreCouncilController {
     }
 
     @PatchMapping("/finalize/{id}")
-    @Operation(method = "PUT", summary = "Finalize pre-council", description = "Finalizes a pre-council by it's id")
+    @Operation(method = "PATCH", summary = "Finalize pre-council", description = "Finalizes a pre-council by it's id")
     @ApiResponse(responseCode = "200", description = "Pre-council finalized", content = @Content(schema = @Schema(implementation = PreCouncilResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-02T00:00:00\"}")))
     @ApiResponse(responseCode = "404", description = "Pre-council or council not found")
     @ApiResponse(responseCode = "500", description = "Server error")
@@ -95,5 +97,15 @@ public class PreCouncilController {
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<PreCouncilResponseDTO> getPreCouncilByLeaderId(@Parameter(description = "Class leader ID", example = "1") @PathVariable Long idLeader) {
         return new ResponseEntity<>(service.getPreCouncilByLeaderId(idLeader), HttpStatus.OK);
+    }
+
+    @PatchMapping("/return/{id}")
+    @Operation(method = "PATCH", summary = "Return pre-council", description = "Returns pre-council")
+    @ApiResponse(responseCode = "200", description = "Pre-council returned", content = @Content(schema = @Schema(implementation = PreCouncilResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-03T00:00:00\"}")))
+    @ApiResponse(responseCode = "404", description = "Pre-council not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<Void> returnPreCouncil(@Parameter(description = "Feedback ID", example = "1") @PathVariable Long id) {
+        service.returnPreCouncil(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

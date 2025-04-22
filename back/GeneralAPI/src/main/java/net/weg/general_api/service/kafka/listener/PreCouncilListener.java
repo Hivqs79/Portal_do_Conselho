@@ -56,7 +56,7 @@ public class PreCouncilListener {
         if (httpMethod.equals("POST")) {
             createSections(getPreCouncilByMessage(kafkaMessage));
         };
-        if (httpMethod.equals("PATCH")) {
+        if (httpMethod.equals("PATCH") && kafkaMessage.getDescription().equals("Pre-council finalized")) {
             createFeedbacks(getPreCouncilByMessage(kafkaMessage));
         };
     }

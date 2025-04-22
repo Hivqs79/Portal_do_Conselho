@@ -66,7 +66,7 @@ export default function ReleaseFeedback() {
     try {
       const fetchPreCouncils = async () => {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council?answered=true&page=${page - 1}&size=${rowsPerPage}&className=${feedbackSearch}`
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council?answered=true&returned=false&page=${page - 1}&size=${rowsPerPage}&className=${feedbackSearch}`
         );
         const data = await response.json();
         setPreCouncils(data);
