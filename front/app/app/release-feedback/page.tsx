@@ -13,74 +13,92 @@ import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 import { TableContent } from "@/interfaces/table/TableContent";
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import PreCouncilModal from "@/components/pre-council/PreCouncilModal";
 import TablePreCouncilRow from "@/interfaces/table/row/TablePreCouncilRow";
 import FeedbackUser from "@/interfaces/feedback/FeedbackUser";
 import AutoSaveIndicator from "@/components/AutoSaveIndicator";
 import OpacityHex from "@/utils/OpacityHex";
 import { useThemeContext } from "@/hooks/useTheme";
-import { release } from "os";
 
 export default function ReleaseFeedback() {
-  const {backgroundColor} = useThemeContext();
+  const { backgroundColor } = useThemeContext();
   const [feedbacks, setFeedbacks] = useState<TableContent | null>(null);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [feedbackSearch, setFeedbackSearch] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
   const [studentTerm, setStudentTerm] = useState<string>("");
-  const [studentContent, setStudentContent] = useState<TableRowPossibleTypes[]>();
+  const [studentContent, setStudentContent] =
+    useState<TableRowPossibleTypes[]>();
   const [councilId, setCouncilId] = useState<number>(0);
   const [classContent, setClassContent] = useState<FeedbackClass>();
   const [releaseCouncilPage, setReleaseCouncilPage] = useState<boolean>(true);
   const [preCouncils, setPreCouncils] = useState<TableContent | null>(null);
   const [preCouncilId, setPreCouncilId] = useState<number>(0);
-  const [preCouncilFeedbacks, setPreCouncilFeedbacks] = useState<FeedbackUser[]>([]);
-  const [idFeedbackChanged, setIdFeedbackChanged] = useState<number | null>(null);
+  const [preCouncilFeedbacks, setPreCouncilFeedbacks] = useState<
+    FeedbackUser[]
+  >([]);
+  const [idFeedbackChanged, setIdFeedbackChanged] = useState<number | null>(
+    null
+  );
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const [sentRequests, setSentRequests] = useState(false);
-  const [editedRows, setEditedRows] = useState<Record<number, FeedbackUser>>({});
+  const [editedRows, setEditedRows] = useState<Record<number, FeedbackUser>>(
+    {}
+  );
   const [isSaved, setSaved] = useState(true);
   const [showSaved, setShowSaved] = useState(false);
-  const [releasePreCouncilFeedback, setReleasePreCouncilFeedback] = useState<boolean>(false);
+  const [releasePreCouncilFeedback, setReleasePreCouncilFeedback] =
+    useState<boolean>(false);
+  const [releaseCouncilFeedback, setReleaseCouncilFeedback] =
+    useState<boolean>(false);
 
   useEffect(() => {
     try {
       const fetchFeedbacks = async () => {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class?isReturned=false&page=${page - 1}&size=${rowsPerPage}&className=${feedbackSearch}`
+          `${
+            process.env.NEXT_PUBLIC_URL_GENERAL_API
+          }/feedbacks/class?isReturned=false&page=${
+            page - 1
+          }&size=${rowsPerPage}&className=${feedbackSearch}`
         );
         console.log("Response:", feedbackSearch);
         const data = await response.json();
-        console.log("THIS data", data)
+        console.log("THIS data", data);
         setFeedbacks(data);
       };
       fetchFeedbacks();
     } catch (error) {
       console.log("Error fetching data:", error);
     }
-  }, [page, rowsPerPage, feedbackSearch]);
+  }, [page, rowsPerPage, feedbackSearch, releaseCouncilFeedback]);
 
   useEffect(() => {
     try {
       const fetchPreCouncils = async () => {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council?answered=true&returned=false&page=${page - 1}&size=${rowsPerPage}&className=${feedbackSearch}`
+          `${
+            process.env.NEXT_PUBLIC_URL_GENERAL_API
+          }/pre-council?answered=true&returned=false&page=${
+            page - 1
+          }&size=${rowsPerPage}&className=${feedbackSearch}`
         );
         const data = await response.json();
+        console.log(data);
         setPreCouncils(data);
       };
       fetchPreCouncils();
     } catch (error) {
       console.log("Error fetching data:", error);
     }
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, releasePreCouncilFeedback, feedbackSearch]);
 
   useEffect(() => {
-    const fetchReleasePreCouncil = async () => {
-      const responses = await Promise.all (
-        preCouncilFeedbacks.map((preCouncilFeedback) => {          
+    const fetchReleasePreCouncilFeedbacks = async () => {
+      const responses = await Promise.all(
+        preCouncilFeedbacks.map((preCouncilFeedback) => {
           return fetch(
             `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/user/return/${preCouncilFeedback.id}`,
             {
@@ -93,12 +111,61 @@ export default function ReleaseFeedback() {
         })
       );
       console.log(responses);
-    }
-    if (releasePreCouncilFeedback && preCouncilFeedbacks.length > 0) {
-      fetchReleasePreCouncil();
+    };
+    const fetchReleasePreCouncil = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council/return/${preCouncilId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response);
       setReleasePreCouncilFeedback(false);
+    };
+    if (releasePreCouncilFeedback && preCouncilFeedbacks.length > 0) {
+      fetchReleasePreCouncilFeedbacks();
+      fetchReleasePreCouncil();
     }
-  }, [releasePreCouncilFeedback, preCouncilFeedbacks])
+  }, [releasePreCouncilFeedback, preCouncilFeedbacks]);
+
+  useEffect(() => {
+    const fetchClass = async () => {
+      if (!classContent) return;
+      const responseClass = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class/return/${classContent?.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(responseClass);
+    };
+    const fetchStudents = async () => {
+      const students = await fetchStudentsFeedback();
+      const responseStudent = await Promise.all(
+        students.map((student) => {
+          return fetch(
+            `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/student/return/${student.id}`,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+        })
+      );
+      console.log(responseStudent);      
+    }
+    fetchClass();
+    fetchStudents();
+    setReleaseCouncilFeedback(false);
+  }, [releaseCouncilFeedback]);
 
   const rowButtonsCouncil: TableRowButtons = {
     rankVisualizer: true,
@@ -112,7 +179,9 @@ export default function ReleaseFeedback() {
       setCouncilId(councilId);
       console.log("councilId", councilId);
     },
-    onClickRelease: async () => {
+    onClickRelease: async (row: TableRowPossibleTypes) => {
+      setClassContent(row as FeedbackClass);
+      setReleaseCouncilFeedback(true);
     },
   };
 
@@ -132,35 +201,30 @@ export default function ReleaseFeedback() {
     },
   };
 
+  const fetchStudentsFeedback = async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/student?isReturned=false&councilId=${councilId}&studentName=${studentTerm}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+    return data.content as FeedbackStudent[];
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/student?isReturned=false&councilId=${councilId}&studentName=${studentTerm}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("alunos: ", data.content);
-        if (data.content.length > 0) {
-          const frequency = "frequency" in data.content[0] ? data.content[0].frequency : null;
-          console.log("frequency", frequency);
-        }
-        setStudentContent(data.content as FeedbackStudent[]);
+        const data = await fetchStudentsFeedback();
+        setStudentContent(data);
       } catch (error) {
         console.error("Fetch error:", error);
       }
     };
-
     fetchData();
   }, [councilId, studentTerm]);
 
@@ -176,7 +240,7 @@ export default function ReleaseFeedback() {
       } catch (error) {
         console.log("Error fetching data:", error);
       }
-    }
+    };
     fetchFeedbackUsers();
   }, [preCouncilId]);
 
@@ -186,7 +250,9 @@ export default function ReleaseFeedback() {
     rankText: "Classificação da Turma",
   };
 
-  const headersClass: TableHeaderContent[] = [{ name: `Turma: ${classContent?.council.aclass.name}` }];
+  const headersClass: TableHeaderContent[] = [
+    { name: `Turma: ${classContent?.council.aclass.name}` },
+  ];
 
   const headerButtonsStudent: TableHeaderButtons = {
     searchInput: true,
@@ -232,7 +298,11 @@ export default function ReleaseFeedback() {
     setIsOpen(false);
   }, [releaseCouncilPage]);
 
-  const setContentSection = (content: string, idFeedback: number, type: "strengths" | "toImprove") => {
+  const setContentSection = (
+    content: string,
+    idFeedback: number,
+    type: "strengths" | "toImprove"
+  ) => {
     if (!preCouncilFeedbacks || !(preCouncilFeedbacks?.length > 0)) return;
     setIdFeedbackChanged(idFeedback);
     setPreCouncilFeedbacks(
@@ -254,7 +324,7 @@ export default function ReleaseFeedback() {
     },
     setNegativeContent: (content: string, idFeedback: number) => {
       setContentSection(content, idFeedback, "toImprove");
-    }
+    },
   };
 
   useEffect(() => {
@@ -269,10 +339,10 @@ export default function ReleaseFeedback() {
   const debouncedUpdateSection = () => {
     if (!preCouncilFeedbacks) return;
 
-    const row = preCouncilFeedbacks.find(row => row.id === idFeedbackChanged);
+    const row = preCouncilFeedbacks.find((row) => row.id === idFeedbackChanged);
     if (!row) return;
 
-    setEditedRows(prev => ({ ...prev, [row.id]: row }));
+    setEditedRows((prev) => ({ ...prev, [row.id]: row }));
     setSaved(false);
     if (timeoutId) clearTimeout(timeoutId);
   };
@@ -283,18 +353,21 @@ export default function ReleaseFeedback() {
     const debounce = setTimeout(() => {
       const newTimeoutId = setTimeout(async () => {
         const responses = await Promise.all(
-          Object.keys(editedRows).map(id => {
+          Object.keys(editedRows).map((id) => {
             const row = editedRows[parseInt(id)];
-            return fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/user/${id}`, {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                pre_council_id: row.preCouncil.id,
-                strengths: row.strengths,
-                toImprove: row.toImprove,
-                user_id: row.user.id,
-              })
-            });
+            return fetch(
+              `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/user/${id}`,
+              {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  pre_council_id: row.preCouncil.id,
+                  strengths: row.strengths,
+                  toImprove: row.toImprove,
+                  user_id: row.user.id,
+                }),
+              }
+            );
           })
         );
         console.log(responses);
@@ -330,11 +403,29 @@ export default function ReleaseFeedback() {
         tableContent={releaseCouncilPage ? feedbacks : preCouncils}
         headers={releaseCouncilPage ? headersCouncil : headersPreCouncil}
         headerButtons={headerButtons}
-        rowButtons={releaseCouncilPage ? rowButtonsCouncil : rowButtonsPreCouncil}
+        rowButtons={
+          releaseCouncilPage ? rowButtonsCouncil : rowButtonsPreCouncil
+        }
       />
       <PaginationTable
-        count={releaseCouncilPage ? (feedbacks ? feedbacks.totalPages : 0) : (preCouncils ? preCouncils.totalPages : 0)}
-        page={releaseCouncilPage ? (feedbacks ? feedbacks.pageable.pageNumber + 1 : 1) : (preCouncils ? preCouncils.pageable.pageNumber + 1 : 1)}
+        count={
+          releaseCouncilPage
+            ? feedbacks
+              ? feedbacks.totalPages
+              : 0
+            : preCouncils
+            ? preCouncils.totalPages
+            : 0
+        }
+        page={
+          releaseCouncilPage
+            ? feedbacks
+              ? feedbacks.pageable.pageNumber + 1
+              : 1
+            : preCouncils
+            ? preCouncils.pageable.pageNumber + 1
+            : 1
+        }
         setPage={setPage}
         rowsPerPage={rowsPerPage}
         setRowsPerPage={(rowsPerPage: number) => {
@@ -363,7 +454,13 @@ export default function ReleaseFeedback() {
         message="Estes são os feedbacks que os alunos escreveram, caso queria ajustar algo de forma a não prejudicar o intuito inicial, apenas de modo a refinar a mensagem ou a evitar posíveis má interpretações."
         rowButtons={rowButtonsFeedbacks}
       />
-      <Box style={{ backgroundColor: OpacityHex(backgroundColor, 0.4) }} className={"fixed bottom-3 duration-200 p-2 rounded-lg left-8 z-[1000] " + (showSaved ? "opacity-100" : "opacity-0")}>
+      <Box
+        style={{ backgroundColor: OpacityHex(backgroundColor, 0.4) }}
+        className={
+          "fixed bottom-3 duration-200 p-2 rounded-lg left-8 z-[1000] " +
+          (showSaved ? "opacity-100" : "opacity-0")
+        }
+      >
         <AutoSaveIndicator
           saved={isSaved}
           text={isSaved ? "Salvo" : "Salvando..."}
