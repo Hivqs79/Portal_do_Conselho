@@ -21,6 +21,14 @@ public interface FeedbackStudentRepository extends JpaRepository<FeedbackStudent
         return findAll(enabledSpec, pageable);
     }
 
+    default Page<FeedbackStudent> getAllByEnabledIsTrueAndStudentId(Specification<FeedbackStudent> spec, Pageable pageable, Long studentId) {
+        Specification<FeedbackStudent> enabledSpec = Specification.where(spec)
+                .and((root, query, cb) -> cb.isTrue(root.get("enabled")))
+                .and((root, query, cb) -> cb.equal(root.get("student").get("id"), studentId));
+
+        return findAll(enabledSpec, pageable);
+    }
+
     @Query("SELECT fs FROM FeedbackStudent fs " +
             "JOIN fs.council c " +
             "JOIN c.aClass cl " +

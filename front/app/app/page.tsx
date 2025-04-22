@@ -13,8 +13,8 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [tableContent, setTableContent] = useState<TableContent>();
-  const { role } = useRoleContext();
+  const [tableContent, setTableContent] = useState<TableContent | null>(null);
+  const { role, userId } = useRoleContext();
 
   const rowButtons: TableRowButtons = {
     visualizeIconButton: true,
@@ -40,8 +40,13 @@ export default function Home() {
 
   useEffect(() => {
     const fetchTableContent = async () => {
-      const response = await fetch("http://localhost:3030/feedback");
-      const data: TableContent = await response.json();
+      if (!userId || role === "admin") return;
+      const typeOfRequest = (role === "student" || role === "leader") ? "student" : "user";  
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/${typeOfRequest}/${typeOfRequest}-id/${userId}?isReturned=true&page=${page - 1}&size=${rowsPerPage}`	
+      );
+      const data = await response.json();
+      console.log(data);
       setTableContent(data);                  
     };
     fetchTableContent();

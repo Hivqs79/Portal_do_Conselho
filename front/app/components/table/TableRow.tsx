@@ -52,7 +52,9 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
       ? content.startDateTime
       : "council" in content
         ? content.council.startDateTime
-        : null;
+        : "preCouncil" in content
+          ? content.preCouncil.startDateTime
+          : null;
 
   const finalDate =
     "finalDateTime" in content
@@ -74,7 +76,9 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
         ? getStudentNameAndRemoveDate()
         : "aclass" in content
           ? content.aclass.name
-          : "";
+          : "preCouncil" in content
+            ? content.preCouncil.aclass.name
+            : "";
 
   const rank = "rank" in content && content.rank;
 

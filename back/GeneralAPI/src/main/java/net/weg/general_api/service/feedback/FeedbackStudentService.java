@@ -33,8 +33,13 @@ public class FeedbackStudentService {
     private final KafkaEventSender kafkaEventSender;
 
     public Page<FeedbackStudentResponseDTO> findFeedbackStudentSpec(Specification<FeedbackStudent> spec, Pageable pageable) {
-        Page<FeedbackStudent> feedbackStudentes = repository.getAllByEnabledIsTrue(spec, pageable);
-        return feedbackStudentes.map(feedbackStudent -> modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class));
+        Page<FeedbackStudent> feedbackStudents = repository.getAllByEnabledIsTrue(spec, pageable);
+        return feedbackStudents.map(feedbackStudent -> modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class));
+    }
+
+    public Page<FeedbackStudentResponseDTO> findFeedbackStudentSpecByStudentId(Specification<FeedbackStudent> spec, Pageable pageable, Long studentId) {
+        Page<FeedbackStudent> feedbackStudents = repository.getAllByEnabledIsTrueAndStudentId(spec, pageable, studentId);
+        return feedbackStudents.map(feedbackStudent -> modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class));
     }
 
     public FeedbackStudentResponseDTO createFeedbackStudent(FeedbackStudentRequestDTO feedbackStudentRequestDTO) {

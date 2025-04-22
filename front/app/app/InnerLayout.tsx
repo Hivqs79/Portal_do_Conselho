@@ -62,22 +62,21 @@ function CoreLayout({ children }: { children: ReactElement }) {
       secondaryColor
     );
     document.documentElement.style.setProperty(
-      "--terciary-color",
+      "--terciary-color", 
       terciaryColor
     );
   }, [secondaryColor, primaryColor, terciaryColor]);
 
   useEffect(() => {
     if (role === "") {
-      setRole("pedagogic");
+      setRole("teacher");
     }        
   }, [role, setRole]);
 
   useEffect(() => {
     if (userId === -1) {
-      setUserId(2);
+      setUserId(16);
     }        
-    console.log("teste inner");
   }, [userId, setUserId]);
 
   if (!hydrated) {

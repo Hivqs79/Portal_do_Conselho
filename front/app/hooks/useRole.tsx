@@ -12,7 +12,6 @@ const roleContext = createContext<RoleContextType | undefined>(undefined);
 export function RoleProvider({ children }: { children: React.ReactNode }) {
     const [role, setRole] = useState("");
     const [userId, setUserId] = useState<number | null>(-1);
-    console.log("teste role");
     return (
         <roleContext.Provider value={{ role, setRole, userId, setUserId }}>
             {children}

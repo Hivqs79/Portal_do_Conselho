@@ -41,19 +41,18 @@ public class FeedbackUserService {
         try {
             Page<FeedbackUser> feedbackUsers = repository.getAllByEnabledIsTrue(spec, pageable);
             System.out.println(feedbackUsers.getContent());
-            return feedbackUsers.map(feedbackUser -> new FeedbackUserResponseDTO(
-                    feedbackUser.getId(),
-                    modelMapper.map(feedbackUser.getPreCouncil(), PreCouncilResponseDTO.class),
-                    feedbackUser.getStrengths(),
-                    feedbackUser.getToImprove(),
-                    modelMapper.map(feedbackUser.getUser(), UserResponseDTO.class),
-                    feedbackUser.isViewed(),
-                    feedbackUser.isSatisfied(),
-                    feedbackUser.isReturned(),
-                    feedbackUser.getCreateDate(),
-                    feedbackUser.getUpdateDate(),
-                    feedbackUser.isEnabled()
-            ));
+            return pageToResponse(feedbackUsers);
+        } catch(Exception e) {
+            System.err.println("Exception: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public Page<FeedbackUserResponseDTO> findFeedbackUserSpecByUserId(Specification<FeedbackUser> spec, Pageable pageable, Long userId) {
+        try {
+            Page<FeedbackUser> feedbackUsers = repository.getAllByEnabledIsTrueAndUserId(spec, pageable, userId);
+            System.out.println(feedbackUsers.getContent());
+            return pageToResponse(feedbackUsers);
         } catch(Exception e) {
             System.err.println("Exception: " + e.getMessage());
         }
@@ -62,7 +61,7 @@ public class FeedbackUserService {
 
     public FeedbackUserResponseDTO createFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO) {
 
-        if (repository.existsFeedbackUserByPreCouncil_IdAndAndUser_Id(feedbackUserRequestDTO.getPre_council_id(), feedbackUserRequestDTO.getUser_id())) {
+        if (repository.existsFeedbackUserByPreCouncil_IdAndUser_Id(feedbackUserRequestDTO.getPre_council_id(), feedbackUserRequestDTO.getUser_id())) {
             throw new StudentFeedbackAlreadyExistException("Student feedback already exists");
         }
 
@@ -107,24 +106,25 @@ public class FeedbackUserService {
         return modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class);
     }
 
-
-    public List<FeedbackUserResponseDTO> getFeedbackUserByStudentId(Long id) {
-        User user = userService.findUserEntity(id);
-        List<FeedbackUserResponseDTO> responseDTOS = new ArrayList<>();
-        List<FeedbackUser> list = repository.findAll();
-
-        list.forEach(feedbackUser -> {
-            if (feedbackUser.getUser().equals(user)) {
-                responseDTOS.add(modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class));
-            }
-        });
-
-        return responseDTOS;
-    }
-
     public void returnFeedbackUser(Long id) {
         FeedbackUser feedbackUser = findFeedbackEntity(id);
         feedbackUser.setReturned(true);
         repository.save(feedbackUser);
     }
+
+    private Page<FeedbackUserResponseDTO> pageToResponse(Page<FeedbackUser> feedbackUsers) {
+        return feedbackUsers.map(feedbackUser -> new FeedbackUserResponseDTO(
+                feedbackUser.getId(),
+                modelMapper.map(feedbackUser.getPreCouncil(), PreCouncilResponseDTO.class),
+                feedbackUser.getStrengths(),
+                feedbackUser.getToImprove(),
+                modelMapper.map(feedbackUser.getUser(), UserResponseDTO.class),
+                feedbackUser.isViewed(),
+                feedbackUser.isSatisfied(),
+                feedbackUser.isReturned(),
+                feedbackUser.getCreateDate(),
+                feedbackUser.getUpdateDate(),
+                feedbackUser.isEnabled()
+        ));
+    };
 }

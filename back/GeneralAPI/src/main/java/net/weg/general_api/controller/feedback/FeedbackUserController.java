@@ -83,13 +83,13 @@ public class FeedbackUserController {
         return new ResponseEntity<>(service.findFeedbackUser(id), HttpStatus.OK);
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/user-id/{userId}")
     @Operation(method = "GET", summary = "Get feedbacks by user", description = "Returns all feedbacks for a specific user")
     @ApiResponse(responseCode = "200", description = "Feedbacks found", content = @Content(schema = @Schema(implementation = List.class), examples = @ExampleObject(value = "[{\"id\":1,\"strengths\":\"Excellent performance\",\"toImprove\":\"None\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"user\":{\"id\":1,\"name\":\"User\",\"email\":\"user@email.com\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"isViewed\":true,\"isSatisfied\":true,\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}]")))
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<List<FeedbackUserResponseDTO>> getAllFeedbackUserByStudent(@Parameter(description = "User ID", example = "1") @PathVariable Long id) {
-        return new ResponseEntity<>(service.getFeedbackUserByStudentId(id), HttpStatus.OK);
+    public Page<FeedbackUserResponseDTO> getAllFeedbackUserByStudent(@And({@Spec(path = "id", spec = Equal.class), @Spec(path = "preCouncil.id", params = "preCouncilId", spec = Equal.class), @Spec(path = "strengths", spec = Like.class), @Spec(path = "isReturned", params = "isReturned", spec = Equal.class), @Spec(path = "toImprove", spec = Like.class), @Spec(path = "user.name", params = "userName", spec = Like.class), @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class), @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class), @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class), @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)}) Specification<FeedbackUser> spec, Pageable pageable, @Parameter(description = "User ID", example = "1") @PathVariable Long userId) {
+        return service.findFeedbackUserSpecByUserId(spec, pageable, userId);
     }
 
     @PatchMapping("/return/{id}")

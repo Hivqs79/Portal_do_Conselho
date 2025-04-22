@@ -14,11 +14,19 @@ import java.util.List;
 
 public interface FeedbackUserRepository extends JpaRepository<FeedbackUser, Long>, JpaSpecificationExecutor<FeedbackUser> {
 
-    boolean existsFeedbackUserByPreCouncil_IdAndAndUser_Id(Long pre_council_id, Long user_id);
+    boolean existsFeedbackUserByPreCouncil_IdAndUser_Id(Long pre_council_id, Long user_id);
 
     default Page<FeedbackUser> getAllByEnabledIsTrue(Specification<FeedbackUser> spec, Pageable pageable) {
         Specification<FeedbackUser> enabledSpec = Specification.where(spec)
                 .and((root, query, cb) -> cb.isTrue(root.get("enabled")));
+
+        return findAll(enabledSpec, pageable);
+    }
+
+    default Page<FeedbackUser> getAllByEnabledIsTrueAndUserId(Specification<FeedbackUser> spec, Pageable pageable, Long userId) {
+        Specification<FeedbackUser> enabledSpec = Specification.where(spec)
+                .and((root, query, cb) -> cb.isTrue(root.get("enabled")))
+                .and((root, query, cb) -> cb.equal(root.get("user").get("id"), userId));
 
         return findAll(enabledSpec, pageable);
     }
