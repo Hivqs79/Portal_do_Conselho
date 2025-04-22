@@ -8,6 +8,8 @@ import Icon from "../Icon";
 import { IoClose, IoMenu } from "react-icons/io5";
 import OpacityHex from "@/utils/OpacityHex";
 import { useRoleContext } from "@/hooks/useRole";
+import AddUserModal from "../modals/AddUserModal";
+import LoadingModal from "../modals/LoadingModal";
 
 interface SidebarRoomsProps {
   userRoleId: number;
@@ -18,6 +20,7 @@ interface SidebarRoomsProps {
     name: string;
     roomId: number;
   }) => void;
+  lastMessages: Record<number, string>;
 }
 
 export default function SidebarRooms({
@@ -25,18 +28,51 @@ export default function SidebarRooms({
   userRoleId,
   userRole,
   onUserSelect,
+  lastMessages,
 }: SidebarRoomsProps) {
-  const { token } = useRoleContext();
+  const { token, role } = useRoleContext();
   const [users, setUsers] = useState<Record<number, string>>({});
   const [isMobile, setIsMobile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const {
-    terciaryColor,
-    colorByModeSecondary,
-    blackColor,
-    backgroundColor,
-  } = useThemeContext();
+  const [openAddUserModal, setOpenAddUserModal] = useState(false)
+  const { terciaryColor, colorByModeSecondary, blackColor, backgroundColor } =
+    useThemeContext();
 
+  // Configura SSE para atualizações em tempo real
+  useEffect(() => {
+    if (userRoleId) {
+      const eventSource = new EventSource(
+        `http://localhost:3090/events/rooms/${userRoleId}`
+      );
+
+      eventSource.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type === "room_created") {
+            // Atualiza os usuários da nova sala
+            data.room.usersId?.forEach((userID: number) => {
+              if (userID !== userRoleId) {
+                fetchUserInRoom(userID);
+              }
+            });
+          }
+        } catch (error) {
+          console.error("Error parsing room update:", error);
+        }
+      };
+
+      eventSource.onerror = (error) => {
+        console.error("EventSource failed:", error);
+        eventSource.close();
+      };
+
+      return () => {
+        eventSource.close();
+      };
+    }
+  }, [userRoleId]);
+
+  // Configura responsividade
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 1024);
@@ -48,16 +84,23 @@ export default function SidebarRooms({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Busca informações do usuário
   async function fetchUserInRoom(userID: number) {
     try {
       if (userRoleId === userID) return;
-      const response = await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/user/${userID}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: `Bearer ${token}`,
-        },
-      });
+
+      // Verifica se já temos o usuário no estado
+      if (users[userID]) return;
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/user/${userID}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       setUsers((prev) => ({ ...prev, [userID]: data.name }));
     } catch (error) {
@@ -65,6 +108,7 @@ export default function SidebarRooms({
     }
   }
 
+  // Busca usuários quando roomsData muda
   useEffect(() => {
     if (roomsData) {
       roomsData.forEach((room) => {
@@ -80,9 +124,16 @@ export default function SidebarRooms({
     name: string,
     roomId: number
   ) => {
-    console.log("User ID:", userId, "Name:", name, "Room ID:", roomId);
     onUserSelect({ userId, name, roomId });
   };
+
+  const addPedagogicUser = async () => {
+    setOpenAddUserModal(true);
+  }
+
+  const addUser = async () => {
+    setOpenAddUserModal(true);
+  }
 
   return (
     <>
@@ -93,7 +144,7 @@ export default function SidebarRooms({
             position: "fixed",
             left: 10,
             top: 100,
-            zIndex: 1200,
+            zIndex: 10,
             ":hover": {
               backgroundColor: OpacityHex(terciaryColor, 0.8),
             },
@@ -133,7 +184,7 @@ export default function SidebarRooms({
           {roomsData?.length > 0 ? (
             <>
               {userRole === "pedagogic" && (
-                <Button fullWidth variant="contained">
+                <Button fullWidth onClick={role !== "pedagogic" ? addPedagogicUser : addUser} variant="contained">
                   Iniciar uma conversa
                 </Button>
               )}
@@ -142,11 +193,12 @@ export default function SidebarRooms({
                   (userId) =>
                     userId !== userRoleId && (
                       <RoomCard
-                        key={userId}
-                        name={users[userId]}
+                        key={`${room.id}-${userId}`}
+                        name={users[userId] || "Carregando..."}
                         userId={userId}
                         roomId={room.id}
                         handleSetUserDetails={handleSetUserDetails}
+                        lastMessage={lastMessages[room.id] || ""}
                       />
                     )
                 )
@@ -154,8 +206,8 @@ export default function SidebarRooms({
             </>
           ) : (
             <Box className="flex flex-col justify-center items-center gap-5 mt-2">
-              <Button fullWidth variant="contained">
-                Iniciar uma conversa {/* //TODO: FAZER UM MODAL PARA CRIAR SALAS */}
+              <Button fullWidth onClick={role !== "pedagogic" ? addPedagogicUser : addUser} variant="contained">
+                Iniciar uma conversa
               </Button>
               <Typography variant="md_text_bold">
                 Você ainda não tem nenhuma conversa
@@ -163,6 +215,9 @@ export default function SidebarRooms({
             </Box>
           )}
         </Box>
+        {openAddUserModal && (
+          <AddUserModal type={role !== "pedagogic" ? "user" : "pedagogic"} onClose={() => setOpenAddUserModal(false)}/>
+        )}
       </Box>
     </>
   );

@@ -3,12 +3,30 @@ import type { NextRequest } from "next/server";
 import { Decryptor } from "./encryption/Decryptor";
 
 export async function middleware(request: NextRequest) {
-  const globalRoutes = ["/configurations", "/profile", "/chat", "/support", "/notifications", "/"]
+  const globalRoutes = [
+    "/configurations",
+    "/profile",
+    "/chat",
+    "/support",
+    "/notifications",
+    "/",
+  ];
   const adminRoutes = ["/configurations", "/profile"];
   const studentRoutes = [...globalRoutes];
   const leaderRoutes = [...globalRoutes, "/fill-out-pre-council"];
   const teacherRoutes = [...globalRoutes, "/annotations", "/council-historic"];
-  const pedagogicRoutes = [...globalRoutes, "/council-historic", "/council", "/realize-council", "/pre-council", "/release-feedback", "/class-management", "/user-management", "/dashboard", "/reports"];
+  const pedagogicRoutes = [
+    ...globalRoutes,
+    "/council-historic",
+    "/council",
+    "/realize-council",
+    "/pre-council",
+    "/release-feedback",
+    "/class-management",
+    "/user-management",
+    "/dashboard",
+    "/reports",
+  ];
   const supervisiorRoutes = [...globalRoutes, "/council-historic"];
 
   const routePermissions: Record<string, string[]> = {
@@ -18,33 +36,41 @@ export async function middleware(request: NextRequest) {
     teacher: teacherRoutes,
     pedagogic: pedagogicRoutes,
     subpedagogic: pedagogicRoutes,
-    supervisior: supervisiorRoutes
+    supervisior: supervisiorRoutes,
   };
 
   function isLikelyJwt(token: string): boolean {
     const parts = token.split(".");
-    return parts.length === 3 && parts.every(part => part.length > 0);
-  }  
+    return parts.length === 3 && parts.every((part) => part.length > 0);
+  }
 
   const url = request.nextUrl;
   const pathname = url.pathname;
-  const authToken = request.cookies.get("token")?.value;
-  const isTokenPresent = authToken && isLikelyJwt(authToken);
+  const encryptedToken = request.cookies.get("token")?.value;
+  const authToken = Decryptor(encryptedToken ? encryptedToken : "");
+  console.log("testea aa: ", authToken);
+  const isTokenPresent = authToken && isLikelyJwt(String(authToken));
 
   const checkRoutePermission = () => {
     try {
       const encryptedUser = request.cookies.get("user")?.value;
-      
+
       if (!encryptedUser) return false;
-      
+
       const decryptedUser = Decryptor(encryptedUser);
       const userRole = decryptedUser?.role;
-      
+
       if (!userRole) return false;
-      
+
       const allowedRoutes = routePermissions[userRole] || [];
-      
-      return allowedRoutes.includes(pathname) || allowedRoutes.some(route => route.endsWith("/*") && pathname.startsWith(route.replace("/*", "")));
+
+      return (
+        allowedRoutes.includes(pathname) ||
+        allowedRoutes.some(
+          (route) =>
+            route.endsWith("/*") && pathname.startsWith(route.replace("/*", ""))
+        )
+      );
     } catch (error) {
       console.log("Error checking route permission:", error);
       return false;
@@ -55,12 +81,23 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (isTokenPresent  && pathname === "/login" || pathname === "/password-recover" || pathname === "/password-recover/code" || pathname === "/password-recover/new-password") {
-    console.log("teste aaaaa")
+  if (
+    (isTokenPresent && pathname === "/login") ||
+    pathname === "/password-recover" ||
+    pathname === "/password-recover/code" ||
+    pathname === "/password-recover/new-password"
+  ) {
+    console.log("teste aaaaa");
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (!isTokenPresent && pathname !== "/login" && pathname !== "/password-recover" && pathname !== "/password-recover/code" && pathname !== "/password-recover/new-password") {
+  if (
+    !isTokenPresent &&
+    pathname !== "/login" &&
+    pathname !== "/password-recover" &&
+    pathname !== "/password-recover/code" &&
+    pathname !== "/password-recover/new-password"
+  ) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

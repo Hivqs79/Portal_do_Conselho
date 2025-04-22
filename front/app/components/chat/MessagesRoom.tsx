@@ -21,9 +21,14 @@ type RoomConversation = {
 interface MessagesRoomProps {
   roomId: number;
   userId: number;
+  updateLastMessage: (roomId: number, message: string) => void;
 }
 
-export default function MessagesRoom({ roomId, userId }: MessagesRoomProps) {
+export default function MessagesRoom({
+  roomId,
+  userId,
+  updateLastMessage,
+}: MessagesRoomProps) {
   const { colorByModeSecondary } = useThemeContext();
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<Messages[]>([]);
@@ -48,7 +53,6 @@ export default function MessagesRoom({ roomId, userId }: MessagesRoomProps) {
 
   useEffect(() => {
     if (roomId && userId) {
-      // Configura a conexão SSE para atualizações em tempo real
       const newEventSource = new EventSource(
         `http://localhost:3090/events/chat/${roomId}/${userId}`
       );
@@ -56,12 +60,12 @@ export default function MessagesRoom({ roomId, userId }: MessagesRoomProps) {
       newEventSource.onmessage = (event) => {
         try {
           const newMessage = JSON.parse(event.data);
-          setMessages(prevMessages => [...prevMessages, newMessage]);
-          
-          // Scroll para baixo quando nova mensagem chegar
+          setMessages((prev) => [...prev, newMessage]);
+          updateLastMessage(roomId, newMessage.content);
+
           setTimeout(() => {
             if (messagesContainerRef.current) {
-              messagesContainerRef.current.scrollTop = 
+              messagesContainerRef.current.scrollTop =
                 messagesContainerRef.current.scrollHeight;
             }
           }, 100);
@@ -81,12 +85,13 @@ export default function MessagesRoom({ roomId, userId }: MessagesRoomProps) {
         newEventSource.close();
       };
     }
-  }, [roomId, userId]);
+  }, [roomId, userId, updateLastMessage]);
 
   useEffect(() => {
     // Scroll to bottom
     if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
