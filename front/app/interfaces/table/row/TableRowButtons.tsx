@@ -14,9 +14,10 @@ export interface TableRowButtons {
     closeButton?: boolean;
     releasedButton?: boolean;
     releaseButton?: boolean;
+    preCouncilButton?: boolean;
     onClickRealize?: (row: TableRowPossibleTypes) => void;
     onClickVisualize?: (row: TableRowPossibleTypes) => void;
-    onClickRealease?: (row: TableRowPossibleTypes) => void;
+    onClickRelease?: (row: TableRowPossibleTypes) => void;
     onClickAnnotation?: (row: TableRowPossibleTypes) => void;
     setRank?: (rank: Rank, id: number) => void;
     setPositiveContent?: (content: string, id: number) => void;

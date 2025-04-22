@@ -1,5 +1,5 @@
-import PreCouncilSection from "@/interfaces/PreCouncilSection";
+import PreCouncilSection from "@/interfaces/pre-council/PreCouncilSection";
 import { TableRowContent } from "./TableRowContent";
 
-export default interface TablePreCouncilSectionRowProps extends TableRowContent, PreCouncilSection {
+export default interface TablePreCouncilSectionRow extends TableRowContent, PreCouncilSection {
 }

@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
-import { Teacher } from "./Teacher";
-import Class from "./Class";
+import { Teacher } from "../users/Teacher";
+import Class from "../Class";
 import dayjs from "dayjs";
-import TableCouncilRow from "./table/row/TableCouncilRow";
-import TablePreCouncilRow from "./table/row/TablePreCouncilRow";
+import TableCouncilRow from "../table/row/TableCouncilRow";
+import TablePreCouncilRow from "../table/row/TablePreCouncilRow";
 
 export interface CouncilFormProps {
     visualizedCouncil?: TableCouncilRow | TablePreCouncilRow | null;

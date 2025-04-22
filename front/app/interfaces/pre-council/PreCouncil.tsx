@@ -1,5 +1,5 @@
-import Class from "./Class"
-import { Teacher } from "./Teacher"
+import Class from "@/interfaces/Class"
+import { Teacher } from "@/interfaces/users/Teacher"
 
 type PreCouncilStatus = "answered" | "not-answered" | "released" | "scheduled";
 

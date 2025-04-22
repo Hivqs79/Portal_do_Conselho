@@ -3,12 +3,14 @@ import TableCouncilRow from "./TableCouncilRow";
 import TableNotificationRow from "./TableNotificationRow";
 import TableFeedbackRow from "./TableFeedbackRow";
 import TablePreCouncilRow from "./TablePreCouncilRow";
-import TablePreCouncilSectionRowProps from "./TablePreCouncilSectionRow";
+import TablePreCouncilSectionRow from "./TablePreCouncilSectionRow";
+import TableFeedbackUserRow from "./TableFeedbackUserRow";
 
 export type TableRowPossibleTypes = 
     TableCouncilRow | 
-    TableFeedbackRow | 
+    TableFeedbackRow |
+    TableFeedbackUserRow |
     TableAnnotationRow | 
     TableNotificationRow | 
     TablePreCouncilRow |
-    TablePreCouncilSectionRowProps;
+    TablePreCouncilSectionRow;

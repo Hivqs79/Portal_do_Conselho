@@ -1,5 +1,5 @@
-import Council from "./Council";
-import { Rank } from "./RankType";
+import Council from "@/interfaces/council/Council";
+import { Rank } from "@/interfaces/RankType";
 
 export default interface Feedback {
   id: number;

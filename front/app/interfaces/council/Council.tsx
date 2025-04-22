@@ -1,5 +1,5 @@
-import Class from "./Class"
-import { Teacher } from "./Teacher"
+import Class from "../Class"
+import { Teacher } from "../users/Teacher"
 
 type CouncilStatus = 'expired' | 'active' | 'scheduled';
 
