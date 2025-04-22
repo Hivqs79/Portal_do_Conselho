@@ -33,7 +33,7 @@ export default function Search({ setSearch, type }: SearchProps) {
                 <input
                     id={randomId}
                     type="text"
-                    style={{ borderColor: type === "chat" ? colorByModeSecondary : secondaryColor, color: colorByMode}}
+                    style={{ borderColor: type === "chat" ? colorByModeSecondary : secondaryColor, color: type === "chat" ? colorByMode : whiteColor }}
                     className={`w-full pl-4 pr-10 ${type === "chat" ? "h-[50px]" : "h-[36px]"} text-sm font-semibold border-2 rounded-md bg-transparent focus:outline-none`}
                     onFocus={() => setIsFocused(true)}
                     onBlur={(e) => setIsFocused(e.target.value !== "")}

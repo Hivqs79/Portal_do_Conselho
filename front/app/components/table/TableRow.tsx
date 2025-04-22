@@ -37,6 +37,8 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     editButton,
     deleteButton,
     seeButton,
+    inicializeButton,
+    onClickInicialize,
     annotationButton: anotationButton,
     onClickAnnotation,
     closeButton,
@@ -57,16 +59,24 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     return content.student.name;
   }
 
-  const name =
-  "council" in content && content.student == null
-    ? content.council.aclass && content.council.aclass.name
-      ? content.council.aclass.name
-      : ""
-    : "student" in content
-    ? getStudentNameAndRemoveDate()
-    : "aclass" in content
-    ? content.aclass.name
-    : "";
+  const name = (() => {
+    if ("council" in content && content.student == null) {
+      return content.council.aclass && content.council.aclass.name
+        ? content.council.aclass.name
+        : "";
+    }
+    if ("student" in content) {
+      date = null;
+      return content.student?.name || "";
+    }
+    if ("aclass" in content) {
+      return content.aclass?.name || "";
+    }
+    if ("name" in content) {
+      return content.name;
+    }
+    return "";
+  })();
 
   const rank = "rank" in content && content.rank;
 
@@ -157,6 +167,12 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
               onClick={() =>
                 releaseButton && onClickRealize && onClickRealize(content)
               }
+            />
+          )}
+          {inicializeButton && (
+            <TableButton
+              text={"Iniciar"}
+              onClick={() => onClickInicialize && onClickInicialize(content)}
             />
           )}
           {closeButton && <TableButton text="Fechar" icon={IoClose} />}

@@ -5,6 +5,7 @@ export interface TableRowButtons {
     rankButton?: boolean;
     rankVisualizer?: boolean;
     realizeButton?: boolean;
+    inicializeButton?: boolean;
     visualizeIconButton?: boolean;
     visualizeButton?: boolean;
     editButton?: boolean;
@@ -15,6 +16,7 @@ export interface TableRowButtons {
     releasedButton?: boolean;
     releaseButton?: boolean;
     onClickRealize?: (row: TableRowPossibleTypes) => void;
+    onClickInicialize?: (row: TableRowPossibleTypes) => void;
     onClickVisualize?: (row: TableRowPossibleTypes) => void;
     onClickRealease?: (row: TableRowPossibleTypes) => void;
     onClickAnnotation?: (row: TableRowPossibleTypes) => void;

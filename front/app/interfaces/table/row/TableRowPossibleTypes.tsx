@@ -3,4 +3,4 @@ import TableCouncilRow from "./TableCouncilRow";
 import TableNotificationRow from "./TableNotificationRow";
 import TableFeedbackRow from "./TableFeedbackRow";
 
-export type TableRowPossibleTypes = TableCouncilRow | TableFeedbackRow | TableAnnotationRow | TableNotificationRow;
+export type TableRowPossibleTypes = TableCouncilRow | TableFeedbackRow | TableAnnotationRow | TableNotificationRow | TableChatRow;
