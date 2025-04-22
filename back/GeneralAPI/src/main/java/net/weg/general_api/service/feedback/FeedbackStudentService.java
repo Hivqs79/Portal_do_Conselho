@@ -129,12 +129,18 @@ public class FeedbackStudentService {
         return modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class);
     }
 
-    public List<FeedbackStudent> getFeedbackStudentsByYearAndClassName(int year, String className) {
-        return repository.findByYearEnabledAndClassName(year, className);
+    public FeedbackStudentResponseDTO viewFeedbackStudent(Long id) {
+        FeedbackStudent feedbackStudent = findFeedbackEntity(id);
+        feedbackStudent.setViewed(true);
+        repository.save(feedbackStudent);
+        return modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class);
+    }
+    public List<FeedbackStudent> getLatestFeedbackStudentsbyClassName(String className) {
+        return repository.findLatestFeedbackByStudentAndClass(className);
     }
 
-    public List<FeedbackStudent> getFeedbackStudentsByYear(int year) {
-        return repository.findByYearEnabled(year);
+    public List<FeedbackStudent> getLatestFeedbackStudentsFromAllClass() {
+        return repository.findLatestFeedbackFromAllClasses();
     }
 
 }
