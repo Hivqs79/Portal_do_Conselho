@@ -40,6 +40,21 @@ public interface FeedbackStudentRepository extends JpaRepository<FeedbackStudent
             "JOIN FETCH fs.student " +
             "WHERE fs.id IN (" +
             "   SELECT MAX(fs2.id) FROM FeedbackStudent fs2 " +
+            "   JOIN fs2.council c " +
+            "   JOIN c.aClass cl " +
+            "   WHERE LOWER(cl.name) LIKE LOWER(CONCAT('%', :className, '%')) " +
+            "   AND fs2.enabled = true " +
+            "   AND fs2.isViewed = true " +
+            "   GROUP BY fs2.student.id, YEAR(fs2.createDate)" +
+            ")")
+    List<FeedbackStudent> findLatestFeedbackByStudentAndClassAndViewed(
+            @Param("className") String className
+    );
+
+    @Query("SELECT fs FROM FeedbackStudent fs " +
+            "JOIN FETCH fs.student " +
+            "WHERE fs.id IN (" +
+            "   SELECT MAX(fs2.id) FROM FeedbackStudent fs2 " +
             "   WHERE fs2.enabled = true " +
             "   GROUP BY fs2.student.id, YEAR(fs2.createDate)" +
             ")")
