@@ -13,7 +13,7 @@ import AnnotationsModal from "@/components/modals/AnnotationsModal";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 import TableAnnotationRow from "@/interfaces/table/row/TableAnnotationRow";
 import { Rank } from "@/interfaces/RankType";
-import Annotation from "@/interfaces/Annotation";
+import Annotation from "@/interfaces/annotation/Annotation";
 import AutoSaveIndicator from "@/components/AutoSaveIndicator";
 import { useThemeContext } from "@/hooks/useTheme";
 import OpacityHex from "@/utils/OpacityHex";

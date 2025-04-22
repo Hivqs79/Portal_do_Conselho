@@ -71,7 +71,6 @@ export default function FillOutPreCouncil() {
     const data = await response.json();
     console.log(data);
     router.push("/");
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -82,7 +81,8 @@ export default function FillOutPreCouncil() {
       const data: TablePreCouncilSectionRow[] = await response.json();
       setSections(data);
     };
-    fetchSections().catch(console.error);
+    setIsLoading(true);
+    fetchSections().then(() => setIsLoading(false)).catch(console.error);
   }, [userId]);
 
   useEffect(() => {

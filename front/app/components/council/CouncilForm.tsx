@@ -9,7 +9,7 @@ import { FaRegCalendarAlt, FaRegClock } from "react-icons/fa";
 import dayjs from "dayjs";
 import { useWindowWidth } from "@react-hook/window-size";
 import CouncilModal from "@/components/council/CouncilModal";
-import { CouncilFormProps } from "@/interfaces/CouncilFormProps";
+import { CouncilFormProps } from "@/interfaces/council/CouncilFormProps";
 
 interface CreateCouncilFormProps {
   councilInformation: CouncilFormProps;

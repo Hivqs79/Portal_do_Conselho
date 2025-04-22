@@ -11,6 +11,7 @@ interface TableButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   tooltip?: string;
+  classNameButton?: string;
 }
 
 export default function TableButton({
@@ -21,6 +22,7 @@ export default function TableButton({
   onClick,
   disabled = false,
   tooltip,
+  classNameButton = ""
 }: TableButtonProps) {
   const { primaryColor, whiteColor } = useThemeContext();
 
@@ -30,7 +32,7 @@ export default function TableButton({
         <Button
           variant="contained"
           color={"primary"}
-          className={`!hidden sm:!flex w-[110px]`}
+          className={`!hidden sm:!flex w-fit ${classNameButton}`}
           onClick={onClick}
           disabled={disabled}
         >
@@ -54,6 +56,7 @@ export default function TableButton({
           colorButton={primaryColor}
           classNameButton={!onlyIcon ? "!block sm:!hidden" : ""}
           onClick={onClick}
+          disabled={disabled}
         />
       )}
     </>

@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { Box, Checkbox, FormControlLabel, Radio, RadioGroup, Typography } from "@mui/material";
 import { useThemeContext } from "@/hooks/useTheme";
 import OpacityHex from "@/utils/OpacityHex";
-import { Teacher } from "@/interfaces/Teacher";
+import { Teacher } from "@/interfaces/users/Teacher";
 import Class from "@/interfaces/Class";
 import Search from "@/components/table/Search";
 import { useWindowWidth } from "@react-hook/window-size";
@@ -59,7 +59,7 @@ export default function SelectTable({
   return (
     <Box style={{ borderColor: colorByModeSecondary, backgroundColor: primaryColor }} className="border-[2px] rounded-big overflow-hidden">
       <Box style={{ backgroundColor: primaryColor, boxShadow: `inset 0px -2px 0px 0px ${colorByModeSecondary}` }} className="flex justify-between items-center w-full p-6">
-        <Box className="flex items-center">
+        <Box className="flex items-center mr-4">
           {selectType === "multiple" &&
             <Checkbox
               onClick={() => isAllSelected ? handleDisableAll() : handleSelectAll()}
@@ -72,7 +72,9 @@ export default function SelectTable({
               }}
             />
           }
-          <Typography variant={windowWidth < 640 ? "md_text_regular" : "xl_text_regular"} color={whiteColor}>{name}</Typography>
+          <Typography variant={windowWidth < 640 ? "md_text_regular" : "xl_text_regular"} color={whiteColor}>
+            {name}
+          </Typography>
         </Box>
         <Box>
           <Search setSearch={setSearch} />
@@ -86,7 +88,7 @@ export default function SelectTable({
           className="flex !flex-col !flex-nowrap max-h-80 px-2 overflow-y-auto"
         >
 
-          {Array.isArray(rows) && rows.map((row, i) => (
+          {Array.isArray(rows) && rows.length > 0 ? rows.map((row, i) => (
             <Box
               style={{ borderColor: OpacityHex(colorByModeSecondary, 0.2) }}
               className={`flex items-centerw-full px-2 py-5 ` + (i !== rows.length - 1 ? "border-b-[1px]" : "")} key={row.id}
@@ -112,9 +114,17 @@ export default function SelectTable({
               )}
               <Typography
                 variant={windowWidth < 640 ? "sm_text_regular" : "lg_text_regular"}
-              >{row.name}</Typography>
+              >
+                {row.name}
+              </Typography>
             </Box>
-          ))}
+          )) : (
+            <Box className="flex w-full h-full place-content-center p-5 ">
+              <Typography variant={windowWidth < 640 ? "sm_text_regular" : "lg_text_regular"} color={terciaryColor}>
+                Nenhum item encontrado
+              </Typography>
+            </Box>
+          )}
         </RadioGroup>
       </Box>
     </Box>

@@ -10,7 +10,6 @@ import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
 import { Rank as RankType } from "@/interfaces/RankType";
 import TableAnnotationRow from "@/interfaces/table/row/TableAnnotationRow";
 import { useEffect, useRef } from "react";
-import TablePreCouncilSectionRowProps from "@/interfaces/table/row/TablePreCouncilSectionRow";
 import TablePreCouncilSectionRow from "@/interfaces/table/row/TablePreCouncilSectionRow";
 
 interface AccordionTableProps {
@@ -20,6 +19,7 @@ interface AccordionTableProps {
   rowButtons: TableRowButtons;
   content: TableRowPossibleTypes[] | null;
   handleAccordionClick?: () => void;
+  readOnly?: boolean;
 }
 
 export default function AccordionTable({
@@ -28,7 +28,8 @@ export default function AccordionTable({
   headerButtons,
   rowButtons,
   content,
-  handleAccordionClick
+  handleAccordionClick,
+  readOnly = false,
 }: AccordionTableProps) {
   const { colorByModeSecondary } = useThemeContext();
 
@@ -102,7 +103,7 @@ export default function AccordionTable({
                       onChangeRank={(rank: RankType) => rowButtons.setRank && rowButtons.setRank(rank, (row as TableAnnotationRow).student.id)}
                     >
                       <AvaliationInputs
-                        readOnly={variant == "feedback"}
+                        readOnly={variant == "feedback" || readOnly}
                         Positivecontent={"strengths" in row ? row.strengths : null}
                         Negativecontent={"toImprove" in row ? row.toImprove : null}
                         onPositiveChange={(content: string) => rowButtons.setPositiveContent &&

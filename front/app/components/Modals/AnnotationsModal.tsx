@@ -25,6 +25,7 @@ interface AnnotationsModalProps {
   headersStudent: TableHeaderContent[];
   rowButtonsStudent: TableRowButtons;
   headerButtonsStudent: TableHeaderButtons;
+  readOnly?: boolean;
 }
 export default function AnnotationsModal({
   open,
@@ -40,6 +41,7 @@ export default function AnnotationsModal({
   headersStudent,
   headerButtonsStudent,
   rowButtonsStudent,
+  readOnly = false,
 }: AnnotationsModalProps) {
   const { colorByModeSecondary, redDanger, backgroundColor } =
     useThemeContext();
@@ -90,7 +92,7 @@ export default function AnnotationsModal({
               className="flex flex-col border-[2px] border-t-0 rounded-b-2xl"
             >
               <AvaliationInputs
-                readOnly={variant !== "annotations"}
+                readOnly={variant !== "annotations" || readOnly}
                 Positivecontent={classPositiveContent}
                 Negativecontent={classNegativeContent}
                 onPositiveChange={setClassPositiveContent}
@@ -105,6 +107,7 @@ export default function AnnotationsModal({
                   headerButtons={headerButtonsStudent}
                   rowButtons={rowButtonsStudent}
                   content={contentStudent}
+                  readOnly={readOnly}
                 />
               </Box>
             </Box>

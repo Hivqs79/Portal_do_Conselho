@@ -54,7 +54,7 @@ export default function Table({
               ) : (
                 <tr>
                   <td colSpan={3} className="p-4 text-center">
-                    <Typography variant="h6_title" color="primary">
+                    <Typography variant="xl_text_regular">
                       Nenhum item encontrado.
                     </Typography>
                   </td>

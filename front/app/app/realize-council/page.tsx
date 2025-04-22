@@ -11,7 +11,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { useWindowWidth } from "@react-hook/window-size";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import User from "@/interfaces/User";
+import User from "@/interfaces/users/User";
 import CommentariesModal from "@/components/modals/CommentariesModal";
 import ConfirmChanges from "@/components/modals/ConfirmChanges";
 import ConfirmMessagesModal from "@/components/modals/ConfirmMessagesModal";

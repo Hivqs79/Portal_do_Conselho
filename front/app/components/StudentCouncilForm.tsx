@@ -11,7 +11,7 @@ import AutoSaveIndicator from "./AutoSaveIndicator";
 import { useState, useEffect, useRef } from "react";
 import { Decryptor } from "@/encryption/Decryptor";
 import { Encryptor } from "@/encryption/Encryptor";
-import User from "@/interfaces/User";
+import User from "@/interfaces/users/User";
 import { Rank as RankType } from "@/interfaces/RankType";
 
 interface StudentCouncilFormProps {

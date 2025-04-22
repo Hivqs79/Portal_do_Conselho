@@ -8,7 +8,7 @@ import AccordionComponent from "../AccordionComponent";
 import OpacityHex from "@/utils/OpacityHex";
 import { Rank } from "@/interfaces/RankType";
 import AvaliationInputs from "../council/AvaliationInputs";
-import TeacherAnnotation from "@/interfaces/TeacherAnnotation";
+import TeacherAnnotation from "@/interfaces/annotation/TeacherAnnotation";
 
 interface CommentariesModalProps {
   onClose: () => void;

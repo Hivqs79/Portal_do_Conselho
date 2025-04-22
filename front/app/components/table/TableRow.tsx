@@ -15,6 +15,7 @@ import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 import TableCouncilRow from "@/interfaces/table/row/TableCouncilRow";
 import relativeTime from "dayjs/plugin/relativeTime";
+import TablePreCouncilRow from "@/interfaces/table/row/TablePreCouncilRow";
 
 dayjs.extend(relativeTime);
 dayjs.locale("pt-br");
@@ -37,18 +38,24 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     editButton,
     deleteButton,
     seeButton,
-    annotationButton: anotationButton,
+    annotationButton,
     onClickAnnotation,
     closeButton,
     releasedButton,
     releaseButton,
+    preCouncilButton
   } = rowButtons;
 
   let date =
     "startDateTime" in content
       ? content.startDateTime
       : "council" in content
-      ? content.council.startDateTime
+        ? content.council.startDateTime
+        : null;
+
+  const finalDate =
+    "finalDateTime" in content
+      ? content.finalDateTime
       : null;
 
   function getStudentNameAndRemoveDate() {
@@ -58,15 +65,15 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
   }
 
   const name =
-  "council" in content && content.student == null
-    ? content.council.aclass && content.council.aclass.name
-      ? content.council.aclass.name
-      : ""
-    : "student" in content
-    ? getStudentNameAndRemoveDate()
-    : "aclass" in content
-    ? content.aclass.name
-    : "";
+    "council" in content && ("student" in content ? content.student == null : true)
+      ? content.council.aclass && content.council.aclass.name
+        ? content.council.aclass.name
+        : ""
+      : "student" in content
+        ? getStudentNameAndRemoveDate()
+        : "aclass" in content
+          ? content.aclass.name
+          : "";
 
   const rank = "rank" in content && content.rank;
 
@@ -98,7 +105,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
             className="hidden lg:flex-1 lg:flex text-center justify-center"
           >
             <Typography variant="lg_text_regular">
-              {dayjs(date).format("HH:mm")}
+              {finalDate ? dayjs(finalDate).format("DD/MM/YYYY") : dayjs(date).format("HH:mm")}
             </Typography>
           </td>
         )}
@@ -136,16 +143,16 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
                 (content as TableCouncilRow).status === "expired"
                   ? "Este conselho expirou. Edite para um novo horário."
                   : (content as TableCouncilRow).status === "scheduled"
-                  ? `Disponível ${dayjs(
+                    ? `Disponível ${dayjs(
                       (content as TableCouncilRow).startDateTime
                     ).fromNow()}`
-                  : "Clique para realizar este conselho"
+                    : "Clique para realizar este conselho"
               }
             />
           )}
-          {(editButton || anotationButton) && (
+          {(editButton || annotationButton) && (
             <TableButton
-              text={anotationButton ? "Anotar" : "Editar"}
+              text={annotationButton ? "Anotar" : "Editar"}
               icon={LuPencilLine}
               onClick={() => onClickAnnotation && onClickAnnotation(content)}
             />
@@ -158,6 +165,26 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
                 releaseButton && onClickRealize && onClickRealize(content)
               }
             />
+          )}
+          {preCouncilButton && (
+            <span className="!hidden sm:!flex">
+              <TableButton
+                text={(content as TablePreCouncilRow).buttonText}
+                disabled={true}
+                onlyTextInBigSize={true}
+                tooltip={
+                  (content as TablePreCouncilRow).status === "answered"
+                    ? "Este pré-conselho já foi respondido"
+                    : (content as TablePreCouncilRow).status === "not-answered"
+                      ? "Este pré-conselho não foi respondido"
+                      : (content as TablePreCouncilRow).status === "released"
+                        ? "Este pré-conselho foi liberado"
+                        : `Será liberado ${dayjs(
+                          (content as TablePreCouncilRow).startDateTime
+                        ).fromNow()}`
+                }
+              />
+            </span>
           )}
           {closeButton && <TableButton text="Fechar" icon={IoClose} />}
           {deleteButton && <TableButton text="Excluir" icon={LuTrash} />}
