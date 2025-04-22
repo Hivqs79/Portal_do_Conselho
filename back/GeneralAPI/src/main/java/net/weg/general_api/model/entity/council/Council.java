@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.annotation.Annotation;
 import net.weg.general_api.model.entity.feedback.Feedback;
+import net.weg.general_api.model.entity.feedback.FeedbackWithCouncil;
 import net.weg.general_api.model.entity.preCouncil.PreCouncil;
 import net.weg.general_api.model.entity.users.Teacher;
 
@@ -53,7 +54,7 @@ public class Council {
     private List<Teacher> teachers;
 
     @OneToMany(mappedBy = "council")
-    private List<Feedback> feedbacks;
+    private List<FeedbackWithCouncil> feedbacks;
 
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;

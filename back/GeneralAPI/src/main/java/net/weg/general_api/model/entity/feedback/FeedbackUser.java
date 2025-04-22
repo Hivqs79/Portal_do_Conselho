@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @PrimaryKeyJoinColumn(name = "feedback_id")
 public class FeedbackUser extends Feedback {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
     @Column(nullable = false)

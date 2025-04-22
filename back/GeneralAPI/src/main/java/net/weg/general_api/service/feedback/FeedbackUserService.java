@@ -6,6 +6,8 @@ import net.weg.general_api.exception.exceptions.StudentFeedbackAlreadyExistExcep
 import net.weg.general_api.exception.exceptions.UserFeedbackAlreadyExistException;
 import net.weg.general_api.model.dto.request.feedback.FeedbackUserRequestDTO;
 import net.weg.general_api.model.dto.response.feedback.FeedbackUserResponseDTO;
+import net.weg.general_api.model.dto.response.preCouncil.PreCouncilResponseDTO;
+import net.weg.general_api.model.dto.response.users.UserResponseDTO;
 import net.weg.general_api.model.entity.council.Council;
 import net.weg.general_api.model.entity.feedback.FeedbackUser;
 import net.weg.general_api.model.entity.preCouncil.PreCouncil;
@@ -17,6 +19,7 @@ import net.weg.general_api.service.preCouncil.PreCouncilService;
 import net.weg.general_api.service.users.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -29,15 +32,32 @@ import java.util.List;
 public class FeedbackUserService {
 
     private FeedbackUserRepository repository;
-    private CouncilService councilService;
     private PreCouncilService preCouncilService;
     private UserService userService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
 
     public Page<FeedbackUserResponseDTO> findFeedbackUserSpec(Specification<FeedbackUser> spec, Pageable pageable) {
-        Page<FeedbackUser> feedbackUseres = repository.getAllByEnabledIsTrue(spec, pageable);
-        return feedbackUseres.map(feedbackUser -> modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class));
+        try {
+            Page<FeedbackUser> feedbackUsers = repository.getAllByEnabledIsTrue(spec, pageable);
+            System.out.println(feedbackUsers.getContent());
+            return feedbackUsers.map(feedbackUser -> new FeedbackUserResponseDTO(
+                    feedbackUser.getId(),
+                    modelMapper.map(feedbackUser.getPreCouncil(), PreCouncilResponseDTO.class),
+                    feedbackUser.getStrengths(),
+                    feedbackUser.getToImprove(),
+                    modelMapper.map(feedbackUser.getUser(), UserResponseDTO.class),
+                    feedbackUser.isViewed(),
+                    feedbackUser.isSatisfied(),
+                    feedbackUser.isReturned(),
+                    feedbackUser.getCreateDate(),
+                    feedbackUser.getUpdateDate(),
+                    feedbackUser.isEnabled()
+            ));
+        } catch(Exception e) {
+            System.err.println("Exception: " + e.getMessage());
+        }
+        return null;
     }
 
     public FeedbackUserResponseDTO createFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO) {
@@ -70,17 +90,9 @@ public class FeedbackUserService {
     }
 
     public FeedbackUserResponseDTO updateFeedbackUser(FeedbackUserRequestDTO feedbackUserRequestDTO, Long id) {
-
-        if (repository.existsFeedbackUserByPreCouncil_IdAndAndUser_Id(feedbackUserRequestDTO.getPre_council_id(), feedbackUserRequestDTO.getUser_id())) {
-            throw new UserFeedbackAlreadyExistException("User feedback already exists");
-        }
-
-        FeedbackUser feedbackUser = findFeedbackEntity(id);
-        modelMapper.map(feedbackUserRequestDTO, feedbackUser);
-
-        User user = userService.findUserEntity(feedbackUserRequestDTO.getUser_id());
-
-        feedbackUser.setUser(user); //SETAR USUARIO
+        FeedbackUser feedbackUser = this.findFeedbackEntity(id);
+        feedbackUser.setStrengths(feedbackUserRequestDTO.getStrengths());
+        feedbackUser.setToImprove(feedbackUserRequestDTO.getToImprove());
 
         FeedbackUser updatedFeedbackUser = repository.save(feedbackUser);
         kafkaEventSender.sendEvent(updatedFeedbackUser, "PUT", "Feedback User updated");
@@ -110,10 +122,9 @@ public class FeedbackUserService {
         return responseDTOS;
     }
 
-    public FeedbackUserResponseDTO returnFeedbackUser(Long id) {
+    public void returnFeedbackUser(Long id) {
         FeedbackUser feedbackUser = findFeedbackEntity(id);
         feedbackUser.setReturned(true);
         repository.save(feedbackUser);
-        return modelMapper.map(feedbackUser, FeedbackUserResponseDTO.class);
     }
 }

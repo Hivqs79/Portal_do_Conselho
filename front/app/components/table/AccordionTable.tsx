@@ -93,7 +93,8 @@ export default function AccordionTable({
                   <Box onClick={accordionClick} key={index}>
                     <AccordionComponent
                       name={"student" in row ? row.student.name :
-                        "topic" in row ? row.topic : ""
+                        "topic" in row ? row.topic : 
+                        "user" in row ? row.user.name : ""
                       }
                       frequency={variant === "feedback" ? ("frequency" in row) ? (row.frequency as number | boolean | undefined) : false : false}
                       type="table"

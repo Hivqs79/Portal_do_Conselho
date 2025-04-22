@@ -16,6 +16,7 @@ interface PreCouncilModalProps {
   preCouncilSections: PreCouncilSection[] | FeedbackUser[];
   readOnly?: boolean;
   rowButtons?: TableRowButtons;
+  message?: string;
 }
 
 export default function PreCouncilModal({
@@ -25,6 +26,7 @@ export default function PreCouncilModal({
   preCouncilSections,
   readOnly = false,
   rowButtons = {},
+  message,
 }: PreCouncilModalProps) {
   const { backgroundColor, redDanger, colorByModeSecondary } = useThemeContext();
 
@@ -41,7 +43,7 @@ export default function PreCouncilModal({
       className="flex items-center justify-center"
     >
       <Box
-        className={`py-2 px-4 z-50 mx-4 sm:mx-16 w-full rounded-big mt-24 ${answered ? "max-w-[1000px]" : "max-w-[600px]"}`}
+        className={`py-2 px-4 z-50 mx-4 sm:mx-16 mt-28 w-full rounded-big  ${answered ? "max-w-[1000px]" : "max-w-[600px]"}`}
         style={{ backgroundColor: backgroundColor }}
       >
         <Box className="flex flex-col w-full max-h-[80vh] overflow-y-auto p-2 sm:p-4 gap-10">
@@ -63,8 +65,12 @@ export default function PreCouncilModal({
               </Box>
             </Box>
           </Box>
-        </Box>
-        <Box className="flex flex-col p-2 sm:p-4">
+
+          {message &&
+            <Typography variant="md_text_regular">
+              {message}
+            </Typography>
+          }
           {answered ? (
             <AccordionTable
               variant="pre-council"

@@ -15,9 +15,6 @@ public abstract class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Council council;
-
     @Column(nullable = false, columnDefinition = "TEXT")
     private String strengths;
 
@@ -45,7 +42,6 @@ public abstract class Feedback {
     public String toString() {
         return "Feedback{" +
                 "id=" + id +
-                ", council=" + council.getId() +
                 ", strengths='" + strengths + '\'' +
                 ", toImprove='" + toImprove + '\'' +
                 ", isReturned='" + isReturned +

@@ -27,7 +27,7 @@ public class PreCouncil {
     @ManyToOne
     private Class aClass;
 
-    @OneToMany(mappedBy = "preCouncil")
+    @OneToMany(mappedBy = "preCouncil", fetch = FetchType.EAGER)
     private List<PreCouncilSection> preCouncilSectionList;
 
     @ManyToMany(fetch = FetchType.EAGER)

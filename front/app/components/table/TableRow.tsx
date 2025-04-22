@@ -43,7 +43,8 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     closeButton,
     releasedButton,
     releaseButton,
-    preCouncilButton
+    preCouncilButton,
+    onClickRelease
   } = rowButtons;
 
   let date =
@@ -162,7 +163,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
               text={releasedButton ? "Liberado" : "Liberar"}
               icon={FaRegClock}
               onClick={() =>
-                releaseButton && onClickRealize && onClickRealize(content)
+                releaseButton && onClickRelease && onClickRelease(content)
               }
             />
           )}

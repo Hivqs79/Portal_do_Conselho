@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.weg.general_api.model.entity.council.Council;
 import net.weg.general_api.model.enums.RankENUM;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "feedback_id")
-public class FeedbackClass extends Feedback {
+public class FeedbackClass extends FeedbackWithCouncil {
+
     @Enumerated(EnumType.STRING)
     @Column(name = "rank_classification", nullable = false)
     private RankENUM rank;
@@ -30,7 +32,8 @@ public class FeedbackClass extends Feedback {
     public String toString() {
         return "FeedbackClass{" +
                 "rank=" + rank +
-                "class=" + super.getCouncil().getAClass().getName() +
+                ", council=" + super.getCouncil().getId() +
+                ", class=" + getCouncil().getAClass().getName() +
                 '}';
     }
 }

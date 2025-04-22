@@ -165,7 +165,6 @@ export default function StudentCouncilForm({
     return () => clearTimeout(debounceSave);
   }, [positiveContent, negativeContent, frequencia, rank]);
 
-  // Restante do código permanece o mesmo...
   const handleFrequenciaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(",", ".");
     const parsedValue = parseFloat(value);

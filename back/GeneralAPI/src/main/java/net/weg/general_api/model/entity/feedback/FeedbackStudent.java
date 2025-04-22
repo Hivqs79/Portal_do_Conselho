@@ -5,6 +5,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.weg.general_api.model.entity.council.Council;
 import net.weg.general_api.model.entity.users.Student;
 import net.weg.general_api.model.enums.RankENUM;
 
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "feedback_id")
-public class FeedbackStudent extends Feedback {
+public class FeedbackStudent extends FeedbackWithCouncil {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "rank_classification", nullable = false)
@@ -37,6 +38,7 @@ public class FeedbackStudent extends Feedback {
     public String toString() {
         return "FeedbackStudent{" +
                 "student=" + student.getName() +
+                ", council=" + super.getCouncil().getId() +
                 ", frequency=" + frequency +
                 ", isViewed=" + isViewed +
                 ", isSatisfied=" + isSatisfied +
