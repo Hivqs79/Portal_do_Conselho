@@ -139,8 +139,18 @@ public class FeedbackStudentService {
         return repository.findLatestFeedbackByStudentAndClass(className);
     }
 
+    public List<FeedbackStudent> getLatestFeedbackStudentsbyClassNameAndViewed(String className) {
+        return repository.findLatestFeedbackByStudentAndClassAndViewed(className);
+    }
+
     public List<FeedbackStudent> getLatestFeedbackStudentsFromAllClass() {
         return repository.findLatestFeedbackFromAllClasses();
     }
 
+    public FeedbackStudentResponseDTO satisfyFeedbackStudent(Long id) {
+        FeedbackStudent feedbackStudent = findFeedbackEntity(id);
+        feedbackStudent.setSatisfied(!feedbackStudent.isSatisfied());
+        repository.save(feedbackStudent);
+        return modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class);
+    }
 }
