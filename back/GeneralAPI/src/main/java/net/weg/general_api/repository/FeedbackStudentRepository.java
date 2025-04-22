@@ -1,5 +1,6 @@
 package net.weg.general_api.repository;
 
+import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.feedback.FeedbackStudent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,12 +16,13 @@ public interface FeedbackStudentRepository extends JpaRepository<FeedbackStudent
 
     boolean existsFeedbackStudentByCouncil_IdAndStudent_Id(Long council_id, Long student_id);
     default Page<FeedbackStudent> getAllByEnabledIsTrue(Specification<FeedbackStudent> spec, Pageable pageable) {
-        Specification<FeedbackStudent> enabledSpec = Specification.where(spec)
-                .and((root, query, cb) -> cb.isTrue(root.get("enabled")));
+        Specification<FeedbackStudent> enabledSpec = (root, query, cb) -> {
+            // Acessa o atributo da classe pai
+            return cb.isTrue(root.get("enabled"));
+        };
 
-        return findAll(enabledSpec, pageable);
+        return findAll(Specification.where(spec).and(enabledSpec), pageable);
     }
-
 
     @Query("SELECT fs FROM FeedbackStudent fs " +
             "JOIN FETCH fs.student " +
