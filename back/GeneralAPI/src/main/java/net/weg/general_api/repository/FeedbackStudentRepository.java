@@ -21,22 +21,28 @@ public interface FeedbackStudentRepository extends JpaRepository<FeedbackStudent
         return findAll(enabledSpec, pageable);
     }
 
+
     @Query("SELECT fs FROM FeedbackStudent fs " +
-            "JOIN fs.council c " +
-            "JOIN c.aClass cl " +
-            "WHERE YEAR(fs.createDate) = :year " +
-            "AND fs.enabled = true " +
-            "AND LOWER(cl.name) LIKE LOWER(CONCAT('%', :className, '%'))")
-    List<FeedbackStudent> findByYearEnabledAndClassName(
-            @Param("year") int year,
+            "JOIN FETCH fs.student " +
+            "WHERE fs.id IN (" +
+            "   SELECT MAX(fs2.id) FROM FeedbackStudent fs2 " +
+            "   JOIN fs2.council c " +
+            "   JOIN c.aClass cl " +
+            "   WHERE LOWER(cl.name) LIKE LOWER(CONCAT('%', :className, '%')) " +
+            "   AND fs2.enabled = true " +
+            "   GROUP BY fs2.student.id, YEAR(fs2.createDate)" +
+            ")")
+    List<FeedbackStudent> findLatestFeedbackByStudentAndClass(
             @Param("className") String className
     );
 
     @Query("SELECT fs FROM FeedbackStudent fs " +
-            "WHERE YEAR(fs.createDate) = :year " +
-            "AND fs.enabled = true ")
-    List<FeedbackStudent> findByYearEnabled(
-            @Param("year") int year
-    );
+            "JOIN FETCH fs.student " +
+            "WHERE fs.id IN (" +
+            "   SELECT MAX(fs2.id) FROM FeedbackStudent fs2 " +
+            "   WHERE fs2.enabled = true " +
+            "   GROUP BY fs2.student.id, YEAR(fs2.createDate)" +
+            ")")
+    List<FeedbackStudent> findLatestFeedbackFromAllClasses();
 
 }
