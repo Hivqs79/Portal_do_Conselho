@@ -99,7 +99,7 @@ export default function EditUserManagement({
   const bodyContent: any = {
     name: nameUser,
     email: emailUser,
-    classes_id: selectedClassIds, // Usa os IDs das turmas selecionadas
+    classes_id: selectedClassIds,
   };
 
   const putUser = async () => {

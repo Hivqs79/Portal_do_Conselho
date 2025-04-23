@@ -11,7 +11,12 @@ export async function middleware(request: NextRequest) {
     "/notifications",
     "/",
   ];
-  const adminRoutes = ["/configurations"];
+  const adminRoutes = [
+    "/",
+    "/configurations",
+    "/class-management",
+    "/user-management",
+  ];
   const studentRoutes = [...globalRoutes];
   const leaderRoutes = [...globalRoutes, "/fill-out-pre-council"];
   const teacherRoutes = [...globalRoutes, "/annotations", "/council-historic"];

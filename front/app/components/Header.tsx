@@ -27,12 +27,11 @@ interface HeaderProps {
 
 export default function Header({ variant }: HeaderProps) {
   const { primaryColor, whiteColor } = useThemeContext();
-  const { setName, setUserId, setRole, setToken, name, token } = useRoleContext();
+  const { setName, setUserId, setRole, setToken, name, userId, token } = useRoleContext();
   const [openMenu, setOpenMenu] = useState(false);
   const boxRef = useRef<HTMLElement>(null);
   const windowWidth = useWindowWidth();
   const [notifications, setNotifications] = useState<ResponseApiPageable<NotificationType> | null>();
-  const { userId } = useRoleContext();
   const [openNotificationMenu, setOpenNotificationMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [notificationToastOpen, setNotificationToastOpen] = useState(false);
@@ -105,17 +104,6 @@ export default function Header({ variant }: HeaderProps) {
       ref={boxRef}
     >
       <Box className="flex flex-row items-center">
-        {variant === "admin" ? (
-          <>
-            <div onClick={() => router.push("/configurations")}>
-              <Icon
-              IconPassed={IoSettingsOutline}
-              color={whiteColor}
-              className="w-8 h-8"
-              />
-            </div>
-          </>
-        ) : (
           <>
             <div onClick={() => setOpenMenu(!openMenu)}>
               <Icon
@@ -131,7 +119,6 @@ export default function Header({ variant }: HeaderProps) {
               onClose={() => setOpenMenu(false)}
             />
           </>
-        )}
         <div
           style={{ backgroundColor: whiteColor }}
           className="hidden sm:block w-[1px] h-[30px] mx-4"
@@ -149,10 +136,14 @@ export default function Header({ variant }: HeaderProps) {
       </Box>
       <Box className="flex flex-row items-center">
         <div className="w-12 h-12 flex justify-center items-center rounded-full">
-          <Link href={"/profile"}>
-            <Photo idUser={1} rounded={true} classname="w-full h-full" />
-            {/* //PENDÊNCIA: REMOVER ESTE TESTE DEPOIS, E CAPTURAR O ID CORRETO COM BASE NO USUARIO LOGADO */}
-          </Link>
+         {variant !== "admin" && (
+           <Link href={"/profile"}>
+           <Photo idUser={userId ? userId : -1} rounded={true} classname="w-full h-full" />
+         </Link>
+         )}
+         {variant === "admin" && (
+           <Photo idUser={userId ? userId : -1} rounded={true} classname="w-full h-full" />
+         )}
         </div>
         <Box className="flex flex-col justify-center items-start ml-2">
           <Typography

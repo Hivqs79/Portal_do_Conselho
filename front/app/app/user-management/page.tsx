@@ -175,10 +175,9 @@ export default function UserManagement() {
           {role === "admin" && (
             <MenuItem value={"Pedagógico"}>Pedagógico</MenuItem>
           )}
-          {role === "admin" ||
-            (role === "pedagogic" && (
-              <MenuItem value={"SubPedagógico"}>SubPedagógico</MenuItem>
-            ))}
+          {(role === "admin" || role === "pedagogic") && (
+            <MenuItem value={"SubPedagógico"}>SubPedagógico</MenuItem>
+          )}
         </Select>
         <Button
           className="flex flex-row items-center gap-5"
