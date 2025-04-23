@@ -73,20 +73,38 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
 
   let name = "";
   if ("council" in content) {
-    if ("student" in content) {
-      name = content.council?.aclass?.name 
-        ? content.council.aclass.name
-        : "";
-    }   
-  } else if ("student" in content) {
+    if (
+      "student" in content &&
+      content.student &&
+      typeof content.student === "object" &&
+      "name" in content.student
+    ) {
+      name = content.council?.aclass?.name || "";
+    }
+  } else if (
+    "student" in content &&
+    content.student &&
+    typeof content.student === "object" &&
+    "name" in content.student
+  ) {
     date = null;
-    name = content.student.name;
-  } else if ("aclass" in content) {
-    name = content.aclass.name ? (content.aclass.name) : ("name" in content ? content.name : "");
-  } else if ("preCouncil" in content) {
+    name = content.student.name as string;
+  } else if (
+    "aclass" in content &&
+    content.aclass &&
+    typeof content.aclass === "object" &&
+    "name" in content.aclass
+  ) {
+    name = content.aclass.name || ("name" in content ? content.name : "");
+  } else if (
+    "preCouncil" in content &&
+    content.preCouncil &&
+    typeof content.preCouncil === "object" &&
+    "aclass" in content.preCouncil
+  ) {
     name = content.preCouncil.aclass.name;
   } else if ("name" in content) {
-    return content.name;
+    name = content.name;
   }
 
   const funcao = "userAuthentication" in content ? content.userAuthentication.role : "";

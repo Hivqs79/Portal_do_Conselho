@@ -68,12 +68,14 @@ export default function MenuHeader({ open, onClose, variant }: MenuHeaderProps) 
                         <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Principal</Typography>                    
                     </MenuItem>
                 </Link>
+                {variant !== "admin" && (
                 <Link href="/chat">
                     <MenuItem onClick={onClose} className="flex flex-row">                    
                         <Icon IconPassed={MdOutlineChat} color={whiteColor} />
                         <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Chat</Typography>                    
                     </MenuItem>
                 </Link>
+                )}
                 {variant === "leader" && (
                     <Link href="/fill-out-pre-council">
                         <MenuItem onClick={onClose} className="flex flex-row">                    
@@ -144,13 +146,30 @@ export default function MenuHeader({ open, onClose, variant }: MenuHeaderProps) 
                         </Link>
                     </>
                 )}
+                {variant === "admin" && (
+                    <>
+                    <Link href="/class-management">
+                            <MenuItem onClick={onClose} className="flex flex-row">                    
+                                <Icon IconPassed={SiGoogleclassroom} color={whiteColor} />                            
+                                <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Gerenciamento de turmas</Typography>                    
+                            </MenuItem>
+                        </Link>
+                        <Link href="/user-management">
+                            <MenuItem onClick={onClose} className="flex flex-row">                    
+                                <Icon IconPassed={GoPeople} color={whiteColor} />                            
+                                <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Gerenciamento de usuários</Typography>                    
+                            </MenuItem>
+                        </Link>
+                    </>
+                )}
                 <div style={{ backgroundColor: whiteColor }} className="w-full h-[1px] my-4" />
+                {variant !== "admin" && 
                 <Link href="/support">
                     <MenuItem onClick={onClose} className="flex flex-row">                    
                         <Icon IconPassed={BiSupport} color={whiteColor} />
                         <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Suporte</Typography>                    
                     </MenuItem>
-                </Link>
+                </Link>}
                 <Link href="/configurations">
                     <MenuItem onClick={onClose} className="flex flex-row">                    
                         <Icon IconPassed={IoSettingsOutline} color={whiteColor} />
