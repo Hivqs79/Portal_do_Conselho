@@ -11,7 +11,6 @@ import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 import ConfirmMessagesModal from "./ConfirmMessagesModal";
 import LoadingModal from "./LoadingModal";
-import User from "@/interfaces/User";
 import PaginationTable from "../table/Pagination";
 
 interface AddUserModalProps {
