@@ -84,10 +84,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
       document.cookie = `lastRoute=${pathname}; path=/`;
     }
   }, [pathname]);
-
-  console.log("role aaaa", role);
-  console.log("token aaaa", token);
-
+  
   useEffect(() => {
     document.documentElement.style.setProperty("--primary-color", primaryColor);
     document.documentElement.style.setProperty(

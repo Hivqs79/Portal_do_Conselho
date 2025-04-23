@@ -23,7 +23,8 @@ export default function ReleaseFeedback() {
   const [feedbackSearch, setFeedbackSearch] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
   const [studentTerm, setStudentTerm] = useState<string>("");
-  const [studentContent, setStudentContent] = useState<TableRowPossibleTypes[]>();
+  const [studentContent, setStudentContent] =
+    useState<TableRowPossibleTypes[]>();
   const [councilId, setCouncilId] = useState<number>(0);
   const [classContent, setClassContent] = useState<FeedbackClass>();
 
@@ -31,10 +32,11 @@ export default function ReleaseFeedback() {
     try {
       const fetchFeedbacks = async () => {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class?isReturned=false
-            &page=${page - 1}
-            &size=${rowsPerPage}
-            &className=${feedbackSearch}`,
+          `${
+            process.env.NEXT_PUBLIC_URL_GENERAL_API
+          }/feedbacks/class?isReturned=false&page=${
+            page - 1
+          }&size=${rowsPerPage}&className=${feedbackSearch}`,
           {
             method: "GET",
             headers: {
@@ -45,7 +47,7 @@ export default function ReleaseFeedback() {
         );
         console.log("Response:", feedbackSearch);
         const data = await response.json();
-        console.log("THIS data", data)
+        console.log("THIS data", data);
         setFeedbacks(data);
       };
       fetchFeedbacks();
@@ -66,8 +68,7 @@ export default function ReleaseFeedback() {
       setCouncilId(councilId);
       console.log("councilId", councilId);
     },
-    onClickRealize: async () => {
-    },
+    onClickRealize: async () => {},
   };
 
   console.log("Student content: ", studentContent);
@@ -93,7 +94,8 @@ export default function ReleaseFeedback() {
         const data = await response.json();
         console.log("alunos: ", data.content);
         if (data.content.length > 0) {
-          const frequency = "frequency" in data.content[0] ? data.content[0].frequency : null;
+          const frequency =
+            "frequency" in data.content[0] ? data.content[0].frequency : null;
           console.log("frequency", frequency);
         }
         setStudentContent(data.content as FeedbackStudent[]);
@@ -111,7 +113,9 @@ export default function ReleaseFeedback() {
     rankText: "Classificação da Turma",
   };
 
-  const headersClass: TableHeaderContent[] = [{ name: `Turma: ${classContent?.council.aclass.name}` }];
+  const headersClass: TableHeaderContent[] = [
+    { name: `Turma: ${classContent?.council.aclass.name}` },
+  ];
 
   const headerButtonsStudent: TableHeaderButtons = {
     searchInput: true,

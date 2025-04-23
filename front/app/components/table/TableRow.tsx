@@ -72,7 +72,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
       return content.student?.name || "";
     }
     if ("aclass" in content) {
-      return content.aclass?.name ? content.aclass?.name : "name" in content ? (content as any).name : "";
+      return (content.aclass as any).name  ? (content.aclass as any).name : "name" in content ? (content as any).name : "";
     }
     if ("name" in content) {
       return content.name;

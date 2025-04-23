@@ -104,6 +104,7 @@ export default function ConfirmChanges({
         sx={{
           display: "flex",
           p: 1,
+          zIndex: 9999,
           alignItems: "center",
           justifyContent: "center",
           border: "none",
