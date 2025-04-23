@@ -112,6 +112,12 @@ public class FeedbackUserService {
         repository.save(feedbackUser);
     }
 
+    public void changeSatisfactionUser(Long id, boolean isSatisfied) {
+        FeedbackUser feedbackUser = findFeedbackEntity(id);
+        feedbackUser.setSatisfied(isSatisfied);
+        repository.save(feedbackUser);
+    }
+
     private Page<FeedbackUserResponseDTO> pageToResponse(Page<FeedbackUser> feedbackUsers) {
         return feedbackUsers.map(feedbackUser -> new FeedbackUserResponseDTO(
                 feedbackUser.getId(),

@@ -104,7 +104,7 @@ public class PreCouncilController {
     @ApiResponse(responseCode = "200", description = "Pre-council returned", content = @Content(schema = @Schema(implementation = PreCouncilResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-03T00:00:00\"}")))
     @ApiResponse(responseCode = "404", description = "Pre-council not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<Void> returnPreCouncil(@Parameter(description = "Feedback ID", example = "1") @PathVariable Long id) {
+    public ResponseEntity<Void> returnPreCouncil(@Parameter(description = "Pre council ID", example = "1") @PathVariable Long id) {
         service.returnPreCouncil(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

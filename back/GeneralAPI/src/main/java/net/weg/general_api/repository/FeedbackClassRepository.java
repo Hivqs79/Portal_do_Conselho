@@ -19,5 +19,7 @@ public interface FeedbackClassRepository extends JpaRepository<FeedbackClass, Lo
         return findAll(enabledSpec, pageable);
     }
 
+    List<FeedbackClass> getFeedbackClassByCouncil_Id(Long councilId);
+
 }
 

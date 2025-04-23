@@ -69,13 +69,13 @@ function CoreLayout({ children }: { children: ReactElement }) {
 
   useEffect(() => {
     if (role === "") {
-      setRole("teacher");
+      setRole("pedagogic");
     }        
   }, [role, setRole]);
 
   useEffect(() => {
     if (userId === -1) {
-      setUserId(16);
+      setUserId(21);
     }        
   }, [userId, setUserId]);
 

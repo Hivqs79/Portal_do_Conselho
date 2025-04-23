@@ -7,11 +7,14 @@ import FeedbackUser from "@/interfaces/feedback/FeedbackUser";
 import AvaliationInputs from "../council/AvaliationInputs";
 import TableHeader from "../table/TableHeader";
 import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
+import FeedbackClass from "@/interfaces/feedback/FeedbackClass";
 
 interface FeedbackModalProps {
 	open: boolean;
 	close: () => void;
 	feedback: FeedbackStudent | FeedbackUser | null;
+	headersClass: TableHeaderContent[];
+	feedbackClass?: FeedbackClass | null;
 	headers: TableHeaderContent[];
 	satisfied: boolean | null;
 	setSatisfied?: (value: boolean) => void;
@@ -21,11 +24,13 @@ export default function FeedbackModal({
 	open,
 	close,
 	feedback,
+	feedbackClass,
+	headersClass,
 	headers,
 	satisfied,
 	setSatisfied
 }: FeedbackModalProps) {
-	const { backgroundColor, redDanger, colorByModeSecondary, colorByMode } = useThemeContext();	
+	const { backgroundColor, redDanger, colorByModeSecondary, colorByMode } = useThemeContext();
 
 	return (
 		<Modal
@@ -36,10 +41,10 @@ export default function FeedbackModal({
 			className="flex items-center justify-center"
 		>
 			<Box
-				className={`py-2 px-4 z-50 mx-4 sm:mx-16 mt-28 w-full rounded-big max-w-[1000px]`}
+				className={`py-2 px-4 z-50 mx-4 sm:mx-16 mt-24 w-full rounded-big max-w-[1000px]`}
 				style={{ backgroundColor: backgroundColor }}
 			>
-				<Box className="flex flex-col w-full max-h-[75vh] overflow-y-auto p-2 sm:p-4 gap-10">
+				<Box className="flex flex-col w-full max-h-[80vh] overflow-y-auto p-2 sm:p-4 gap-10">
 					<Box className="flex items-center flex-row w-full">
 						<Box className="flex flex-col w-full mr-4">
 							<Typography variant="xl_text_bold" color={colorByModeSecondary}>
@@ -73,15 +78,32 @@ export default function FeedbackModal({
 							Negativecontent={feedback?.toImprove}
 						/>
 					</Box>
+					{feedbackClass &&
+						<Box className="flex flex-col">
+							<table className="w-full rounded-t-2xl overflow-hidden">
+								<TableHeader
+									variant={"pre-council"}
+									headers={headersClass}
+									headerButtons={{}}
+								/>
+							</table>
+							<AvaliationInputs
+								readOnly={true}
+								copyButton={true}
+								Positivecontent={feedbackClass.strengths}
+								Negativecontent={feedbackClass.toImprove}
+							/>
+						</Box>
+					}
 					<Box>
 						<RadioGroup value={satisfied} onChange={(e) => setSatisfied && setSatisfied(e.target.value === "true")}>
 							<FormControlLabel
 								value={true}
 								control={
-									<Radio										
+									<Radio
 										className="!ml-2"
 									/>
-								}																
+								}
 								label={
 									<Typography className="!ml-2" variant="md_text_regular" color={colorByMode}>
 										Li e estou <Typography variant="md_text_bold" color={colorByMode}>
@@ -94,7 +116,7 @@ export default function FeedbackModal({
 								value={false}
 								control={
 									<Radio
-										className="!ml-2"										
+										className="!ml-2"
 									/>
 								}
 								className="!mr-2"

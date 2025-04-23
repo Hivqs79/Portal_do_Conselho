@@ -102,6 +102,14 @@ public class FeedbackClassService {
         return responseDTOS;
     }
 
+    public FeedbackClassResponseDTO getFeedbackClassByCouncilId(Long id) {
+        List<FeedbackClass> feedbackClassList = repository.getFeedbackClassByCouncil_Id(id);
+        System.out.println("Lista: " + feedbackClassList);
+        FeedbackClass feedbackClass = feedbackClassList.getFirst();
+        System.out.println("feedback: " + feedbackClass);
+        return modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class);
+    }
+
     public FeedbackClassResponseDTO returnFeedbackClass(Long id) {
         FeedbackClass feedbackClass = findFeedbackEntity(id);
         feedbackClass.setReturned(true);

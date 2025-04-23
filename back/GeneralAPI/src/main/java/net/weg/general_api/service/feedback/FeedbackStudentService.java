@@ -133,6 +133,12 @@ public class FeedbackStudentService {
         return modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class);
     }
 
+    public void changeSatisfactionStudent(Long id, boolean isSatisfied) {
+        FeedbackStudent feedbackStudent = findFeedbackEntity(id);
+        feedbackStudent.setSatisfied(isSatisfied);
+        repository.save(feedbackStudent);
+    }
+
     public List<FeedbackStudent> getFeedbackStudentsByYearAndClassName(int year, String className) {
         return repository.findByYearEnabledAndClassName(year, className);
     }

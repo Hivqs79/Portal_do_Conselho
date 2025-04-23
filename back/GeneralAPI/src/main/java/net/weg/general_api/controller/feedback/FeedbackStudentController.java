@@ -88,7 +88,7 @@ public class FeedbackStudentController {
     @ApiResponse(responseCode = "200", description = "Feedback found", content = @Content(schema = @Schema(implementation = FeedbackStudentResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"rank\":\"CRITICAL\",\"strengths\":\"Good progress\",\"toImprove\":\"More practice needed\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"student\":{\"id\":1,\"name\":\"Student\",\"email\":\"student@email.com\",\"isRepresentant\":false,\"lastRank\":\"BRONZE\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"frequency\":0.88,\"isViewed\":false,\"isSatisfied\":false,\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))
     @ApiResponse(responseCode = "404", description = "Feedback not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public Page<FeedbackStudentResponseDTO> getFeedbacksOfAStudent(@And({@Spec(path = "id", spec = Equal.class), @Spec(path = "rank", spec = Like.class), @Spec(path = "strengths", spec = Like.class), @Spec(path = "toImprove", spec = Like.class), @Spec(path = "council.id", params = "councilId", spec = Equal.class), @Spec(path = "council.isFinished", constVal = "true", spec = Equal.class), @Spec(path = "isReturned", params = "isReturned", spec = Equal.class), @Spec(path = "council.aClass.name", params = "className", spec = Like.class), @Spec(path = "student.name", params = "studentName", spec = Like.class), @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class), @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class), @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class), @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)}) Specification<FeedbackStudent> spec, Pageable pageable, @Parameter(description = "Student ID", example = "1") @PathVariable Long studentId) {
+    public Page<FeedbackStudentResponseDTO> getFeedbacksOfAStudent(@And({@Spec(path = "id", spec = Equal.class), @Spec(path = "rank", spec = Like.class), @Spec(path = "council.aClass.name", params = "className", spec = Like.class), @Spec(path = "strengths", spec = Like.class), @Spec(path = "toImprove", spec = Like.class), @Spec(path = "council.id", params = "councilId", spec = Equal.class), @Spec(path = "council.isFinished", constVal = "true", spec = Equal.class), @Spec(path = "isReturned", params = "isReturned", spec = Equal.class), @Spec(path = "council.aClass.name", params = "className", spec = Like.class), @Spec(path = "student.name", params = "studentName", spec = Like.class), @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class), @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class), @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class), @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)}) Specification<FeedbackStudent> spec, Pageable pageable, @Parameter(description = "Student ID", example = "1") @PathVariable Long studentId) {
         return service.findFeedbackStudentSpecByStudentId(spec, pageable, studentId);
     }
 
@@ -108,5 +108,15 @@ public class FeedbackStudentController {
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<FeedbackStudentResponseDTO> returnFeedbackStudent(@Parameter(description = "Feedback ID", example = "1") @PathVariable Long id) {
         return new ResponseEntity<>(service.returnFeedbackStudent(id), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}/satisfied/{iSatisfied}")
+    @Operation(method = "PATCH", summary = "Set satisfaction of the student", description = "Set satisfaction of the student in relation with it's feedback")
+    @ApiResponse(responseCode = "200", description = "Feedbacks change satisfaction")
+    @ApiResponse(responseCode = "404", description = "User not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<Void> changeSatisfactionOfStudent(@Parameter(description = "Feedback ID", example = "1") @PathVariable Long id, @Parameter(description = "Boolean value to student if it's satisfied", example = "1") @PathVariable boolean iSatisfied) {
+        service.changeSatisfactionStudent(id, iSatisfied);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -91,6 +91,15 @@ public class FeedbackClassController {
         return new ResponseEntity<>(service.getFeedbackClassByClassId(id), HttpStatus.OK);
     }
 
+    @GetMapping("/council/{id}")
+    @Operation(method = "GET", summary = "Get feedback by council", description = "Returns all feedbacks for a specific council")
+    @ApiResponse(responseCode = "200", description = "Feedback found", content = @Content(schema = @Schema(implementation = List.class), examples = @ExampleObject(value = "[{\"id\":1,\"rank\":\"AVERAGE\",\"strengths\":\"Excellent class\",\"toImprove\":\"None\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}]")))
+    @ApiResponse(responseCode = "404", description = "Class not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<FeedbackClassResponseDTO> getAllFeedbackClassByCouncil(@Parameter(description = "Council ID", example = "1") @PathVariable Long id) {
+        return new ResponseEntity<>(service.getFeedbackClassByCouncilId(id), HttpStatus.OK);
+    }
+
     @PatchMapping("/return/{id}")
     @Operation(method = "PATCH", summary = "Return class feedback status", description = "Modifies isReturned status, false to true")
     @ApiResponse(responseCode = "200", description = "Feedbacks found", content = @Content(schema = @Schema(implementation = List.class), examples = @ExampleObject(value = "[{\"id\":1,\"rank\":\"AVERAGE\",\"strengths\":\"Excellent class\",\"toImprove\":\"None\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}]")))

@@ -5,6 +5,6 @@ import Feedback from "./Feedback";
 export default interface FeedbackUser extends Feedback { 
     user: User;
     isViewed: boolean;
-    isSatisfied: boolean;
+    satisfied: boolean;
     preCouncil: PreCouncil
 }

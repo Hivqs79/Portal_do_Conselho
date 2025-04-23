@@ -67,18 +67,20 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     return content.student.name;
   }
 
-  const name =
-    "council" in content && ("student" in content ? content.student == null : true)
-      ? content.council.aclass && content.council.aclass.name
+  let name = "";
+  if ("council" in content) {
+    if ("student" in content) {
+      name = content.council?.aclass?.name 
         ? content.council.aclass.name
-        : ""
-      : "student" in content
-        ? getStudentNameAndRemoveDate()
-        : "aclass" in content
-          ? content.aclass.name
-          : "preCouncil" in content
-            ? content.preCouncil.aclass.name
-            : "";
+        : "";
+    }   
+  } else if ("student" in content) {
+    name = getStudentNameAndRemoveDate();
+  } else if ("aclass" in content) {
+    name = content.aclass.name;
+  } else if ("preCouncil" in content) {
+    name = content.preCouncil.aclass.name;
+  }
 
   const rank = "rank" in content && content.rank;
 
