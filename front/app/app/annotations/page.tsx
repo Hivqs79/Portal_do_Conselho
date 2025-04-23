@@ -22,7 +22,7 @@ export default function Annotations() {
   const [classAnnotations, setClassAnnotations] = useState<TableContent | null>(
     null
   );
-  const { userId } = useRoleContext();
+  const { userId, token } = useRoleContext();
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -124,7 +124,14 @@ export default function Annotations() {
     const fetchClassAnnotations = async () => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/class?isHappening=false&isFinished=false&teacherId=${userId}&page=${page - 1
-        }&size=${rowsPerPage}&className=${classSearch}`
+        }&size=${rowsPerPage}&className=${classSearch}`, 
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.json();
       console.log(data);
@@ -139,7 +146,14 @@ export default function Annotations() {
       teacherId?: number
     ) => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/student?councilId=${councilId}&teacherId=${teacherId}&studentName=${studentSearch}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/student?councilId=${councilId}&teacherId=${teacherId}&studentName=${studentSearch}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.json();
       setSelectedStudents(data.content);
@@ -163,6 +177,7 @@ export default function Annotations() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             rank: selectedAnnotation.rank,
@@ -217,7 +232,7 @@ export default function Annotations() {
             const row = editedRows[parseInt(id)];
             return fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/student/${id}`, {
               method: "PUT",
-              headers: { "Content-Type": "application/json" },
+              headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
               body: JSON.stringify({
                 rank: row.rank,
                 strengths: row.strengths,

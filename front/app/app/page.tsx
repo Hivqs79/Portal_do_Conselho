@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [page, setPage] = useState(1);
+  const {token} = useRoleContext();
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableContent, setTableContent] = useState<TableContent | null>(null);
   const { role, userId } = useRoleContext();

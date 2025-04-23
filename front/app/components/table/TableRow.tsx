@@ -36,8 +36,12 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
     visualizeButton,
     onClickVisualize,
     editButton,
+    onClickEdit,
     deleteButton,
+    onClickDelete,
     seeButton,
+    inicializeButton,
+    onClickInicialize,
     annotationButton,
     onClickAnnotation,
     closeButton,
@@ -75,14 +79,38 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
         : "";
     }   
   } else if ("student" in content) {
-    name = getStudentNameAndRemoveDate();
+    date = null;
+    name = content.student.name;
   } else if ("aclass" in content) {
-    name = content.aclass.name;
+    name = content.aclass.name ? (content.aclass.name) : ("name" in content ? content.name : "");
   } else if ("preCouncil" in content) {
     name = content.preCouncil.aclass.name;
+  } else if ("name" in content) {
+    return content.name;
   }
 
+  const funcao = "userAuthentication" in content ? content.userAuthentication.role : "";
+
   const rank = "rank" in content && content.rank;
+
+  const transformRole = (role: string) => {
+    switch (role) {
+      case "STUDENT":
+        return "Aluno";
+      case "TEACHER":
+        return "Professor";
+      case "SUPERVISOR":
+        return "Supervisor";
+      case "PEDAGOGIC":
+        return "Pedagógico";
+      case "SUBPEDAGOGIC":
+        return "Subpedagógico";
+      case "ADMIN":
+        return "Administrador";
+      default:
+        return role;
+    }
+  };
 
   return (
     <>
@@ -96,6 +124,16 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
         <td style={{ color: constrastColor }} className="flex-1">
           <Typography variant="lg_text_regular">{name}</Typography>
         </td>
+        {funcao && (
+          <td
+            style={{ color: constrastColor }}
+            className="hidden md:flex-1 md:flex text-center lg:justify-center"
+          >
+            <Typography variant="lg_text_regular">
+              {transformRole(funcao)}
+            </Typography>
+          </td>
+        )}
         {date && (
           <td
             style={{ color: constrastColor }}
@@ -161,7 +199,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
             <TableButton
               text={annotationButton ? "Anotar" : "Editar"}
               icon={LuPencilLine}
-              onClick={() => onClickAnnotation && onClickAnnotation(content)}
+              onClick={() => onClickAnnotation && onClickAnnotation(content) || onClickEdit && onClickEdit(content)}
             />
           )}
           {(releasedButton || releaseButton) && (
@@ -193,8 +231,14 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
               />
             </span>
           )}
+          {inicializeButton && (
+            <TableButton
+              text={"Iniciar"}
+              onClick={() => onClickInicialize && onClickInicialize(content)}
+            />
+          )}
           {closeButton && <TableButton text="Fechar" icon={IoClose} />}
-          {deleteButton && <TableButton text="Excluir" icon={LuTrash} />}
+          {deleteButton && <TableButton text="Excluir" onClick={() => onClickDelete && onClickDelete(content)} icon={LuTrash} />}
         </td>
       </tr>
     </>

@@ -25,6 +25,7 @@ export default function ConfirmMessagesModal({
         sx={{
           display: "flex",
           p: 1,
+          zIndex: 9999,
           alignItems: "center",
           justifyContent: "center",
           border: "none",
@@ -36,15 +37,15 @@ export default function ConfirmMessagesModal({
           className="flex flex-col justify-center items-center gap-10 p-6 rounded-lg w-full max-w-[600px] m-5"
         >
           <Typography style={{color: colorByModeSecondary}} variant="xl_text_bold" className="">{title}</Typography>
-          <Typography className="max-w-[450px] text-center" variant="lg_text_regular">{description}</Typography>
-          <div className={`p-4 ${error? "bg-red-100" : "bg-green-100"} rounded-full`}>
+          <Typography className="max-w-[450px] text-justify" variant="lg_text_regular">{description}</Typography>
+          <Box className={`p-4 ${error? "bg-red-100" : "bg-green-100"} rounded-full`}>
             <Icon
               IconPassed={error ? IoClose : FaCheck}
               color={error ? "red" : "green"}
               className="text-4xl"
               cursor="cursor-default"
             />
-          </div>
+          </Box>
         </Box>
       </Modal>
     </>

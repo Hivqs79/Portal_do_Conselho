@@ -6,6 +6,7 @@ import Table from "@/components/table/Table";
 import Title from "@/components/Title";
 import FeedbackClass from "@/interfaces/feedback/FeedbackClass";
 import FeedbackStudent from "@/interfaces/feedback/FeedbackStudent";
+import { useRoleContext } from "@/hooks/useRole";
 import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
 import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
 import TableFeedbackRow from "@/interfaces/table/row/TableFeedbackRow";
@@ -23,6 +24,7 @@ import { useThemeContext } from "@/hooks/useTheme";
 
 export default function ReleaseFeedback() {
   const { backgroundColor } = useThemeContext();
+  const { token } = useRoleContext();
   const [feedbacks, setFeedbacks] = useState<TableContent | null>(null);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -58,11 +60,14 @@ export default function ReleaseFeedback() {
     try {
       const fetchFeedbacks = async () => {
         const response = await fetch(
-          `${
-            process.env.NEXT_PUBLIC_URL_GENERAL_API
-          }/feedbacks/class?isReturned=false&page=${
-            page - 1
-          }&size=${rowsPerPage}&className=${feedbackSearch}`
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class?isReturned=false&page=${page - 1}&size=${rowsPerPage}&className=${feedbackSearch}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log("Response:", feedbackSearch);
         const data = await response.json();
@@ -208,6 +213,7 @@ export default function ReleaseFeedback() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );

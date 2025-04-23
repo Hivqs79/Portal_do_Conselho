@@ -13,7 +13,7 @@ import TeacherAnnotation from "@/interfaces/annotation/TeacherAnnotation";
 interface CommentariesModalProps {
   onClose: () => void;
   student: boolean;
-  name: string;
+  name: string | null | undefined;
   anotations: TeacherAnnotation[];
 }
 
@@ -100,6 +100,7 @@ export default function CommentariesModal({
                   key={index}
                   name={anotation.teacher.name}
                   rank={verifyRank(anotation.rank) as Rank}
+                  rankViwed
                 >
                   <AvaliationInputs
                     Positivecontent={anotation.strengths}

@@ -44,6 +44,15 @@ public class TeacherController {
         return service.findTeacherSpec(spec, pageable);
     }
 
+    @GetMapping("/by-class/{id}")
+    @Operation(method = "GET", summary = "Search teachers", description = "Returns paginated teachers with filters")
+    @ApiResponse(responseCode = "200", description = "Teachers found", content = @Content(schema = @Schema(implementation = Page.class), examples = @ExampleObject(value = "{\"content\":[{\"id\":1,\"name\":\"Teacher\",\"email\":\"teacher@email.com\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}],\"pageable\":{\"pageNumber\":0,\"pageSize\":10,\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true}},\"totalElements\":1,\"totalPages\":1}")))
+    @ApiResponse(responseCode = "400", description = "Invalid parameters")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public Page<TeacherResponseDTO> searchTeacherByClass(@And({@Spec(path = "id", spec = Equal.class), @Spec(path = "name", spec = Like.class), @Spec(path = "email", spec = Like.class), @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class), @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class), @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class), @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)}) Specification<Teacher> spec, Pageable pageable, @PathVariable Long id) {
+        return service.findTeacherSpecByClass(spec, id, pageable);
+    }
+
     @PostMapping
     @Operation(method = "POST", summary = "Create teacher", description = "Creates new teacher")
     @ApiResponse(responseCode = "200", description = "Teacher created", content = @Content(schema = @Schema(implementation = TeacherResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"name\":\"New Teacher\",\"email\":\"new@email.com\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))

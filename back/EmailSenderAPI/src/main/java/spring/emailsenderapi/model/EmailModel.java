@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.Email;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -39,9 +40,11 @@ public class EmailModel {
     private String content;
 
     //pode remover após os testes (adicionado apenas para os testes)
-    private Date date;
+    private LocalDateTime date;
     private String turma;
     private String typeUser;
     private String typeContent;
+    private String token;
+    private String password;
 
 }

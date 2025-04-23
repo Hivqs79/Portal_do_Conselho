@@ -17,6 +17,7 @@ import ConfirmChanges from "@/components/modals/ConfirmChanges";
 import ConfirmMessagesModal from "@/components/modals/ConfirmMessagesModal";
 import LoadingModal from "@/components/modals/LoadingModal";
 import { Rank as RankType } from "@/interfaces/RankType";
+import { useRoleContext } from "@/hooks/useRole";
 
 type CouncilData = {
   id: number;
@@ -64,6 +65,7 @@ type FinalJson = {
 };
 
 export default function RealizeCouncil() {
+  const { token } = useRoleContext();
   const [data, setData] = useState<CouncilData | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [currentStudentIndex, setCurrentStudentIndex] = useState(0);    
@@ -226,7 +228,14 @@ export default function RealizeCouncil() {
   const fetchUsersInClass = async (idClass: number) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class/student/${idClass}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class/student/${idClass}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const users = await response.json();
       return users;
@@ -281,6 +290,7 @@ export default function RealizeCouncil() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -294,6 +304,7 @@ export default function RealizeCouncil() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -425,6 +436,7 @@ export default function RealizeCouncil() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         rank: formattedJson?.["council-form"].class.ClassRank,
@@ -440,6 +452,7 @@ export default function RealizeCouncil() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             rank: user.rank,
@@ -456,6 +469,7 @@ export default function RealizeCouncil() {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
     }
@@ -608,6 +622,7 @@ export default function RealizeCouncil() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -640,6 +655,7 @@ export default function RealizeCouncil() {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -785,7 +801,7 @@ export default function RealizeCouncil() {
         <CommentariesModal
           anotations={classCommentaries}
           student={false}
-          name={"teste"}
+          name={data ? data.aclass.name : localStorage.getItem("className")}
           onClose={closeTeacherModal}
         />
       )}
@@ -793,7 +809,9 @@ export default function RealizeCouncil() {
         <CommentariesModal
           anotations={studentCommentaries}
           student={true}
-          name={"teste"}
+          name={users && users.length > 0
+            ? users[currentStudentIndex]?.name
+            : ""}
           onClose={closeStudentModal}
         />
       )}

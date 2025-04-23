@@ -5,11 +5,17 @@ import net.weg.general_api.exception.exceptions.UserNotFoundException;
 import net.weg.general_api.model.dto.request.users.TeacherRequestDTO;
 import net.weg.general_api.model.dto.response.classes.ClassResponseDTO;
 import net.weg.general_api.model.dto.response.users.TeacherResponseDTO;
+import net.weg.general_api.model.dto.response.users.UserAuthenticationResponseDTO;
 import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.users.Teacher;
+import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.TeacherRepository;
 import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.kafka.producer.KafkaEventSender;
+import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.security.EmailApiClient;
+import net.weg.general_api.service.security.EmailService;
+import net.weg.general_api.service.security.PasswordGeneratorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,17 +36,43 @@ public class TeacherService {
     private CustomizationService customizationService;
     private ModelMapper modelMapper;
     private final KafkaEventSender kafkaEventSender;
+    private UserAuthenticationService userAuthenticationService;
+    private final EmailService emailService;
 
     public Page<TeacherResponseDTO> findTeacherSpec(Specification<Teacher> spec, Pageable pageable) {
         Page<Teacher> teachers = repository.getAllByEnabledIsTrue(spec, pageable);
+        return teachers.map(teacher -> new TeacherResponseDTO(
+                teacher.getId(),
+                teacher.getName(),
+                teacher.getCreateDate(),
+                teacher.getUpdateDate(),
+                teacher.getClasses().stream().map(aClass -> modelMapper.map(aClass, ClassResponseDTO.class)).toList(),
+                modelMapper.map(teacher.getUserAuthentication(), UserAuthenticationResponseDTO.class)
+        ));
+    }
+
+    public Page<TeacherResponseDTO> findTeacherSpecByClass(Specification<Teacher> spec, Long classId, Pageable pageable) {
+        Page<Teacher> teachers = repository.findAllByClassIdAndSpec(classId, spec, pageable);
         return teachers.map(teacher -> modelMapper.map(teacher, TeacherResponseDTO.class));
     }
 
     public TeacherResponseDTO createTeacher(TeacherRequestDTO teacherRequestDTO) {
         Teacher teacher = modelMapper.map(teacherRequestDTO, Teacher.class);
+        String randomPassword = PasswordGeneratorService.generateSimpleAlphanumericPassword();
 
+        teacher.setUserAuthentication(
+                userAuthenticationService.saveUserAuthentication(teacherRequestDTO.getEmail(), randomPassword, RoleENUM.TEACHER)
+        );
         teacher.setClasses(classService.getClassesByIdList(teacherRequestDTO.getClasses_id()));
+
         Teacher teacherSaved = repository.save(teacher);
+
+        emailService.sendPasswordEmailAsync(
+                teacherRequestDTO.getEmail(),
+                teacherRequestDTO.getName(), // Assumindo que existe um campo name no DTO
+                randomPassword
+        );
+
         kafkaEventSender.sendEvent(teacherSaved, "POST", "Teacher created");
         teacherSaved.setCustomization(customizationService.setDefault(teacherSaved));
 
@@ -70,7 +102,7 @@ public class TeacherService {
 
     public TeacherResponseDTO disableTeacher(Long id) {
         Teacher teacher = findTeacherEntity(id);
-        teacher.setEnabled(false);
+        teacher.getUserAuthentication().setEnabled(false);
         repository.save(teacher);
         kafkaEventSender.sendEvent(teacher, "DELETE", "Teacher deleted");
         return modelMapper.map(teacher, TeacherResponseDTO.class);

@@ -21,6 +21,7 @@ interface AnotationProps {
   frequency?: number | boolean;
   name: string;
   children: React.ReactNode;
+  rankViwed?: boolean;
   onChangeCheckbox?: () => void;
   checked?: boolean;
   viewed?: boolean;
@@ -38,6 +39,7 @@ export default function AccordionComponent({
   outlined,
   onChangeCheckbox,
   checked,
+  rankViwed,
   viewed = true,
   rank,
   onChangeRank, 
@@ -166,7 +168,7 @@ export default function AccordionComponent({
             </Box>
             {rank && (
               <Box
-                onClick={(e) => !frequency && e.stopPropagation()}
+                onClick={(e) => !frequency || !rankViwed && e.stopPropagation()}
                 className={`flex justify-end items-center ${
                   frequency ? "w-1/5 lg:w-1/4" : ""
                 }`}
@@ -175,7 +177,7 @@ export default function AccordionComponent({
                   variant="annotation"
                   type={rank}
                   outline={frequency ? true : false}
-                  popover={frequency ? false : true}
+                  popover={frequency || rankViwed ? false : true}
                   onRankChange={onChangeRank}
                 />
               </Box>

@@ -5,6 +5,7 @@ import TableFeedbackRow from "./TableFeedbackRow";
 import TablePreCouncilRow from "./TablePreCouncilRow";
 import TablePreCouncilSectionRow from "./TablePreCouncilSectionRow";
 import TableFeedbackUserRow from "./TableFeedbackUserRow";
+import TableUserManagementRow from "./TableUserManagementRow";
 
 export type TableRowPossibleTypes = 
     TableCouncilRow | 
@@ -13,4 +14,5 @@ export type TableRowPossibleTypes =
     TableAnnotationRow | 
     TableNotificationRow | 
     TablePreCouncilRow |
-    TablePreCouncilSectionRow;
+    TablePreCouncilSectionRow |
+    TableUserManagementRow;

@@ -20,6 +20,7 @@ import java.util.Map;
 public class KafkaConfig {
 
     private final String bootstrapServers = "kafka-service:9092";
+    //private final String bootstrapServers = "localhost:9093";
 
     @Bean
     public ProducerFactory<String, String> producerFactory() {

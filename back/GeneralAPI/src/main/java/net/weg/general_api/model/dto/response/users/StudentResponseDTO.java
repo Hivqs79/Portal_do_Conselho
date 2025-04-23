@@ -3,9 +3,11 @@ package net.weg.general_api.model.dto.response.users;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.weg.general_api.model.dto.response.classes.ClassResponseDTO;
 import net.weg.general_api.model.enums.RankENUM;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -13,11 +15,11 @@ import java.time.LocalDateTime;
 public class StudentResponseDTO {
     private Long id;
     private String name;
-    private String email;
     private Boolean isRepresentant;
     private RankENUM lastRank;
     private Double lastFrequency;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-    private boolean enabled;
+    private List<ClassResponseDTO> aClass;
+    private UserAuthenticationResponseDTO userAuthentication;
 }

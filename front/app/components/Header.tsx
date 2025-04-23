@@ -27,6 +27,7 @@ interface HeaderProps {
 
 export default function Header({ variant }: HeaderProps) {
   const { primaryColor, whiteColor } = useThemeContext();
+  const { setName, setUserId, setRole, setToken, name, token } = useRoleContext();
   const [openMenu, setOpenMenu] = useState(false);
   const boxRef = useRef<HTMLElement>(null);
   const windowWidth = useWindowWidth();
@@ -43,7 +44,14 @@ export default function Header({ variant }: HeaderProps) {
     if (userId !== -1) {
       const fetchNotifications = async () => {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/user/${userId}`
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/notification/user/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              // Authorization: `Bearer ${token}`,
+            },
+          }
         );
         let data: ResponseApiPageable<NotificationType> = await response.json();
         console.log(data);
@@ -80,6 +88,16 @@ export default function Header({ variant }: HeaderProps) {
     }
   }, [incomingNotification]);
 
+  const logout = () => {
+    document.cookie = 'user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    setName("");
+    setUserId(-1);
+    setRole("");
+    setToken("");
+    router.push("/login");
+  }
+
   return (
     <Box
       style={{ backgroundColor: primaryColor }}
@@ -89,11 +107,13 @@ export default function Header({ variant }: HeaderProps) {
       <Box className="flex flex-row items-center">
         {variant === "admin" ? (
           <>
-            <Icon
+            <div onClick={() => router.push("/configurations")}>
+              <Icon
               IconPassed={IoSettingsOutline}
               color={whiteColor}
               className="w-8 h-8"
-            />
+              />
+            </div>
           </>
         ) : (
           <>
@@ -152,9 +172,9 @@ export default function Header({ variant }: HeaderProps) {
               );
             }}
           >
-            Usuário
+            {name ? name.split(" ")[0] : ""}
           </Typography>
-          <Box className="flex flex-row items-center cursor-pointer">
+          <Box onClick={() => logout()} className="flex flex-row items-center cursor-pointer">
             <Icon
               IconPassed={LuLogOut}
               color={whiteColor}

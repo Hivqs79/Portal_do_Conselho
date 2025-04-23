@@ -7,6 +7,7 @@ import net.weg.general_api.model.entity.feedback.FeedbackUser;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @Entity
 @Data
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -21,10 +22,6 @@ public abstract class User {
 
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false, unique = true)
-    private String email;
-    @Column(nullable = false)
-    private String password;
 
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
@@ -35,17 +32,16 @@ public abstract class User {
     @OneToOne(mappedBy = "user")
     private Customization customization;
 
-    @Column(nullable = false)
-    private boolean enabled;
-
     @OneToMany(mappedBy = "user")
     private List<FeedbackUser> feedbackUsers;
+
+    @OneToOne
+    private UserAuthentication userAuthentication;
 
     @PrePersist
     public void onPrePersist() {
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
-        this.setEnabled(true);
     }
 
     @PreUpdate
@@ -58,7 +54,7 @@ public abstract class User {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
+                ", userAuth='" + userAuthentication + '\'' +
                 '}';
     }
 }

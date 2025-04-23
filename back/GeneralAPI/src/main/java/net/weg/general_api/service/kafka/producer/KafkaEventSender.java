@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.exception.exceptions.KafkaException;
+import net.weg.general_api.model.entity.annotation.AnnotationStudent;
 import net.weg.general_api.model.entity.notification.Notification;
 import net.weg.general_api.service.kafka.entity.KafkaMessage;
 import net.weg.general_api.service.notification.NotificationService;

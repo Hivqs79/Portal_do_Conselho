@@ -1,5 +1,6 @@
 package api.chat.service.kafka;
 
+import api.chat.entities.Notification;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 

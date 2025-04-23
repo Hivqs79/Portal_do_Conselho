@@ -1,4 +1,4 @@
-package net.weg.general_api.service;
+package net.weg.general_api.service.dashboard;
 
 import lombok.AllArgsConstructor;
 import net.weg.general_api.model.dto.response.ClassRankDashboardResponseDTO;
@@ -54,7 +54,6 @@ public class DashboardService {
 
         System.out.println("logDoBackend" + className);
         int excellent = 0, good = 0, average = 0, critical = 0, none = 0;
-        List<Class> classList;
         Class aClass = classService.getClassByClassName(className);
 
         if (className.equalsIgnoreCase("geral")) {
@@ -73,6 +72,9 @@ public class DashboardService {
                         break;
                     case RankENUM.CRITICAL:
                         critical++;
+                        break;
+                    case RankENUM.NONE:
+                        none++;
                         break;
                 }
             }
@@ -94,12 +96,15 @@ public class DashboardService {
                     case RankENUM.CRITICAL:
                         critical++;
                         break;
+                    case RankENUM.NONE:
+                        none++;
+                        break;
                 }
 
             }
 
-        return new ClassRankDashboardResponseDTO(className, excellent, good, average, critical, none, aClass.getLastRank());
+            return new ClassRankDashboardResponseDTO(className, excellent, good, average, critical, none, aClass.getLastRank());
+        }
     }
-}
 
 }

@@ -43,6 +43,7 @@ export default function MenuHeader({ open, onClose, variant }: MenuHeaderProps) 
 
     return (
         <CustomMenu
+        sx={{zIndex: 25,}}
             anchorReference="anchorPosition"
             anchorPosition={{
                 top: 88,

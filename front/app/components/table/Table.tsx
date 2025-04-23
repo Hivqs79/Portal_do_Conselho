@@ -27,7 +27,7 @@ export default function Table({
   const { colorByModeSecondary } = useThemeContext();
   
   return (
-    <div className={"w-full flex justify-center items-start overflow-hidden " + (withoutOutline ? "" : "outline-component")}>
+    <div className={"w-full flex justify-center items-start overflow-hidden " + (withoutOutline ? "rounded-big" : "outline-component")}>
       <Box
         style={{ boxShadow: `inset 0px 0px 0px 2px ${colorByModeSecondary}` }}
         className="flex justify-center items-start rounded-b-big z-10 flex-col w-full max-w-full"

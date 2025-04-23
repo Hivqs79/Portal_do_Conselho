@@ -17,6 +17,8 @@ import Image from "next/image";
 import { colors } from "@/theme/BrandColors";
 import { useState } from "react";
 import Link from "next/link";
+import { useRoleContext } from "@/hooks/useRole";
+import { useRouter } from "next/navigation";
 // import { PossibleColors } from "@/hooks/useTheme";
 
 export default function Config() {
@@ -42,6 +44,8 @@ export default function Config() {
   const [fontMultiplier, setFontMultiplier] = useState(getFontSize());
   const [fontFamilyText, setFontFamilyText] = useState(getFontFamilyText());
   const [fontFamilyTitle, setFontFamilyTitle] = useState(getFontFamilyTitle());
+  const { setName, setUserId, setRole, setToken } = useRoleContext();
+  const router = useRouter();
   const themeMode = getThemeMode();
   const open = Boolean(anchorEl);
 
@@ -92,6 +96,16 @@ export default function Config() {
   //     localStorage.setItem("fontMultiplierInitialConfig", fontMultiplier.toString());
   // }
 
+  const logout = () => {
+    document.cookie = 'user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    setName("");
+    setUserId(-1);
+    setRole("");
+    setToken("");
+    router.push("/login");
+  }
+
   return (
     <Box>
       <Box className="flex flex-col md:flex-row md:justify-between md:items-end">
@@ -121,6 +135,7 @@ export default function Config() {
             </Button>
           </Link>
           <Button
+            onClick={() => logout()}
             variant="contained"
             className="w-full small:w-fit"
             style={{ backgroundColor: OpacityHex(constrastColor, 0.5) }}

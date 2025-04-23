@@ -20,10 +20,12 @@ import { useRouter } from "next/navigation";
 import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 import PaginationTable from "@/components/table/Pagination";
 import LoadingModal from "@/components/modals/LoadingModal";
+import { useRoleContext } from "@/hooks/useRole";
 
 type CouncilStatus = "expired" | "active" | "scheduled";
 
 export default function Council() {
+  const { token } = useRoleContext();
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [classExistents, setClassExistents] = useState<Class[]>([]);
   const [selectedClass, setSelectedClass] = useState<number | null>(null);
@@ -150,6 +152,7 @@ export default function Council() {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     console.log("Edited");
@@ -163,6 +166,7 @@ export default function Council() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         startDateTime:
@@ -188,6 +192,7 @@ export default function Council() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           startDateTime:
@@ -280,7 +285,14 @@ export default function Council() {
   useEffect(() => {
     const fetchTeachers = async () => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class/teacher/${selectedClass}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class/teacher/${selectedClass}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.json();
       //TODO: Implement logic with teachers search
@@ -294,7 +306,14 @@ export default function Council() {
   useEffect(() => {
     const fetchClass = async () => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class${searchClass ? "?name=" + searchClass : ""}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class${searchClass ? "?name=" + searchClass : ""}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.json();
       setSelectedClass(data.content[0] && data.content[0].id);
@@ -306,7 +325,14 @@ export default function Council() {
   useEffect(() => {
     const fetchCouncil = async () => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/council?page=${page - 1}&size=${rowsPerPage}&className=${searchClass}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/council?page=${page - 1}&size=${rowsPerPage}&className=${searchClass}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.json();
       

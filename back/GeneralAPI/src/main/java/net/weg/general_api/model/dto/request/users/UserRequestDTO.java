@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PedagogicRequestDTO {
+public class UserRequestDTO {
 
     @NotBlank(message = "{not.blank.message}")
     private String name;
@@ -18,6 +18,4 @@ public class PedagogicRequestDTO {
     @Email(message = "{email.message}")
     private String email;
 
-    @NotBlank(message = "{not.blank.message}")
-    private String password;
 }

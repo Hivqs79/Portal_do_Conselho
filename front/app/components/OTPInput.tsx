@@ -63,6 +63,7 @@ export default function OTPInput({ otp, setOtp }: OTPInputProps) {
   }
 
   const handleChange = (newValue: string) => {
+    console.log("new value: ", newValue);
     setOtp(newValue);
   };
 

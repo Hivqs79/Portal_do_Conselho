@@ -21,9 +21,6 @@ public class TeacherRequestDTO {
     @Email(message = "{email.message}")
     private String email;
 
-    @NotBlank(message = "{not.blank.message}")
-    private String password;
-
     @NotNull
     private List<Long> classes_id;
 }
