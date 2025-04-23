@@ -180,7 +180,7 @@ public class SecurityConfig {
                         .requestMatchers("/pre-council/**").permitAll()
                         .requestMatchers("/user/**").permitAll()
 
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .userDetailsService(authorizationService)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

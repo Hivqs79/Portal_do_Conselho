@@ -3,11 +3,11 @@
 NAMESPACE="default"
 DEPLOYMENTS=(
     "general-api" 
-    "chat-api"
-    "kafka-work-service"
+    # "chat-api"
+    # "kafka-work-service"
     # "logs-api"
     # "aws-image-api"
-    "email-api"
+    # "email-api"
     )
 
 for DEPLOYMENT in "${DEPLOYMENTS[@]}"; do

@@ -21,6 +21,7 @@ import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTy
 import { Box, Snackbar } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { useRoleContext } from "@/hooks/useRole";
 
 type PreCouncilStatus = "answered" | "not-answered" | "released" | "scheduled";
 
@@ -46,6 +47,7 @@ export default function PreCouncil() {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [preCouncilSections, setPreCouncilSections] = useState<TablePreCouncilSectionRow[]>([]);
+  const { token } = useRoleContext();
 
   const rowButtons: TableRowButtons = {
       visualizeIconButton: true,
@@ -81,6 +83,7 @@ export default function PreCouncil() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         class_id: selectedClass,
@@ -114,6 +117,7 @@ export default function PreCouncil() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },        
         body: JSON.stringify({
           startDateTime: date,
@@ -235,7 +239,14 @@ export default function PreCouncil() {
   useEffect(() => {
     const fetchClass = async () => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class${searchClass ? "?name=" + searchClass : ""}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class${searchClass ? "?name=" + searchClass : ""}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.json();
       setSelectedClass(data.content[0] && data.content[0].id);
@@ -247,7 +258,14 @@ export default function PreCouncil() {
   useEffect(() => {
     const fetchTeachers = async () => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class/teacher/${selectedClass ? selectedClass : ""}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class/teacher/${selectedClass ? selectedClass : ""}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.json();
       setTeachers(data);
@@ -259,8 +277,14 @@ export default function PreCouncil() {
   useEffect(() => {
     const fetchCouncil = async () => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council?page=${page - 1}&size=${rowsPerPage}
-        &className=${searchClass}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council?page=${page - 1}&size=${rowsPerPage}&className=${searchClass}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.json();
 
@@ -276,7 +300,14 @@ export default function PreCouncil() {
   useEffect(() => {
     const fetchPreCouncilSections = async () => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council/section/pre-council/${visualizedCouncil?.id}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council/section/pre-council/${visualizedCouncil?.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.json();
       setPreCouncilSections(data);

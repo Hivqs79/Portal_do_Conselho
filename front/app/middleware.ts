@@ -47,8 +47,11 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
   const pathname = url.pathname;
   const encryptedToken = request.cookies.get("token")?.value;
+  console.log("encryptedToken", encryptedToken);
   const authToken = Decryptor(encryptedToken ? encryptedToken : "");
+  console.log("authToken", authToken);
   const isTokenPresent = authToken && isLikelyJwt(String(authToken));
+  console.log("isTokenPresent", isTokenPresent);
 
   const checkRoutePermission = () => {
     try {

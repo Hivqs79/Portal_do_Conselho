@@ -64,7 +64,14 @@ export default function Home() {
     const fetchFeedbackClass = async () => {
       if (!selectedFeedback || councilId == -1) return;
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class/council/${councilId}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class/council/${councilId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.json();
       setCouncilId(-1);
@@ -90,7 +97,14 @@ export default function Home() {
       if (!userId || role === "admin") return;
       const typeOfRequest = (role === "student" || role === "leader") ? "student" : "user";
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/${typeOfRequest}/${typeOfRequest}-id/${userId}?isReturned=true&page=${page - 1}&size=${rowsPerPage}&className=${searchFeedbackClass}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/${typeOfRequest}/${typeOfRequest}-id/${userId}?isReturned=true&page=${page - 1}&size=${rowsPerPage}&className=${searchFeedbackClass}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.json();
       console.log(data);
@@ -108,6 +122,7 @@ export default function Home() {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );

@@ -84,11 +84,14 @@ export default function ReleaseFeedback() {
     try {
       const fetchPreCouncils = async () => {
         const response = await fetch(
-          `${
-            process.env.NEXT_PUBLIC_URL_GENERAL_API
-          }/pre-council?answered=true&returned=false&page=${
-            page - 1
-          }&size=${rowsPerPage}&className=${feedbackSearch}`
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council?answered=true&returned=false&page=${page - 1}&size=${rowsPerPage}&className=${feedbackSearch}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         const data = await response.json();
         console.log(data);
@@ -110,6 +113,7 @@ export default function ReleaseFeedback() {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
               },
             }
           );
@@ -124,6 +128,7 @@ export default function ReleaseFeedback() {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -145,6 +150,7 @@ export default function ReleaseFeedback() {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -160,6 +166,7 @@ export default function ReleaseFeedback() {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
               },
             }
           );
@@ -238,7 +245,14 @@ export default function ReleaseFeedback() {
     const fetchFeedbackUsers = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/user?isReturned=false&preCouncilId=${preCouncilId}`
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/user?isReturned=false&preCouncilId=${preCouncilId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         const data = await response.json();
         console.log("data", data);
@@ -365,7 +379,7 @@ export default function ReleaseFeedback() {
               `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/user/${id}`,
               {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
                 body: JSON.stringify({
                   pre_council_id: row.preCouncil.id,
                   strengths: row.strengths,

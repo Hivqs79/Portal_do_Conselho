@@ -79,9 +79,7 @@ export default function UserManagement() {
     try {
       userSelectedProps = userRoute(userSelectedProps);
       await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/${userSelectedProps}?page=${
-          page - 1
-        }&size=${rowsPerPage}&name=${userTerm}`,
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/${userSelectedProps}?page=${page - 1}&size=${rowsPerPage}&name=${userTerm}`,
         {
           method: "GET",
           headers: {
@@ -116,9 +114,7 @@ export default function UserManagement() {
     setIsLoading(true);
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/${userRoute(
-          userSelected
-        )}/${userId}`,
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/${userRoute(userSelected)}/${userId}`,
         {
           method: "DELETE",
           headers: {

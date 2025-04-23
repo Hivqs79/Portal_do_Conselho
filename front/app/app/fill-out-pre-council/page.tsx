@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 
 export default function FillOutPreCouncil() {
   const { backgroundColor, colorByModeSecondary, redDanger, whiteColor } = useThemeContext();
-  const { userId } = useRoleContext();
+  const { userId, token } = useRoleContext();
   const [sections, setSections] = useState<TablePreCouncilSectionRow[] | null>(null);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const fixedTopics = ["Supervisores de Curso", "Orientação Pedagógica", "Recursos Pedagógicos", "Auto avaliação da Classe"];
@@ -66,6 +66,7 @@ export default function FillOutPreCouncil() {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     const data = await response.json();
@@ -76,7 +77,14 @@ export default function FillOutPreCouncil() {
   useEffect(() => {
     const fetchSections = async () => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council/section/leader/${userId}`
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council/section/leader/${userId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data: TablePreCouncilSectionRow[] = await response.json();
       setSections(data);
@@ -115,7 +123,7 @@ export default function FillOutPreCouncil() {
             const row = editedRows[parseInt(id)];
             return fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council/section/${id}`, {
               method: "PUT",
-              headers: { "Content-Type": "application/json" },
+              headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
               body: JSON.stringify({
                 preCouncil_id: row.preCouncil.id,
                 topic: row.topic,
