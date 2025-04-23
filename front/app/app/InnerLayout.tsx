@@ -1,5 +1,5 @@
 "use client";
-import DevPalleteChangerMenu from "@/components/DevPalleteChangerMenu";
+// import DevPalleteChangerMenu from "@/components/DevPalleteChangerMenu";
 import Header from "@/components/Header";
 import { RoleProvider, useRoleContext } from "@/hooks/useRole";
 import { ThemeProviderContext, useThemeContext } from "@/hooks/useTheme";
@@ -120,7 +120,7 @@ function CoreLayout({ children }: { children: ReactElement }) {
         ) : (
           <>{children}</>
         )}
-        <DevPalleteChangerMenu />
+        {/* <DevPalleteChangerMenu /> */}
       </body>
     </ThemeProvider>
   );
