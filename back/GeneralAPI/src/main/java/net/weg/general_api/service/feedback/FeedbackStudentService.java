@@ -42,6 +42,7 @@ public class FeedbackStudentService {
         return feedbackStudents.map(feedbackStudent -> modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class));
     }
 
+
     public FeedbackStudentResponseDTO createFeedbackStudent(FeedbackStudentRequestDTO feedbackStudentRequestDTO) {
 
         if (repository.existsFeedbackStudentByCouncil_IdAndStudent_Id(feedbackStudentRequestDTO.getCouncil_id(), feedbackStudentRequestDTO.getStudent_id())) {
@@ -143,8 +144,27 @@ public class FeedbackStudentService {
         return repository.findByYearEnabledAndClassName(year, className);
     }
 
-    public List<FeedbackStudent> getFeedbackStudentsByYear(int year) {
-        return repository.findByYearEnabled(year);
+    public FeedbackStudentResponseDTO viewFeedbackStudent(Long id) {
+        FeedbackStudent feedbackStudent = findFeedbackEntity(id);
+        feedbackStudent.setViewed(true);
+        repository.save(feedbackStudent);
+        return modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class);
+    }
+    public List<FeedbackStudent> getLatestFeedbackStudentsbyClassName(String className) {
+        return repository.findLatestFeedbackByStudentAndClass(className);
+
+    public List<FeedbackStudent> getLatestFeedbackStudentsbyClassNameAndViewed(String className) {
+        return repository.findLatestFeedbackByStudentAndClassAndViewed(className);
     }
 
+    public List<FeedbackStudent> getLatestFeedbackStudentsFromAllClass() {
+        return repository.findLatestFeedbackFromAllClasses();
+    }
+
+    public FeedbackStudentResponseDTO satisfyFeedbackStudent(Long id) {
+        FeedbackStudent feedbackStudent = findFeedbackEntity(id);
+        feedbackStudent.setSatisfied(!feedbackStudent.isSatisfied());
+        repository.save(feedbackStudent);
+        return modelMapper.map(feedbackStudent, FeedbackStudentResponseDTO.class);
+    }
 }
