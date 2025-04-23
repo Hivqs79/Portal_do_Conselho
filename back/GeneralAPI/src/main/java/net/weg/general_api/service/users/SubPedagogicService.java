@@ -7,7 +7,7 @@ import net.weg.general_api.model.dto.response.users.UserResponseDTO;
 import net.weg.general_api.model.entity.users.SubPedagogic;
 import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.SubPedagogicRepository;
-import net.weg.general_api.service.kafka.KafkaEventSender;
+import net.weg.general_api.service.kafka.producer.KafkaEventSender;
 import net.weg.general_api.service.security.EmailApiClient;
 import net.weg.general_api.service.security.EmailService;
 import net.weg.general_api.service.security.PasswordGeneratorService;

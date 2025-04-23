@@ -12,7 +12,6 @@ import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.TeacherRepository;
 import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.kafka.producer.KafkaEventSender;
-import net.weg.general_api.service.kafka.KafkaEventSender;
 import net.weg.general_api.service.security.EmailApiClient;
 import net.weg.general_api.service.security.EmailService;
 import net.weg.general_api.service.security.PasswordGeneratorService;
