@@ -3,6 +3,49 @@ import type { NextRequest } from "next/server";
 import { Decryptor } from "./encryption/Decryptor";
 
 export async function middleware(request: NextRequest) {
+
+  function isLikelyJwt(token: string): boolean {
+    const parts = token.split(".");
+    return parts.length === 3 && parts.every((part) => part.length > 0);
+  }
+
+  const encryptedToken = request.cookies.get("token")?.value;
+  console.log("encryptedToken", encryptedToken);
+  const authToken = Decryptor(encryptedToken ? encryptedToken : "");
+  console.log("authToken", authToken);
+  const isTokenPresent = authToken && isLikelyJwt(String(authToken));
+  console.log("isTokenPresent", isTokenPresent);
+
+  const fetchUser = async (): Promise<string[]> => {
+    const encryptedUser = request.cookies.get("user")?.value;
+    if (!encryptedUser) return [];
+    
+    const decryptedUser = Decryptor(encryptedUser);
+    const userId = decryptedUser?.userId;
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/student/${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      
+      const data = await response.json();
+      console.log("data", data);
+      if ("isRepresentant" in data) {
+        if (data.isRepresentant === true) {
+          return ["/fill-out-pre-council"];
+        }
+        return [];
+      }
+      return [];
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      return [];
+    }
+  }
+
   const globalRoutes = [
     "/configurations",
     "/profile",
@@ -17,7 +60,8 @@ export async function middleware(request: NextRequest) {
     "/class-management",
     "/user-management",
   ];
-  const studentRoutes = [...globalRoutes];
+  const userSpecificRoutes = await fetchUser();
+  const studentRoutes = [...globalRoutes, ...userSpecificRoutes];
   const leaderRoutes = [...globalRoutes, "/fill-out-pre-council"];
   const teacherRoutes = [...globalRoutes, "/annotations", "/council-historic"];
   const pedagogicRoutes = [
@@ -44,19 +88,8 @@ export async function middleware(request: NextRequest) {
     supervisior: supervisiorRoutes,
   };
 
-  function isLikelyJwt(token: string): boolean {
-    const parts = token.split(".");
-    return parts.length === 3 && parts.every((part) => part.length > 0);
-  }
-
   const url = request.nextUrl;
   const pathname = url.pathname;
-  const encryptedToken = request.cookies.get("token")?.value;
-  console.log("encryptedToken", encryptedToken);
-  const authToken = Decryptor(encryptedToken ? encryptedToken : "");
-  console.log("authToken", authToken);
-  const isTokenPresent = authToken && isLikelyJwt(String(authToken));
-  console.log("isTokenPresent", isTokenPresent);
 
   const checkRoutePermission = () => {
     try {

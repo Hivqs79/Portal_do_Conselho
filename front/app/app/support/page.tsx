@@ -239,10 +239,10 @@ const frequentlyQuestions = [
   },
 
   //Global
-  {
-    role: "global",
-    question: "Como eu posso rever o tutorial do sistema?",
-    answer:
-      "Para visualizar o tutorial novamente, basta acessar as Configurações e clicar na opção 'Tutorial'.",
-  },
+  //{
+  //  role: "global",
+  //  question: "Como eu posso rever o tutorial do sistema?",
+  //  answer:
+  //    "Para visualizar o tutorial novamente, basta acessar as Configurações e clicar na opção 'Tutorial'.",
+  //},
 ];

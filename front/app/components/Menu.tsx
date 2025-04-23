@@ -14,7 +14,8 @@ import { SiGoogleclassroom } from 'react-icons/si';
 import { GoGraph, GoPeople } from 'react-icons/go';
 import { FaRegFilePdf } from 'react-icons/fa6';
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useRoleContext } from '@/hooks/useRole';
 
 interface MenuHeaderProps {
     anchorEl: null | HTMLElement;
@@ -39,7 +40,44 @@ const CustomMenu = styled(Menu)(() => ({
 
 export default function MenuHeader({ open, onClose, variant }: MenuHeaderProps) {
     const {whiteColor} = useThemeContext();
+    const [isRepresentant, setIsRepresentant] = useState(false);
+    const { userId, token } = useRoleContext();
     const menuRef = useRef<HTMLDivElement>(null);    
+
+    const fetchUser = async (): Promise<boolean> => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/student/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await response.json();
+        console.log("data", data);
+        if ("isRepresentant" in data) {
+          if (data.isRepresentant === true) {
+            return true;
+          }
+          return false;
+        }
+        return false;
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        return false;
+      }
+    };
+
+    useEffect(() => {
+        const handleUser = async () => {
+            setIsRepresentant(await fetchUser())
+        }
+        handleUser();
+    })
 
     return (
         <CustomMenu
@@ -76,7 +114,7 @@ export default function MenuHeader({ open, onClose, variant }: MenuHeaderProps) 
                     </MenuItem>
                 </Link>
                 )}
-                {variant === "leader" && (
+                {isRepresentant && (
                     <Link href="/fill-out-pre-council">
                         <MenuItem onClick={onClose} className="flex flex-row">                    
                             <Icon IconPassed={LuPencilLine} color={whiteColor} />
@@ -132,18 +170,18 @@ export default function MenuHeader({ open, onClose, variant }: MenuHeaderProps) 
                                 <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Gerenciamento de usuários</Typography>                    
                             </MenuItem>
                         </Link>
-                        <Link href="/dashboard">
-                            <MenuItem onClick={onClose} className="flex flex-row">                    
-                                <Icon IconPassed={GoGraph} color={whiteColor} />                            
-                                <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Dashboard</Typography>                    
-                            </MenuItem>
-                        </Link>
-                        <Link href="/reports">
-                            <MenuItem onClick={onClose} className="flex flex-row">                    
-                                <Icon IconPassed={FaRegFilePdf} color={whiteColor} />                            
-                                <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Relatórios</Typography>                    
-                            </MenuItem>
-                        </Link>
+                        {/* <Link href="/dashboard"> */}
+                            {/* <MenuItem onClick={onClose} className="flex flex-row">                     */}
+                                {/* <Icon IconPassed={GoGraph} color={whiteColor} />                             */}
+                                {/* <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Dashboard</Typography>                     */}
+                            {/* </MenuItem> */}
+                        {/* </Link> */}
+                        {/* <Link href="/reports"> */}
+                            {/* <MenuItem onClick={onClose} className="flex flex-row">                     */}
+                                {/* <Icon IconPassed={FaRegFilePdf} color={whiteColor} />                             */}
+                                {/* <Typography variant="lg_text_regular" color={whiteColor} className="!ml-2">Relatórios</Typography>                     */}
+                            {/* </MenuItem> */}
+                        {/* </Link> */}
                     </>
                 )}
                 {variant === "admin" && (

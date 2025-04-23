@@ -72,15 +72,8 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
   }
 
   let name = "";
-  if ("council" in content) {
-    if (
-      "student" in content &&
-      content.student &&
-      typeof content.student === "object" &&
-      "name" in content.student
-    ) {
-      name = content.council?.aclass?.name || "";
-    }
+  if ("council" in content && content.council?.aclass) {
+    name = content.council.aclass.name;
   } else if (
     "student" in content &&
     content.student &&
@@ -89,7 +82,7 @@ export default function TableRow({ content, rowButtons }: TableRowProps) {
   ) {
     date = null;
     name = content.student.name as string;
-  } else if (
+  }  else if (
     "aclass" in content &&
     content.aclass &&
     typeof content.aclass === "object" &&
