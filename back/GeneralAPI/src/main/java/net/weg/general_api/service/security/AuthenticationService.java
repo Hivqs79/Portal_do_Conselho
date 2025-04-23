@@ -5,12 +5,16 @@ import net.weg.general_api.exception.exceptions.UserNotFoundException;
 import net.weg.general_api.model.dto.request.users.LoginRequestDTO;
 import net.weg.general_api.model.dto.request.users.ModifyUserPasswordRequestDTO;
 import net.weg.general_api.model.dto.response.LoginResponseDTO;
+import net.weg.general_api.model.dto.response.ModifyUserRoleRequestDTO;
 import net.weg.general_api.model.dto.response.users.UserAuthenticationResponseDTO;
+import net.weg.general_api.model.entity.users.User;
 import net.weg.general_api.model.entity.users.UserAuthentication;
 import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.PedagogicRepository;
 import net.weg.general_api.repository.UserAuthenticationRepository;
 import net.weg.general_api.service.users.UserAuthenticationService;
+import net.weg.general_api.service.users.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +31,9 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final TokenService tokenService;
+    private final UserService userService;
+    private final ModelMapper modelMapper;
+    private final UserAuthenticationRepository userAuthenticationRepository;
 
     private final UserAuthenticationService userAuthenticationService;
 
@@ -75,5 +82,14 @@ public class AuthenticationService {
         userAuthenticationService.saveUserAuthentication(user);
 
         return userAuthenticationResponseDTO;
+    }
+
+    public UserAuthenticationResponseDTO changeRole(ModifyUserRoleRequestDTO modifyUserRoleRequestDTO, Long id) {
+
+        User userToChange = userService.findUserEntity(id);
+        userToChange.getUserAuthentication().setRole(RoleENUM.valueOf(modifyUserRoleRequestDTO.newRole()));
+        userAuthenticationRepository.save(userToChange.getUserAuthentication());
+
+        return modelMapper.map(userToChange.getUserAuthentication(), UserAuthenticationResponseDTO.class);
     }
 }
