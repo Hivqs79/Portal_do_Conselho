@@ -1,11 +1,15 @@
 "use client";
+import FeedbackModal from "@/components/modals/FeedbackModal";
 import PaginationTable from "@/components/table/Pagination";
 import Table from "@/components/table/Table";
 import Title from "@/components/Title";
 import { useRoleContext } from "@/hooks/useRole";
+import FeedbackStudent from "@/interfaces/feedback/FeedbackStudent";
+import FeedbackUser from "@/interfaces/feedback/FeedbackUser";
 import { TableHeaderButtons } from "@/interfaces/table/header/TableHeaderButtons";
 import { TableHeaderContent } from "@/interfaces/table/header/TableHeaderContent";
 import { TableRowButtons } from "@/interfaces/table/row/TableRowButtons";
+import { TableRowPossibleTypes } from "@/interfaces/table/row/TableRowPossibleTypes";
 import { TableContent } from "@/interfaces/table/TableContent";
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -15,9 +19,16 @@ export default function Home() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableContent, setTableContent] = useState<TableContent | null>(null);
   const { role, userId } = useRoleContext();
+  const [open, setOpen] = useState(false);
+  const [selectedFeedback, setSelectedFeedback] = useState<FeedbackUser | FeedbackStudent | null>(null);
+  const [satisfied, setSatisfied] = useState<boolean | null>(null);
 
   const rowButtons: TableRowButtons = {
     visualizeIconButton: true,
+    onClickVisualize(row: TableRowPossibleTypes) {
+      setSelectedFeedback((row as FeedbackUser | FeedbackStudent));
+      setOpen(true);
+    },
   };
 
   const headerButtons: TableHeaderButtons = {
@@ -37,6 +48,12 @@ export default function Home() {
       name: "Horário",
     },
   ];
+  
+  const headersFeedback: TableHeaderContent[] = [
+    {
+      name: "Feedback",
+    },
+  ];
 
   useEffect(() => {
     const fetchTableContent = async () => {
@@ -51,6 +68,16 @@ export default function Home() {
     };
     fetchTableContent();
   }, []);
+
+  const fetchChangeSatisfied = async () => {
+    if (!selectedFeedback) return;
+    const typeOfRequest = (role === "student" || role === "leader") ? "student" : "user";
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/${typeOfRequest}/${selectedFeedback.id}/satisfied/${satisfied}`
+    );
+    const data = await response.json();
+    console.log(data);
+  };
 
   return (
     <Box>
@@ -77,6 +104,17 @@ export default function Home() {
               setRowsPerPage(rowsPerPage);
               setPage(1);
             }}
+          />
+          <FeedbackModal 
+            open={open} 
+            close={() => {
+              setOpen(false);
+              setSelectedFeedback(null);
+            }}
+            feedback={selectedFeedback}
+            headers={headersFeedback}
+            satisfied={satisfied}
+            setSatisfied={setSatisfied}
           />
         </>
       )) ||

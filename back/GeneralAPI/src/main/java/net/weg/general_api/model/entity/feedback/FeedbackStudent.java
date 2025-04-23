@@ -31,7 +31,6 @@ public class FeedbackStudent extends FeedbackWithCouncil {
     @Column(nullable = false)
     private boolean isViewed;
 
-    @Column(nullable = false)
     private boolean isSatisfied;
 
     @Override
@@ -51,7 +50,6 @@ public class FeedbackStudent extends FeedbackWithCouncil {
         this.setUpdateDate(LocalDateTime.now());
         this.setReturned(false);
         this.setViewed(false);
-        this.setSatisfied(false);
         this.setEnabled(true);
     }
 

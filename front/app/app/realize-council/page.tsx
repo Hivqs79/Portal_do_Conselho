@@ -226,7 +226,7 @@ export default function RealizeCouncil() {
   const fetchUsersInClass = async (idClass: number) => {
     try {
       const response = await fetch(
-        "http://localhost:8081/class/student/" + idClass
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class/student/${idClass}`
       );
       const users = await response.json();
       return users;
@@ -276,7 +276,7 @@ export default function RealizeCouncil() {
       const councilId = await fetchHappeningCouncil();
       if (councilId) {
         const classResponse = await fetch(
-          "http://localhost:8081/annotations/class?isHappening=true&isFinished=false",
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/class?isHappening=true&isFinished=false`,
           {
             method: "GET",
             headers: {
@@ -289,7 +289,7 @@ export default function RealizeCouncil() {
         console.log("council ID class and student: ", councilId);
         console.log("Nam: ", users[currentStudentIndex]?.name);
         const studentResponse = await fetch(
-          `http://localhost:8081/annotations/student?councilId=${councilId}&studentName=${users[currentStudentIndex]?.name}`,
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/annotations/student?councilId=${councilId}&studentName=${users[currentStudentIndex]?.name}`,
           {
             method: "GET",
             headers: {
@@ -421,7 +421,7 @@ export default function RealizeCouncil() {
       strengths: formattedJson?.["council-form"].class.ClasspositiveContent,
       toImprove: formattedJson?.["council-form"].class.ClassnegativeContent,
     });
-    await fetch("http://localhost:8081/feedbacks/class", {
+    await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -436,7 +436,7 @@ export default function RealizeCouncil() {
 
     if (formattedJson) {
       formattedJson["council-form"].users.forEach(async (user) => {
-        await fetch("http://localhost:8081/feedbacks/student", {
+        await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/student`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -452,7 +452,7 @@ export default function RealizeCouncil() {
         });
       });
       await changeCouncilState();
-      await fetch("http://localhost:8081/council/modifyFinished/" + idCouncil, {
+      await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/council/modifyFinished/${idCouncil}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -603,7 +603,7 @@ export default function RealizeCouncil() {
   async function fetchHappeningCouncil() {
     try {
       const res = await fetch(
-        "http://localhost:8081/council?isHappening=true",
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/council?isHappening=true`,
         {
           method: "GET",
           headers: {
@@ -635,7 +635,7 @@ export default function RealizeCouncil() {
       const id = await fetchHappeningCouncil();
       if (id) {
         const modifyRes = await fetch(
-          `http://localhost:8081/council/modify/${id}`,
+          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/council/modify/${id}`,
           {
             method: "PATCH",
             headers: {

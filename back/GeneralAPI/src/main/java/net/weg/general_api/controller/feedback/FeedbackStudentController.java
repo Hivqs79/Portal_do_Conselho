@@ -109,6 +109,4 @@ public class FeedbackStudentController {
     public ResponseEntity<FeedbackStudentResponseDTO> returnFeedbackStudent(@Parameter(description = "Feedback ID", example = "1") @PathVariable Long id) {
         return new ResponseEntity<>(service.returnFeedbackStudent(id), HttpStatus.OK);
     }
-
-    
 }

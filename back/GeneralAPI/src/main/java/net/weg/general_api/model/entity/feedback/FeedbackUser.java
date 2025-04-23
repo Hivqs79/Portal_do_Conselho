@@ -22,7 +22,6 @@ public class FeedbackUser extends Feedback {
     @Column(nullable = false)
     private boolean isViewed;
 
-    @Column(nullable = false)
     private boolean isSatisfied;
 
     @ManyToOne
@@ -44,7 +43,6 @@ public class FeedbackUser extends Feedback {
         this.setUpdateDate(LocalDateTime.now());
         this.setReturned(false);
         this.setViewed(false);
-        this.setSatisfied(false);
         this.setEnabled(true);
     }
 

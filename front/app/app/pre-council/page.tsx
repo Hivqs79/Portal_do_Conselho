@@ -77,7 +77,7 @@ export default function PreCouncil() {
   const createPreCouncil = async () => {
     console.log("testeCreate");
     setIsLoading(true);
-    const response = await fetch("http://localhost:8081/pre-council", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/pre-council`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -235,8 +235,7 @@ export default function PreCouncil() {
   useEffect(() => {
     const fetchClass = async () => {
       const response = await fetch(
-        "http://localhost:8081/class" +
-        (searchClass ? "?name=" + searchClass : "")
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class${searchClass ? "?name=" + searchClass : ""}`
       );
       const data = await response.json();
       setSelectedClass(data.content[0] && data.content[0].id);
@@ -248,8 +247,7 @@ export default function PreCouncil() {
   useEffect(() => {
     const fetchTeachers = async () => {
       const response = await fetch(
-        "http://localhost:8081/class/teacher/" +
-        (selectedClass ? selectedClass : "")
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/class/teacher/${selectedClass ? selectedClass : ""}`
       );
       const data = await response.json();
       setTeachers(data);

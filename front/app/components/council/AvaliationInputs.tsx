@@ -35,7 +35,7 @@ export default function AvaliationInputs({
     <>
       <div
         style={{ borderColor: colorByModeSecondary}}
-        className={"w-full flex-col lg:flex-row rounded-b-big py-4 sm:p-5 flex border-t-0 justify-center items-center flex-wrap gap-4 md:flex-nowrap " + (withoutBorder ? "border-0" : "border-[2px]")}
+        className={"w-full flex-col lg:flex-row rounded-b-big py-4 px-2 sm:p-5 flex border-t-0 justify-center items-center flex-wrap gap-4 md:flex-nowrap " + (withoutBorder ? "border-0" : "border-[2px]")}
       >
         <TextareaComponent
           title="Pontos Positivos"
