@@ -9,62 +9,133 @@ import {
   Modal,
   Select,
   SelectChangeEvent,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
 import Icon from "../Icon";
 import { IoClose } from "react-icons/io5";
-import TableUserManagementRow from "@/interfaces/table/row/TableUserManagementRow";
 import { SetStateAction, useEffect, useState } from "react";
-import { useRoleContext } from "@/hooks/useRole";
-import Class from "@/interfaces/Class";
-import LoadingModal from "./LoadingModal";
 import ConfirmChanges from "./ConfirmChanges";
+import { useRoleContext } from "@/hooks/useRole";
 
-interface EditUserManagementProps {
-  content: TableUserManagementRow;
+interface CreateUserModalProps {
   onClose: () => void;
   urlUserRole: string;
   handleFetchUsers: () => void;
 }
 
-export default function EditUserManagement({
-  content,
-  urlUserRole,
+export default function CreateUserModal({
   onClose,
+  urlUserRole,
   handleFetchUsers,
-}: EditUserManagementProps) {
-  const [nameUser, setNameUser] = useState(content.name);
-  const [emailUser, setEmailUser] = useState(
-    content.userAuthentication.username
-  );
-  const [isRepresentant, setIsRepresentant] = useState(content.isRepresentant);
-  const [role, setRole] = useState(content.userAuthentication.role);
-  const [isLoading, setIsLoading] = useState(false);
-  const [confirmEditOpen, setConfirmEditOpen] = useState(false);
-  const [classes, setClasses] = useState<Class[]>([]);
+}: CreateUserModalProps) {
+  const [nameUser, setNameUser] = useState("");
+  const [emailUser, setEmailUser] = useState("");
+  const [isRepresentant, setIsRepresentant] = useState(false);
+  const [confirmSaveOpen, setConfirmSaveOpen] = useState(false);
+  const [snackmessage, setSnackMessage] = useState("");
+  const [isOpenSnackBar, setIsOpenSnackBar] = useState(false);
+  const [classes, setClasses] = useState<any[]>([]);
   const [selectedClassNames, setSelectedClassNames] = useState<string[]>([]);
   const [selectedClassIds, setSelectedClassIds] = useState<number[]>([]);
-  const { token, role: roleUser } = useRoleContext();
+  const { token } = useRoleContext();
   const {
     backgroundColor,
     redDanger,
     colorByModeSecondary,
-    constrastColor,
+    primaryColor,
     textBlackColor,
     whiteColor,
     terciaryColor,
   } = useThemeContext();
 
-  // Inicializa as turmas selecionadas com as que o usuário já está vinculado
-  useEffect(() => {
-    if (content.aclass && content.aclass.length > 0) {
-      const initialClassNames = content.aclass.map((cls) => cls.name);
-      const initialClassIds = content.aclass.map((cls) => cls.id);
-      setSelectedClassNames(initialClassNames);
-      setSelectedClassIds(initialClassIds);
+  const translateRole = (role: string) => {
+    switch (role.toLowerCase()) {
+      case "admin":
+        return "Administrador";
+      case "pedagogic":
+        return "Pedagógico";
+      case "subPedagogic":
+        return "SubPedagógico";
+      case "subpedagogic":
+        return "SubPedagógico";
+      case "supervisor":
+        return "Supervisor";
+      case "supervisior":
+        return "Supervisor";
+      case "teacher":
+        return "Professor";
+      case "leader":
+        return "Representante";
+      case "student":
+        return "Aluno";
+      default:
+        return role;
     }
-  }, [content.aclass]);
+  };
+
+  const bodyContent: any = {
+    name: nameUser,
+    email: emailUser,
+  };
+
+  const saveUser = async () => {
+    console.log("SAVE USER: ", nameUser, emailUser, isRepresentant);
+
+    if (urlUserRole === "student" || urlUserRole === "teacher") {
+      bodyContent.classes_id = selectedClassIds;
+      if (urlUserRole === "student") {
+        bodyContent.isRepresentant = isRepresentant;
+      }
+    }
+
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_URL_GENERAL_API}/${urlUserRole}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(bodyContent),
+      }).then((response) => {
+        if (response.ok) {
+          setConfirmSaveOpen(false);
+          onClose();
+          handleFetchUsers();
+        } else if (response.status === 409) {
+          setConfirmSaveOpen(false);
+          setSnackMessage("E-mail já cadastrado!");
+          setIsOpenSnackBar(true);
+        } else {
+          setConfirmSaveOpen(false);
+          setSnackMessage(`Erro inesperado: ${response.status}`);
+          setIsOpenSnackBar(true);
+        }
+      });
+    } catch (error) {
+      setSnackMessage("Erro inesperado ao salvar o usuário!");
+      setIsOpenSnackBar(true);
+    }
+  };
+
+  const verifyCreateUser = () => {
+    if (!nameUser && !emailUser) {
+      setSnackMessage("Preencha os campos corretamente!");
+      setIsOpenSnackBar(true);
+    } else if (nameUser.trim() === "" || emailUser.trim() === "") {
+      setSnackMessage("Preencha os campos corretamente!");
+      setIsOpenSnackBar(true);
+    } else if (nameUser.trim().length < 3) {
+      setSnackMessage("O nome do usuário deve ter no mínimo 3 caracteres!");
+      setIsOpenSnackBar(true);
+    } else if (!emailUser.includes("@") || !emailUser.includes(".")) {
+      setSnackMessage("E-mail inválido!");
+      setIsOpenSnackBar(true);
+    } else {
+      setConfirmSaveOpen(true);
+    }
+  };
 
   const fetchClasses = async () => {
     try {
@@ -85,6 +156,8 @@ export default function EditUserManagement({
       }
     } catch (error) {
       console.error("Erro ao buscar classes:", error);
+      setSnackMessage("Erro ao carregar as turmas!");
+      setIsOpenSnackBar(true);
     }
   };
 
@@ -92,67 +165,24 @@ export default function EditUserManagement({
     fetchClasses();
   }, []);
 
-  const getClassIds = (aclassArray: Class[]) => {
-    return aclassArray.map((aclassItem) => aclassItem.id);
+  const closeSnackbar = () => {
+    setIsOpenSnackBar(false);
   };
 
-  const bodyContent: any = {
-    name: nameUser,
-    email: emailUser,
-    classes_id: selectedClassIds, // Usa os IDs das turmas selecionadas
-  };
+  const names = [
+    "Oliver Hansen",
+    "Van Henry",
+    "April Tucker",
+    "Ralph Hubbard",
+    "Omar Alexander",
+    "Carlos Abbott",
+    "Miriam Wagner",
+    "Bradley Wilkerson",
+    "Virginia Andrews",
+    "Kelly Snyder",
+  ];
 
-  const putUser = async () => {
-    setIsLoading(true);
-
-    if (urlUserRole === "student") {
-      bodyContent.isRepresentant = isRepresentant;
-    }
-
-    await fetch(
-      `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/${urlUserRole}/${content.id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(bodyContent),
-      }
-    ).then((response) => {
-      if (response.ok) {
-        setIsLoading(false);
-        setConfirmEditOpen(false);
-        onClose();
-        handleFetchUsers();
-      }
-    });
-  };
-
-  const translateRole = (role: string) => {
-    switch (role.toLowerCase()) {
-      case "admin":
-        return "Administrador";
-      case "pedagogic":
-        return "Pedagógico";
-      case "subpedagogic":
-        return "SubPedagógico";
-      case "supervisor":
-        return "Supervisor";
-      case "supervisior":
-        return "Supervisor";
-      case "teacher":
-        return "Professor";
-      case "leader":
-        return "Representante";
-      case "student":
-        return "Aluno";
-      default:
-        return role;
-    }
-  };
-
-  const handleClassChange = (
+  const handleChange = (
     event: SelectChangeEvent<typeof selectedClassNames>
   ) => {
     const {
@@ -190,8 +220,7 @@ export default function EditUserManagement({
         <Box className="p-3 h-full max-h-[800px] overflow-y-scroll">
           <Box className="flex justify-between items-center">
             <Typography variant="lg_text_bold" color={colorByModeSecondary}>
-              Editar {translateRole(urlUserRole)}:{" "}
-              <span style={{ color: constrastColor }}>{content.name}</span>
+              Criar novo aluno
             </Typography>
             <Box onClick={onClose}>
               <Icon
@@ -204,11 +233,12 @@ export default function EditUserManagement({
           <Box className="flex w-full gap-20 justify-between items-center mt-10">
             <Box className="flex flex-col gap-4 w-full">
               <Typography variant="lg_text_bold" color={colorByModeSecondary}>
-                Nome
+                Nome do {translateRole(urlUserRole)}
               </Typography>
               <TextField
-                value={nameUser}
-                placeholder={content.name}
+                placeholder={`Digite o nome do ${translateRole(
+                  urlUserRole
+                )}...`}
                 type={"text"}
                 variant="outlined"
                 className="w-full"
@@ -219,11 +249,12 @@ export default function EditUserManagement({
             </Box>
             <Box className="flex flex-col gap-4 w-full">
               <Typography variant="lg_text_bold" color={colorByModeSecondary}>
-                Email
+                Email do {translateRole(urlUserRole)}
               </Typography>
               <TextField
-                value={emailUser}
-                placeholder={content.userAuthentication.username}
+                placeholder={`Digite o email do ${translateRole(
+                  urlUserRole
+                )}...`}
                 type={"text"}
                 variant="outlined"
                 className="w-full"
@@ -233,8 +264,6 @@ export default function EditUserManagement({
               />
             </Box>
           </Box>
-
-          {/* Seção para representante (apenas alunos) */}
           {(urlUserRole === "student" || urlUserRole === "teacher") && (
             <Box className="flex w-full gap-20 justify-between items-center mt-10">
               {urlUserRole === "student" && (
@@ -243,10 +272,10 @@ export default function EditUserManagement({
                     variant="lg_text_bold"
                     color={colorByModeSecondary}
                   >
-                    Representante
+                    É representante de turma?
                   </Typography>
                   <Select
-                    value={isRepresentant?.toString()}
+                    value={isRepresentant}
                     size="small"
                     onChange={(e) =>
                       setIsRepresentant(e.target.value === "true")
@@ -284,12 +313,12 @@ export default function EditUserManagement({
               )}
               <Box className="flex flex-col gap-4 w-full">
                 <Typography variant="lg_text_bold" color={colorByModeSecondary}>
-                  Turmas
+                  Selecione a turma
                 </Typography>
                 <Select
                   multiple
                   value={selectedClassNames}
-                  onChange={handleClassChange}
+                  onChange={handleChange}
                   renderValue={(selected) => selected.join(", ")}
                   sx={{
                     minWidth: "200px",
@@ -335,68 +364,6 @@ export default function EditUserManagement({
               </Box>
             </Box>
           )}
-
-          {/* Seção para mudança de função (apenas para admin) */}
-          {(roleUser === "admin" || roleUser === "pedagogic") && (
-            <Box className="flex w-full gap-20 justify-between items-center mt-10">
-              <Box className="flex flex-col gap-4 w-full">
-                <Typography variant="lg_text_bold" color={colorByModeSecondary}>
-                  Função
-                </Typography>
-                <Select
-                  value={role.toLowerCase()}
-                  size="small"
-                  onChange={(e) => setRole(e.target.value)}
-                  sx={{
-                    minWidth: "200px",
-                    "& .MuiOutlinedInput-input": {
-                      paddingTop: "8.5px",
-                      paddingBottom: "8.5px",
-                    },
-                  }}
-                  MenuProps={{
-                    PaperProps: {
-                      sx: {
-                        borderRadius: "4px",
-                        marginTop: "4px",
-                      },
-                    },
-                    MenuListProps: {
-                      sx: {
-                        padding: "4px",
-                        "& .MuiMenuItem-root": {
-                          justifyContent: "center",
-                          paddingLeft: "8.5px",
-                          paddingRight: "8.5px",
-                        },
-                      },
-                    },
-                  }}
-                >
-                  <MenuItem value={"student"}>
-                    {translateRole("student")}
-                  </MenuItem>
-                  <MenuItem value={"teacher"}>
-                    {translateRole("teacher")}
-                  </MenuItem>
-                  <MenuItem value={"supervisor"}>
-                    {translateRole("supervisor")}
-                  </MenuItem>
-                  {roleUser === "admin" && (
-                    <MenuItem value={"pedagogic"}>
-                      {translateRole("pedagogic")}
-                    </MenuItem>
-                  )}
-                  {(roleUser === "admin" || roleUser === "pedagogic") && (
-                    <MenuItem value={"subpedagogic"}>
-                      {translateRole("subpedagogic")}
-                    </MenuItem>
-                  )}
-                </Select>
-              </Box>
-            </Box>
-          )}
-
           <Box className="flex justify-center items-center gap-20 mt-10">
             <Button
               fullWidth
@@ -412,25 +379,47 @@ export default function EditUserManagement({
               fullWidth
               variant="contained"
               color="primary"
-              onClick={() => setConfirmEditOpen(true)}
+              onClick={() => verifyCreateUser()}
             >
               <Typography variant="lg_text_bold" color={whiteColor}>
-                Salvar
+                Criar {translateRole(urlUserRole)}
               </Typography>
             </Button>
           </Box>
         </Box>
-        {confirmEditOpen && (
+        {confirmSaveOpen && (
           <ConfirmChanges
-            onClose={() => setConfirmEditOpen(false)}
-            firstConfirmButton={() => putUser()}
-            confirmButtonText="Salvar"
-            title="Você tem certeza que deseja editar este usuario?"
-            description="Ao fazer isso você irá alterar os dados do usuario"
+            onClose={() => setConfirmSaveOpen(false)}
+            firstConfirmButton={() => saveUser()}
+            confirmButtonText="Criar"
+            title="Você tem certeza que deseja criar este usuario?"
+            description="Ao fazer isso você irá adicionar este usuário ao sistema!"
             type="default"
           />
         )}
-        {isLoading && <LoadingModal />}
+        <Snackbar
+          open={isOpenSnackBar}
+          autoHideDuration={3000}
+          onClose={closeSnackbar}
+          message={snackmessage}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          sx={{
+            "& .MuiSnackbarContent-root": {
+              backgroundColor: primaryColor,
+              color: whiteColor,
+            },
+          }}
+          action={
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={closeSnackbar}
+            >
+              <Icon IconPassed={IoClose} color={whiteColor} />
+            </IconButton>
+          }
+        />
       </Box>
     </Modal>
   );

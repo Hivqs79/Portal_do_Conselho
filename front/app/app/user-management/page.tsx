@@ -1,5 +1,8 @@
 "use client";
+import ConfirmChanges from "@/components/modals/ConfirmChanges";
+import CreateUserModal from "@/components/modals/CreateUserModal";
 import EditUserManagement from "@/components/modals/EditUserManagement";
+import LoadingModal from "@/components/modals/LoadingModal";
 import PaginationTable from "@/components/table/Pagination";
 import Table from "@/components/table/Table";
 import Title from "@/components/Title";
@@ -13,7 +16,7 @@ import { Box, Button, MenuItem, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function UserManagement() {
-  const { token } = useRoleContext();
+  const { token, role } = useRoleContext();
   const [userSelected, setUserSelected] = useState("Aluno");
   const { whiteColor } = useThemeContext();
   const [userData, setUserData] = useState<any>({
@@ -26,6 +29,9 @@ export default function UserManagement() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [isOpen, setIsOpen] = useState(false);
   const [row, setRow] = useState<any>({});
+  const [confirm, setConfirm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [createUserOpen, setCreateUserOpen] = useState(false);
 
   const headers: TableHeaderContent[] = [{ name: "Nome" }, { name: "Função" }];
 
@@ -47,6 +53,8 @@ export default function UserManagement() {
     },
     onClickDelete: async (row: TableRowPossibleTypes) => {
       console.log("delete: ", row);
+      setRow(row);
+      setConfirm(true);
     },
   };
 
@@ -97,6 +105,40 @@ export default function UserManagement() {
     fetchUsers(userSelected);
   }, [userTerm, page, rowsPerPage, userSelected]);
 
+  useEffect(() => {
+    setPage(1);
+    setUserTerm("");
+    setRowsPerPage(5);
+  }, [userSelected]);
+
+  const deleteUser = async (userId: number) => {
+    console.log("USUARIO DELETADO: ", userId);
+    setIsLoading(true);
+    try {
+      await fetch(
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/${userRoute(
+          userSelected
+        )}/${userId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchUsers(userSelected);
+      setConfirm(false);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleFetchUsers = async () => {
+    await fetchUsers(userSelected);
+  };
+
   return (
     <Box>
       <Title textHighlight="Gerenciamento" text="de usuários" />
@@ -134,12 +176,18 @@ export default function UserManagement() {
           <MenuItem value={"Aluno"}>Aluno</MenuItem>
           <MenuItem value={"Professor"}>Professor</MenuItem>
           <MenuItem value={"Supervisor"}>Supervisor</MenuItem>
-          <MenuItem value={"Pedagógico"}>Pedagógico</MenuItem>
-          <MenuItem value={"SubPedagógico"}>SubPedagógico</MenuItem>
+          {role === "admin" && (
+            <MenuItem value={"Pedagógico"}>Pedagógico</MenuItem>
+          )}
+          {role === "admin" ||
+            (role === "pedagogic" && (
+              <MenuItem value={"SubPedagógico"}>SubPedagógico</MenuItem>
+            ))}
         </Select>
         <Button
           className="flex flex-row items-center gap-5"
           variant="contained"
+          onClick={() => setCreateUserOpen(true)}
         >
           <Typography variant="md_text_regular" color={whiteColor}>
             Adicionar novo {userSelected}
@@ -169,6 +217,28 @@ export default function UserManagement() {
           urlUserRole={userRoute(userSelected)}
           content={row}
           onClose={() => setIsOpen(false)}
+          handleFetchUsers={handleFetchUsers}
+        />
+      )}
+      {isLoading && <LoadingModal />}
+      {confirm && (
+        <ConfirmChanges
+          onClose={() => setConfirm(false)}
+          confirmButtonText="Continuar"
+          title="Você tem certeza que deseja apagar este usuário?"
+          description="Ao fazer isso você irá remover o usuário do sistema e não poderá recupera-lo."
+          confirmColor="red"
+          confirmText={`Remover ${row?.name}`}
+          secondDescription="Para confirmar, digite o texto abaixo"
+          secondConfirmButton={() => deleteUser(row.id)}
+          type="confirmText"
+        />
+      )}
+      {createUserOpen && (
+        <CreateUserModal
+          onClose={() => setCreateUserOpen(false)}
+          urlUserRole={userRoute(userSelected)}
+          handleFetchUsers={handleFetchUsers}
         />
       )}
     </Box>
