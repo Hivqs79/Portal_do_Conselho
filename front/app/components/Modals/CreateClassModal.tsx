@@ -128,7 +128,7 @@ export default function CreateClassModal({ onClose, handleFetchClass }: CreateCl
           <Box className="flex w-full gap-20 justify-between items-center mt-10">
             <Box className="flex flex-col gap-4 w-full">
               <Typography variant="lg_text_bold" color={colorByModeSecondary}>
-                Nome da Trma
+                Nome da Turma
               </Typography>
               <TextField
                 placeholder={`Digite o nome da Turma`}

@@ -1,5 +1,5 @@
+"use client";
 import Title from "@/components/Title";
-import CouncilModal from "@/components/council/CouncilModal";
 import AnnotationsModal from "@/components/modals/AnnotationsModal";
 import PaginationTable from "@/components/table/Pagination";
 import Table from "@/components/table/Table";
