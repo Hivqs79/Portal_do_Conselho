@@ -140,9 +140,9 @@ public class FeedbackStudentService {
         repository.save(feedbackStudent);
     }
 
-    public List<FeedbackStudent> getFeedbackStudentsByYearAndClassName(int year, String className) {
-        return repository.findByYearEnabledAndClassName(year, className);
-    }
+//    public List<FeedbackStudent> getFeedbackStudentsByYearAndClassName(int year, String className) {
+//        return repository.findByYearEnabledAndClassName(year, className);
+//    }
 
     public FeedbackStudentResponseDTO viewFeedbackStudent(Long id) {
         FeedbackStudent feedbackStudent = findFeedbackEntity(id);
@@ -152,6 +152,7 @@ public class FeedbackStudentService {
     }
     public List<FeedbackStudent> getLatestFeedbackStudentsbyClassName(String className) {
         return repository.findLatestFeedbackByStudentAndClass(className);
+    }
 
     public List<FeedbackStudent> getLatestFeedbackStudentsbyClassNameAndViewed(String className) {
         return repository.findLatestFeedbackByStudentAndClassAndViewed(className);
