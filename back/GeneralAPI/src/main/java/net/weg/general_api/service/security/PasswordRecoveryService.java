@@ -2,6 +2,7 @@ package net.weg.general_api.service.security;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import lombok.AllArgsConstructor;
+import net.weg.general_api.exception.exceptions.InvalidTokenException;
 import net.weg.general_api.model.dto.request.ForgotPasswordRequestDTO;
 import net.weg.general_api.model.dto.request.ResetPasswordRequestDTO;
 import net.weg.general_api.model.dto.request.VerifyCodeRequestDTO;
@@ -67,10 +68,10 @@ public class PasswordRecoveryService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
         PasswordResetToken token = passwordResetTokenRepository.findByToken(request.code())
-                .orElseThrow(() -> new RuntimeException("Código inválido"));
+                .orElseThrow(() -> new InvalidTokenException("Código inválido"));
 
         if (!token.getUserAuthentication().equals(user)) {
-            throw new RuntimeException("Código inválido para este usuário");
+            throw new InvalidTokenException("Código inválido para este usuário");
         }
 
         if (token.isExpired()) {
@@ -78,7 +79,7 @@ public class PasswordRecoveryService {
         }
 
         if (token.isUsed()) {
-            throw new RuntimeException("Código já utilizado");
+            throw new InvalidTokenException("Código já utilizado");
         }
 
     }
@@ -88,10 +89,10 @@ public class PasswordRecoveryService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
         PasswordResetToken token = passwordResetTokenRepository.findByToken(request.code())
-                .orElseThrow(() -> new RuntimeException("Código inválido"));
+                .orElseThrow(() -> new InvalidTokenException("Código inválido"));
 
         if (!token.getUserAuthentication().equals(user)) {
-            throw new RuntimeException("Código inválido para este usuário");
+            throw new InvalidTokenException("Código inválido para este usuário");
         }
 
         if (token.isExpired()) {
@@ -99,7 +100,7 @@ public class PasswordRecoveryService {
         }
 
         if (token.isUsed()) {
-            throw new RuntimeException("Código já utilizado");
+            throw new InvalidTokenException("Código já utilizado");
         }
 
         user.setPassword(passwordEncoder.encode(request.newPassword()));

@@ -1,6 +1,7 @@
 package net.weg.general_api.service.users;
 
 import lombok.AllArgsConstructor;
+import net.weg.general_api.exception.exceptions.UserNotFoundException;
 import net.weg.general_api.model.entity.users.UserAuthentication;
 import net.weg.general_api.model.enums.RoleENUM;
 import net.weg.general_api.repository.UserAuthenticationRepository;
@@ -17,7 +18,7 @@ public class UserAuthenticationService {
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserAuthentication findUserAuthentication (String username) {
-        return repository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        return repository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     public UserAuthentication saveUserAuthentication (UserAuthentication userAuthentication) {

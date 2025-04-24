@@ -1,6 +1,8 @@
 package net.weg.general_api.service.security;
 
 import lombok.AllArgsConstructor;
+import net.weg.general_api.exception.exceptions.InvalidTokenException;
+import net.weg.general_api.exception.exceptions.PasswordDoesntMatchException;
 import net.weg.general_api.exception.exceptions.UserNotFoundException;
 import net.weg.general_api.model.dto.request.users.LoginRequestDTO;
 import net.weg.general_api.model.dto.request.users.ModifyUserPasswordRequestDTO;
@@ -59,15 +61,13 @@ public class AuthenticationService {
     public UserAuthenticationResponseDTO changePassword(UserDetails userDetails, ModifyUserPasswordRequestDTO request) {
 
         if (userDetails == null) {
-            //TODO: nova exceção
-            throw new RuntimeException("Token invalid");
+            throw new InvalidTokenException("Token invalid");
         }
 
         UserAuthentication user = userAuthenticationService.findUserAuthentication(userDetails.getUsername());
 
         if (!passwordEncoder.matches(request.oldPassword(), user.getPassword())) {
-            //TODO: nova exceção
-            throw new RuntimeException("Senha incorreta");
+            throw new PasswordDoesntMatchException("Senha incorreta");
         }
 
         user.setPassword(passwordEncoder.encode(request.newPassword()));
