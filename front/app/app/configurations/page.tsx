@@ -333,6 +333,35 @@ export default function Config() {
                 changeFontSize(e.target.value as number);
                 setFontMultiplier(e.target.value as number);
               }}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: "4px",
+                    marginTop: "4px",
+                    maxHeight: 300,
+                  },
+                },
+                MenuListProps: {
+                  sx: {
+                    padding: "4px",
+                    "& .MuiMenuItem-root": {
+                      width: "100%",
+                      justifyContent: "flex-center",
+                      paddingLeft: "8.5px",
+                      paddingRight: "8.5px",
+                    },
+                    "& .MuiMenuItem-root:first-child": {
+                      paddingTop: "4px",
+                    },
+                    "& .MuiMenuItem-root:last-child": {
+                      paddingBottom: "4px",
+                    },
+                    "& .MuiMenuItem-root:not(:last-child)": {
+                      borderBottom: "1px solid var(--secondary-color)",                      
+                    }
+                  },
+                },
+              }}
             >
               <MenuItem value={0.5}>0.5x</MenuItem>
               <MenuItem value={0.75}>0.75x</MenuItem>
@@ -356,6 +385,35 @@ export default function Config() {
                 changeFontFamilyText(e.target.value as string);
                 setFontFamilyText(e.target.value as string);
               }}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: "4px",
+                    marginTop: "4px",
+                    maxHeight: 300,
+                  },
+                },
+                MenuListProps: {
+                  sx: {
+                    padding: "4px",
+                    "& .MuiMenuItem-root": {
+                      width: "100%",
+                      justifyContent: "flex-center",
+                      paddingLeft: "8.5px",
+                      paddingRight: "8.5px",
+                    },
+                    "& .MuiMenuItem-root:first-child": {
+                      paddingTop: "4px",
+                    },
+                    "& .MuiMenuItem-root:last-child": {
+                      paddingBottom: "4px",
+                    },
+                    "& .MuiMenuItem-root:not(:last-child)": {
+                      borderBottom: "1px solid var(--secondary-color)",                      
+                    }
+                  },
+                },
+              }}
             >
               <MenuItem value="Poppins">Poppins</MenuItem>
               <MenuItem value="Inter">Inter</MenuItem>
@@ -377,6 +435,35 @@ export default function Config() {
               onChange={(e) => {
                 changeFontFamilyTitle(e.target.value as string);
                 setFontFamilyTitle(e.target.value as string);
+              }}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: "4px",
+                    marginTop: "4px",
+                    maxHeight: 300,
+                  },
+                },
+                MenuListProps: {
+                  sx: {
+                    padding: "4px",
+                    "& .MuiMenuItem-root": {
+                      width: "100%",
+                      justifyContent: "flex-center",
+                      paddingLeft: "8.5px",
+                      paddingRight: "8.5px",
+                    },
+                    "& .MuiMenuItem-root:first-child": {
+                      paddingTop: "4px",
+                    },
+                    "& .MuiMenuItem-root:last-child": {
+                      paddingBottom: "4px",
+                    },
+                    "& .MuiMenuItem-root:not(:last-child)": {
+                      borderBottom: "1px solid var(--secondary-color)",                      
+                    }
+                  },
+                },
               }}
             >
               <MenuItem value="Lora">Lora</MenuItem>

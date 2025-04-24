@@ -279,16 +279,27 @@ export default function CreateUserModal({
                         sx: {
                           borderRadius: "4px",
                           marginTop: "4px",
+                          maxHeight: 300,
                         },
                       },
                       MenuListProps: {
                         sx: {
                           padding: "4px",
                           "& .MuiMenuItem-root": {
-                            justifyContent: "center",
+                            width: "100%",
+                            justifyContent: "flex-center",
                             paddingLeft: "8.5px",
                             paddingRight: "8.5px",
                           },
+                          "& .MuiMenuItem-root:first-child": {
+                            paddingTop: "4px",
+                          },
+                          "& .MuiMenuItem-root:last-child": {
+                            paddingBottom: "4px",
+                          },
+                          "& .MuiMenuItem-root:not(:last-child)": {
+                            borderBottom: "1px solid var(--secondary-color)",                      
+                          }
                         },
                       },
                     }}
@@ -326,10 +337,20 @@ export default function CreateUserModal({
                       sx: {
                         padding: "4px",
                         "& .MuiMenuItem-root": {
-                          justifyContent: "flex-start",
+                          width: "100%",
+                          justifyContent: "flex-center",
                           paddingLeft: "8.5px",
                           paddingRight: "8.5px",
                         },
+                        "& .MuiMenuItem-root:first-child": {
+                          paddingTop: "4px",
+                        },
+                        "& .MuiMenuItem-root:last-child": {
+                          paddingBottom: "4px",
+                        },
+                        "& .MuiMenuItem-root:not(:last-child)": {
+                          borderBottom: "1px solid var(--secondary-color)",                      
+                        }
                       },
                     },
                   }}
@@ -343,6 +364,7 @@ export default function CreateUserModal({
                           },
                         }}
                         checked={selectedClassNames.includes(cls.name)}
+                        className="!mr-2"
                       />
                       <ListItemText primary={`${cls.name} - ${cls.course}`} />
                     </MenuItem>

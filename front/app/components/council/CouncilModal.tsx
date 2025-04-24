@@ -115,7 +115,7 @@ export default function CouncilModal({
                   colorButton={getThemeMode() === "light" ? terciaryColor : OpacityHex(primaryColor, 0.5)}
                   className="size-10"
                   classNameButton="!p-1 !max-w-[36px]"
-                  color={terciaryColor}
+                  color={getThemeMode() === "light" ? primaryColor : terciaryColor}
                   isButton={true}
                   onClick={() => setEditing && setEditing(true)}
                 />

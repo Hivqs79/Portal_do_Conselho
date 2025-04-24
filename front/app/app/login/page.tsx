@@ -25,7 +25,6 @@ export default function Login() {
       }, 3000);
     } else {
       try {
-        console.log(email, password);
         const response = await fetchLogin(email, password);
         console.log(response);
       } catch (error) {
