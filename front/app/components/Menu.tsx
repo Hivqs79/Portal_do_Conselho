@@ -11,8 +11,7 @@ import { PiBooks } from 'react-icons/pi';
 import { CgFileDocument } from 'react-icons/cg';
 import { TbReport } from 'react-icons/tb';
 import { SiGoogleclassroom } from 'react-icons/si';
-import { GoGraph, GoPeople } from 'react-icons/go';
-import { FaRegFilePdf } from 'react-icons/fa6';
+import { GoPeople } from 'react-icons/go';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useRoleContext } from '@/hooks/useRole';
@@ -41,35 +40,41 @@ const CustomMenu = styled(Menu)(() => ({
 export default function MenuHeader({ open, onClose, variant }: MenuHeaderProps) {
     const {whiteColor} = useThemeContext();
     const [isRepresentant, setIsRepresentant] = useState(false);
-    const { userId, token } = useRoleContext();
+    const { userId, token, role } = useRoleContext();
     const menuRef = useRef<HTMLDivElement>(null);    
 
     const fetchUser = async (): Promise<boolean> => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/student/${userId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+      if (role === "student") {
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/student/${userId}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
-        const data = await response.json();
-        console.log("data", data);
-        if ("isRepresentant" in data) {
-          if (data.isRepresentant === true) {
-            return true;
+          if (response.status === 404) {
+            console.log("Student not found")
+          }
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          if ("isRepresentant" in data) {
+            return data.isRepresentant === true;
           }
           return false;
+        } catch (error) {
+          return false;
         }
-        return false;
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        return false;
       }
+      return false;
     };
 
     useEffect(() => {
@@ -130,7 +135,7 @@ export default function MenuHeader({ open, onClose, variant }: MenuHeaderProps) 
                         </MenuItem>
                     </Link>
                 )}
-                {(variant === "teacher" || variant === "pedagogic" || variant === "supervisior") && (
+                {(variant === "teacher" || variant === "pedagogic" || variant === "subpedagogic" || variant === "supervisor") && (
                     <Link href="/council-historic">
                         <MenuItem onClick={onClose} className="flex flex-row">                    
                             <Icon IconPassed={FaRegClock} color={whiteColor} />
@@ -138,7 +143,7 @@ export default function MenuHeader({ open, onClose, variant }: MenuHeaderProps) 
                         </MenuItem>
                     </Link>
                 )}
-                {variant === "pedagogic" && (
+                {(variant === "pedagogic" || variant === "subpedagogic") && (
                     <>
                         <Link href="/council">
                             <MenuItem onClick={onClose} className="flex flex-row">                    

@@ -29,6 +29,7 @@ interface AnotationProps {
   onChangeRank?: (rank: RankType) => void;
   onClick?: () => void;
   open?: boolean;
+  annotation: boolean;
 }
 
 export default function AccordionComponent({
@@ -44,7 +45,8 @@ export default function AccordionComponent({
   rank,
   onChangeRank, 
   onClick,
-  open = false
+  open = false,
+  annotation
 }: AnotationProps) {
   const {
     primaryColor,
@@ -168,7 +170,7 @@ export default function AccordionComponent({
             </Box>
             {rank && (
               <Box
-                onClick={(e) => !frequency || !rankViwed && e.stopPropagation()}
+                onClick={(e) => (!frequency || !rankViwed || annotation === true) && e.stopPropagation()}
                 className={`flex justify-end items-center ${
                   frequency ? "w-1/5 lg:w-1/4" : ""
                 }`}

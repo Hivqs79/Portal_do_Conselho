@@ -142,41 +142,7 @@ export default function ReleaseFeedback() {
   }, [releasePreCouncilFeedback, preCouncilFeedbacks]);
 
   useEffect(() => {
-    const fetchClass = async () => {
-      if (!classContent) return;
-      const responseClass = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class/return/${classContent?.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(responseClass);
-    };
-    const fetchStudents = async () => {
-      const students = await fetchStudentsFeedback();
-      const responseStudent = await Promise.all(
-        students.map((student) => {
-          return fetch(
-            `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/student/return/${student.id}`,
-            {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-        })
-      );
-      console.log(responseStudent);      
-    }
-    fetchClass();
-    fetchStudents();
-    setReleaseCouncilFeedback(false);
+
   }, [releaseCouncilFeedback]);
 
   const rowButtonsCouncil: TableRowButtons = {
@@ -193,10 +159,67 @@ export default function ReleaseFeedback() {
     },
     onClickRelease: async (row: TableRowPossibleTypes) => {
       setClassContent(row as FeedbackClass);
-      setReleaseCouncilFeedback(true);
+      const councilId2 = (row as TableFeedbackRow).council.id;
+      setCouncilId(councilId2);
+      releaseFeedback()
     },
   };
 
+  const releaseFeedback = async () => {
+    if (!classContent) {
+      console.error("classContent is undefined");
+      return;
+    }
+  
+    try {
+      // Primeira requisição
+      const classResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class/return/${classContent?.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      if (!classResponse.ok) {
+        throw new Error(`HTTP error! status: ${classResponse.status}`);
+      }
+  
+      // Busca estudantes
+      const students = await fetchStudentsFeedback();
+      console.log("Students to update:", students);
+  
+      // Atualiza cada estudante
+      const studentResponses = await Promise.all(
+        students.map(async (student) => {
+          console.log("asdasd: ", student)
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/student/return/${student.id}`,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (!response.ok) {
+            console.error(`Failed to update student ${student.id}`, response);
+          }
+          return response;
+        })
+      );
+  
+      console.log("All updates completed:", studentResponses);
+      setReleaseCouncilFeedback(!releaseCouncilFeedback); // Forçar atualização
+    } catch (error) {
+      console.error("Error in releaseFeedback:", error);
+    }
+  };
+  
   const rowButtonsPreCouncil: TableRowButtons = {
     releaseButton: true,
     visualizeIconButton: true,

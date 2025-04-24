@@ -102,6 +102,7 @@ export default function AccordionTable({
                       key={index}
                       rank={"rank" in row ? row.rank : undefined}
                       onChangeRank={(rank: RankType) => rowButtons.setRank && rowButtons.setRank(rank, (row as TableAnnotationRow).student.id)}
+                      annotation={variant === "annotation" ? true : false}                      
                     >
                       <AvaliationInputs
                         readOnly={variant == "feedback" || readOnly}

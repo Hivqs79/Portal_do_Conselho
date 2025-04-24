@@ -20,7 +20,7 @@ export default function CouncilHistoric() {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [feedbackSearch, setFeedbackSearch] = useState<string>("");
-  const { token } = useRoleContext();
+  const { token, role, userId } = useRoleContext();
   const [isOpen, setIsOpen] = useState(false);
   const [studentContent, setStudentContent] = useState<TableRowPossibleTypes[]>();
   const [classContent, setClassContent] = useState<FeedbackClass>();
@@ -29,7 +29,7 @@ export default function CouncilHistoric() {
 
   const fetchStudentsFeedback = async () => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/student?isReturned=true&councilId=${councilId}&studentName=${studentTerm}`,
+      `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/student?isReturned=false&councilId=${councilId}&studentName=${studentTerm}`,
       {
         method: "GET",
         headers: {
@@ -59,11 +59,7 @@ export default function CouncilHistoric() {
     try {
       const fetchFeedbacks = async () => {
         const response = await fetch(
-          `${
-            process.env.NEXT_PUBLIC_URL_GENERAL_API
-          }/feedbacks/class?isReturned=false&page=${
-            page - 1
-          }&size=${rowsPerPage}&className=${feedbackSearch}`,
+          role !== "teacher" ? `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class?isReturned=true&page=${page - 1}&size=${rowsPerPage}&className=${feedbackSearch}` : `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/class/teacher/${userId}?page${page - 1}&size=${rowsPerPage}`,
           {
             method: "GET",
             headers: {
@@ -100,12 +96,12 @@ export default function CouncilHistoric() {
     rankVisualizer: true,
     visualizeIconButton: true,
     onClickVisualize: async (row: TableRowPossibleTypes) => {
-      setIsOpen(true);
       console.log("Row clicked:", row);
       setClassContent(row as FeedbackClass);
       const councilId = (row as TableFeedbackRow).council.id;
-      setCouncilId(councilId);
       console.log("councilId", councilId);
+      setCouncilId(councilId);
+      setIsOpen(true);
     },
   };
 

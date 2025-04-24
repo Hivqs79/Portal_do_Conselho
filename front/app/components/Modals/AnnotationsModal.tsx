@@ -102,7 +102,7 @@ export default function AnnotationsModal({
               />
               <Box className="p-5">                
                 <AccordionTable
-                  variant="annotation"
+                  variant={variant === "feedback" ? "feedback" : "annotation"}
                   headers={headersStudent}
                   headerButtons={headerButtonsStudent}
                   rowButtons={rowButtonsStudent}

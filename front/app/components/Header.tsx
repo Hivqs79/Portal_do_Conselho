@@ -149,19 +149,6 @@ export default function Header({ variant }: HeaderProps) {
           <Typography
             variant={isSmall ? "md_text_regular" : "xl_text_regular"}
             style={{ color: whiteColor }}
-            onClick={() => {
-              console.log("click");
-              setIncomingNotification(
-                {
-                  "id": 1,
-                  "userId": 16,
-                  "title": "Novo conselho iniciado!",
-                  "message": "O conselho da turma: WU75 iniciado",
-                  "messageDateTime": new Date("2025-04-08T11:48:35.485102"),
-                  "viewed": false
-                }
-              );
-            }}
           >
             {name ? name.split(" ")[0] : ""}
           </Typography>

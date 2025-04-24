@@ -260,6 +260,7 @@ export default function StudentCouncilForm({
             <span className="lg:hidden w-full">
               <Button
                 variant="contained"
+                onClick={() => openModal()}
                 sx={{
                   width: "100%",
                   borderRadius: "8px",

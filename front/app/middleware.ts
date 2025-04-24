@@ -10,11 +10,9 @@ export async function middleware(request: NextRequest) {
   }
 
   const encryptedToken = request.cookies.get("token")?.value;
-  console.log("encryptedToken", encryptedToken);
   const authToken = Decryptor(encryptedToken ? encryptedToken : "");
   console.log("authToken", authToken);
   const isTokenPresent = authToken && isLikelyJwt(String(authToken));
-  console.log("isTokenPresent", isTokenPresent);
 
   const fetchUser = async (): Promise<string[]> => {
     const encryptedUser = request.cookies.get("user")?.value;
@@ -32,7 +30,6 @@ export async function middleware(request: NextRequest) {
       });
       
       const data = await response.json();
-      console.log("data", data);
       if ("isRepresentant" in data) {
         if (data.isRepresentant === true) {
           return ["/fill-out-pre-council"];
@@ -46,36 +43,13 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  const globalRoutes = [
-    "/configurations",
-    "/profile",
-    "/chat",
-    "/support",
-    "/notifications",
-    "/",
-  ];
-  const adminRoutes = [
-    "/",
-    "/configurations",
-    "/class-management",
-    "/user-management",
-  ];
+  const globalRoutes = ["/configurations","/profile","/chat","/support","/notifications","/",];
+  const adminRoutes = ["/","/configurations","/class-management","/user-management",];
   const userSpecificRoutes = await fetchUser();
   const studentRoutes = [...globalRoutes, ...userSpecificRoutes];
   const leaderRoutes = [...globalRoutes, "/fill-out-pre-council"];
   const teacherRoutes = [...globalRoutes, "/annotations", "/council-historic"];
-  const pedagogicRoutes = [
-    ...globalRoutes,
-    "/council-historic",
-    "/council",
-    "/realize-council",
-    "/pre-council",
-    "/release-feedback",
-    "/class-management",
-    "/user-management",
-    "/dashboard",
-    "/reports",
-  ];
+  const pedagogicRoutes = [...globalRoutes, "/council-historic","/council","/realize-council","/pre-council","/release-feedback","/class-management","/user-management","/dashboard","/reports",];
   const supervisiorRoutes = [...globalRoutes, "/council-historic"];
 
   const routePermissions: Record<string, string[]> = {
@@ -85,7 +59,7 @@ export async function middleware(request: NextRequest) {
     teacher: teacherRoutes,
     pedagogic: pedagogicRoutes,
     subpedagogic: pedagogicRoutes,
-    supervisior: supervisiorRoutes,
+    supervisor: supervisiorRoutes,
   };
 
   const url = request.nextUrl;
