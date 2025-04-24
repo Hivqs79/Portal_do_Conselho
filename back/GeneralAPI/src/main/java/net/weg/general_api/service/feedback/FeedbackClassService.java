@@ -8,10 +8,12 @@ import net.weg.general_api.model.dto.response.feedback.FeedbackClassResponseDTO;
 import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.council.Council;
 import net.weg.general_api.model.entity.feedback.FeedbackClass;
+import net.weg.general_api.model.entity.users.Teacher;
 import net.weg.general_api.repository.FeedbackClassRepository;
 import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.council.CouncilService;
 import net.weg.general_api.service.kafka.producer.KafkaEventSender;
+import net.weg.general_api.service.users.TeacherService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -115,5 +117,10 @@ public class FeedbackClassService {
         feedbackClass.setReturned(true);
         repository.save(feedbackClass);
         return modelMapper.map(feedbackClass, FeedbackClassResponseDTO.class);
+    }
+
+    public Page<FeedbackClassResponseDTO> findFeedbackClassByTeacherId(Long id, Pageable pageable) {
+        Page<FeedbackClass> feedbackPage = repository.findAllByTeacherId(id, pageable);
+        return feedbackPage.map(feedback -> modelMapper.map(feedback, FeedbackClassResponseDTO.class));
     }
 }

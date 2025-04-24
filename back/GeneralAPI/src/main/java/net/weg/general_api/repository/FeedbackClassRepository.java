@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -21,5 +23,10 @@ public interface FeedbackClassRepository extends JpaRepository<FeedbackClass, Lo
 
     List<FeedbackClass> getFeedbackClassByCouncil_Id(Long councilId);
 
+    @Query("SELECT fc FROM FeedbackClass fc " +
+            "JOIN fc.council c " +
+            "JOIN c.teachers t " +
+            "WHERE t.id = :teacherId")
+    Page<FeedbackClass> findAllByTeacherId(@Param("teacherId") Long teacherId, Pageable pageable);
 }
 

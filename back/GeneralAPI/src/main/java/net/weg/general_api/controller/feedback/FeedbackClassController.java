@@ -40,7 +40,17 @@ public class FeedbackClassController {
     @ApiResponse(responseCode = "200", description = "Feedbacks found", content = @Content(schema = @Schema(implementation = Page.class), examples = @ExampleObject(value = "{\"content\":[{\"id\":1,\"rank\":\"AVERAGE\",\"strengths\":\"Excellent class dynamics\",\"toImprove\":\"Could use more examples\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}],\"pageable\":{\"pageNumber\":0,\"pageSize\":10,\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true}},\"totalElements\":1,\"totalPages\":1}")))
     @ApiResponse(responseCode = "400", description = "Invalid parameters")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public Page<FeedbackClassResponseDTO> searchFeedbackClass(@And({@Spec(path = "id", spec = Equal.class), @Spec(path = "rank", spec = Like.class), @Spec(path = "strengths", spec = Like.class), @Spec(path = "toImprove", spec = Like.class), @Spec(path = "isReturned", params = "isReturned", spec = Equal.class), @Spec(path = "council.aClass.name", params = "className", spec = Like.class), @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class), @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class), @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class), @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)}) Specification<FeedbackClass> spec, Pageable pageable) {
+    public Page<FeedbackClassResponseDTO> searchFeedbackClass(@And({
+            @Spec(path = "id", spec = Equal.class),
+            @Spec(path = "rank", spec = Like.class),
+            @Spec(path = "strengths", spec = Like.class),
+            @Spec(path = "toImprove", spec = Like.class),
+            @Spec(path = "isReturned", params = "isReturned", spec = Equal.class),
+            @Spec(path = "council.aClass.name", params = "className", spec = Like.class),
+            @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class),
+            @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class),
+            @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class),
+            @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)}) Specification<FeedbackClass> spec, Pageable pageable) {
         return service.findFeedbackClassSpec(spec, pageable);
     }
 
@@ -80,6 +90,15 @@ public class FeedbackClassController {
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<FeedbackClassResponseDTO> getFeedbackClass(@Parameter(description = "Feedback ID", example = "1") @PathVariable Long id) {
         return new ResponseEntity<>(service.findFeedbackClass(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/teacher/{id}")
+    @Operation(method = "GET", summary = "Get class feedback", description = "Returns class feedback by ID")
+    @ApiResponse(responseCode = "200", description = "Feedback found", content = @Content(schema = @Schema(implementation = FeedbackClassResponseDTO.class), examples = @ExampleObject(value = "{\"id\":1,\"rank\":\"AVERAGE\",\"strengths\":\"Good progress\",\"toImprove\":\"More practice needed\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}")))
+    @ApiResponse(responseCode = "404", description = "Feedback not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<Page<FeedbackClassResponseDTO>> getFeedbackClassByTeacherId(@Parameter(description = "Feedback ID", example = "1") @PathVariable Long id, Pageable pageable) {
+        return new ResponseEntity<>(service.findFeedbackClassByTeacherId(id, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/find/{id}")
