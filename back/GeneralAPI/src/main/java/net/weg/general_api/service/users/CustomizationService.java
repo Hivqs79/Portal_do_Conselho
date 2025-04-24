@@ -1,6 +1,7 @@
 package net.weg.general_api.service.users;
 
 import lombok.AllArgsConstructor;
+import net.weg.general_api.exception.exceptions.CustomizationNotFoundException;
 import net.weg.general_api.exception.exceptions.UserNotFoundException;
 import net.weg.general_api.model.dto.request.users.CustomizationRequestDTO;
 import net.weg.general_api.model.dto.response.users.CustomizationResponseDTO;
@@ -41,7 +42,7 @@ public class CustomizationService {
     }
 
     public Customization findCustomizationEntity(Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Customization not found"));
+        return repository.findById(id).orElseThrow(() -> new CustomizationNotFoundException("Customization not found"));
     }
 
     public CustomizationResponseDTO updateCustomization(CustomizationRequestDTO customizationRequestDTO, Long user_id) {

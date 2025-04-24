@@ -1,5 +1,6 @@
 package net.weg.general_api.controller.annotations;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/annotations/class")
 @AllArgsConstructor
+@Tag(name = "Annotation Class Controller", description = "Controller para gerenciamento de registros das anotações das salas/turmas")
 public class AnnotationClassController {
 
     private AnnotationClassService service;

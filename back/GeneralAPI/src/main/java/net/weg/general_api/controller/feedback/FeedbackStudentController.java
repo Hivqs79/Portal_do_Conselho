@@ -1,5 +1,6 @@
 package net.weg.general_api.controller.feedback;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,6 +33,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/feedbacks/student")
 @AllArgsConstructor
+@Tag(name = "Feedback Student Controller", description = "Controller para gerenciamento de registros dos feedbacks dos alunos")
 public class FeedbackStudentController {
 
     private FeedbackStudentService service;

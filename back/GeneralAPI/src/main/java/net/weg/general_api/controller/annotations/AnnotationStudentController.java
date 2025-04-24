@@ -1,5 +1,6 @@
 package net.weg.general_api.controller.annotations;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,6 +31,7 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RequestMapping("/annotations/student")
 @AllArgsConstructor
+@Tag(name = "Annotation Student Controller", description = "Controller para gerenciamento de registros das anotações dos alunos")
 public class AnnotationStudentController {
 
     private AnnotationStudentService service;

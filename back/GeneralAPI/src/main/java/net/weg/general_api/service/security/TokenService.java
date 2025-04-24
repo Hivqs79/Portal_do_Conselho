@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import lombok.AllArgsConstructor;
+import net.weg.general_api.exception.exceptions.TokenGeneratorException;
 import net.weg.general_api.model.entity.users.UserAuthentication;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class TokenService {
             return token;
         } catch (JWTCreationException e) {
             System.out.println("JWT Creation Exception");
-            throw new RuntimeException(e);
+            throw new TokenGeneratorException(e.getMessage());
         }
     }
 

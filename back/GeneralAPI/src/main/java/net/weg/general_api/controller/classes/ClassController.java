@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
@@ -33,6 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/class")
 @AllArgsConstructor
+@Tag(name = "Class Controller", description = "Controller para gerenciamento de registros das salas/turmas")
 public class ClassController {
 
     private ClassService service;

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.model.dto.request.users.CustomizationRequestDTO;
 import net.weg.general_api.model.dto.response.users.CustomizationResponseDTO;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/customization")
 @AllArgsConstructor
+@Tag(name = "Customization Controller", description = "Controller para gerenciamento dos registros de customização")
 public class CustomizationController {
 
     private CustomizationService service;

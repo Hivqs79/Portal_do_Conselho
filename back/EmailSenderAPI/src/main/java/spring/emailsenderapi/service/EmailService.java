@@ -17,6 +17,9 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+/**
+ * @author Mateus Henrique Bosquetti
+ */
 public class EmailService {
 
     private final JavaMailSender sender;

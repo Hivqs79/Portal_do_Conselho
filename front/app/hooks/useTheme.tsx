@@ -139,7 +139,7 @@ export const ThemeProviderContext = ({ children }: { children: ReactNode }) => {
   }
 
   function changeFontSize(multiplierProp: number) {
-    if (multiplierProp !== parseInt(multiplier.replaceAll("\\", "").replaceAll("\"", ""))) {
+    if (multiplierProp !== parseFloat(multiplier.replaceAll("\\", "").replaceAll("\"", ""))) {
       setMultiplier(multiplierProp.toString());
     }
   }

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import net.kaczmarzyk.spring.data.jpa.domain.*;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
@@ -27,6 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/student")
 @AllArgsConstructor
+@Tag(name = "Student Controller", description = "Controller para gerenciamento dos registros dos estudantes")
 public class StudentController {
 
     private StudentService service;

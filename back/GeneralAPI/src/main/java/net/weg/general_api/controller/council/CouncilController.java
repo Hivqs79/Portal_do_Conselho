@@ -1,5 +1,6 @@
 package net.weg.general_api.controller.council;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,6 +32,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/council")
 @AllArgsConstructor
+@Tag(name = "Council Controller", description = "Controller para gerenciamento de registros dos conselhos de classe")
 public class CouncilController {
 
     private CouncilService service;

@@ -13,6 +13,9 @@ import java.nio.file.Files;
 import java.util.Map;
 
 @Service
+/**
+ * @author Mateus Henrique Bosquetti
+ */
 public class EmailTemplateService {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailTemplateService.class);

@@ -93,6 +93,15 @@ export default function CreateClassModal({ onClose, handleFetchClass }: CreateCl
     }
   };
 
+  const verifyCreateClass = () => {
+    if (nameClass.trim() === "" || courseName.trim() === "" || areaName.trim() === "") {
+      setSnackMessage("Preencha todos os campos!");
+      setIsOpenSnackBar(true);
+    } else {
+      setConfirmCreateOpen(true)
+    }
+  }
+
   return (
     <Modal
       open
@@ -115,7 +124,7 @@ export default function CreateClassModal({ onClose, handleFetchClass }: CreateCl
         <Box className="p-3 h-full max-h-[800px] overflow-y-scroll">
           <Box className="flex justify-between items-center">
             <Typography variant="lg_text_bold" color={colorByModeSecondary}>
-              Criar novo aluno
+              Criar nova Turma
             </Typography>
             <Box onClick={onClose}>
               <Icon
@@ -222,7 +231,7 @@ export default function CreateClassModal({ onClose, handleFetchClass }: CreateCl
               fullWidth
               variant="contained"
               color="primary"
-              onClick={() => setConfirmCreateOpen(true)}
+              onClick={() => verifyCreateClass()}
             >
               <Typography variant="lg_text_bold" color={whiteColor}>
                 Salvar
@@ -234,8 +243,8 @@ export default function CreateClassModal({ onClose, handleFetchClass }: CreateCl
               onClose={() => setConfirmCreateOpen(false)}
               firstConfirmButton={() => createClass()}
               confirmButtonText="Salvar"
-              title="Você tem certeza que deseja editar esta turma?"
-              description="Ao fazer isso você irá alterar os dados da turma"
+              title="Você tem certeza que deseja adicionar esta turma?"
+              description="Ao fazer isso você irá adinionar uma nova turma ao sistema."
               type="default"
             />
           )}

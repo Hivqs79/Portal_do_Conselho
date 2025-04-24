@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.model.dto.request.ForgotPasswordRequestDTO;
 import net.weg.general_api.model.dto.request.ResetPasswordRequestDTO;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth/recovery")
 @AllArgsConstructor
+@Tag(name = "Password Recovery Controller", description = "Controller para gerenciamento da recuperação de senha")
 public class PasswordRecoveryController {
 
     private final PasswordRecoveryService recoveryService;

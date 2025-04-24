@@ -1,6 +1,7 @@
 package net.weg.general_api.service.notification;
 
 import lombok.AllArgsConstructor;
+import net.weg.general_api.exception.exceptions.NotificationNotFoundException;
 import net.weg.general_api.model.entity.notification.Notification;
 import net.weg.general_api.repository.NotificationRepository;
 import org.springframework.data.domain.Page;
@@ -35,14 +36,14 @@ public class NotificationService {
 
     public void updateNotificationStatus(Long id, boolean isViewed) {
         Notification notification = notificationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Notification not found"));
+                .orElseThrow(() -> new NotificationNotFoundException("Notification not found"));
         notification.setViewed(isViewed);
         notificationRepository.save(notification);
     }
 
     public void disableNotification(Long id) {
         Notification notification = notificationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Notification not found"));
+                .orElseThrow(() -> new NotificationNotFoundException("Notification not found"));
         notification.setEnabled(false);
         notificationRepository.save(notification);
     }
