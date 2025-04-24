@@ -1,5 +1,6 @@
 package net.weg.general_api.controller.preCouncil;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,6 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/pre-council")
 @AllArgsConstructor
+@Tag(name = "Pre Council Controller", description = "Controller para gerenciamento de registros dos pré conselhos")
 public class PreCouncilController {
 
     private PreCouncilService service;

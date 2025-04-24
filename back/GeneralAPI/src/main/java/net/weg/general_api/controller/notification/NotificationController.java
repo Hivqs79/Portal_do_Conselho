@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.model.entity.notification.Notification;
 import net.weg.general_api.repository.NotificationRepository;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/notification")
 @AllArgsConstructor
+@Tag(name = "Notification Class Controller", description = "Controller para gerenciamento de registros das notificações")
 public class NotificationController {
 
     private final NotificationService notificationService;
