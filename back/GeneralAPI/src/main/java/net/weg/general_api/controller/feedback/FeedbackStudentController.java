@@ -41,7 +41,22 @@ public class FeedbackStudentController {
     @ApiResponse(responseCode = "200", description = "Feedbacks found", content = @Content(schema = @Schema(implementation = Page.class), examples = @ExampleObject(value = "{\"content\":[{\"id\":1,\"rank\":\"CRITICAL\",\"strengths\":\"Excellent performance\",\"toImprove\":\"Could participate more\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"student\":{\"id\":1,\"name\":\"Student\",\"email\":\"student@email.com\",\"isRepresentant\":false,\"lastRank\":\"BRONZE\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"frequency\":0.95,\"isViewed\":true,\"isSatisfied\":true,\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}],\"pageable\":{\"pageNumber\":0,\"pageSize\":10,\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true}},\"totalElements\":1,\"totalPages\":1}")))
     @ApiResponse(responseCode = "400", description = "Invalid parameters")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public Page<FeedbackStudentResponseDTO> searchFeedbackStudent(@And({@Spec(path = "id", spec = Equal.class), @Spec(path = "rank", spec = Like.class), @Spec(path = "strengths", spec = Like.class), @Spec(path = "toImprove", spec = Like.class), @Spec(path = "council.id", params = "councilId", spec = Equal.class), @Spec(path = "council.isFinished", constVal = "true", spec = Equal.class), @Spec(path = "isReturned", params = "isReturned", spec = Equal.class), @Spec(path = "council.aClass.name", params = "className", spec = Like.class), @Spec(path = "student.name", params = "studentName", spec = Like.class), @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class), @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class), @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class), @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)}) Specification<FeedbackStudent> spec, Pageable pageable) {
+    public Page<FeedbackStudentResponseDTO> searchFeedbackStudent(
+            @And(
+                    {
+                            @Spec(path = "id", spec = Equal.class),
+                            @Spec(path = "rank", spec = Like.class),
+                            @Spec(path = "strengths", spec = Like.class),
+                            @Spec(path = "toImprove", spec = Like.class),
+                            @Spec(path = "isReturned", params = "isReturned", spec = Equal.class),
+                            @Spec(path = "council.aClass.name", params = "className", spec = Like.class),
+                            @Spec(path = "student.name", params = "studentName", spec = Like.class),
+                            @Spec(path = "createDate", params = "createdAfter", spec = GreaterThanOrEqual.class),
+                            @Spec(path = "createDate", params = "createdBefore", spec = LessThanOrEqual.class),
+                            @Spec(path = "updateDate", params = "updatedAfter", spec = GreaterThanOrEqual.class),
+                            @Spec(path = "updateDate", params = "updatedBefore", spec = LessThanOrEqual.class)})
+
+            Specification<FeedbackStudent> spec, Pageable pageable) {
         return service.findFeedbackStudentSpec(spec, pageable);
     }
 
@@ -118,5 +133,14 @@ public class FeedbackStudentController {
     public ResponseEntity<Void> changeSatisfactionOfStudent(@Parameter(description = "Feedback ID", example = "1") @PathVariable Long id, @Parameter(description = "Boolean value to student if it's satisfied", example = "1") @PathVariable boolean iSatisfied) {
         service.changeSatisfactionStudent(id, iSatisfied);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/view/{id}")
+    @Operation(method = "PATCH", summary = "View student feedback status", description = "Modifies isViewed status, false to true")
+    @ApiResponse(responseCode = "200", description = "Feedbacks found", content = @Content(schema = @Schema(implementation = List.class), examples = @ExampleObject(value = "[{\"id\":1,\"rank\":\"AVERAGE\",\"strengths\":\"Excellent class\",\"toImprove\":\"None\",\"council\":{\"id\":1,\"startDateTime\":\"2025-01-01T10:00:00\",\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"},\"createDate\":\"2025-01-01T00:00:00\",\"updateDate\":\"2025-01-01T00:00:00\"}]")))
+    @ApiResponse(responseCode = "404", description = "Student not found")
+    @ApiResponse(responseCode = "500", description = "Server error")
+    public ResponseEntity<FeedbackStudentResponseDTO> viewFeedbackStudent(@Parameter(description = "Feedback ID", example = "1") @PathVariable Long id) {
+        return new ResponseEntity<>(service.viewFeedbackStudent(id), HttpStatus.OK);
     }
 }

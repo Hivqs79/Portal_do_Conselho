@@ -18,14 +18,16 @@ export default function Login() {
 
   const verifyLogin = async () => {
     //email não contem um @
-    if (email === "" || password === "" || email.indexOf("@") === -1) {
+    if ((email === "" || password === "" || email.indexOf("@") === -1) && email !== "admin") {
       setInputError(true);
       setTimeout(() => {
         setInputError(false);
       }, 3000);
     } else {
       try {
-        await fetchLogin(email, password);
+        console.log(email, password);
+        const response = await fetchLogin(email, password);
+        console.log(response);
       } catch (error) {
         console.log(error);
         setInputError(false);

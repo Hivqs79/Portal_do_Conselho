@@ -1,5 +1,6 @@
 package net.weg.general_api.exception;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.model.dto.response.exceptions.ExceptionResponseDTO;
@@ -37,8 +38,8 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(TokenExpiredException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleTokenExpired(TokenExpiredException ex, WebRequest request) {
+    @ExceptionHandler(JWTVerificationException.class)
+    public ResponseEntity<ExceptionResponseDTO> handleTokenExpired(JWTVerificationException ex, WebRequest request) {
         ExceptionResponseDTO response = new ExceptionResponseDTO(
                 HttpStatus.REQUEST_TIMEOUT.value(),
                 "Token expired",

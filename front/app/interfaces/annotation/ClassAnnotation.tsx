@@ -1,3 +1,3 @@
-import Annotation from "./annotation/Annotation";
+import Annotation from "./Annotation";
 
 export default interface ClassAnnotation extends Annotation {};

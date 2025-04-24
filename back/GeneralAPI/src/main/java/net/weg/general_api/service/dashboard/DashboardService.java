@@ -3,6 +3,9 @@ package net.weg.general_api.service.dashboard;
 import lombok.AllArgsConstructor;
 import net.weg.general_api.model.dto.response.ClassRankDashboardResponseDTO;
 import net.weg.general_api.model.dto.response.FrequencyAvarageDashboardResponseDTO;
+import net.weg.general_api.model.dto.response.SatisfiedFeedbackDashboardResponseDTO;
+import net.weg.general_api.model.dto.response.VisualizedFeedbackDashboardResponseDTO;
+import net.weg.general_api.model.dto.response.users.StudentResponseDTO;
 import net.weg.general_api.model.entity.classes.Class;
 import net.weg.general_api.model.entity.feedback.FeedbackStudent;
 import net.weg.general_api.model.entity.users.Student;
@@ -10,10 +13,13 @@ import net.weg.general_api.model.enums.RankENUM;
 import net.weg.general_api.service.classes.ClassService;
 import net.weg.general_api.service.feedback.FeedbackStudentService;
 import net.weg.general_api.service.users.StudentService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -23,6 +29,7 @@ public class DashboardService {
     private StudentService studentService;
     private ClassService classService;
     private FeedbackStudentService feedbackStudentService;
+    private ModelMapper modelMapper;
 
     public FrequencyAvarageDashboardResponseDTO getFrequencyAvarageDashboard(String className) {
 
@@ -50,7 +57,7 @@ public class DashboardService {
         return new FrequencyAvarageDashboardResponseDTO(className, averageFrequency, map);
     }
 
-    public ClassRankDashboardResponseDTO getClassRankDashboard(String className, int year) {
+    public ClassRankDashboardResponseDTO getClassRankDashboard(String className) {
 
         System.out.println("logDoBackend" + className);
         int excellent = 0, good = 0, average = 0, critical = 0, none = 0;
@@ -58,7 +65,7 @@ public class DashboardService {
 
         if (className.equalsIgnoreCase("geral")) {
 
-            List<FeedbackStudent> feedbackStudents = feedbackStudentService.getFeedbackStudentsByYear(year);
+            List<FeedbackStudent> feedbackStudents = feedbackStudentService.getLatestFeedbackStudentsFromAllClass();
             for (FeedbackStudent feedbackStudent : feedbackStudents) {
                 switch (feedbackStudent.getRank()) {
                     case RankENUM.EXCELLENT:
@@ -81,7 +88,7 @@ public class DashboardService {
             return new ClassRankDashboardResponseDTO(className, excellent, good, average, critical, none, "");
         } else {
 
-            List<FeedbackStudent> feedbackStudents = feedbackStudentService.getFeedbackStudentsByYearAndClassName(year, className);
+            List<FeedbackStudent> feedbackStudents = feedbackStudentService.getLatestFeedbackStudentsbyClassName(className);
             for (FeedbackStudent feedbackStudent : feedbackStudents) {
                 switch (feedbackStudent.getRank()) {
                     case RankENUM.EXCELLENT:
@@ -106,5 +113,91 @@ public class DashboardService {
             return new ClassRankDashboardResponseDTO(className, excellent, good, average, critical, none, aClass.getLastRank());
         }
     }
+
+    public VisualizedFeedbackDashboardResponseDTO getVisualizedFeedbackDashboard(String className) {
+        List<FeedbackStudent> latestFeedbacks = feedbackStudentService.getLatestFeedbackStudentsbyClassName(className);
+
+        if (latestFeedbacks.isEmpty()) {
+            return new VisualizedFeedbackDashboardResponseDTO(0, 0, 0.0, 0.0, List.of(), List.of());
+        }
+
+        Map<Boolean, List<FeedbackStudent>> partitioned = latestFeedbacks.stream()
+                .collect(Collectors.partitioningBy(FeedbackStudent::isViewed));
+
+        List<FeedbackStudent> viewedFeedbacks = partitioned.get(true);
+        List<FeedbackStudent> nonViewedFeedbacks = partitioned.get(false);
+
+        // Calcula totais
+        int totalViewed = viewedFeedbacks != null ? viewedFeedbacks.size() : 0;
+        int totalNonViewed = nonViewedFeedbacks != null ? nonViewedFeedbacks.size() : 0;
+        int totalStudents = latestFeedbacks.size();
+
+        // Calcula porcentagens
+        double viewedPercent = totalStudents > 0 ? (totalViewed * 100.0) / totalStudents : 0.0;
+        double nonViewedPercent = totalStudents > 0 ? (totalNonViewed * 100.0) / totalStudents : 0.0;
+
+        // Extrai listas de estudantes
+        List<Student> viewedStudents = viewedFeedbacks != null ?
+                viewedFeedbacks.stream().map(FeedbackStudent::getStudent).collect(Collectors.toList()) :
+                List.of();
+
+
+        List<Student> nonViewedStudents = nonViewedFeedbacks != null ?
+                nonViewedFeedbacks.stream().map(FeedbackStudent::getStudent).collect(Collectors.toList()) :
+                List.of();
+
+        return new VisualizedFeedbackDashboardResponseDTO(
+                totalViewed,
+                totalNonViewed,
+                viewedPercent,
+                nonViewedPercent,
+                viewedStudents.stream().map(student -> modelMapper.map(student, StudentResponseDTO.class)).toList(),
+                nonViewedStudents.stream().map(student -> modelMapper.map(student, StudentResponseDTO.class)).toList()
+        );
+    }
+
+    public SatisfiedFeedbackDashboardResponseDTO getSatisfiedFeedbackDashboard(String className) {
+        List<FeedbackStudent> latestFeedbacks = feedbackStudentService.getLatestFeedbackStudentsbyClassName(className);
+        latestFeedbacks = latestFeedbacks.stream().filter(FeedbackStudent::isViewed).toList();
+
+        if (latestFeedbacks.isEmpty()) {
+            return new SatisfiedFeedbackDashboardResponseDTO(0, 0, 0.0, 0.0, List.of(), List.of());
+        }
+
+        Map<Boolean, List<FeedbackStudent>> partitioned = latestFeedbacks.stream()
+                .collect(Collectors.partitioningBy(FeedbackStudent::isSatisfied));
+
+        List<FeedbackStudent> satisfiedFeedbacks = partitioned.get(true);
+        List<FeedbackStudent> nonSatisfiedFeedbacks = partitioned.get(false);
+
+        // Calcula totais
+        int totalSatisfied = satisfiedFeedbacks != null ? satisfiedFeedbacks.size() : 0;
+        int totalNonSatisfied = nonSatisfiedFeedbacks != null ? nonSatisfiedFeedbacks.size() : 0;
+        int totalStudents = latestFeedbacks.size();
+
+        // Calcula porcentagens
+        double satisfiedPercent = totalStudents > 0 ? (totalSatisfied * 100.0) / totalStudents : 0.0;
+        double nonSatisfiedPercent = totalStudents > 0 ? (totalNonSatisfied * 100.0) / totalStudents : 0.0;
+
+        // Extrai listas de estudantes
+        List<Student> satisfiedStudents = satisfiedFeedbacks != null ?
+                satisfiedFeedbacks.stream().map(FeedbackStudent::getStudent).collect(Collectors.toList()) :
+                List.of();
+
+
+        List<Student> nonViewedStudents = nonSatisfiedFeedbacks != null ?
+                nonSatisfiedFeedbacks.stream().map(FeedbackStudent::getStudent).collect(Collectors.toList()) :
+                List.of();
+
+        return new SatisfiedFeedbackDashboardResponseDTO(
+                totalSatisfied,
+                totalNonSatisfied,
+                satisfiedPercent,
+                nonSatisfiedPercent,
+                satisfiedStudents.stream().map(student -> modelMapper.map(student, StudentResponseDTO.class)).toList(),
+                nonViewedStudents.stream().map(student -> modelMapper.map(student, StudentResponseDTO.class)).toList()
+        );
+    }
+
 
 }

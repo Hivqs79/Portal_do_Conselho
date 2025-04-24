@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import net.weg.general_api.model.dto.request.users.LoginRequestDTO;
 import net.weg.general_api.model.dto.request.users.ModifyUserPasswordRequestDTO;
 import net.weg.general_api.model.dto.response.LoginResponseDTO;
+import net.weg.general_api.model.dto.response.ModifyUserRoleRequestDTO;
 import net.weg.general_api.model.dto.response.users.UserAuthenticationResponseDTO;
 import net.weg.general_api.model.entity.users.UserAuthentication;
 import net.weg.general_api.service.security.AuthenticationService;
@@ -46,5 +47,16 @@ public class AuthenticationController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     public ResponseEntity<UserAuthenticationResponseDTO> changePassword(@RequestBody @Validated ModifyUserPasswordRequestDTO modifyUserPasswordRequestDTO, @AuthenticationPrincipal UserDetails userDetails) {
         return new ResponseEntity<>(service.changePassword(userDetails, modifyUserPasswordRequestDTO), HttpStatus.OK);
+    }
+
+    @PutMapping("/change-role/{id}")
+    @Operation(method = "PUT", summary = "Alterar role", description = "Altera a role de algum usuário")
+    @ApiResponse(responseCode = "200", description = "Senha alterada com sucesso", content = @Content(schema = @Schema(implementation = UserAuthentication.class), examples = @ExampleObject(value = "{\"id\":1,\"username\":\"user@example.com\",\"enabled\":true}")))
+    @ApiResponse(responseCode = "400", description = "Dados inválidos", content = @Content(examples = @ExampleObject(value = "{\"status\":400,\"error\":\"Bad Request\",\"message\":[\"currentPassword: must not be blank\",\"newPassword: size must be between 6 and 20 characters\"]}")))
+    @ApiResponse(responseCode = "401", description = "Não autorizado", content = @Content(examples = @ExampleObject(value = "{\"status\":401,\"error\":\"Unauthorized\",\"message\":\"Credenciais inválidas\"}")))
+    @ApiResponse(responseCode = "403", description = "Senha atual incorreta", content = @Content(examples = @ExampleObject(value = "{\"status\":403,\"error\":\"Forbidden\",\"message\":\"Senha atual não confere\"}")))
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    public ResponseEntity<UserAuthenticationResponseDTO> changeRole(@RequestBody @Validated ModifyUserRoleRequestDTO modifyUserRoleRequestDTO, @PathVariable Long id) {
+        return new ResponseEntity<>(service.changeRole(modifyUserRoleRequestDTO, id), HttpStatus.OK);
     }
 }

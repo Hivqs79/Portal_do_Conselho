@@ -60,6 +60,7 @@ public class SecurityConfig {
                         .requestMatchers(SWAGGER_WHITELIST).permitAll()
                         .requestMatchers(AUTHENTICATION_WHITELIST).permitAll()
                         .requestMatchers(HttpMethod.POST, "auth/change-password").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "auth/change-role/{id}").hasRole("SUBPEDAGOGIC")
 
                         // Configurações específicas para TeacherController
                         .requestMatchers(HttpMethod.GET, "/teacher/{id}").authenticated()
@@ -167,13 +168,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/annotations/class").hasAnyRole("TEACHER", "SUBPEDAGOGIC")
                         .requestMatchers(HttpMethod.POST, "/annotations/class").hasRole("TEACHER")
 
-                        // Configurações para AdminController (exclusivo para role ADMIN)
-                        .requestMatchers(HttpMethod.GET, "/admin/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/admin/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/admin/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/admin").permitAll()
-
                         // Tenho minhas duvidas...
                         .requestMatchers("/notification/**").permitAll()
                         .requestMatchers("/dashboard/**").permitAll()
@@ -228,22 +222,22 @@ public class SecurityConfig {
     }
 
     /*
-    SE QUISER DESABILITAR O SISTEMA DE AUTENTICAÇÃO!!!
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-            http
-                    .csrf(AbstractHttpConfigurer::disable)
-                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                    .authorizeHttpRequests(authorizeRequests -> {
-                        authorizeRequests.anyRequest().permitAll();
-                    })
-                    .userDetailsService(authorizationService)
-                    .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-            ;
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorizeRequests -> {
+                    authorizeRequests.anyRequest().permitAll();
+                })
+                .userDetailsService(authorizationService)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+        ;
 
-            return http.build();
-        }
-    */
+        return http.build();
+    }
+
+     */
 
 }
