@@ -128,12 +128,15 @@ $ npm start
 > **Note**
 > If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
 
+## Nossa Equipe
 
-## Download
-
-You can [download](https://github.com/amitmerchant1990/electron-markdownify/releases/tag/v1.2.0) the latest installable version of Markdownify for Windows, macOS and Linux.
-
-## Créditos
+<div align="left"> <table> <tr> <td align="center" style="width: 33.33%;">
+	<a href="https://github.com/username1"> <img src="https://avatars.githubusercontent.com/u/143128960?s=999&v=999" width="100px;" alt="Team Member 1" style="border-radius:50%;"/> <br /> <sub><b>John Doe</b></sub> </a> <br /> <sub>Frontend Developer</sub> </td> <td align="center" style="width: 33.33%;"> 
+		<a href="https://github.com/username2"> <img src="https://github.com/username2.png" width="100px;" alt="Team Member 2" style="border-radius:50%;"/> <br /> <sub><b>Jane Smith</b></sub> </a> <br /> <sub>Backend Developer</sub> </td> <td align="center" style="width: 33.33%;"> 
+			<a href="https://github.com/username3"> <img src="https://github.com/username3.png" width="100px;" alt="Team Member 3" style="border-radius:50%;"/> <br /> <sub><b>Alex Johnson</b></sub> </a> <br /> <sub>UI/UX Designer</sub> </td> </tr> <tr> <td align="center"> 
+				<a href="https://github.com/username4"> <img src="https://github.com/username4.png" width="100px;" alt="Team Member 4" style="border-radius:50%;"/> <br /> <sub><b>Sam Wilson</b></sub> </a> <br /> <sub>DevOps Engineer</sub> </td> <td align="center"> 
+					<a href="https://github.com/username5"> <img src="https://github.com/username5.png" width="100px;" alt="Team Member 5" style="border-radius:50%;"/> <br /> <sub><b>Taylor Brown</b></sub> </a> <br /> <sub>Project Manager</sub> </td> <td align="center"> 
+						<a href="https://github.com/username6"> <img src="https://github.com/username6.png" width="100px;" alt="Team Member 6" style="border-radius:50%;"/> <br /> <sub><b>Morgan Lee</b></sub> </a> <br /> <sub>QA Engineer</sub> </td> </tr> </table> </div>
 
 This software uses the following open source packages:
 
