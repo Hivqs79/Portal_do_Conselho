@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "express": "^4.21.2",
-    "kafka-node": "^5.0.0"
-  }
-}

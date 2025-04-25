@@ -8,9 +8,9 @@
   <br>
 </h1>
 
-<h4 align="center">Sistema de devolução de feedbacks para a instituição <a href="https://www.sc.senai.br/" target="_blank">Senai</a>.</h4>
+<h4 align="center">Sistema de devolução de feedbacks para a instituição <a href="https://www.sc.senai.br/" target="_blank">SENAI</a>.</h4>
 
-<p align="center">
+<!-- <p align="center">
   <a href="https://badge.fury.io/js/electron-markdownify"> 
 	  <img src="https://badge.fury.io/js/electron-markdownify.svg" alt="Gitter"> </a>
 	
@@ -23,7 +23,7 @@
   <a href="https://www.paypal.me/AmitMerchant"> 
 	  <img src="https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&amp;style=flat"> </a>
    
-</p>
+</p> -->
 
 <p align="center">
   <a href="#descrição">Descrição</a> •
@@ -110,24 +110,69 @@ Automatizar e virtualizar o processo de envio e recebimento de feedbacks educaci
 
 ## Como Usar
 
-nd run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+Nosso sistema utiliza atualmente o conceito de conteinerização, através do Docker, e seu respectivo gerenciamento com Kubernetes, tudo isso de forma a facilitar a implementação e utilização em diversos ambientes. Desse modo, para utilizar localmente o nosso sistema, basta que você tenha instalado em sua máquina um cluster Kubernetes, como o Minikube, Kind, Kubeadm, entre outros. Por questão de facilidade, recomendamos o <a href="https://www.docker.com/">Docker Desktop</a>, que tem o Kubernetes nativamente integrado (<a href="https://docs.docker.com/desktop/features/kubernetes/">Tutorial de como inicializá-lo</a>). 
+
+Como ainda está em processo de containerização, o front-end está sendo rodado localmente, por isso será preciso também instalar o <a href="https://nodejs.org/pt">NodeJS</a> e modificar o arquivo de variáveis de ambiente, que está na pasta **front/app** na forma de **.env.example**, basta fazer uma cópia do arquivo e renomear para somente **.env** e configurá-lo dessa forma:
 
 ```bash
-# Clone this repository
-$ git clone https://github.com/amitmerchant1990/electron-markdownify
-
-# Go into the repository
-$ cd electron-markdownify
-
-# Install dependencies
-$ npm install
-
-# Run the app
-$ npm start
+NEXT_PUBLIC_URL_GENERAL_API=http://localhost:8081
+NEXT_PUBLIC_URL_CHAT_API=http://localhost:8082
+NEXT_PUBLIC_URL_AWS_API=http://localhost:3060
+NEXT_PUBLIC_URL_KAFKA_WORKSERVICE_API=http://localhost:3090
 ```
 
-> **Note**
-> If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
+Após instalar o cluster Kubernetes e a ferramenta CLI kubectl, basta seguir os seguintes passos:
+
+> **Nota:** Todos os comandos serão feitos no terminal git bash, se utilizar outro, pode ser que nem todos os comandos funcionem, como os scripts .sh.
+
+```bash
+# Clone o repositório
+$ git clone https://github.com/Hivqs79/Portal_do_Conselho.git
+
+# Entre dentro da pasta de front
+$ cd Portal_do_Conselho/front/app
+
+# Instale as dependências
+$ npm install
+
+# Entre dentro da pasta de scripts
+$ cd ../../scripts
+
+# Rode o script para criar os pods do kubernetes
+$ ./create-pods.sh
+
+# Rode o script para rodar a aplicação
+$ ./run.sh
+```
+
+No melhor dos casos, após alguns segundos (30s a 60s) a aplicação já estara rodando e funcionando normalmente na url: http://localhost:3000/, no entanto pode acontecer alguns bugs e por isso recomendamos a instalação do <a href="https://code.visualstudio.com">Visual Studio Code</a> para melhor monitoramento da aplicação com a <a href="https://marketplace.visualstudio.com/items/?itemName=ms-kubernetes-tools.vscode-kubernetes-tools">extensão de Kubernetes da Microsoft</a>. Onde será possível ver os logs dos containers. Após instalar a extensão, basta clicar na aba Kubernetes e escolher o cluster que foi utilizado para inicializar a aplicação.
+
+<img src="./assets-readme/kubernetes-tool.png" alt="Ferramenta de Kubernetes no Visual Studio Code">
+
+Nessa ferramenta, acesse o cluster que criou com o Docker Desktop e vá até a seção Nodes/{nome do cluster} para ver os pods ativos. Para visualizar um log de um container, basta passar o mouse por cima de um e clicar em Logs, (um icone com várias linhas) e apertar em Run no canto superior direito da tela que aparecer:
+
+<img src="./assets-readme/logs-pod.png" alt="Ferramenta de Kubernetes mostrando logs no Visual Studio Code">
+
+Agora vamos aos possíveis erros que podem ocorrer. O mais comum é que o Kafka tenha iniciado depois dos outros pods e não tenha funcionado a sua conexão, isso pode ser resolvido com o seguinte comando, ainda na pasta scripts:
+
+```bash
+$ ./restart-backend-pods.sh
+```
+
+Esse comando irá resetar todos os containers do back-end, ao fazer isso, o Kafka (que provavelmente já estará iniciado e rodando) vai conseguir se conectar com os outros pods e funcionar normalmente.
+
+Alguns pods continuarão vermelhos, como os kafka-topic-creator e o ingress-nginx-controller, mas isso não afetará a funcão do sistema. 
+
+No entanto, provavelmente o pod aws-image-api-deployment estará vermelho também, isso acontece por que não foi definido as chaves secretas da aws, que não compartilhadas por motivos de segurança e financeiro, por isso, caso queira testar a função de imagens de perfil, precisará adicionar suas próprias chaves. Para isto, basta copiar o arquivo aws-secret.yaml.secret, que está na pasta k8s e renomeá-lo para aws-secret.yaml e adicionar suas chaves nas variáveis region, access_key e secret_key. Após isso, basta aplicar  as configurações e rodar o script para recriar os pods, tudo dentro da pasta scripts:
+
+```bash
+$ kubectl apply -f ../k8s/aws-secret.yaml
+$ ./restart-backend-pods.sh
+```
+
+### Aplicação
+
+Caso tudo tenha funcionado corretamente, você poderá acessar sua aplicação pela url https://localhost:3000/. Para continuar com a aplicação, você deverá se logar como admin, que tem as credencias de **admin** e **@portalconselho1234!**. A partir desse momento, você pode criar usuários para você acessar seus perfis e testar toda a aplicação, mas lembre-se que para acessar o perfil desse usuário, você deverá cadastrar um email válido e resgatar a senha dele em uma mensagem de email, talvez a mensagem esteja na área de spam.
 
 ## Nossa Equipe
 

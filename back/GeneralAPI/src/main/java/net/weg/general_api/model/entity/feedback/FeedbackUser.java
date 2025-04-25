@@ -41,6 +41,7 @@ public class FeedbackUser extends Feedback {
     public void onPrePersist() {
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
+        this.setSatisfied(true);
         this.setReturned(false);
         this.setViewed(false);
         this.setEnabled(true);

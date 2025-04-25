@@ -4,6 +4,7 @@ import PaginationTable from "@/components/table/Pagination";
 import Table from "@/components/table/Table";
 import Title from "@/components/Title";
 import { useRoleContext } from "@/hooks/useRole";
+import { useThemeContext } from "@/hooks/useTheme";
 import FeedbackClass from "@/interfaces/feedback/FeedbackClass";
 import FeedbackStudent from "@/interfaces/feedback/FeedbackStudent";
 import FeedbackUser from "@/interfaces/feedback/FeedbackUser";
@@ -16,6 +17,7 @@ import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function Home() {
+  const {constrastColor} = useThemeContext();
   const [page, setPage] = useState(1);
   const { token } = useRoleContext();
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -30,7 +32,7 @@ export default function Home() {
   );
   const [satisfied, setSatisfied] = useState<boolean | null>(null);
   const [councilId, setCouncilId] = useState<number>(-1);
-  const [searchFeedbackClass, setSearchFeedbackClass] = useState<string>("");
+  const [searchFeedbackClass, setSearchFeedbackClass] = useState<string>("");  
 
   const headerButtons: TableHeaderButtons = {
     searchInput: true,
@@ -193,7 +195,7 @@ export default function Home() {
             diretrizes abaixo:
           </Typography>
           <Box className="flex ml-4 mt-4">
-            <ul className="flex flex-col list-disc ml-4">
+            <ul style={{ listStyleType: "disc", color: constrastColor }} className="flex flex-col ml-4">
               <li>
                 <Typography variant="lg_text_regular">
                   Certifique-se de que nenhuma informação pessoal seja exibida

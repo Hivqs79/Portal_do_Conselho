@@ -48,6 +48,7 @@ public class FeedbackStudent extends FeedbackWithCouncil {
     public void onPrePersist() {
         this.setCreateDate(LocalDateTime.now());
         this.setUpdateDate(LocalDateTime.now());
+        this.setSatisfied(true);
         this.setReturned(false);
         this.setViewed(false);
         this.setEnabled(true);

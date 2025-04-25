@@ -1,7 +1,8 @@
 #!/bin/bash
 
 trap "kill -- -$$" EXIT
-(cd ../k8s && kubectl apply -f .) &
+(./create-pods.sh) &
+# (kubectl port-forward svc/front-service 3000:80)
 (kubectl port-forward svc/kafka-service 9093:9093) &
 (kubectl port-forward svc/general-api-service 8081:8081) &
 (kubectl port-forward svc/chat-api-service 8082:8082) &

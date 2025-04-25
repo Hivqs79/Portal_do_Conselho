@@ -29,7 +29,7 @@ interface AnotationProps {
   onChangeRank?: (rank: RankType) => void;
   onClick?: () => void;
   open?: boolean;
-  annotation: boolean;
+  annotation?: boolean;
 }
 
 export default function AccordionComponent({
@@ -46,7 +46,7 @@ export default function AccordionComponent({
   onChangeRank, 
   onClick,
   open = false,
-  annotation
+  annotation = false,
 }: AnotationProps) {
   const {
     primaryColor,

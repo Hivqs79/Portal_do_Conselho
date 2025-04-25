@@ -34,7 +34,7 @@ spec:
               name: mysql-logs-secret
               key: password
         - name: KAFKA_TOPICS
-          value: "annotationclass,annotationstudent,class,council,feedbackclass,feedbackstudent,feedbackuser,precouncilsection,precouncil,admin,customization,pedagogic,student,teacher,roomconversation"
+          value: "annotationclass,annotationstudent,class,council,feedbackclass,feedbackstudent,feedbackuser,precouncilsection,precouncil,admin,customization,pedagogic,student,teacher,notification,chat_messages,room_events"
         resources:
           requests:
             cpu: 100m
