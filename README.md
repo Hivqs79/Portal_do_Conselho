@@ -49,21 +49,26 @@ Automatizar e virtualizar o processo de envio e recebimento de feedbacks educaci
 ### ✨ **Funcionalidades-Chave**  
 
 #### 👨🎓 **Para Estudantes**  
-- Acessar seus feedbacks sobre desempenho e comportamento.  
-- Participar do **Pré-Conselho**, enviando avaliações sobre professores, equipe pedagógica, estrutura.  
+- Acessar seus feedbacks sobre desempenho e comportamento.
+- Chat em tempo real somente com a equipe pedagógica
+- Caso seja um representante, poderá participar do **Pré-Conselho**, enviando avaliações sobre professores, equipe pedagógica, estrutura, etc.  
 
 #### 👩🏫 **Para Pedagogos**  
-- Criar conselhos de classe virtuais.  
-- Atribuir feedbacks em massa para turmas inteiras.  
-- Monitorar o progresso dos alunos de forma centralizada.  
+- Criar conselhos de classe virtuais e enviar e receber os pré-Conselho.
+- Atribuir feedbacks em massa para turmas inteiras.
+- Chat em tempo real somente com qualquer usuário do sistema
+- Monitorar o progresso dos alunos de forma centralizada.
 
 #### 👨🏽🏫 **Para Professores**  
+- Acessar seus feedbacks sobre os seus pré-Conselho
 - Registrar anotações individuais sobre cada aluno.  
-- Contribuir com observações específicas para os conselhos de classe.  
+- Contribuir com observações específicas para os conselhos de classe.
+- Chat em tempo real somente com a equipe pedagógica
 
 #### 👨💼 **Para Supervisores**  
 - Acompanhar relatórios gerais e métricas das turmas.  
-- Tomar decisões estratégicas com base em dados consolidados.  
+- Tomar decisões estratégicas com base em dados consolidados.
+- Chat em tempo real somente com a equipe pedagógica
 
 ### 🔄 **Fluxo de Feedback Bidirecional**  
 - **Feedback Pedagógico**: Professores e pedagogos enviam avaliações detalhadas aos alunos de forma rápida e organizada.  
@@ -106,6 +111,8 @@ Automatizar e virtualizar o processo de envio e recebimento de feedbacks educaci
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" height="40" alt="docker logo"  />
   <img width="12" />
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" height="40" alt="git logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" height="40" alt="git logo"  />
 </div>
 
 ## Como Usar
