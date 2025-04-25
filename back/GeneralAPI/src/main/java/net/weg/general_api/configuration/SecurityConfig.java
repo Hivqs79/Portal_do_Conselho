@@ -169,12 +169,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/annotations/class").hasRole("TEACHER")
 
                         // Tenho minhas duvidas...
-                        .requestMatchers("/notification/**").permitAll()
-                        .requestMatchers("/dashboard/**").permitAll()
-                        .requestMatchers("/pre-council/**").permitAll()
-                        .requestMatchers("/user/**").permitAll()
+                        .requestMatchers("/notification/**").authenticated()
+                        .requestMatchers("/dashboard/**").authenticated()
+                        .requestMatchers("/pre-council/**").authenticated()
+                        .requestMatchers("/user/**").authenticated()
 
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .userDetailsService(authorizationService)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
