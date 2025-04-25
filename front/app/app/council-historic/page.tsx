@@ -29,7 +29,7 @@ export default function CouncilHistoric() {
 
   const fetchStudentsFeedback = async () => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/student?isReturned=false&councilId=${councilId}&studentName=${studentTerm}`,
+      `${process.env.NEXT_PUBLIC_URL_GENERAL_API}/feedbacks/student?isReturned=true &councilId=${councilId}&studentName=${studentTerm}`,
       {
         method: "GET",
         headers: {
