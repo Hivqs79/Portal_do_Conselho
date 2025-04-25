@@ -34,6 +34,7 @@
 </p>
 
 ![screenshot](https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/app/img/markdownify.gif)
+<img src="front/app/assets/introduction.gif" alt="Portal do Conselho GIF">
 
 ## Descrição
 
