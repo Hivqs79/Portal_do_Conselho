@@ -48,7 +48,7 @@ export default function Header({ variant }: HeaderProps) {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              // Authorization: `Bearer ${token}`,
+               Authorization: `Bearer ${token}`,
             },
           }
         );
