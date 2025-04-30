@@ -195,7 +195,3 @@ Caso tudo tenha funcionado corretamente, você poderá acessar sua aplicação p
 Se você tiver alguma dúvida, sugestão ou encontrar algum problema com o projeto, sinta-se à vontade para entrar em contato.
 
 📧 E-mail para suporte: [portal.do.conselho.email@gmail.com](mailto:portal.do.conselho.email@gmail.com)
-
-## Licença
-
-MIT
