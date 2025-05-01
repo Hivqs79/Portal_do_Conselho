@@ -39,7 +39,7 @@ export default function MessagesRoom({
       console.log("room fetch id: ", roomId);
       const fetchMessages = async () => {
         const response = await fetch(
-          `http://localhost:8082/message/messages-room/${roomId}`
+          `${process.env.NEXT_PUBLIC_URL_CHAT_API}/message/messages-room/${roomId}`
         );
         const data = await response.json();
         console.log(data);
@@ -100,7 +100,7 @@ export default function MessagesRoom({
       console.log("room fetch id: ", roomId);
       console.log("message fetch: ", message);
       console.log("userId fetch: ", userId);
-      await fetch("http://localhost:8082/message", {
+      await fetch(`${process.env.NEXT_PUBLIC_URL_CHAT_API}/message`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

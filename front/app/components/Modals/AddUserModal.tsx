@@ -67,7 +67,7 @@ export default function AddUserModal({ type, onClose }: AddUserModalProps) {
       users.map(async (user: any) => {
         try {
           const roomResponse = await fetch(
-            "http://localhost:8082/room/findRoomByTwoUsers",
+            `${process.env.NEXT_PUBLIC_URL_CHAT_API}/room/findRoomByTwoUsers`,
             {
               method: "POST",
               headers: {
@@ -318,7 +318,7 @@ export default function AddUserModal({ type, onClose }: AddUserModalProps) {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:8082/room/findRoomByTwoUsers",
+        `${process.env.NEXT_PUBLIC_URL_CHAT_API}/room/findRoomByTwoUsers`,
         {
           method: "POST",
           headers: {
@@ -355,7 +355,7 @@ export default function AddUserModal({ type, onClose }: AddUserModalProps) {
   };
 
   const createRoom = async (firstUserId: number, secondUserId: number) => {
-    await fetch("http://localhost:8082/room", {
+    await fetch(`${process.env.NEXT_PUBLIC_URL_CHAT_API}/room`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

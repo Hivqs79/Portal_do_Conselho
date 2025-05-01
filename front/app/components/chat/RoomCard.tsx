@@ -26,7 +26,7 @@ export default function RoomCard({
     try {
       const fetchLastMessage = async () => {
         await fetch(
-          `http://localhost:8082/message/last-message/${roomId}`
+          `${process.env.NEXT_PUBLIC_URL_CHAT_API}/message/last-message/${roomId}`
         )
           .then((res) => res.json())
           .then((data) => {

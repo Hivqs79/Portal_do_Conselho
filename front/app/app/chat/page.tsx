@@ -25,7 +25,7 @@ export default function Chat() {
       if (userId && userId > 0) {
         console.log("Fetching rooms for user ID:", userId);
         const response = await fetch(
-          `http://localhost:8082/room/findAllRoomsOfAUser/${userId}`,
+          `${process.env.NEXT_PUBLIC_URL_CHAT_API}/room/findAllRoomsOfAUser/${userId}`,
           {
             method: "GET",
             headers: {
