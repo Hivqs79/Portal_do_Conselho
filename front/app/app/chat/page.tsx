@@ -59,7 +59,7 @@ export default function Chat() {
 
       // Cria nova conexão SSE para atualizações de sala
       const newEventSource = new EventSource(
-        `http://localhost:3090/events/rooms/${userId}`
+        `${process.env.NEXT_PUBLIC_URL_KAFKA_WORKSERVICE_API}/events/rooms/${userId}`
       );
 
       newEventSource.onmessage = (event) => {

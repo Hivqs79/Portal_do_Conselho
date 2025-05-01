@@ -42,7 +42,7 @@ export default function SidebarRooms({
   useEffect(() => {
     if (userRoleId) {
       const eventSource = new EventSource(
-        `http://localhost:3090/events/rooms/${userRoleId}`
+        `${process.env.NEXT_PUBLIC_URL_KAFKA_WORKSERVICE_API}/events/rooms/${userRoleId}`
       );
 
       eventSource.onmessage = (event) => {

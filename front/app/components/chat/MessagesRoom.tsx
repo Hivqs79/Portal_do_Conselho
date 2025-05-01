@@ -54,7 +54,7 @@ export default function MessagesRoom({
   useEffect(() => {
     if (roomId && userId) {
       const newEventSource = new EventSource(
-        `http://localhost:3090/events/chat/${roomId}/${userId}`
+        `${process.env.NEXT_PUBLIC_URL_KAFKA_WORKSERVICE_API}/events/chat/${roomId}/${userId}`
       );
 
       newEventSource.onmessage = (event) => {
