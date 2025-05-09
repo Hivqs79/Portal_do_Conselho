@@ -314,8 +314,8 @@ export default function CreateUserModal({
                             paddingBottom: "4px",
                           },
                           "& .MuiMenuItem-root:not(:last-child)": {
-                            borderBottom: "1px solid var(--secondary-color)",                      
-                          }
+                            borderBottom: "1px solid var(--secondary-color)",
+                          },
                         },
                       },
                     }}
@@ -365,14 +365,21 @@ export default function CreateUserModal({
                           paddingBottom: "4px",
                         },
                         "& .MuiMenuItem-root:not(:last-child)": {
-                          borderBottom: "1px solid var(--secondary-color)",                      
-                        }
+                          borderBottom: "1px solid var(--secondary-color)",
+                        },
                       },
                     },
                   }}
                 >
                   {classes.map((cls) => (
-                    <MenuItem key={cls.id} value={cls.name}>
+                    <MenuItem
+                      sx={{
+                        overflowY: "scroll",
+                        maxHeight: "400px",
+                      }}
+                      key={cls.id}
+                      value={cls.name}
+                    >
                       <Checkbox
                         sx={{
                           "& .MuiSvgIcon-root": {

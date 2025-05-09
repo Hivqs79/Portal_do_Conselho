@@ -200,14 +200,21 @@ export default function EditClassModal({
                       paddingBottom: "4px",
                     },
                     "& .MuiMenuItem-root:not(:last-child)": {
-                      borderBottom: "1px solid var(--secondary-color)",                      
-                    }
+                      borderBottom: "1px solid var(--secondary-color)",
+                    },
                   },
                 },
               }}
             >
               {Object.values(ClassAreaENUM).map((area) => (
-                <MenuItem key={area} value={area}>
+                <MenuItem
+                  sx={{
+                    overflowY: "scroll",
+                    maxHeight: "400px",
+                  }}
+                  key={area}
+                  value={area}
+                >
                   {area.charAt(0) + area.slice(1).toLowerCase()}
                 </MenuItem>
               ))}

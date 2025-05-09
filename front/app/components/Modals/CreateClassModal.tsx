@@ -226,7 +226,10 @@ export default function CreateClassModal({ onClose, handleFetchClass }: CreateCl
               }}
             >
               {Object.values(ClassAreaENUM).map((area) => (
-                <MenuItem key={area} value={area}>
+                <MenuItem sx={{
+                  overflowY: "scroll",
+                  maxHeight: "400px"
+                }} key={area} value={area}>
                   {area.charAt(0) + area.slice(1).toLowerCase()}
                 </MenuItem>
               ))}
